@@ -1,18 +1,13 @@
-# Einführungsversuch in die Theoretische Chemie
+# Practical exercise introducing Theoretical Chemistry to first-year students of Chemistry
 
 ## Setup
 
-1. Miniconda installieren.
-2. Conda-Umgebung installieren und aktivieren.
-    ```bash
-    conda env create --file environment.yml
-    conda activate achprak
-    ```
-3. Python-Pakete mit uv installieren.
+1. Install [uv](https://docs.astral.sh/uv/).
+2. Setup the virtual environment.
     ```bash
     uv sync
     ```
-4. Jupyter Lab starten.
+3. Start the Jupyter Lab server.
     ```bash
     uv run jupyter-lab achprak.ipynb
     ```
