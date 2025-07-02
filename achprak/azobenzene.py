@@ -276,27 +276,11 @@ class Properties:
         c2 = self._find_carbon_neighbor(n2)
         return [c1, n1, n2, c2]
 
-    def nncc_dihedral_indices(self):
-        """
-        Return the indices of the N=N-C=C dihedral angle.
-        """
-        _, n1, n2, c2 = self.cnnc_dihedral_indices()
-        c3 = self._find_carbon_neighbor(c2)
-        return [n1, n2, c2, c3]
-
     def cnnc_dihedral(self):
         """
         Return the CN=NC dihedral angle.
         """
         indices = self.cnnc_dihedral_indices()
-        dihedral = self.atoms.get_dihedral(*indices)
-        return dihedral
-
-    def nncc_dihedral(self):
-        """
-        Return the N=N-C=C dihedral angle.
-        """
-        indices = self.nncc_dihedral_indices()
         dihedral = self.atoms.get_dihedral(*indices)
         return dihedral
 
@@ -339,7 +323,6 @@ class PropertiesTool:
         # Text widgets for displaying molecular properties.
         self._energy_text = widgets.Text(disabled=True)
         self._cnnc_dihedral_text = widgets.Text(disabled=True)
-        self._nncc_dihedral_text = widgets.Text(disabled=True)
         self._ring_distance_text = widgets.Text(disabled=True)
 
     def show(self):
@@ -358,7 +341,6 @@ class PropertiesTool:
                 for title, text, unit in [
                     ("Energie", self._energy_text, " kJ/mol"),
                     ("Dihedralwinkel (C-N=N-C)", self._cnnc_dihedral_text, " °"),
-                    ("Dihedralwinkel (N=N-C=C)", self._nncc_dihedral_text, " °"),
                     ("Ringabstand", self._ring_distance_text, " pm"),
                 ]
             ],
@@ -377,7 +359,6 @@ class PropertiesTool:
     def _update_properties(self, properties):
         self._energy_text.value = f"{properties.energy():.1f}"
         self._cnnc_dihedral_text.value = f"{properties.cnnc_dihedral():.1f}"
-        self._nncc_dihedral_text.value = f"{properties.nncc_dihedral():.1f}"
         self._ring_distance_text.value = f"{properties.ring_distance():.1f}"
 
 
