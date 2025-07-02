@@ -9,6 +9,8 @@ import ase.io
 import clipboard
 import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
+import pyscf.gto
+import numpy as np
 
 LABEL_STYLE = {"font_size": "15px", "font_weight": "bold"}
 OUTPUT_LAYOUT = {"height": "250px", "overflow": "auto"}
@@ -139,3 +141,17 @@ def paste_xyz(output, button):
     else:
         flash_button(button, "Ungültige Eingabe ❌")
         return None
+
+
+def atoms_to_pyscf(atoms):
+    atom_list = []
+    for element, position in zip(atoms.get_chemical_symbols(), atoms.get_positions()):
+        atom_list.append((element, position))
+    mol = pyscf.gto.Mole()
+    mol.atom = atom_list
+    mol.unit = "Angstrom"
+    return mol
+
+
+def gaussian(x, mu, sigma):
+    return np.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * np.sqrt(2 * np.pi))
