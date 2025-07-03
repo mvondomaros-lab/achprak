@@ -26,7 +26,9 @@ class Template:
         "Cl": "(Cl)",
         "OH": "(O)",
         "NH2": "(N)",
-        "OCH3": "(OC)",
+        "NMe2": "(N(C)C)",
+        "NO2": "(N(=O)=O)",
+        "OMe": "(OC)",
     }
 
     def __init__(
@@ -340,7 +342,7 @@ class PropertiesTool:
                 )
                 for title, text, unit in [
                     ("Energie", self._energy_text, " kJ/mol"),
-                    ("Dihedralwinkel (C-N=N-C)", self._cnnc_dihedral_text, " °"),
+                    ("Diederwinkel (C-N=N-C)", self._cnnc_dihedral_text, " °"),
                     ("Ringabstand", self._ring_distance_text, " pm"),
                 ]
             ],
@@ -362,7 +364,7 @@ class PropertiesTool:
         self._ring_distance_text.value = f"{properties.ring_distance():.1f}"
 
 
-class InteractiveOptMin(optimization.InteractiveOptBase):
+class OptMinTool(optimization.OptToolBase):
     def _run(self):
         """
         Run the optimization.
@@ -376,7 +378,7 @@ class InteractiveOptMin(optimization.InteractiveOptBase):
         self.converged = opt.run(output=output)
 
 
-class InteractiveOptTS(optimization.InteractiveOptBase):
+class OptTSTool(optimization.OptToolBase):
     def _run(self):
         """
         Run the optimization.

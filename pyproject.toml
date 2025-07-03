@@ -5,19 +5,17 @@ description = "Practical exercise introducing Theoretical Chemistry to first-yea
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "setuptools<80",
     "jupyterlab>=4.4.3",
     "jupyter-ruff>=0.3.0",
     "jupyterlab-myst>=2.4.2",
     "ipywidgets>=8.1.7",
     "nglview>=3.1.4",
-    "setuptools<80",
+    "matplotlib>=3.10.3",
+    "clipboard>=0.0.4",
     "rdkit>=2025.3.3",
     "ase>=3.25.0",
     "tblite>=0.4.0",
-    "clipboard>=0.0.4",
     "sella>=2.3.5",
     "pyscf>=2.9.0",
-    "colour-science>=0.4.6",
-    "pyberny>=0.6.3",
-    "matplotlib>=3.10.3",
 ]

@@ -5,7 +5,6 @@ from . import common
 import numpy as np
 import pyscf.dft
 import pyscf.tddft
-import pyscf.geomopt.berny_solver
 
 import ipywidgets as widgets
 import IPython.display
@@ -25,13 +24,14 @@ class UVVis:
         self.mf = None
         self.td = None
 
-    def calculate(self, basis="def2-TZVP", xc="BLYP", nstates=5):
+    def calculate(self, basis="def2-TZVP", xc="B3LYP", nstates=5):
         self.mol.basis = basis
         self.mol = self.mol.build()
 
         self.mf = pyscf.dft.RKS(self.mol).density_fit()
         self.mf.xc = xc
         self.mf.verbose = 4
+        self.mf._numint.libxc = pyscf.dft.xcfun
         self.mf.kernel()
 
         self.td = pyscf.tddft.TDA(self.mf)
@@ -42,28 +42,21 @@ class UVVis:
     def analyze(self):
         return self.td.analyze()
 
-    def absorption(self, sigma_e=0.2, wl_min=200.0, wl_max=800.0):
-        wl_min = int(wl_min)
-        wl_max = int(wl_max)
-        n = wl_max - wl_min + 1
-        wl_grid = np.linspace(wl_min, wl_max, n)
-
-        hc = const.Planck * const.speed_of_light / (const.electron_volt * const.nano)
-        e_grid = hc / wl_grid
-        e_absorption = np.zeros_like(e_grid)
+    def absorption_spectrum(self, start, stop, sigma):
+        energy = np.linspace(start, stop, 1000)
+        absorption = np.zeros_like(energy)
 
         excitations = self.td.e * const.physical_constants["Hartree energy in eV"][0]
         strengths = self.td.oscillator_strength()
         for excitation, strength in zip(excitations, strengths):
-            e_absorption += strength * common.gaussian(e_grid, excitation, sigma_e)
+            absorption += strength * common.gaussian(
+                x=energy, mu=excitation, sigma=sigma
+            )
 
-        jacobian = e_absorption**2 / hc
-        wl_absorption = e_absorption * jacobian
-
-        return wl_grid, wl_absorption
+        return energy, absorption
 
 
-class InteractiveUVVis:
+class UVVisTool:
     """
     An interactive UV/Vis spectrum calculation tool.
     """
@@ -110,14 +103,56 @@ class InteractiveUVVis:
 
     def _show_results(self):
         """
-        Show the result calculation.
+        Show the result of the calculation.
         """
 
         with self._absorption_output:
-            wl, absorption = self.uv_vis.absorption()
-            plt.plot(wl, absorption)
-            plt.xlabel("Wellenlänge / nm")
-            plt.ylabel("Absorption / a.u.")
+            start = 1.5
+            stop = 5.5
+            sigma = 0.1
+            energy, absorption = self.uv_vis.absorption_spectrum(start, stop, sigma)
+            absorption *= np.sqrt(2.0 * np.pi) * sigma
+
+            hc = (
+                const.Planck * const.speed_of_light / (const.electron_volt * const.nano)
+            )
+            wl_start = int(hc / start / 100.0) * 100
+            wl_stop = int(hc / stop / 100.0) * 100
+            wl_ticks = np.linspace(wl_start, wl_stop, 9, dtype=np.int64)
+            wl_tick_positions = hc / wl_ticks
+
+            fig, ax1 = plt.subplots()
+
+            ax1.plot(energy, absorption, color="C0")
+            excitations = (
+                self.uv_vis.td.e * const.physical_constants["Hartree energy in eV"][0]
+            )
+            strengths = self.uv_vis.td.oscillator_strength()
+
+            for e, f in zip(excitations, strengths):
+                ax1.plot([e, e], [0, f], color="C1")
+                if f > 0.1 and start < e < stop:
+                    ax1.text(
+                        e + 0.5 * sigma,
+                        f + 0.02,
+                        f"{e:.2g} eV",
+                        color="C1",
+                        ha="center",
+                        va="bottom",
+                    )
+
+            ax1.set_xlim(start - 0.5 * sigma, stop + 0.5 * sigma)
+            ax1.set_ylim(0.0, 1.1 * np.max(absorption))
+
+            ax1.set_xlabel("Energie / eV")
+            ax1.set_ylabel("Absorption / a.u.")
+
+            ax2 = plt.twiny()
+            ax2.set_xlim(start - 0.5 * sigma, stop + 0.5 * sigma)
+            ax2.set_xticks(wl_tick_positions, wl_ticks, rotation=50)
+            ax2.grid(False)
+            ax2.set_xlabel("Wellenlänge / nm")
+
             plt.show()
 
     def _clear(self):

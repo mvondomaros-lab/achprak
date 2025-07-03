@@ -2,8 +2,8 @@
 
 ## Setup
 
-1. Install [uv](https://docs.astral.sh/uv/).
-2. Setup the virtual environment.
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/).
+2. Install python dependencies using `uv`.
     ```bash
     uv sync
     ```
@@ -11,3 +11,4 @@
     ```bash
     uv run jupyter-lab achprak.ipynb
     ```
+

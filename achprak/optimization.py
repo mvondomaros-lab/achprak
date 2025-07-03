@@ -23,7 +23,7 @@ class OptMin:
     def __init__(self, atoms):
         self.atoms = atoms
 
-    def run(self, fmax=0.02, steps=1000, output=None):
+    def run(self, fmax=0.01, steps=1000, output=None):
         """
         Perform a geometry optimization.
         """
@@ -44,7 +44,7 @@ class OptTS:
 
     def run(
         self,
-        fmax=0.02,
+        fmax=0.01,
         steps=1000,
         output=None,
     ):
@@ -61,7 +61,7 @@ class OptTS:
         return converged
 
 
-class InteractiveOptBase:
+class OptToolBase:
     """
     An interactive geometry optimization tool.
     """
