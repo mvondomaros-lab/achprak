@@ -1,21 +1,41 @@
 [project]
-name = "achprak"
+authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
+name = "AChPrak"
+requires-python = ">= 3.13"
 version = "0.1.0"
-description = "Practical exercise introducing Theoretical Chemistry to first-year students of Chemistry"
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = [
-    "setuptools<80",
-    "jupyterlab>=4.4.3",
-    "jupyter-ruff>=0.3.0",
-    "jupyterlab-myst>=2.4.2",
-    "ipywidgets>=8.1.7",
-    "nglview>=3.1.4",
-    "matplotlib>=3.10.3",
-    "clipboard>=0.0.4",
-    "rdkit>=2025.3.3",
-    "ase>=3.25.0",
-    "tblite>=0.4.0",
-    "sella>=2.3.5",
-    "pyscf>=2.9.0",
-]
+dependencies = ["sella>=2.3.5,<3"]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+achprak = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+ase = ">=3.25.0,<4"
+clipboard = ">=0.0.4,<0.0.5"
+ipywidgets = ">=8.1.7,<9"
+jupyterlab = ">=4.4.4,<5"
+matplotlib = ">=3.10.3,<4"
+nglview = ">=3.1.4,<4"
+rdkit = ">=2025.3.4,<2026"
+tblite = ">=0.4.0,<0.5"
+
+[tool.pixi.host-dependencies]
+jupyter-ruff = ">=0.3.0,<0.4"
+python = ">=3.13.5,<3.14"
+setuptools = "<81"
+
+
+[tool.pixi.target.linux-64.dependencies]
+pyscf = ">=2.9.0,<3"
+
+[tool.pixi.target.osx-arm64.pypi-dependencies]
+pyscf = ">=2.9.0, <3"

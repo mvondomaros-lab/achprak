@@ -1,0 +1,9 @@
+# Python
+.pixi
+.venv
+
+# Jupyter
+.ipynb_checkpoints
+
+# Pycharm
+.idea

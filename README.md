@@ -2,13 +2,19 @@
 
 ## Setup
 
-1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/).
-2. Install python dependencies using `uv`.
+1. Install [pixi](https://pixi.sh).
+2. Clone the repository.
     ```bash
-    uv sync
+    git clone https://github.com/mvondomaros-lab/achprak.git
+   ```
+3. Install python dependencies using `pixi`.
+    ```bash
+    cd achprak 
+    pixi install
     ```
-3. Start the Jupyter Lab server.
+4. Start the Jupyter Lab server.
     ```bash
-    uv run jupyter-lab achprak.ipynb
+    export OMP_NUM_THREADS=4 
+    pixi run jupyter-lab achprak.ipynb
     ```
 
