@@ -11,7 +11,7 @@ requires = ["hatchling"]
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["linux-64", "osx-arm64", "osx-64"]
+platforms = ["linux-64", "osx-arm64"]
 
 [tool.pixi.pypi-dependencies]
 achprak = { path = ".", editable = true }
@@ -27,13 +27,13 @@ matplotlib = ">=3.10.3,<4"
 nglview = ">=3.1.4,<4"
 rdkit = ">=2025.3.4,<2026"
 tblite-python = ">=0.4.0,<0.5"
-openblas = { version = "*", build = "*openmp*" }
 
 [tool.pixi.host-dependencies]
 jupyter-ruff = ">=0.3.0,<0.4"
 python = ">=3.13.5,<3.14"
 setuptools = "<80"
 pixi-pycharm = ">=0.0.8,<0.0.9"
+
 
 [tool.pixi.target.linux-64.dependencies]
 pyscf = ">=2.9.0,<3"
