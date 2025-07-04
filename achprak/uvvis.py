@@ -24,14 +24,13 @@ class UVVis:
         self.mf = None
         self.td = None
 
-    def calculate(self, basis="def2-TZVP", xc="B3LYP", nstates=5):
+    def calculate(self, basis="6-31G(d)", xc="B3LYP", nstates=5):
         self.mol.basis = basis
         self.mol = self.mol.build()
 
         self.mf = pyscf.dft.RKS(self.mol).density_fit()
         self.mf.xc = xc
         self.mf.verbose = 4
-        self.mf._numint.libxc = pyscf.dft.xcfun
         self.mf.kernel()
 
         self.td = pyscf.tddft.TDA(self.mf)
