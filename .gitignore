@@ -1,9 +1,11 @@
 # Python
 .pixi
 .venv
+__pycache__
 
 # Jupyter
 .ipynb_checkpoints
+.virtual_documents
 
 # Pycharm
 .idea
