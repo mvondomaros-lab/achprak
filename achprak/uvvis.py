@@ -11,6 +11,10 @@ import IPython.display
 import matplotlib.pyplot as plt
 import scipy.constants as const
 
+EMIN = 1.5
+EMAX = 5.5
+SIGMA = 0.2
+
 
 class UVVis:
     """
@@ -24,7 +28,7 @@ class UVVis:
         self.mf = None
         self.td = None
 
-    def calculate(self, basis="6-31G(d)", xc="B3LYP", nstates=5):
+    def calculate(self, basis="STO-3G", xc="LDA", nstates=5):
         self.mol.basis = basis
         self.mol = self.mol.build()
 
@@ -38,21 +42,60 @@ class UVVis:
         self.td.verbose = 5
         self.td.kernel()
 
-    def analyze(self):
-        return self.td.analyze()
-
-    def absorption_spectrum(self, start, stop, sigma):
-        energy = np.linspace(start, stop, 1000)
-        absorption = np.zeros_like(energy)
-
+    def excitations(self):
         excitations = self.td.e * const.physical_constants["Hartree energy in eV"][0]
         strengths = self.td.oscillator_strength()
-        for excitation, strength in zip(excitations, strengths):
-            absorption += strength * common.gaussian(
-                x=energy, mu=excitation, sigma=sigma
-            )
+        return excitations, strengths
 
-        return energy, absorption
+    def spectrum(self):
+        energy = np.linspace(EMIN, EMAX, 1000)
+        spectrum = np.zeros_like(energy)
+        excitations, strengths = self.excitations()
+
+        for e, s in zip(excitations, strengths):
+            spectrum += s * common.gaussian(x=energy, mu=e, sigma=SIGMA)
+
+        # Normalize, so that the peaks are as high as the oscillator strengths.
+        spectrum *= np.sqrt(2.0 * np.pi) * SIGMA
+
+        return energy, spectrum
+
+    def plot(self, ax):
+        """
+        Plot the UV-Vis spectrum.
+        """
+        excitations, strengths = self.excitations()
+        energy, spectrum = self.spectrum()
+
+        ax.plot(energy, spectrum, color="C0")
+
+        for e, s in zip(excitations, strengths):
+            if EMIN < e < EMAX:
+                ax.plot([e, e], [0, s], color="black")
+                if s > 0.1:
+                    ax.text(
+                        e + 0.1,
+                        s + 0.02,
+                        f"{e:.2g} eV",
+                        color="C1",
+                        ha="center",
+                        va="bottom",
+                    )
+
+        ax.set_xlim(EMIN, EMAX)
+        ax.set_ylim(0.0, 1.1 * np.max(strengths))
+        ax.set_xlabel("Energie / eV")
+        ax.set_ylabel("Absorption / a.u.")
+
+        axw = plt.twiny()
+        hc = const.Planck * const.speed_of_light / (const.electron_volt * const.nano)
+        wmin = np.round(hc / EMIN, decimals=-2)
+        wmax = np.round(hc / EMAX, decimals=-2)
+        wticks = np.linspace(wmin, wmax, 9, dtype=np.int64)
+        axw.set_xlim(EMIN, EMAX)
+        axw.set_xticks(hc / wticks, wticks, rotation=45)
+        axw.grid(False)
+        axw.set_xlabel("Wellenlänge / nm")
 
 
 class UVVisTool:
@@ -98,7 +141,7 @@ class UVVisTool:
             self.uv_vis.calculate()
             end = time.time()
             minutes = (end - start) / 60
-            print(f"Die Berechnung dauerte {minutes:.2f} Minuten.")
+            print(f"Wall time: {minutes:.2f} minutes")
 
     def _show_results(self):
         """
@@ -106,52 +149,8 @@ class UVVisTool:
         """
 
         with self._absorption_output:
-            start = 1.5
-            stop = 5.5
-            sigma = 0.1
-            energy, absorption = self.uv_vis.absorption_spectrum(start, stop, sigma)
-            absorption *= np.sqrt(2.0 * np.pi) * sigma
-
-            hc = (
-                const.Planck * const.speed_of_light / (const.electron_volt * const.nano)
-            )
-            wl_start = int(hc / start / 100.0) * 100
-            wl_stop = int(hc / stop / 100.0) * 100
-            wl_ticks = np.linspace(wl_start, wl_stop, 9, dtype=np.int64)
-            wl_tick_positions = hc / wl_ticks
-
-            fig, ax1 = plt.subplots()
-
-            ax1.plot(energy, absorption, color="C0")
-            excitations = (
-                self.uv_vis.td.e * const.physical_constants["Hartree energy in eV"][0]
-            )
-            strengths = self.uv_vis.td.oscillator_strength()
-
-            for e, f in zip(excitations, strengths):
-                ax1.plot([e, e], [0, f], color="C1")
-                if f > 0.1 and start < e < stop:
-                    ax1.text(
-                        e + 0.5 * sigma,
-                        f + 0.02,
-                        f"{e:.2g} eV",
-                        color="C1",
-                        ha="center",
-                        va="bottom",
-                    )
-
-            ax1.set_xlim(start - 0.5 * sigma, stop + 0.5 * sigma)
-            ax1.set_ylim(0.0, 1.1 * np.max(absorption))
-
-            ax1.set_xlabel("Energie / eV")
-            ax1.set_ylabel("Absorption / a.u.")
-
-            ax2 = plt.twiny()
-            ax2.set_xlim(start - 0.5 * sigma, stop + 0.5 * sigma)
-            ax2.set_xticks(wl_tick_positions, wl_ticks, rotation=50)
-            ax2.grid(False)
-            ax2.set_xlabel("Wellenlänge / nm")
-
+            fig, ax = plt.subplots()
+            self.uv_vis.plot(ax)
             plt.show()
 
     def _clear(self):
