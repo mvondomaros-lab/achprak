@@ -33,6 +33,7 @@ jupyter-ruff = ">=0.3.0,<0.4"
 python = ">=3.13.5,<3.14"
 setuptools = "<80"
 pixi-pycharm = ">=0.0.8,<0.0.9"
+click = ">=8.2.1,<9"
 
 
 [tool.pixi.target.linux-64.dependencies]

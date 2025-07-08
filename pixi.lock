@@ -557,7 +557,7 @@ packages:
 - pypi: ./
   name: achprak
   version: 0.1.0
-  sha256: 6e2770aac88e9eca5146fcd3b93dc0530d9747c86bfd7530794a9947db313515
+  sha256: 9e8ba922d5823e4434686d3f206c05c5b252e4928fe022b96ee19829e008031c
   requires_dist:
   - sella>=2.3.5,<3
   requires_python: '>=3.13'
