@@ -1,8 +1,6 @@
 import contextlib
 import io
-import re
 import sys
-import time
 
 import IPython.display
 import ase.io
@@ -11,63 +9,43 @@ import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
 import pyscf.gto
 import numpy as np
+import tblite.ase
+
+from . import widgets
 
 LABEL_STYLE = {"font_size": "15px", "font_weight": "bold"}
 OUTPUT_LAYOUT = {"height": "250px", "overflow": "auto"}
 TEXTAREA_LAYOUT = {"width": "auto", "height": "250px"}
 
+COPY_TEXT = "Kopieren 📋"
+COPY_OK_TEXT = "Kopiert ✅"
+COPY_ERROR_TEXT = "Fehler ❌"
+PASTE_TEXT = "Einfügen  📥"
+PASTE_OK_TEXT = "Eingefügt ✅"
+PASTE_ERROR_TEXT = "Ungültige Eingabe ❌"
+RUN_TEXT = "Programmausgabe ⏳"
+RUN_COMPLETE_TEXT = "Programmausgabe ✅"
 
-def valid_xyz(s: str) -> bool:
-    """
-    Checks if the provided string `s` is a valid XYZ file format.
+SOLVENT_NAME = "water"
+SOLVENT_EPS = 78.3553
 
-    XYZ format:
-    - First line: integer N, the number of atoms.
-    - Second line: comment (ignored).
-    - Next N lines: element symbol and three floating-point coordinates.
 
-    Returns True if valid, False otherwise.
-    """
-    lines = s.strip().splitlines()
-    # Must have at least 3 lines: count, comment, at least one atom.
-    if len(lines) < 3:
-        return False
-
-    # First line must be integer count matching number of atom lines.
-    try:
-        n_atoms = int(lines[0])
-    except ValueError:
-        return False
-    if n_atoms != len(lines) - 2:
-        return False
-
-    # Validate each atom line
-    for atom_line in lines[2:]:
-        parts = atom_line.split()
-        if len(parts) != 4:
-            return False
-        symbol, x_str, y_str, z_str = parts
-        # Atom symbol: letters only
-        if not re.fullmatch(r"[A-Za-z]+", symbol):
-            return False
-        # Coordinates: valid floats
-        try:
-            float(x_str)
-            float(y_str)
-            float(z_str)
-        except ValueError:
-            return False
-
-    return True
+class DefaultASECalculator(tblite.ase.TBLite):
+    def __init__(
+        self, method="GFN1-xTB", solvation=("alpb", SOLVENT_NAME), verbosity=0
+    ):
+        super().__init__(method=method, solvation=solvation, verbosity=verbosity)
 
 
 def atoms_to_xyz(atoms):
     """
     Convert an ASE Atoms object to an XYZ string.
     """
-    f = io.StringIO()
-    atoms.write(f, format="xyz")
-    return f.getvalue()
+    with io.StringIO() as f:
+        ase.io.write(f, atoms, format="xyz")
+        f.seek(0)
+        xyz = f.read()
+    return xyz
 
 
 def xyz_to_atoms(xyz):
@@ -105,13 +83,32 @@ def atoms_to_mol(atoms, charge=0):
     return mol
 
 
-def flash_button(button, message):
-    original = button.description
-    button.disabled = True
-    button.description = message
-    time.sleep(0.5)
-    button.description = original
-    button.disabled = False
+def atoms_to_pyscf(atoms):
+    atom_list = []
+    for element, position in zip(atoms.get_chemical_symbols(), atoms.get_positions()):
+        atom_list.append((element, position))
+    mol = pyscf.gto.Mole()
+    mol.atom = atom_list
+    mol.unit = "Angstrom"
+    return mol
+
+
+def gaussian(x, mu, sigma):
+    return np.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * np.sqrt(2 * np.pi))
+
+
+def clipboard_to_atoms(button, output):
+    xyz = clipboard.paste()
+    try:
+        atoms = xyz_to_atoms(xyz)
+        with output:
+            IPython.display.clear_output(wait=True)
+            print(xyz)
+        widgets.flash_button(button, message=PASTE_OK_TEXT)
+        return atoms
+    except Exception:
+        widgets.flash_button(button, message=PASTE_ERROR_TEXT)
+        return None
 
 
 @contextlib.contextmanager
@@ -126,32 +123,3 @@ def nested_context(*cms):
         exc_info = sys.exc_info()
         for cm, _ in reversed(exits):
             cm.__exit__(*exc_info)
-
-
-def paste_xyz(output, button):
-    xyz = clipboard.paste()
-    valid = valid_xyz(xyz)
-    if valid:
-        with output:
-            IPython.display.clear_output(wait=True)
-            print(xyz)
-        flash_button(button, "Eingefügt ✅")
-        atoms = xyz_to_atoms(xyz)
-        return atoms
-    else:
-        flash_button(button, "Ungültige Eingabe ❌")
-        return None
-
-
-def atoms_to_pyscf(atoms):
-    atom_list = []
-    for element, position in zip(atoms.get_chemical_symbols(), atoms.get_positions()):
-        atom_list.append((element, position))
-    mol = pyscf.gto.Mole()
-    mol.atom = atom_list
-    mol.unit = "Angstrom"
-    return mol
-
-
-def gaussian(x, mu, sigma):
-    return np.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * np.sqrt(2 * np.pi))

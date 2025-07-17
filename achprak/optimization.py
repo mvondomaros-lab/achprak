@@ -8,11 +8,11 @@ import ase.optimize
 import ase.optimize.climbfixinternals
 import ase.vibrations
 import clipboard
-import ipywidgets as widgets
-import nglview
+import ipywidgets
 import sella
 
-from . import common
+
+from . import common, widgets
 
 
 class OptMin:
@@ -20,8 +20,9 @@ class OptMin:
     Geometry optimization.
     """
 
-    def __init__(self, atoms):
+    def __init__(self, atoms, calc=None):
         self.atoms = atoms
+        self.atoms.calc = calc or common.DefaultASECalculator()
 
     def run(self, fmax=0.01, steps=1000, output=None):
         """
@@ -39,8 +40,9 @@ class OptTS:
     Transition state optimization using Sella.
     """
 
-    def __init__(self, atoms):
+    def __init__(self, atoms, calc=None):
         self.atoms = atoms
+        self.atoms.calc = calc or common.DefaultASECalculator()
 
     def run(
         self,
@@ -77,36 +79,32 @@ class OptToolBase:
         self.converged = False
 
         # Output widgets and friends.
-        self._xyz_input = widgets.Output()
-        self._xyz_output = widgets.Output()
-        self._run_output = widgets.Output(layout=common.OUTPUT_LAYOUT)
-        self._ngl_view = nglview.NGLWidget()
-        self._ngl_accordion = widgets.Accordion(
-            [self._ngl_view], titles=["3D-Struktur"]
-        )
-        self._ngl_accordion.observe(self._on_open_ngl_accordion, names="selected_index")
-        self._run_accordion = widgets.Accordion(
+        self._xyz_init_output = ipywidgets.Output()
+        self._xyz_opt_output = ipywidgets.Output()
+        self._run_output = ipywidgets.Output(layout=common.OUTPUT_LAYOUT)
+        self._ngl_accordion = widgets.NGLAccordion()
+        self._run_accordion = ipywidgets.Accordion(
             [self._run_output], titles=["Programmausgabe"]
         )
 
         # Paste button
-        self._paste_button = widgets.Button(description="Einfügen 📥")
+        self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
 
         # Copy button
-        self._copy_button = widgets.Button(description="Kopieren 📋")
+        self._copy_button = ipywidgets.Button(description=common.COPY_TEXT)
         self._copy_button.on_click(self._on_click)
 
     def show(self):
         IPython.display.display(
-            widgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
+            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
-            self._xyz_input,
-            widgets.Label("Ausgabe", style=common.LABEL_STYLE),
+            self._xyz_init_output,
+            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
             self._run_accordion,
-            self._ngl_accordion,
-            widgets.Accordion(
-                [widgets.VBox([self._xyz_output, self._copy_button])],
+            self._ngl_accordion.accordion,
+            ipywidgets.Accordion(
+                [ipywidgets.VBox([self._xyz_opt_output, self._copy_button])],
                 titles=["Koordinaten (XYZ-Format)"],
             ),
         )
@@ -122,9 +120,8 @@ class OptToolBase:
         Show the results of the optimization.
         """
         if self.converged:
-            component = nglview.ASEStructure(self.atoms)
-            self._ngl_view.add_component(component)
-            with self._xyz_output:
+            self._ngl_accordion.show_atoms(self.atoms)
+            with self._xyz_opt_output:
                 print(common.atoms_to_xyz(self.atoms))
         else:
             with self._run_output:
@@ -132,31 +129,34 @@ class OptToolBase:
 
     def _clear(self):
         self._run_output.clear_output(wait=False)
-        for component in self._ngl_view:
-            self._ngl_view.remove_component(component)
-        self._xyz_output.clear_output(wait=False)
+        self._ngl_accordion.clear()
+        self._xyz_opt_output.clear_output(wait=False)
 
     def _block(self):
         """
         Block further input.
         """
         self._paste_button.disabled = True
-        self._run_accordion.titles = ["Programmausgabe ⏳"]
+        self._run_accordion.titles = [common.RUN_TEXT]
         self._run_accordion.open()
 
     def _unblock(self):
         self._paste_button.disabled = False
-        self._run_accordion.titles = ["Programmausgabe"]
+        self._run_accordion.titles = [common.RUN_COMPLETE_TEXT]
 
     def _on_click(self, button):
         """
         Called when the user clicks a button.
         """
         if button is self._copy_button:
-            clipboard.copy(common.atoms_to_xyz(self.atoms))
-            common.flash_button(button, "Kopiert ✅")
+            xyz = common.atoms_to_xyz(self.atoms)
+            clipboard.copy(xyz)
+            widgets.flash_button(button, message=common.COPY_OK_TEXT)
         elif button is self._paste_button:
-            self.atoms = common.paste_xyz(self._xyz_input, self._paste_button)
+            self.atoms = common.clipboard_to_atoms(
+                button=button, output=self._xyz_init_output
+            )
+
             if self.atoms is not None:
                 self._block()
                 self._clear()

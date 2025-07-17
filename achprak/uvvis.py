@@ -32,7 +32,9 @@ class UVVis:
         self.mol.basis = basis
         self.mol = self.mol.build()
 
-        self.mf = pyscf.dft.RKS(self.mol).density_fit()
+        self.mf = pyscf.dft.RKS(self.mol).density_fit().PCM()
+        self.mf.with_solvent.method = "IEF-PCM"
+        self.mf.with_solvent.eps = common.SOLVENT_EPS
         self.mf.xc = xc
         self.mf.verbose = 4
         self.mf.kernel()
@@ -83,7 +85,7 @@ class UVVis:
                     )
 
         ax.set_xlim(EMIN, EMAX)
-        ax.set_ylim(0.0, 1.1 * np.max(strengths))
+        ax.set_ylim(0.0, 1.1 * np.max(spectrum))
         ax.set_xlabel("Energie / eV")
         ax.set_ylabel("Absorption / a.u.")
 
@@ -108,7 +110,7 @@ class UVVisTool:
         self.uv_vis = None
 
         # Output widgets and friends.
-        self._xyz_input = widgets.Output()
+        self._xyz_init_output = widgets.Output()
         self._run_output = widgets.Output(layout=common.OUTPUT_LAYOUT)
         self._run_accordion = widgets.Accordion(
             [self._run_output], titles=["Programmausgabe"]
@@ -119,14 +121,14 @@ class UVVisTool:
         )
 
         # Paste button
-        self._paste_button = widgets.Button(description="Einfügen 📥")
+        self._paste_button = widgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
 
     def show(self):
         IPython.display.display(
             widgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
-            self._xyz_input,
+            self._xyz_init_output,
             widgets.Label("Ausgabe", style=common.LABEL_STYLE),
             self._run_accordion,
             self._absorption_accordion,
@@ -162,19 +164,22 @@ class UVVisTool:
         Block further input.
         """
         self._paste_button.disabled = True
-        self._run_accordion.titles = ["Programmausgabe ⏳"]
+        self._run_accordion.titles = [common.RUN_TEXT]
         self._run_accordion.open()
 
     def _unblock(self):
         self._paste_button.disabled = False
-        self._run_accordion.titles = ["Programmausgabe"]
+        self._run_accordion.titles = [common.RUN_COMPLETE_TEXT]
 
     def _on_click(self, button):
         """
         Called when the user clicks a button.
         """
         if button is self._paste_button:
-            self.atoms = common.paste_xyz(self._xyz_input, self._paste_button)
+            self.atoms = common.clipboard_to_atoms(
+                button=button, output=self._xyz_init_output
+            )
+
             if self.atoms is not None:
                 self.uv_vis = UVVis(self.atoms)
                 self._block()

@@ -3,15 +3,13 @@ import io
 
 import IPython.display
 import clipboard
-import ipywidgets as widgets
-import nglview
+import ipywidgets
 import numpy as np
 import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
 import scipy.constants
-import tblite.ase
 
-from . import common, optimization
+from . import common, optimization, widgets
 
 
 class Template:
@@ -58,11 +56,10 @@ class Template:
             r2c4,
             r2c5,
         ]
-
         self.smiles = self._init_smiles()
         self.mol = self._init_mol()
+        self.molh = self._init_molh()
         self.atoms = self._init_atoms()
-        self.xyz = self._init_xyz()
 
     def _init_smiles(self):
         """
@@ -91,32 +88,16 @@ class Template:
         return smiles
 
     def _init_mol(self):
-        """
-        Construct an RDKit Mol object.
-        """
-        mol = rdkit.Chem.MolFromSmiles(self.smiles)
-        return mol
+        return rdkit.Chem.MolFromSmiles(self.smiles)
+
+    def _init_molh(self):
+        return rdkit.Chem.AddHs(self.mol)
 
     def _init_atoms(self):
-        """
-        Construct an ASE Atoms object.
-        """
-        # Add Hydrogen atoms and embed the molecule.
-        mol = rdkit.Chem.AddHs(self.mol)
+        mol = self.molh
         rdkit.Chem.AllChem.EmbedMolecule(mol)
-
-        # Convert from rdkit to ase.
         atoms = common.mol_to_atoms(mol)
-
         return atoms
-
-    def _init_xyz(self):
-        """
-        Construct an XYZ string.
-        """
-        f = io.StringIO()
-        self.atoms.write(f, format="xyz")
-        return f.getvalue()
 
 
 class TemplateTool:
@@ -128,7 +109,7 @@ class TemplateTool:
         self.template = Template()
 
         # Radio buttons for switching between conformations
-        self._conformation_buttons = widgets.RadioButtons(
+        self._conformation_buttons = ipywidgets.RadioButtons(
             options=["trans", "cis"],
             value=self.template.conformation,
             orientation="horizontal",
@@ -140,7 +121,7 @@ class TemplateTool:
         carbon_names = ["ortho", "meta", "para", "meta", "ortho"]
         for ring in range(2):
             for carbon in range(5):
-                dropdown = widgets.Dropdown(
+                dropdown = ipywidgets.Dropdown(
                     options=Template.substituent_smiles.keys(),
                     value=self.template.substituents[ring * 5 + carbon],
                     description=f"C{carbon + 1} ({carbon_names[carbon]}):",
@@ -150,17 +131,58 @@ class TemplateTool:
                 self._substituent_dropdowns.append(dropdown)
 
         # Output widgets and friends.
-        self._mol_output = widgets.Output()
-        self._ngl_view = nglview.NGLWidget()
-        self._ngl_accordion = widgets.Accordion(
-            [self._ngl_view], titles=["3D-Struktur"]
-        )
-        self._ngl_accordion.observe(self._on_open_ngl_accordion, names="selected_index")
-        self._xyz_output = widgets.Output()
+        self._mol_output = ipywidgets.Output()
+        self._ngl_accordion = widgets.NGLAccordion()
+        self._xyz_output = ipywidgets.Output()
 
         # Copy button
-        self._copy_button = widgets.Button(description="Kopieren 📋")
+        self._copy_button = ipywidgets.Button(description=common.COPY_TEXT)
         self._copy_button.on_click(self._on_click)
+
+    def show(self):
+        """
+        Show the tool.
+        """
+        IPython.display.display(
+            ipywidgets.Label("Konformation", style=common.LABEL_STYLE),
+            self._conformation_buttons,
+            ipywidgets.Label("Substituenten am ersten Ring", style=common.LABEL_STYLE),
+            ipywidgets.HBox(self._substituent_dropdowns[:5]),
+            ipywidgets.Label("Substituenten am zweiten Ring", style=common.LABEL_STYLE),
+            ipywidgets.HBox(self._substituent_dropdowns[5:]),
+            ipywidgets.Label("2D-Struktur", style=common.LABEL_STYLE),
+            self._mol_output,
+            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
+            self._ngl_accordion.accordion,
+            ipywidgets.Accordion(
+                [ipywidgets.VBox([self._xyz_output, self._copy_button])],
+                titles=["Koordinaten (XYZ-Format)"],
+            ),
+        )
+        with self._mol_output:
+            IPython.display.display(self.template.mol)
+
+        self._ngl_accordion.show_atoms(self.template.atoms)
+
+        with self._xyz_output:
+            self.template.atoms.write("-", format="xyz")
+
+    def _on_change(self, change):
+        """
+        Called when a selection widget is changed.
+        """
+        if change["type"] == "change" and change["name"] == "value":
+            self._update_template()
+
+            with self._mol_output:
+                IPython.display.clear_output(wait=True)
+                IPython.display.display(self.template.mol)
+
+            self._ngl_accordion.show_atoms(self.template.atoms)
+
+            with self._xyz_output:
+                IPython.display.clear_output(wait=True)
+                self.template.atoms.write("-", format="xyz")
 
     def _update_template(self):
         """
@@ -174,69 +196,14 @@ class TemplateTool:
                 kwargs[key] = value
         self.template = Template(**kwargs)
 
-    def show(self):
-        """
-        Show the tool.
-        """
-        IPython.display.display(
-            widgets.Label("Konformation", style=common.LABEL_STYLE),
-            self._conformation_buttons,
-            widgets.Label("Substituenten am ersten Ring", style=common.LABEL_STYLE),
-            widgets.HBox(self._substituent_dropdowns[:5]),
-            widgets.Label("Substituenten am zweiten Ring", style=common.LABEL_STYLE),
-            widgets.HBox(self._substituent_dropdowns[5:]),
-            widgets.Label("2D-Struktur", style=common.LABEL_STYLE),
-            self._mol_output,
-            widgets.Label("Ausgabe", style=common.LABEL_STYLE),
-            self._ngl_accordion,
-            widgets.Accordion(
-                [widgets.VBox([self._xyz_output, self._copy_button])],
-                titles=["Koordinaten (XYZ-Format)"],
-            ),
-        )
-        with self._mol_output:
-            IPython.display.display(self.template.mol)
-
-        component = nglview.ASEStructure(self.template.atoms)
-        self._ngl_view.add_component(component)
-
-        with self._xyz_output:
-            print(self.template.xyz)
-
-    def _on_change(self, change):
-        """
-        Called when a selection widget is changed.
-        """
-        if change["type"] == "change" and change["name"] == "value":
-            self._update_template()
-
-            with self._mol_output:
-                IPython.display.clear_output(wait=True)
-                IPython.display.display(self.template.mol)
-
-            for component in self._ngl_view:
-                self._ngl_view.remove_component(component)
-            component = nglview.ASEStructure(self.template.atoms)
-            self._ngl_view.add_component(component)
-
-            with self._xyz_output:
-                IPython.display.clear_output(wait=True)
-                print(self.template.xyz)
-
     def _on_click(self, button):
         """
         Called when the user clicks a button.
         """
         if button is self._copy_button:
-            clipboard.copy(self.template.xyz)
-            common.flash_button(button, "Kopiert ✅")
-
-    def _on_open_ngl_accordion(self, change):
-        """
-        Called when the accordion holding the NGLWidget opens. Triggers a resize.
-        """
-        if change["new"] == 0:
-            self._ngl_view.handle_resize()
+            xyz = common.atoms_to_xyz(self.template.atoms)
+            clipboard.copy(xyz)
+            widgets.flash_button(button, message=common.COPY_OK_TEXT)
 
 
 class Properties:
@@ -246,7 +213,7 @@ class Properties:
 
     def __init__(self, atoms):
         self.atoms = atoms
-        self.atoms.calc = tblite.ase.TBLite(method="GFN1-xTB", verbosity=0)
+        self.atoms.calc = common.DefaultASECalculator()
         self.mol = common.atoms_to_mol(atoms)
 
     def _find_azo_bond(self):
@@ -260,6 +227,7 @@ class Properties:
             } and bond.GetBondType().name == "DOUBLE":
                 n1, n2 = i.GetIdx(), j.GetIdx()
                 return n1, n2
+        return None
 
     def _find_carbon_neighbor(self, i):
         """
@@ -268,6 +236,7 @@ class Properties:
         for j in self.mol.GetAtomWithIdx(i).GetNeighbors():
             if j.GetSymbol() == "C":
                 return j.GetIdx()
+        return None
 
     def cnnc_dihedral_indices(self):
         """
@@ -316,29 +285,29 @@ class PropertiesTool:
 
     def __init__(self):
         # Output widgets and friends.
-        self._xyz_input = widgets.Output()
+        self._xyz_output = ipywidgets.Output()
 
         # Paste button
-        self._paste_button = widgets.Button(description="Einfügen  📥")
+        self._paste_button = ipywidgets.Button(description="Einfügen  📥")
         self._paste_button.on_click(self._on_click)
 
         # Text widgets for displaying molecular properties.
-        self._energy_text = widgets.Text(disabled=True)
-        self._cnnc_dihedral_text = widgets.Text(disabled=True)
-        self._ring_distance_text = widgets.Text(disabled=True)
+        self._energy_text = ipywidgets.Text(disabled=True)
+        self._cnnc_dihedral_text = ipywidgets.Text(disabled=True)
+        self._ring_distance_text = ipywidgets.Text(disabled=True)
 
     def show(self):
         """
         Show the tool.
         """
         IPython.display.display(
-            widgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
+            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
-            self._xyz_input,
-            widgets.Label("Ausgabe", style=common.LABEL_STYLE),
+            self._xyz_output,
+            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
             *[
-                widgets.Accordion(
-                    [widgets.HBox([text, widgets.Label(unit)])], titles=[title]
+                ipywidgets.Accordion(
+                    [ipywidgets.HBox([text, ipywidgets.Label(unit)])], titles=[title]
                 )
                 for title, text, unit in [
                     ("Energie", self._energy_text, " kJ/mol"),
@@ -353,12 +322,11 @@ class PropertiesTool:
         Called when buttons are clicked.
         """
         if button is self._paste_button:
-            atoms = common.paste_xyz(self._xyz_input, self._paste_button)
-            if atoms is not None:
-                properties = Properties(atoms)
-                self._update_properties(properties)
+            atoms = common.clipboard_to_atoms(button=button, output=self._xyz_output)
+            properties = Properties(atoms)
+            self._update(properties)
 
-    def _update_properties(self, properties):
+    def _update(self, properties):
         self._energy_text.value = f"{properties.energy():.1f}"
         self._cnnc_dihedral_text.value = f"{properties.cnnc_dihedral():.1f}"
         self._ring_distance_text.value = f"{properties.ring_distance():.1f}"
@@ -369,7 +337,6 @@ class OptMinTool(optimization.OptToolBase):
         """
         Run the optimization.
         """
-        self.atoms.calc = tblite.ase.TBLite(method="GFN1-xTB", verbosity=0)
         opt = optimization.OptMin(self.atoms)
         # Supper annoying hack, because TBLite does not respect its own verbosity setting.
         output = common.nested_context(
@@ -398,7 +365,6 @@ class OptTSTool(optimization.OptToolBase):
 
         # Run a transition state search with Sella and GFN1-XTB.
         self.atoms = common.mol_to_atoms(mol)
-        self.atoms.calc = tblite.ase.TBLite(method="GFN1-xTB", verbosity=0)
         opt = optimization.OptTS(self.atoms)
         # Supper annoying hack, because TBLite does not respect its own verbosity setting.
         output = common.nested_context(
