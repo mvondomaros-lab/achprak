@@ -11,6 +11,8 @@ import IPython.display
 import matplotlib.pyplot as plt
 import scipy.constants as const
 
+MAX_MEMORY = 8000
+
 EMIN = 1.5
 EMAX = 5.5
 SIGMA = 0.2
@@ -30,6 +32,7 @@ class UVVis:
 
     def calculate(self, basis="6-31G(d,p)", xc="B3LYP", nstates=20):
         self.mol.basis = basis
+        self.mol.max_memory = MAX_MEMORY
         self.mol = self.mol.build()
 
         self.mf = pyscf.dft.RKS(self.mol).density_fit().PCM()

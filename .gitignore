@@ -14,7 +14,6 @@ __pycache__
 .DS_Store
 
 # Results
-results/*.log
-results/*.out
-results/*.png
+results/logs
+results/figures
 results/.texpadtmp
