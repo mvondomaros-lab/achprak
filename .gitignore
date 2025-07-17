@@ -9,3 +9,12 @@ __pycache__
 
 # Pycharm
 .idea
+
+# OS
+.DS_Store
+
+# Results
+results/*.log
+results/*.out
+results/*.png
+results/.texpadtmp

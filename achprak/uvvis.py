@@ -28,7 +28,7 @@ class UVVis:
         self.mf = None
         self.td = None
 
-    def calculate(self, basis="STO-3G", xc="LDA", nstates=5):
+    def calculate(self, basis="6-31G(d,p)", xc="B3LYP", nstates=20):
         self.mol.basis = basis
         self.mol = self.mol.build()
 
@@ -77,7 +77,7 @@ class UVVis:
                 if s > 0.1:
                     ax.text(
                         e + 0.1,
-                        s + 0.02,
+                        1.05 * s,
                         f"{e:.2g} eV",
                         color="C1",
                         ha="center",

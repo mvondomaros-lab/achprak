@@ -26,8 +26,8 @@ PASTE_ERROR_TEXT = "Ungültige Eingabe ❌"
 RUN_TEXT = "Programmausgabe ⏳"
 RUN_COMPLETE_TEXT = "Programmausgabe ✅"
 
-SOLVENT_NAME = "water"
-SOLVENT_EPS = 78.3553
+SOLVENT_NAME = "methanol"
+SOLVENT_EPS = 32.66
 
 
 class DefaultASECalculator(tblite.ase.TBLite):
