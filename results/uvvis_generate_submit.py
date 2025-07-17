@@ -28,10 +28,12 @@ script = f"""\
 #SBATCH --error=logs/uvvis_%A_%a.err
 
 ARGS=(
-    {"\n".join(["'" + arg + "'" for arg in args])}
+{"\n".join(f"    '{arg}'" for arg in args)}
 )
 
-exec pixi run python3 uvvis_standalone.py "${{ARGS[SLURM_ARRAY_TASK_ID]}}"
+LINE="${{ARGS[SLURM_ARRAY_TASK_ID]}}"
+read -r -a PARSED <<< "$LINE"
+exec pixi run python3 uvvis_standalone.py "${{PARSED[@]}}"
 """
 
 print(script)
