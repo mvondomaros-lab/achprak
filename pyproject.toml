@@ -3,7 +3,7 @@ authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" 
 name = "AChPrak"
 requires-python = ">= 3.13"
 version = "0.1.0"
-dependencies = ["sella>=2.3.5,<3"]
+dependencies = ["sella>=2.3.5,<3", "pymopac>=1.1,<2"]
 
 [build-system]
 build-backend = "hatchling.build"
@@ -27,6 +27,8 @@ matplotlib = ">=3.10.3,<4"
 nglview = ">=3.1.4,<4"
 rdkit = ">=2025.3.4,<2026"
 tblite-python = ">=0.4.0,<0.5"
+mopac = ">=23.1.2,<24"
+cclib = ">=1.8.1,<2"
 
 [tool.pixi.host-dependencies]
 jupyter-ruff = ">=0.3.0,<0.4"

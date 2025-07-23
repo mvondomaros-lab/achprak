@@ -167,7 +167,7 @@ class UVVisTool:
         Block further input.
         """
         self._paste_button.disabled = True
-        self._run_accordion.titles = [common.RUN_TEXT]
+        self._run_accordion.titles = [common.OUTPUT_TEXT]
         self._run_accordion.open()
 
     def _unblock(self):

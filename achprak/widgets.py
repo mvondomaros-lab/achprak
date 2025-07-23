@@ -44,6 +44,15 @@ class NGLAccordion:
         self.ngl_view.add_component(component)
         self.ngl_view.center()
 
+    def show_traj(self, traj):
+        """
+        Show the given ASE trajectory in the NGL view.
+        """
+        self.clear()
+        trajectory = nglview.ASETrajectory(traj)
+        self.ngl_view.add_trajectory(trajectory)
+        self.ngl_view.center()
+
 
 def flash_button(button, message):
     original = button.description

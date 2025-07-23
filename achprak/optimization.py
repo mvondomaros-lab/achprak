@@ -1,18 +1,19 @@
 import contextlib
+import io
+import os
 
 import IPython.display
-import ase.constraints
-import ase.io
-import ase.mep
-import ase.optimize
-import ase.optimize.climbfixinternals
-import ase.vibrations
 import clipboard
 import ipywidgets
 import sella
+import ase.optimize
+import ase.vibrations
+import ase.io
+import tempfile
+import rdkit.Chem.AllChem
+import rdkit.Chem.rdMolTransforms
 
-
-from . import common, widgets
+from . import common, widgets, azobenzene
 
 
 class OptMin:
@@ -23,15 +24,18 @@ class OptMin:
     def __init__(self, atoms, calc=None):
         self.atoms = atoms
         self.atoms.calc = calc or common.DefaultASECalculator()
+        self.traj = None
 
     def run(self, fmax=0.01, steps=1000, output=None):
         """
         Perform a geometry optimization.
         """
-        opt = ase.optimize.BFGSLineSearch(self.atoms)
-        output = output or contextlib.nullcontext()
-        with output:
-            converged = opt.run(fmax=fmax, steps=steps)
+        with tempfile.NamedTemporaryFile(suffix=".traj") as tmp:
+            opt = ase.optimize.BFGSLineSearch(self.atoms, trajectory=tmp.name)
+            output = output or contextlib.nullcontext()
+            with output:
+                converged = opt.run(fmax=fmax, steps=steps)
+            self.traj = ase.io.read(tmp.name, index=":")
         return converged
 
 
@@ -41,8 +45,23 @@ class OptTS:
     """
 
     def __init__(self, atoms, calc=None):
+        # TODO: This is hardcoded for azobenzene, but should be generalized.
+        # Start by setting the C-N=N-C dihedral angle to 90 degrees.
+        properties = azobenzene.Properties(atoms)
+        mol = properties.mol
+        conf = mol.GetConformer()
+        indices = properties.cnnc_dihedral_indices()
+        rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, *indices, 90.0)
+
+        # Run an optimization with MMFF94s, keeping the dihedral harmonically restrained.
+        mp = rdkit.Chem.AllChem.MMFFGetMoleculeProperties(mol, mmffVariant="MMFF94s")
+        ff = rdkit.Chem.AllChem.MMFFGetMoleculeForceField(mol, mp)
+        ff.MMFFAddTorsionConstraint(*indices, False, 90, 90, 1.0e5)
+        ff.Minimize(maxIts=10000)
+
         self.atoms = atoms
         self.atoms.calc = calc or common.DefaultASECalculator()
+        self.traj = None
 
     def run(
         self,
@@ -53,43 +72,55 @@ class OptTS:
         """
         Run Sella.
         """
-        opt = sella.Sella(
-            self.atoms,
-            internal=True,
-        )
+        # Run the TS optimization.
+        opt = sella.Sella(self.atoms, internal=True)
         output = output or contextlib.nullcontext()
         with output:
             converged = opt.run(fmax=fmax, steps=steps)
+
+        # Make a trajectory of the lowest-energy normal mode.
+        if converged:
+            vibrations = ase.vibrations.Vibrations(self.atoms)
+            with common.tempdir() as tmp:
+                with contextlib.redirect_stdout(io.StringIO()):
+                    vibrations.run()
+                vibrations.write_mode(0, nimages=30, kT=0.1)
+                fname = os.path.join(tmp, "vib.0.traj")
+                self.traj = ase.io.Trajectory(fname)
         return converged
 
 
-class OptToolBase:
+class OptTool:
     """
-    An interactive geometry optimization tool.
+    An interactive structure optimization tool.
     """
-
-    _error_message = """
-        Leider ist etwas schief gegangen. Bitte verändern Sie Ihre Startstruktur und versuchen Sie es noch einmal. 
-        
-        Sollte dieser Fehler wiederholt auftreten, kontaktieren Sie bitte Ihre Assistent*innen.
-        """
 
     def __init__(self):
         self.atoms = None
         self.converged = False
+        self.traj = None
 
         # Output widgets and friends.
         self._xyz_init_output = ipywidgets.Output()
         self._xyz_opt_output = ipywidgets.Output()
         self._run_output = ipywidgets.Output(layout=common.OUTPUT_LAYOUT)
-        self._ngl_accordion = widgets.NGLAccordion()
-        self._run_accordion = ipywidgets.Accordion(
+        self._ngl_accordion = widgets.NGLAccordion(title="Trajektorie")
+        self._run_output_accordion = ipywidgets.Accordion(
             [self._run_output], titles=["Programmausgabe"]
+        )
+
+        # Radio buttons for optimization target.
+        self._target_buttons = ipywidgets.RadioButtons(
+            options=["Minimum", "Übergangszustand"], orientation="horizontal"
         )
 
         # Paste button
         self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
+
+        # Run Button
+        self._run_button = ipywidgets.Button(description=common.RUN_START_TEXT)
+        self._run_button.on_click(self._on_click)
 
         # Copy button
         self._copy_button = ipywidgets.Button(description=common.COPY_TEXT)
@@ -97,11 +128,14 @@ class OptToolBase:
 
     def show(self):
         IPython.display.display(
+            ipywidgets.Label("Zielstruktur", style=common.LABEL_STYLE),
+            self._target_buttons,
             ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
             self._xyz_init_output,
-            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
-            self._run_accordion,
+            ipywidgets.Label("Berechnung", style=common.LABEL_STYLE),
+            self._run_button,
+            self._run_output_accordion,
             self._ngl_accordion.accordion,
             ipywidgets.Accordion(
                 [ipywidgets.VBox([self._xyz_opt_output, self._copy_button])],
@@ -109,64 +143,64 @@ class OptToolBase:
             ),
         )
 
-    def _run(self):
-        """
-        Run the optimization. Must be implemented by subclasses. Must work with self.atoms and must set self.converged.
-        """
-        pass
-
-    def _show_results(self):
-        """
-        Show the results of the optimization.
-        """
-        if self.converged:
-            self._ngl_accordion.show_atoms(self.atoms)
-            with self._xyz_opt_output:
-                print(common.atoms_to_xyz(self.atoms))
-        else:
-            with self._run_output:
-                print(common.atoms_to_xyz(self._error_message))
-
-    def _clear(self):
-        self._run_output.clear_output(wait=False)
-        self._ngl_accordion.clear()
-        self._xyz_opt_output.clear_output(wait=False)
-
-    def _block(self):
-        """
-        Block further input.
-        """
-        self._paste_button.disabled = True
-        self._run_accordion.titles = [common.RUN_TEXT]
-        self._run_accordion.open()
-
-    def _unblock(self):
-        self._paste_button.disabled = False
-        self._run_accordion.titles = [common.RUN_COMPLETE_TEXT]
-
     def _on_click(self, button):
         """
         Called when the user clicks a button.
         """
-        if button is self._copy_button:
-            xyz = common.atoms_to_xyz(self.atoms)
-            clipboard.copy(xyz)
-            widgets.flash_button(button, message=common.COPY_OK_TEXT)
-        elif button is self._paste_button:
+        if button is self._paste_button:
+            self._reset()
             self.atoms = common.clipboard_to_atoms(
                 button=button, output=self._xyz_init_output
             )
-
             if self.atoms is not None:
-                self._block()
-                self._clear()
-                self._run()
-                self._show_results()
-                self._unblock()
+                self._run_button.disabled = False
+        elif button is self._run_button:
+            self._run_button.disabled = True
+            self._run_button.description = common.RUN_RUNNING_TEXT
+            self._run()
+            if self.converged:
+                self._run_button.description = common.RUN_OK_TEXT
+            else:
+                self._run_button.description = common.RUN_ERROR_TEXT
+            self._update()
+            self._run_button.disabled = False
+        elif button is self._copy_button:
+            xyz = common.atoms_to_xyz(self.atoms)
+            clipboard.copy(xyz)
+            widgets.flash_button(button, message=common.COPY_OK_TEXT)
 
-    def _on_open_ngl_accordion(self, change):
+    def _reset(self):
+        self._run_output.clear_output()
+        self._ngl_accordion.clear()
+        self._xyz_opt_output.clear_output()
+        self.atoms = None
+        self.converged = False
+        self.traj = None
+        self._xyz_init_output.clear_output()
+        self._run_button.disabled = True
+        self._run_button.description = common.RUN_START_TEXT
+
+    def _run(self):
         """
-        Called when the accordion holding the NGLWidget opens. Triggers a resize.
+        Run the optimization.
         """
-        if change["new"] == 0:
-            self._ngl_view.handle_resize()
+        if self._target_buttons.value == "Minimum":
+            opt = OptMin(self.atoms)
+        else:
+            opt = OptTS(self.atoms)
+
+        # Supper annoying hack, because TBLite does not respect its own verbosity setting.
+        output = common.nested_context(
+            self._run_output, contextlib.redirect_stdout(io.StringIO())
+        )
+        self.converged = opt.run(output=output)
+        self.atoms = opt.atoms
+        self.traj = opt.traj
+
+    def _update(self):
+        """
+        Show the results of the optimization.
+        """
+        self._ngl_accordion.show_traj(self.traj)
+        with self._xyz_opt_output:
+            print(common.atoms_to_xyz(self.atoms))

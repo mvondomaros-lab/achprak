@@ -1,14 +1,15 @@
 import contextlib
 import io
+import os
 import sys
+import tempfile
 
-import IPython.display
 import ase.io
 import clipboard
+import numpy as np
+import pyscf.gto
 import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
-import pyscf.gto
-import numpy as np
 import tblite.ase
 
 from . import widgets
@@ -20,11 +21,15 @@ TEXTAREA_LAYOUT = {"width": "auto", "height": "250px"}
 COPY_TEXT = "Kopieren 📋"
 COPY_OK_TEXT = "Kopiert ✅"
 COPY_ERROR_TEXT = "Fehler ❌"
+
 PASTE_TEXT = "Einfügen  📥"
 PASTE_OK_TEXT = "Eingefügt ✅"
 PASTE_ERROR_TEXT = "Ungültige Eingabe ❌"
-RUN_TEXT = "Programmausgabe ⏳"
-RUN_COMPLETE_TEXT = "Programmausgabe ✅"
+
+RUN_START_TEXT = "Starten  ▶️"
+RUN_RUNNING_TEXT = "Läuft  ⏳️"
+RUN_OK_TEXT = "Fertig ✅"
+RUN_ERROR_TEXT = "Fehler ❌"
 
 SOLVENT_NAME = "methanol"
 SOLVENT_EPS = 32.66
@@ -102,7 +107,6 @@ def clipboard_to_atoms(button, output):
     try:
         atoms = xyz_to_atoms(xyz)
         with output:
-            IPython.display.clear_output(wait=True)
             print(xyz)
         widgets.flash_button(button, message=PASTE_OK_TEXT)
         return atoms
@@ -123,3 +127,14 @@ def nested_context(*cms):
         exc_info = sys.exc_info()
         for cm, _ in reversed(exits):
             cm.__exit__(*exc_info)
+
+
+@contextlib.contextmanager
+def tempdir():
+    cwd = os.getcwd()
+    with tempfile.TemporaryDirectory() as tmp:
+        os.chdir(tmp)
+        try:
+            yield tmp
+        finally:
+            os.chdir(cwd)

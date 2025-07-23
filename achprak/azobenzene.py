@@ -1,15 +1,15 @@
 import contextlib
 import io
 
-import IPython.display
 import clipboard
+import IPython.display
 import ipywidgets
 import numpy as np
 import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
 import scipy.constants
 
-from . import common, optimization, widgets
+from . import common, widgets
 
 
 class Template:
@@ -95,7 +95,7 @@ class Template:
 
     def _init_atoms(self):
         mol = self.molh
-        rdkit.Chem.AllChem.EmbedMolecule(mol)
+        rdkit.Chem.AllChem.EmbedMolecule(mol, randomSeed=42)
         atoms = common.mol_to_atoms(mol)
         return atoms
 
@@ -132,7 +132,6 @@ class TemplateTool:
 
         # Output widgets and friends.
         self._mol_output = ipywidgets.Output()
-        self._ngl_accordion = widgets.NGLAccordion()
         self._xyz_output = ipywidgets.Output()
 
         # Copy button
@@ -152,17 +151,12 @@ class TemplateTool:
             ipywidgets.HBox(self._substituent_dropdowns[5:]),
             ipywidgets.Label("2D-Struktur", style=common.LABEL_STYLE),
             self._mol_output,
-            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
-            self._ngl_accordion.accordion,
-            ipywidgets.Accordion(
-                [ipywidgets.VBox([self._xyz_output, self._copy_button])],
-                titles=["Koordinaten (XYZ-Format)"],
-            ),
+            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
+            self._xyz_output,
+            self._copy_button,
         )
         with self._mol_output:
             IPython.display.display(self.template.mol)
-
-        self._ngl_accordion.show_atoms(self.template.atoms)
 
         with self._xyz_output:
             self.template.atoms.write("-", format="xyz")
@@ -177,8 +171,6 @@ class TemplateTool:
             with self._mol_output:
                 IPython.display.clear_output(wait=True)
                 IPython.display.display(self.template.mol)
-
-            self._ngl_accordion.show_atoms(self.template.atoms)
 
             with self._xyz_output:
                 IPython.display.clear_output(wait=True)
@@ -284,12 +276,22 @@ class PropertiesTool:
     """
 
     def __init__(self):
+        self.atoms = None
+        self.properties = None
+
         # Output widgets and friends.
         self._xyz_output = ipywidgets.Output()
+        self._ngl_accordion = widgets.NGLAccordion()
 
         # Paste button
-        self._paste_button = ipywidgets.Button(description="Einfügen  📥")
+        self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
+
+        # Run button.
+        self._run_button = ipywidgets.Button(
+            description=common.RUN_START_TEXT, disabled=True
+        )
+        self._run_button.on_click(self._on_click)
 
         # Text widgets for displaying molecular properties.
         self._energy_text = ipywidgets.Text(disabled=True)
@@ -304,7 +306,9 @@ class PropertiesTool:
             ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
             self._xyz_output,
-            ipywidgets.Label("Ausgabe", style=common.LABEL_STYLE),
+            self._ngl_accordion.accordion,
+            ipywidgets.Label("Berechnung", style=common.LABEL_STYLE),
+            self._run_button,
             *[
                 ipywidgets.Accordion(
                     [ipywidgets.HBox([text, ipywidgets.Label(unit)])], titles=[title]
@@ -317,57 +321,38 @@ class PropertiesTool:
             ],
         )
 
+    def _reset(self):
+        """
+        Clear the output widgets and reset the properties.
+        """
+        self.atoms = None
+        self.properties = None
+        self._xyz_output.clear_output()
+        self._ngl_accordion.clear()
+        self._energy_text.value = ""
+        self._cnnc_dihedral_text.value = ""
+        self._ring_distance_text.value = ""
+        self._run_button.disabled = True
+        self._run_button.description = common.RUN_START_TEXT
+
     def _on_click(self, button):
         """
         Called when buttons are clicked.
         """
         if button is self._paste_button:
-            atoms = common.clipboard_to_atoms(button=button, output=self._xyz_output)
-            properties = Properties(atoms)
-            self._update(properties)
+            self._reset()
+            self.atoms = common.clipboard_to_atoms(
+                button=button, output=self._xyz_output
+            )
+            if self.atoms is not None:
+                self._ngl_accordion.show_atoms(self.atoms)
+                self._run_button.disabled = False
+        elif button is self._run_button:
+            self.properties = Properties(self.atoms)
+            self._update()
+            self._run_button.description = common.RUN_OK_TEXT
 
-    def _update(self, properties):
-        self._energy_text.value = f"{properties.energy():.1f}"
-        self._cnnc_dihedral_text.value = f"{properties.cnnc_dihedral():.1f}"
-        self._ring_distance_text.value = f"{properties.ring_distance():.1f}"
-
-
-class OptMinTool(optimization.OptToolBase):
-    def _run(self):
-        """
-        Run the optimization.
-        """
-        opt = optimization.OptMin(self.atoms)
-        # Supper annoying hack, because TBLite does not respect its own verbosity setting.
-        output = common.nested_context(
-            self._run_output, contextlib.redirect_stdout(io.StringIO())
-        )
-        self.converged = opt.run(output=output)
-
-
-class OptTSTool(optimization.OptToolBase):
-    def _run(self):
-        """
-        Run the optimization.
-        """
-        # Start by setting the C-N=N-C dihedral angle to 90 degrees.
-        properties = Properties(self.atoms)
-        mol = properties.mol
-        conf = mol.GetConformer()
-        indices = properties.cnnc_dihedral_indices()
-        rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, *indices, 90.0)
-
-        # Run an optimization with MMFF94s, keeping the dihedral harmonically restrained.
-        mp = rdkit.Chem.AllChem.MMFFGetMoleculeProperties(mol, mmffVariant="MMFF94s")
-        ff = rdkit.Chem.AllChem.MMFFGetMoleculeForceField(mol, mp)
-        ff.MMFFAddTorsionConstraint(*indices, False, 90, 90, 1.0e5)
-        ff.Minimize(maxIts=10000)
-
-        # Run a transition state search with Sella and GFN1-XTB.
-        self.atoms = common.mol_to_atoms(mol)
-        opt = optimization.OptTS(self.atoms)
-        # Supper annoying hack, because TBLite does not respect its own verbosity setting.
-        output = common.nested_context(
-            self._run_output, contextlib.redirect_stdout(io.StringIO())
-        )
-        self.converged = opt.run(output=output)
+    def _update(self):
+        self._energy_text.value = f"{self.properties.energy():.1f}"
+        self._cnnc_dihedral_text.value = f"{self.properties.cnnc_dihedral():.1f}"
+        self._ring_distance_text.value = f"{self.properties.ring_distance():.1f}"
