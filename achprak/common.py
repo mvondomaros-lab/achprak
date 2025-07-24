@@ -31,8 +31,8 @@ RUN_RUNNING_TEXT = "Läuft  ⏳️"
 RUN_OK_TEXT = "Fertig ✅"
 RUN_ERROR_TEXT = "Fehler ❌"
 
-SOLVENT_NAME = "methanol"
-SOLVENT_EPS = 32.66
+SOLVENT_NAME = "ethanol"
+SOLVENT_EPS = 24.3
 
 
 class DefaultASECalculator(tblite.ase.TBLite):

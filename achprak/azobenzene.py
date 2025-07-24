@@ -20,13 +20,11 @@ class Template:
     # Mapping from substituent labels to partial smiles strings.
     substituent_smiles = {
         "H": "",
-        "F": "(F)",
-        "Cl": "(Cl)",
-        "OH": "(O)",
-        "NH2": "(N)",
+        "Me": "(C)",
         "NMe2": "(N(C)C)",
-        "NO2": "(N(=O)=O)",
-        "OMe": "(OC)",
+        "CF3": "(C(F)(F)F)",
+        "OMe": "(O(C))",
+        "F": "(F)",
     }
 
     def __init__(
@@ -124,7 +122,7 @@ class TemplateTool:
                 dropdown = ipywidgets.Dropdown(
                     options=Template.substituent_smiles.keys(),
                     value=self.template.substituents[ring * 5 + carbon],
-                    description=f"C{carbon + 1} ({carbon_names[carbon]}):",
+                    description=f"C{carbon + 2} ({carbon_names[carbon]}):",
                     layout={"width": "max-content"},
                 )
                 dropdown.observe(self._on_change, names="value")

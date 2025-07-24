@@ -1,12 +1,10 @@
-import time
+import pymopac
 
 from . import common
 
 import numpy as np
-import pyscf.dft
-import pyscf.tddft
 
-import ipywidgets as widgets
+import ipywidgets
 import IPython.display
 import matplotlib.pyplot as plt
 import scipy.constants as const
@@ -15,7 +13,29 @@ MAX_MEMORY = 8000
 
 EMIN = 1.5
 EMAX = 5.5
-SIGMA = 0.2
+SIGMA = 0.1
+
+
+def parse_mopac_excitations(fname):
+    in_block = False
+    lines = []
+
+    with open(fname) as f:
+        for line in f:
+            line = line.strip()
+            if line.strip().startswith(
+                "CI trans.  energy frequency wavelength oscillator-"
+            ):
+                in_block = True
+                for _ in range(3):
+                    line = next(f)
+            if in_block:
+                if len(line) == 0:
+                    break
+                lines.append(line.split())
+    excitations = np.array([item[1] for item in lines], dtype=np.float64)
+    strengths = np.array([item[4] for item in lines], dtype=np.float64)
+    return excitations, strengths
 
 
 class UVVis:
@@ -24,43 +44,34 @@ class UVVis:
     """
 
     def __init__(self, atoms):
-        self.mol = common.atoms_to_pyscf(atoms)
+        # self.mol = common.atoms_to_mol(atoms)
+        self.atoms = atoms
+        xyz = common.atoms_to_xyz(atoms)
+        self.mopac = pymopac.MopacInput(
+            xyz,
+            model=f"INDO CIS EPS={common.SOLVENT_EPS}",
+            addHs=False,
+            preopt=False,
+            aux=False,
+            stream=True,
+        )
+        self.excitations = None
+        self.oscillator_strengths = None
 
-        self.energy = None
-        self.mf = None
-        self.td = None
-
-    def calculate(self, basis="6-31G(d,p)", xc="B3LYP", nstates=20):
-        self.mol.basis = basis
-        self.mol.max_memory = MAX_MEMORY
-        self.mol = self.mol.build()
-
-        self.mf = pyscf.dft.RKS(self.mol).density_fit().PCM()
-        self.mf.with_solvent.method = "IEF-PCM"
-        self.mf.with_solvent.eps = common.SOLVENT_EPS
-        self.mf.xc = xc
-        self.mf.verbose = 4
-        self.mf.kernel()
-
-        self.td = pyscf.tddft.TDA(self.mf)
-        self.td.nstates = nstates
-        self.td.verbose = 5
-        self.td.kernel()
-
-    def excitations(self):
-        excitations = self.td.e * const.physical_constants["Hartree energy in eV"][0]
-        strengths = self.td.oscillator_strength()
-        return excitations, strengths
+    def calculate(self):
+        self.mopac.run()
+        self.excitations, self.oscillator_strengths = parse_mopac_excitations(
+            self.mopac.outpath
+        )
 
     def spectrum(self):
         energy = np.linspace(EMIN, EMAX, 1000)
         spectrum = np.zeros_like(energy)
-        excitations, strengths = self.excitations()
 
-        for e, s in zip(excitations, strengths):
-            spectrum += s * common.gaussian(x=energy, mu=e, sigma=SIGMA)
+        for e, f in zip(self.excitations, self.oscillator_strengths):
+            spectrum += f * common.gaussian(x=energy, mu=e, sigma=SIGMA)
 
-        # Normalize, so that the peaks are as high as the oscillator strengths.
+        # Normalize, so that isolated peaks have the same height as the oscillator strength.
         spectrum *= np.sqrt(2.0 * np.pi) * SIGMA
 
         return energy, spectrum
@@ -69,20 +80,19 @@ class UVVis:
         """
         Plot the UV-Vis spectrum.
         """
-        excitations, strengths = self.excitations()
         energy, spectrum = self.spectrum()
 
         ax.plot(energy, spectrum, color="C0")
 
-        for e, s in zip(excitations, strengths):
+        for e, f in zip(self.excitations, self.oscillator_strengths):
             if EMIN < e < EMAX:
-                ax.plot([e, e], [0, s], color="black")
-                if s > 0.1:
+                ax.plot([e, e], [0, f], color="C1")
+                if f > 0.2:
                     ax.text(
-                        e + 0.1,
-                        1.05 * s,
-                        f"{e:.2g} eV",
-                        color="C1",
+                        e,
+                        1.05 * f,
+                        f"{e:.3g}",
+                        color="black",
                         ha="center",
                         va="bottom",
                     )
@@ -113,80 +123,78 @@ class UVVisTool:
         self.uv_vis = None
 
         # Output widgets and friends.
-        self._xyz_init_output = widgets.Output()
-        self._run_output = widgets.Output(layout=common.OUTPUT_LAYOUT)
-        self._run_accordion = widgets.Accordion(
+        self._xyz_init_output = ipywidgets.Output()
+        self._run_output = ipywidgets.Output(layout=common.OUTPUT_LAYOUT)
+        self._run_accordion = ipywidgets.Accordion(
             [self._run_output], titles=["Programmausgabe"]
         )
-        self._absorption_output = widgets.Output()
-        self._absorption_accordion = widgets.Accordion(
+        self._absorption_output = ipywidgets.Output()
+        self._absorption_accordion = ipywidgets.Accordion(
             [self._absorption_output], titles=["Absorptionsspektrum (UV/Vis)"]
         )
 
         # Paste button
-        self._paste_button = widgets.Button(description=common.PASTE_TEXT)
+        self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
+
+        # Run Button
+        self._run_button = ipywidgets.Button(
+            description=common.RUN_START_TEXT, disabled=True
+        )
+        self._run_button.on_click(self._on_click)
 
     def show(self):
         IPython.display.display(
-            widgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
+            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
             self._xyz_init_output,
-            widgets.Label("Ausgabe", style=common.LABEL_STYLE),
+            ipywidgets.Label("Berechnung", style=common.LABEL_STYLE),
+            self._run_button,
             self._run_accordion,
             self._absorption_accordion,
         )
-
-    def _run(self):
-        """
-        Run the calculation.
-        """
-        with self._run_output:
-            start = time.time()
-            self.uv_vis.calculate()
-            end = time.time()
-            minutes = (end - start) / 60
-            print(f"Wall time: {minutes:.2f} minutes")
-
-    def _show_results(self):
-        """
-        Show the result of the calculation.
-        """
-
-        with self._absorption_output:
-            fig, ax = plt.subplots()
-            self.uv_vis.plot(ax)
-            plt.show()
-
-    def _clear(self):
-        self._run_output.clear_output(wait=False)
-        self._absorption_output.clear_output(wait=False)
-
-    def _block(self):
-        """
-        Block further input.
-        """
-        self._paste_button.disabled = True
-        self._run_accordion.titles = [common.OUTPUT_TEXT]
-        self._run_accordion.open()
-
-    def _unblock(self):
-        self._paste_button.disabled = False
-        self._run_accordion.titles = [common.RUN_COMPLETE_TEXT]
 
     def _on_click(self, button):
         """
         Called when the user clicks a button.
         """
         if button is self._paste_button:
+            self._reset()
             self.atoms = common.clipboard_to_atoms(
                 button=button, output=self._xyz_init_output
             )
-
             if self.atoms is not None:
-                self.uv_vis = UVVis(self.atoms)
-                self._block()
-                self._clear()
-                self._run()
-                self._show_results()
-                self._unblock()
+                self._run_button.disabled = False
+        elif button is self._run_button:
+            self._run_button.disabled = True
+            self._run_button.description = common.RUN_RUNNING_TEXT
+            self._run()
+            self._run_button.description = common.RUN_OK_TEXT
+            self._update()
+
+    def _reset(self):
+        """
+        Reset the tool.
+        """
+        self._xyz_init_output.clear_output()
+        self._run_output.clear_output()
+        self._absorption_output.clear_output()
+        self.atoms = None
+        self.uv_vis = None
+
+        self._run_button.disabled = True
+        self._run_button.description = common.RUN_START_TEXT
+
+    def _run(self):
+        """
+        Run the calculation.
+        """
+        with self._run_output:
+            self.uv_vis = UVVis(self.atoms)
+            self.uv_vis.calculate()
+
+    def _update(self):
+        with self._absorption_output:
+            fig, ax = plt.subplots()
+            self.uv_vis.plot(ax)
+            plt.show()

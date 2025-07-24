@@ -59,7 +59,8 @@ class OptTS:
         ff.MMFFAddTorsionConstraint(*indices, False, 90, 90, 1.0e5)
         ff.Minimize(maxIts=10000)
 
-        self.atoms = atoms
+        self.atoms = common.mol_to_atoms(mol)
+        self.atoms.calc = calc or common.DefaultASECalculator()
         self.atoms.calc = calc or common.DefaultASECalculator()
         self.traj = None
 
@@ -98,6 +99,7 @@ class OptTool:
     def __init__(self):
         self.atoms = None
         self.converged = False
+        self.opt = None
         self.traj = None
 
         # Output widgets and friends.
@@ -113,13 +115,16 @@ class OptTool:
         self._target_buttons = ipywidgets.RadioButtons(
             options=["Minimum", "Übergangszustand"], orientation="horizontal"
         )
+        self._target_buttons.observe(self._on_change, names="value")
 
         # Paste button
         self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
 
         # Run Button
-        self._run_button = ipywidgets.Button(description=common.RUN_START_TEXT)
+        self._run_button = ipywidgets.Button(
+            description=common.RUN_START_TEXT, disabled=True
+        )
         self._run_button.on_click(self._on_click)
 
         # Copy button
@@ -163,20 +168,25 @@ class OptTool:
             else:
                 self._run_button.description = common.RUN_ERROR_TEXT
             self._update()
-            self._run_button.disabled = False
         elif button is self._copy_button:
             xyz = common.atoms_to_xyz(self.atoms)
             clipboard.copy(xyz)
             widgets.flash_button(button, message=common.COPY_OK_TEXT)
 
+    def _on_change(self, change):
+        if change["type"] == "change" and change["name"] == "value":
+            self._reset()
+
     def _reset(self):
+        self._xyz_init_output.clear_output()
         self._run_output.clear_output()
         self._ngl_accordion.clear()
         self._xyz_opt_output.clear_output()
         self.atoms = None
         self.converged = False
+        self.opt = None
         self.traj = None
-        self._xyz_init_output.clear_output()
+
         self._run_button.disabled = True
         self._run_button.description = common.RUN_START_TEXT
 
@@ -185,17 +195,17 @@ class OptTool:
         Run the optimization.
         """
         if self._target_buttons.value == "Minimum":
-            opt = OptMin(self.atoms)
+            self.opt = OptMin(self.atoms)
         else:
-            opt = OptTS(self.atoms)
+            self.opt = OptTS(self.atoms)
 
         # Supper annoying hack, because TBLite does not respect its own verbosity setting.
         output = common.nested_context(
             self._run_output, contextlib.redirect_stdout(io.StringIO())
         )
-        self.converged = opt.run(output=output)
-        self.atoms = opt.atoms
-        self.traj = opt.traj
+        self.converged = self.opt.run(output=output)
+        self.atoms = self.opt.atoms
+        self.traj = self.opt.traj
 
     def _update(self):
         """
