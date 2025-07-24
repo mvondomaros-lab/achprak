@@ -28,18 +28,9 @@ nglview = ">=3.1.4,<4"
 rdkit = ">=2025.3.4,<2026"
 tblite-python = ">=0.4.0,<0.5"
 mopac = ">=23.1.2,<24"
-cclib = ">=1.8.1,<2"
 
 [tool.pixi.host-dependencies]
 jupyter-ruff = ">=0.3.0,<0.4"
 python = ">=3.13.5,<3.14"
 setuptools = "<80"
 pixi-pycharm = ">=0.0.8,<0.0.9"
-click = ">=8.2.1,<9"
-
-
-[tool.pixi.target.linux-64.dependencies]
-pyscf = ">=2.9.0,<3"
-
-[tool.pixi.target.osx-arm64.pypi-dependencies]
-pyscf = ">=2.9.0, <3"
