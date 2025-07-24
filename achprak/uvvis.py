@@ -44,7 +44,6 @@ class UVVis:
     """
 
     def __init__(self, atoms):
-        # self.mol = common.atoms_to_mol(atoms)
         self.atoms = atoms
         xyz = common.atoms_to_xyz(atoms)
         self.mopac = pymopac.MopacInput(
@@ -87,7 +86,7 @@ class UVVis:
         for e, f in zip(self.excitations, self.oscillator_strengths):
             if EMIN < e < EMAX:
                 ax.plot([e, e], [0, f], color="C1")
-                if f > 0.2:
+                if f > 0.1:
                     ax.text(
                         e,
                         1.05 * f,

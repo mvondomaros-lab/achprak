@@ -25,6 +25,7 @@ class Template:
         "CF3": "(C(F)(F)F)",
         "OMe": "(O(C))",
         "F": "(F)",
+        "SO2CF3": "(S(=O)(=O)C(F)(F)F)",
     }
 
     def __init__(

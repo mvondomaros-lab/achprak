@@ -7,7 +7,6 @@ import tempfile
 import ase.io
 import clipboard
 import numpy as np
-import pyscf.gto
 import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
 import tblite.ase
@@ -85,16 +84,6 @@ def atoms_to_mol(atoms, charge=0):
 
     mol = rdkit.Chem.rdmolfiles.MolFromXYZBlock(xyz)
     rdkit.Chem.rdDetermineBonds.DetermineBonds(mol, charge=charge)
-    return mol
-
-
-def atoms_to_pyscf(atoms):
-    atom_list = []
-    for element, position in zip(atoms.get_chemical_symbols(), atoms.get_positions()):
-        atom_list.append((element, position))
-    mol = pyscf.gto.Mole()
-    mol.atom = atom_list
-    mol.unit = "Angstrom"
     return mol
 
 
