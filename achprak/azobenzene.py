@@ -1,8 +1,8 @@
 import contextlib
 import io
 
-import clipboard
 import IPython.display
+import clipboard
 import ipywidgets
 import numpy as np
 import rdkit.Chem.AllChem
@@ -29,18 +29,18 @@ class Template:
     }
 
     def __init__(
-        self,
-        conformation="trans",
-        r1c1="H",
-        r1c2="H",
-        r1c3="H",
-        r1c4="H",
-        r1c5="H",
-        r2c1="H",
-        r2c2="H",
-        r2c3="H",
-        r2c4="H",
-        r2c5="H",
+            self,
+            conformation="trans",
+            r1c1="H",
+            r1c2="H",
+            r1c3="H",
+            r1c4="H",
+            r1c5="H",
+            r2c1="H",
+            r2c2="H",
+            r2c3="H",
+            r2c4="H",
+            r2c5="H",
     ):
         self.conformation = conformation
         self.substituents = [
@@ -117,13 +117,16 @@ class TemplateTool:
 
         # Dropdowns for changing substituents
         self._substituent_dropdowns = []
-        carbon_names = ["ortho", "meta", "para", "meta", "ortho"]
         for ring in range(2):
             for carbon in range(5):
+                if ring == 0:
+                    description = f"C{carbon + 2}:"
+                else:
+                    description = f"C{carbon + 2}':"
                 dropdown = ipywidgets.Dropdown(
                     options=Template.substituent_smiles.keys(),
                     value=self.template.substituents[ring * 5 + carbon],
-                    description=f"C{carbon + 2} ({carbon_names[carbon]}):",
+                    description=description,
                     layout={"width": "max-content"},
                 )
                 dropdown.observe(self._on_change, names="value")
