@@ -1,19 +1,17 @@
+import IPython.display
+import ipywidgets
+import matplotlib.pyplot as plt
+import numpy as np
 import pymopac
+import scipy.constants as const
 
 from . import common
-
-import numpy as np
-
-import ipywidgets
-import IPython.display
-import matplotlib.pyplot as plt
-import scipy.constants as const
 
 MAX_MEMORY = 8000
 
 EMIN = 1.5
 EMAX = 5.5
-SIGMA = 0.1
+SIGMA = 0.3
 
 
 def parse_mopac_excitations(fname):
@@ -86,7 +84,7 @@ class UVVis:
         for e, f in zip(self.excitations, self.oscillator_strengths):
             if EMIN < e < EMAX:
                 ax.plot([e, e], [0, f], color="C1")
-                if f > 0.1:
+                if f > 0.15:
                     ax.text(
                         e,
                         1.05 * f,
@@ -94,10 +92,11 @@ class UVVis:
                         color="black",
                         ha="center",
                         va="bottom",
+                        rotation=45,
                     )
 
         ax.set_xlim(EMIN, EMAX)
-        ax.set_ylim(0.0, 1.1 * np.max(spectrum))
+        ax.set_ylim(0.0, 1.15 * np.max(spectrum))
         ax.set_xlabel("Energie / eV")
         ax.set_ylabel("Absorption / a.u.")
 

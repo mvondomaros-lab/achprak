@@ -23,19 +23,36 @@ class EnergyWavelengthTool:
         emax = uvvis.EMAX
         wlmin = self.e2wl(emax)
         wlmax = self.e2wl(emin)
-        style = {'description_width': '120px'}
-        self._energy_slider = ipywidgets.FloatSlider(description="Energie / eV: ", min=emin, max=emax, step=0.01,
-                                                     value=e0, readout_format='.2f', style=style)
-        self._wavelength_slider = ipywidgets.FloatSlider(description="Wellenlänge / nm: ", min=wlmin, max=wlmax,
-                                                         step=1.0, value=wl0,
-                                                         readout_format='.0f', style=style)
+        style = {"description_width": "120px"}
+        self._energy_slider = ipywidgets.FloatSlider(
+            description="Energie / eV: ",
+            min=emin,
+            max=emax,
+            step=0.01,
+            value=e0,
+            readout_format=".2f",
+            style=style,
+        )
+        self._wavelength_slider = ipywidgets.FloatSlider(
+            description="Wellenlänge / nm: ",
+            min=wlmin,
+            max=wlmax,
+            step=1.0,
+            value=wl0,
+            readout_format=".0f",
+            style=style,
+        )
 
         self._energy_slider.observe(self._on_change)
         self._wavelength_slider.observe(self._on_change)
         self._syncing = False
 
     def _on_change(self, change):
-        if change["type"] == "change" and change["name"] == "value" and not self._syncing:
+        if (
+            change["type"] == "change"
+            and change["name"] == "value"
+            and not self._syncing
+        ):
             self._syncing = True
             if change["owner"] == self._energy_slider:
                 with self._wavelength_slider.hold_trait_notifications():

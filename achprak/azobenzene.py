@@ -29,18 +29,18 @@ class Template:
     }
 
     def __init__(
-            self,
-            conformation="trans",
-            r1c1="H",
-            r1c2="H",
-            r1c3="H",
-            r1c4="H",
-            r1c5="H",
-            r2c1="H",
-            r2c2="H",
-            r2c3="H",
-            r2c4="H",
-            r2c5="H",
+        self,
+        conformation="trans",
+        r1c1="H",
+        r1c2="H",
+        r1c3="H",
+        r1c4="H",
+        r1c5="H",
+        r2c1="H",
+        r2c2="H",
+        r2c3="H",
+        r2c4="H",
+        r2c5="H",
     ):
         self.conformation = conformation
         self.substituents = [

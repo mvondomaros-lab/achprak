@@ -1,17 +1,17 @@
 import contextlib
 import io
 import os
+import tempfile
 
 import IPython.display
-import clipboard
-import ipywidgets
-import sella
+import ase.io
 import ase.optimize
 import ase.vibrations
-import ase.io
-import tempfile
+import clipboard
+import ipywidgets
 import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
+import sella
 
 from . import common, widgets, azobenzene
 
