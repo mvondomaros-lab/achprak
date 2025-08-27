@@ -17,3 +17,5 @@ __pycache__
 results/logs
 results/figures
 results/.texpadtmp
+# MyST build outputs
+_build

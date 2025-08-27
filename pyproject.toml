@@ -28,6 +28,7 @@ rdkit = ">=2025.3,<2026"
 tblite-python = ">=0.4.0,<0.5"
 mopac = ">=23.1.2,<24"
 jupyterlab-myst = ">=2.4.2,<3"
+mystmd = ">=1.6.0,<2"
 
 [tool.pixi.host-dependencies]
 jupyter-ruff = ">=0.3.0,<0.4"
