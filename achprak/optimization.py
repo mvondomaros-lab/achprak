@@ -3,17 +3,17 @@ import io
 import os
 import tempfile
 
-import IPython.display
 import ase.io
 import ase.optimize
 import ase.vibrations
-import clipboard
+import IPython.display
 import ipywidgets
 import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
 import sella
 
-from . import common, widgets, azobenzene
+from . import azobenzene, common, widgets
+from .clipboard import clipboard
 
 
 class OptMin:

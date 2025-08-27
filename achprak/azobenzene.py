@@ -2,7 +2,6 @@ import contextlib
 import io
 
 import IPython.display
-import clipboard
 import ipywidgets
 import numpy as np
 import rdkit.Chem.AllChem
@@ -10,6 +9,7 @@ import rdkit.Chem.rdMolTransforms
 import scipy.constants
 
 from . import common, widgets
+from .clipboard import clipboard
 
 
 class Template:

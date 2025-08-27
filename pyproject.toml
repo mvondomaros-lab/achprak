@@ -20,7 +20,6 @@ achprak = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 ase = ">=3.26.0,<4"
-clipboard = ">=0.0.4,<0.0.5"
 ipywidgets = ">=8.1.7,<9"
 jupyterlab = ">=4.4.6,<5"
 matplotlib = ">=3.10.5,<4"

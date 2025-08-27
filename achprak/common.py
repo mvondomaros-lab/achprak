@@ -5,13 +5,13 @@ import sys
 import tempfile
 
 import ase.io
-import clipboard
 import numpy as np
 import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
 import tblite.ase
 
 from . import widgets
+from .clipboard import clipboard
 
 LABEL_STYLE = {"font_size": "15px", "font_weight": "bold"}
 OUTPUT_LAYOUT = {"height": "250px", "overflow": "auto"}
