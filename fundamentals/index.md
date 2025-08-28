@@ -105,21 +105,21 @@ Wird nun beispielsweise am 2. Kohlenstoffatom ein Wasserstoff durch ein Chlorato
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
-| Summenformel | Abkürzung | Name des Substituenten |
-|--------------|-----------|------------------------|
-| CH₃          | Me        | Methyl                 |
-| N(CH₃)₂      | NMe₂      | Dimethylamino          |
-| CF₃          | CF₃       | Trifluormethyl         |
-| OCH₃         | OMe       | Methoxy                |
-| F            | F         | Fluor                  |
-| SO₂CF₃       | SO₂CF₃    | Trifluormethansulfonyl |
+| Summenformel | Abkürzung | Name des Substituenten   |
+|--------------|-----------|--------------------------|
+| CH₃          | Me        | Methyl                   |
+| N(CH₃)₂      | NMe₂      | (Dimethylamino)          |
+| CF₃          | CF₃       | (Trifluormethyl)         |
+| OCH₃         | OMe       | Methoxy                  |
+| F            | F         | Fluor                    |
+| SO₂CF₃       | SO₂CF₃    | (Trifluormethansulfonyl) |
 
 Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* oder *tetra-* angezeigt. Wird z. B. beim
 2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht
 die Verbindung 2,3′-Dichlorazobenzol.
 
 Mit diesen Regeln können Sie alle im Versuch vorkommenden Moleküle eindeutig benennen. Überprüfen Sie zur Übung, ob es
-sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-trifluormethyl-5′-dimethylamino-azobenzol
+sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
 handelt:
 
 :::{figure} ../assets/azobenzene-derivative.svg
