@@ -2,10 +2,10 @@
 
 ## Motivation
 
-Molekulare Photoschalter sind chemische Verbindungen, die auf Licht durch Veränderung der räumlichen Struktur reagieren.
-Damit ändern sich auch ihre chemischen und physikalischen Eigenschaften.
-Man kann sich diese Moleküle wie winzige Lichtschalter vorstellen – durch gezielte Bestrahlung lassen sie sich zwischen
-zwei Zuständen umschalten.
+Molekulare Photoschalter sind chemische Verbindungen, die auf Licht reagieren, indem sie ihre räumliche Struktur
+verändern. Dadurch ändern sich auch ihre chemischen und physikalischen Eigenschaften. Man kann sie sich wie winzige
+Kippschalter vorstellen – sie werden jedoch nicht mechanisch betätigt, sondern durch gezielte Lichtbestrahlung zwischen
+zwei Zuständen umgeschaltet.
 
 Solche Systeme sind nicht nur faszinierend, sondern auch technologisch relevant.
 Sie kommen zum Beispiel in lichtaktivierbaren Arzneistoffen oder in Materialien zum Einsatz, die ihre Eigenschaften
