@@ -128,7 +128,7 @@ handelt:
 :::
 ::::
 
-Durch die Azobrücke kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konformationen) vorliegen.
+Durch die Azobrücke kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
 Alle bisher gezeigten Strukturen entsprechen der trans-Form, bei der die beiden Phenylringe auf gegenüberliegenden
 Seiten der Azobrücke stehen.
 Bei der cis-Form befinden sich beide Ringsysteme auf derselben Seite.
@@ -400,13 +400,13 @@ In theoretisch-chemischen Rechnungen ist dieser Bezugspunkt oft ein hypothetisch
 Elektronen unendlich weit voneinander entfernt sind.
 Bringt man diese Teilchen in Molekülform zusammen, wird eine sehr große Energiemenge frei – daher der große negative
 Wert.
-In der Realität betrachtet man jedoch häufig Prozesse, bei denen Moleküle ihre Konformation ändern oder durch chemische
+In der Realität betrachtet man jedoch häufig Prozesse, bei denen Moleküle ihre Konfiguration ändern oder durch chemische
 Reaktionen ineinander übergehen.
 Bei solchen Veränderungen spielen meist deutlich kleinere Energiemengen eine Rolle.
 
-Die Energieunterschiede zwischen zwei Konformationen lassen sich einfach berechnen.  
-Liegt ein Azobenzolderivat beispielsweise in der trans-Konformation mit einer Energie von  
-$E_\mathrm{trans} = -90\,000\ \text{kJ mol}^{-1}$ vor und wechselt anschließend in die cis-Konformation mit  
+Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
+Liegt ein Azobenzolderivat beispielsweise in der trans-Konfiguration mit einer Energie von  
+$E_\mathrm{trans} = -90\,000\ \text{kJ mol}^{-1}$ vor und wechselt anschließend in die cis-Konfiguration mit  
 $E_\mathrm{cis} = -89\,950\ \text{kJ mol}^{-1}$, so ergibt sich für den Energieunterschied
 
 $$
@@ -416,7 +416,7 @@ $$
 = +50\ \text{kJ mol}^{-1}.
 $$
 
-Ein positiver Wert bedeutet, dass die cis-Konformation energetisch ungünstiger ist (höhere Energie) – der Übergang von
+Ein positiver Wert bedeutet, dass die cis-Konfiguration energetisch ungünstiger ist (höhere Energie) – der Übergang von
 trans nach cis erfordert also Energiezufuhr.
 
 :::{note} Energiedifferenzen
@@ -434,7 +434,7 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
-Im Falle des Azobenzols sind dies die Strukturen, die den cis- und trans-Konformationen zugeordnet werden können.
+Im Falle des Azobenzols sind dies die Strukturen, die den cis- und trans-Konfigurationen zugeordnet werden können.
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumsstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
@@ -443,7 +443,7 @@ charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 :width: 600px
 
 Könnte man die Auslenkung aller Atomkoordinaten auf eine einzelne Koordinate projizieren (Reaktionskoordinate), so
-würden die cis- und trans-Konformationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
+würden die cis- und trans-Konfigurationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
 geometrische Änderungen weg von diesen Strukturen führen zu einem Energieanstieg.
 Der Übergangsstruktur (ÜS) für die cis–trans-Umwandlung entspräche in diesem Fall dem lokalen Maximum zwischen den
 beiden Minima.
