@@ -30,7 +30,7 @@ class Template:
 
     def __init__(
         self,
-        conformation="trans",
+        configuration="trans",
         r1c1="H",
         r1c2="H",
         r1c3="H",
@@ -42,7 +42,7 @@ class Template:
         r2c4="H",
         r2c5="H",
     ):
-        self.conformation = conformation
+        self.configuration = configuration
         self.substituents = [
             r1c1,
             r1c2,
@@ -78,8 +78,8 @@ class Template:
         smiles.append("2")
         smiles = "".join(smiles)
 
-        # Patch the double bond conformation.
-        if self.conformation == "trans":
+        # Patch the double bond configuration.
+        if self.configuration == "trans":
             smiles = smiles.replace("N=N", "/N=N/")
         else:
             smiles = smiles.replace("N=N", "/N=N\\")
@@ -107,13 +107,13 @@ class TemplateTool:
     def __init__(self):
         self.template = Template()
 
-        # Radio buttons for switching between conformations
-        self._conformation_buttons = ipywidgets.RadioButtons(
+        # Radio buttons for switching between configurations
+        self._configuration_buttons = ipywidgets.RadioButtons(
             options=["trans", "cis"],
-            value=self.template.conformation,
+            value=self.template.configuration,
             orientation="horizontal",
         )
-        self._conformation_buttons.observe(self._on_change, names="value")
+        self._configuration_buttons.observe(self._on_change, names="value")
 
         # Dropdowns for changing substituents
         self._substituent_dropdowns = []
@@ -145,8 +145,8 @@ class TemplateTool:
         Show the tool.
         """
         IPython.display.display(
-            ipywidgets.Label("Konformation", style=common.LABEL_STYLE),
-            self._conformation_buttons,
+            ipywidgets.Label("Konfiguration", style=common.LABEL_STYLE),
+            self._configuration_buttons,
             ipywidgets.Label("Substituenten am ersten Ring", style=common.LABEL_STYLE),
             ipywidgets.HBox(self._substituent_dropdowns[:5]),
             ipywidgets.Label("Substituenten am zweiten Ring", style=common.LABEL_STYLE),
@@ -182,7 +182,7 @@ class TemplateTool:
         """
         Update the template object.
         """
-        kwargs = {"conformation": self._conformation_buttons.value}
+        kwargs = {"configuration": self._configuration_buttons.value}
         for ring in range(2):
             for carbon in range(5):
                 key = f"r{ring + 1}c{carbon + 1}"
