@@ -13,7 +13,7 @@ Available on github pages.
 
 This exercise can be run online by clicking on the following button.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/achprak/HEAD?labpath=achprak.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/achprak/HEAD?urlpath=%2Fdoc%2Ftree%2Fachprak.ipynb)
 
 ## Offline Setup
 
