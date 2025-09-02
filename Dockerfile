@@ -1,21 +1,31 @@
-# Minimal, reproducible Binder build using pixi
-FROM debian:stable-slim
+# Use a Binder-friendly Jupyter base image (already has JupyterLab, non-root user, etc.)
+FROM jupyter/minimal-notebook:python-3.11
 
-# System basics
+# Become root briefly to install system deps you might need (add more here if required)
+USER root
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates git python3 python3-pip && \
+    curl git && \
     rm -rf /var/lib/apt/lists/*
 
-# Install pixi
-RUN curl -fsSL https://pixi.sh/install.sh | bash
-ENV PATH="/root/.pixi/bin:${PATH}"
+# Back to the default non-root user that Binder expects
+USER ${NB_USER}
+WORKDIR /home/jovyan/work
 
-# Copy repo and install deps via pixi
-WORKDIR /repo
-COPY . .
+# Install pixi for per-project environment management
+RUN curl -fsSL https://pixi.sh/install.sh | bash && \
+    echo 'export PATH="$HOME/.pixi/bin:$PATH"' >> ~/.bashrc
+ENV PATH="/home/jovyan/.pixi/bin:${PATH}"
+
+# Copy your repo into the image with correct ownership
+COPY --chown=${NB_UID}:${NB_GID} . .
+
+# Install project dependencies from pyproject.toml / pixi.lock
 RUN pixi install
 
-# Jupyter comes from your pixi project; if not, ensure it's in your pixi deps
-EXPOSE 8888
-CMD ["python3","-m","notebook","--ip=0.0.0.0","--no-browser","--NotebookApp.token="]
+# (Optional) ensure the working directory is where your notebook lives
+ENV REPO_DIR="/home/jovyan/work"
+WORKDIR ${REPO_DIR}
+
+# Default command (Binder also manages this, but good for local runs)
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--ServerApp.token="]
 
