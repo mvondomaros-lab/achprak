@@ -1,11 +1,12 @@
 {
-  "name": "AChPrak",
+  "name": "achprak (pixi)",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {},
     "ghcr.io/devcontainers/features/node:1": { "version": "lts" }
   },
   "postCreateCommand": "bash .devcontainer/setup-pixi.sh",
+  "postStartCommand": "bash -lc '~/start-jupyter.sh >/tmp/jupyter.log 2>&1 &'",
   "customizations": {
     "vscode": {
       "extensions": [

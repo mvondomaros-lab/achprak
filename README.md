@@ -5,15 +5,16 @@
 
 ## Fundamentals
 
-Available on github pages.
+Available on GitHub Pages.
 
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
 
-## Online Setup
+## Online Version
 
-This exercise can be run online by clicking on the following button.
+Available through GitHub Codespaces.
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/achprak/HEAD?urlpath=%2Fdoc%2Ftree%2Fachprak.ipynb)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mvondomaros-lab/achprak)
+
 
 ## Offline Setup
 
