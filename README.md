@@ -1,6 +1,21 @@
 # Practical exercise introducing Theoretical Chemistry to first-year students of Chemistry
 
-## Setup
+> [!NOTE]
+> The exercise is available in German, only.
+
+## Fundamentals
+
+Available on github pages.
+
+[![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
+
+## Online Setup
+
+This exercise can be run online by clicking on the following button.
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/achprak/HEAD?labpath=achprak.ipynb)
+
+## Offline Setup
 
 1. Install [pixi](https://pixi.sh).
 2. Clone the repository.
