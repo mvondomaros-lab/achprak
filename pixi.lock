@@ -590,7 +590,7 @@ packages:
 - pypi: ./
   name: achprak
   version: 0.1.0
-  sha256: cdc780cfe200561747de5e3758b58f73ec885fb14c021cad464859ab0f880f0d
+  sha256: 8b723ce81f3aa91bc160152939ed7a5967da7bd48a3868d51268dd78e7fe41e1
   requires_dist:
   - pymopac>=1.1,<2
   - sella>=2.3.5,<3
