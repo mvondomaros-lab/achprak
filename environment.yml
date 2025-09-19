@@ -1,0 +1,8 @@
+name: achprak
+channels:
+  - conda-forge
+  - https://mvondomaros-lab.github.io/conda
+dependencies:
+  - python=3.12
+  - jupyterlab
+  - mvdlib
