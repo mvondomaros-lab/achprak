@@ -5,4 +5,15 @@ channels:
 dependencies:
   - python=3.12
   - jupyterlab
+  - jupyterlab-myst
+  - ipywidgets
+  - nglview
+  - matplotlib
   - mvdlib
+  - ase
+  - mopac
+  - rdkit
+  - tblite-python
+  - pip:
+    - pymopac
+    - sella
