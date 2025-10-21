@@ -129,14 +129,14 @@ handelt:
 ::::
 
 Durch die Azobrücke kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
-Alle bisher gezeigten Strukturen entsprechen der trans-Form, bei der die beiden Phenylringe auf gegenüberliegenden
+Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
 Seiten der Azobrücke stehen.
-Bei der cis-Form befinden sich beide Ringsysteme auf derselben Seite.
+Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 
-::::{seealso} E,Z-Nomenklatur
+::::{seealso} *E*,*Z*-Nomenklatur
 :class: dropdown
 Eine andere, systematischere Bezeichnungsweise für die Anordnung von Substituenten an Doppelbindungen verwendet die
-Symbole E (für entgegen) und Z (für zusammen). Für unsere Zwecke reichen jedoch trans und cis aus.
+Symbole *E* (für entgegen) und *Z* (für zusammen). Für unsere Zwecke reichen jedoch *trans* und *cis* aus.
 
 ::::
 
@@ -146,15 +146,15 @@ Atome unterscheiden, bezeichnet man als Isomere.
 :::{figure} ../assets/cis-azobenzene.svg
 :width: 230px
 :align: left
-Cis-Azobenzol.
+*Cis*-Azobenzol.
 :::
 
-Die trans-Form ist energetisch stabiler und wird unter normalen Bedingungen bevorzugt.
-Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die cis-Form ausgelöst werden.
+Die *trans*-Form ist energetisch stabiler und wird unter normalen Bedingungen bevorzugt.
+Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
 Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
 
 Ein Beispiel hierfür ist das oben erwähnte 4-Methoxyazobenzol:
-Bei Bestrahlung mit ultraviolettem Licht wechselt es von seiner gelblichen trans-Form in eine rot-braune cis-Form.
+Bei Bestrahlung mit ultraviolettem Licht wechselt es von seiner gelblichen *trans*-Form in eine rot-braune *cis*-Form.
 
 :::{figure} ../assets/azobenzene-isomerism.svg
 :width: 800px
@@ -166,7 +166,7 @@ Die lichtinduzierte Isomerisierung des Azobenzols.
 :class: dropdown
 
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
-cis-trans-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
+*cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
 Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
 So genannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
 ähnlich wie in einem Computerspiel – entsteht ein umfassenderes räumliches Bild.
@@ -405,8 +405,8 @@ Reaktionen ineinander übergehen.
 Bei solchen Veränderungen spielen meist deutlich kleinere Energiemengen eine Rolle.
 
 Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
-Liegt ein Azobenzolderivat beispielsweise in der trans-Konfiguration mit einer Energie von  
-$E_\mathrm{trans} = -90\,000\ \text{kJ mol}^{-1}$ vor und wechselt anschließend in die cis-Konfiguration mit  
+Liegt ein Azobenzolderivat beispielsweise in der *trans*-Konfiguration mit einer Energie von  
+$E_\mathrm{trans} = -90\,000\ \text{kJ mol}^{-1}$ vor und wechselt anschließend in die *cis*-Konfiguration mit  
 $E_\mathrm{cis} = -89\,950\ \text{kJ mol}^{-1}$, so ergibt sich für den Energieunterschied
 
 $$
@@ -416,8 +416,8 @@ $$
 = +50\ \text{kJ mol}^{-1}.
 $$
 
-Ein positiver Wert bedeutet, dass die cis-Konfiguration energetisch ungünstiger ist (höhere Energie) – der Übergang von
-trans nach cis erfordert also Energiezufuhr.
+Ein positiver Wert bedeutet, dass die *cis*-Konfiguration energetisch ungünstiger ist (höhere Energie) – der Übergang von
+*trans* nach *cis* erfordert also Energiezufuhr.
 
 :::{note} Energiedifferenzen
 
@@ -434,7 +434,7 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
-Im Falle des Azobenzols sind dies die Strukturen, die den cis- und trans-Konfigurationen zugeordnet werden können.
+Im Falle des Azobenzols sind dies die Strukturen, die den *cis*- und *trans*-Konfigurationen zugeordnet werden können.
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumsstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
@@ -443,9 +443,9 @@ charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 :width: 600px
 
 Könnte man die Auslenkung aller Atomkoordinaten auf eine einzelne Koordinate projizieren (Reaktionskoordinate), so
-würden die cis- und trans-Konfigurationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
+würden die *cis*- und *trans*-Konfigurationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
 geometrische Änderungen weg von diesen Strukturen führen zu einem Energieanstieg.
-Der Übergangsstruktur (ÜS) für die cis–trans-Umwandlung entspräche in diesem Fall dem lokalen Maximum zwischen den
+Der Übergangsstruktur (ÜS) für die *cis*–*trans*-Umwandlung entspräche in diesem Fall dem lokalen Maximum zwischen den
 beiden Minima.
 :::
 
@@ -465,14 +465,14 @@ sie durch die thermische Energie bei Raumtemperatur nicht überwunden werden kö
 
 Die grundlegende Funktionsweise eines Photoschalters lässt sich wie folgt zusammenfassen:
 
-1. Das Molekül befindet sich zunächst in einem Ausgangszustand (z. B. der trans-Form bei Azobenzol).
+1. Das Molekül befindet sich zunächst in einem Ausgangszustand (z. B. der *trans*-Form bei Azobenzol).
 2. Trifft Licht der passenden Energie auf das Molekül, wird es absorbiert – das Molekül gelangt in einen angeregten
    elektronischen Zustand.
 3. In diesem angeregten Zustand kann sich die räumliche Struktur ändern (z. B. Rotation an einer Doppelbindung). Dadurch
    „schaltet“ das Molekül in den zweiten Zustand um.
-4. Nach der strukturellen Veränderung entspannt das Molekül wieder in einen neuen Grundzustand (z. B. cis-Form).
+4. Nach der strukturellen Veränderung entspannt das Molekül wieder in einen neuen Grundzustand (z. B. *cis*-Form).
 
-Da cis- und trans-Form unterschiedliche Eigenschaften besitzen (etwa Farbe, Polarität oder Reaktivität), lässt sich das
+Da *cis*- und *trans*-Form unterschiedliche Eigenschaften besitzen (etwa Farbe, Polarität oder Reaktivität), lässt sich das
 Molekül wie ein Schalter verwenden – mit Licht als Signal zum Ein- bzw. Umschalten.
 
 :::{figure} ../assets/photoswitch-mechanism.png
@@ -480,7 +480,7 @@ Molekül wie ein Schalter verwenden – mit Licht als Signal zum Ein- bzw. Umsch
 :width: 600px
 
 Schematische Darstellung der Funktionsweise eines Photoschalters.
-Der Wechsel zwischen cis- und trans-Form erfolgt nicht im Grundzustand durch Überwinden des Übergangszustandes.
+Der Wechsel zwischen *cis*- und *trans*-Form erfolgt nicht im Grundzustand durch Überwinden des Übergangszustandes.
 Stattdessen wird das Molekül zunächst in einen angeregten elektronischen Zustand angeregt, in dem die Umwandlung
 stattfinden kann.
 :::
