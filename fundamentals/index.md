@@ -171,8 +171,7 @@ Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D
 So genannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
 ähnlich wie in einem Computerspiel – entsteht ein umfassenderes räumliches Bild.
 
-:::
-{figure} https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Azobenzene-trans-3D-balls.png/512px-Azobenzene-trans-3D-balls.png
+:::{figure} https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Azobenzene-trans-3D-balls.png/512px-Azobenzene-trans-3D-balls.png
 :width: 512px
 :align: left
 Kugel-Stab-Modell des Azobenzols.
