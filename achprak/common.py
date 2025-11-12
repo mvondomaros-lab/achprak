@@ -14,7 +14,7 @@ from . import widgets
 from .clipboard import clipboard
 
 LABEL_STYLE = {"font_size": "15px", "font_weight": "bold"}
-OUTPUT_LAYOUT = {"height": "250px", "overflow": "auto"}
+OUTPUT_LAYOUT = {"height": "600px", "overflow": "auto"}
 TEXTAREA_LAYOUT = {"width": "auto", "height": "250px"}
 
 COPY_TEXT = "Kopieren 📋"
