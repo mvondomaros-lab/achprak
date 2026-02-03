@@ -1,21 +1,3 @@
-# Python
-.pixi
-.venv
-__pycache__
-
-# Jupyter
+# Ignore Python cache files and Jupyter notebook checkpoints.
 .ipynb_checkpoints
-.virtual_documents
-
-# Pycharm
-.idea
-
-# OS
-.DS_Store
-
-# Results
-results/logs
-results/figures
-results/.texpadtmp
-# MyST build outputs
-_build
+__pycache__
