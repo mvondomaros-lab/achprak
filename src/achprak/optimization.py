@@ -12,7 +12,7 @@ import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
 import sella
 
-from . import azobenzene, common, widgets
+from . import azobenzene, common, ui
 from .clipboard import clipboard
 
 
@@ -106,7 +106,7 @@ class OptTool:
         self._xyz_init_output = ipywidgets.Output()
         self._xyz_opt_output = ipywidgets.Output()
         self._run_output = ipywidgets.Output(layout=common.OUTPUT_LAYOUT)
-        self._ngl_accordion = widgets.NGLAccordion(title="Trajektorie")
+        self._ngl_accordion = ui.NGLAccordion(title="Trajektorie")
         self._run_output_accordion = ipywidgets.Accordion(
             [self._run_output], titles=["Programmausgabe"]
         )
@@ -171,7 +171,7 @@ class OptTool:
         elif button is self._copy_button:
             xyz = common.atoms_to_xyz(self.atoms)
             clipboard.copy(xyz)
-            widgets.flash_button(button, message=common.COPY_OK_TEXT)
+            ui.flash_button(button, message=common.COPY_OK_TEXT)
 
     def _on_change(self, change):
         if change["type"] == "change" and change["name"] == "value":

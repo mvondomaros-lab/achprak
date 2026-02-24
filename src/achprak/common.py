@@ -10,7 +10,7 @@ import rdkit.Chem.rdDetermineBonds
 import rdkit.Chem.rdmolfiles
 import tblite.ase
 
-from . import widgets
+from . import ui
 from .clipboard import clipboard
 
 LABEL_STYLE = {"font_size": "15px", "font_weight": "bold"}
@@ -97,10 +97,10 @@ def clipboard_to_atoms(button, output):
         atoms = xyz_to_atoms(xyz)
         with output:
             print(xyz)
-        widgets.flash_button(button, message=PASTE_OK_TEXT)
+        ui.flash_button(button, message=PASTE_OK_TEXT)
         return atoms
     except Exception:
-        widgets.flash_button(button, message=PASTE_ERROR_TEXT)
+        ui.flash_button(button, message=PASTE_ERROR_TEXT)
         return None
 
 

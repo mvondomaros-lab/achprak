@@ -4,20 +4,17 @@ import io
 import IPython.display
 import ipywidgets
 import numpy as np
+import rdkit.Chem
 import rdkit.Chem.AllChem
-import rdkit.Chem.rdMolTransforms
 import scipy.constants
 
-from . import common, widgets
+from . import common, ui
 from .clipboard import clipboard
 
 
 class Template:
-    """
-    An azobenzene template with potential substituents in the ortho, meta, and para positions of the rings.
-    """
+    """Azobenzene template with substituents on both rings."""
 
-    # Mapping from substituent labels to partial smiles strings.
     substituent_smiles = {
         "H": "",
         "Me": "(C)",
@@ -60,54 +57,55 @@ class Template:
         self.molh = self._init_molh()
         self.atoms = self._init_atoms()
 
-    def _init_smiles(self):
-        """
-        Construct the SMILES string of the azobenzene derivative.
-        """
-        # Generate SMILES with substituents.
+    def _init_smiles(self) -> str:
         smiles = ["c1"]
         for carbon in range(5):
-            substituent = self.substituents[carbon]
-            smiles.append(self.substituent_smiles[substituent])
+            sub = self.substituents[carbon]
+            smiles.append(self.substituent_smiles[sub])
             smiles.append("c")
         smiles.append("1N=Nc2")
         for carbon in range(5):
             smiles.append("c")
-            substituent = self.substituents[carbon + 5]
-            smiles.append(self.substituent_smiles[substituent])
+            sub = self.substituents[carbon + 5]
+            smiles.append(self.substituent_smiles[sub])
         smiles.append("2")
         smiles = "".join(smiles)
 
-        # Patch the double bond configuration.
-        if self.configuration == "trans":
-            smiles = smiles.replace("N=N", "/N=N/")
-        else:
-            smiles = smiles.replace("N=N", "/N=N\\")
-
+        smiles = smiles.replace(
+            "N=N", "/N=N/" if self.configuration == "trans" else "/N=N\\"
+        )
         return smiles
 
-    def _init_mol(self):
-        return rdkit.Chem.MolFromSmiles(self.smiles)
+    def _init_mol(self) -> rdkit.Chem.Mol:
+        mol = rdkit.Chem.MolFromSmiles(self.smiles)
+        if mol is None:
+            raise ValueError(f"Invalid SMILES generated: {self.smiles}")
+        return mol
 
-    def _init_molh(self):
+    def _init_molh(self) -> rdkit.Chem.Mol:
         return rdkit.Chem.AddHs(self.mol)
 
     def _init_atoms(self):
         mol = self.molh
-        rdkit.Chem.AllChem.EmbedMolecule(mol, randomSeed=42)
-        atoms = common.mol_to_atoms(mol)
-        return atoms
+
+        # ETKDG first, then fallback embedding.
+        params = rdkit.Chem.AllChem.ETKDGv3()
+        params.randomSeed = 42
+        rc = rdkit.Chem.AllChem.EmbedMolecule(mol, params)
+        if rc != 0:
+            rc = rdkit.Chem.AllChem.EmbedMolecule(mol, randomSeed=42)
+        if rc != 0:
+            raise RuntimeError("RDKit 3D embedding failed for generated molecule.")
+
+        return common.mol_to_atoms(mol)
 
 
 class TemplateTool:
-    """
-    An interactive tool for creating an azobenzene template.
-    """
+    """Interactive tool for creating an azobenzene template."""
 
     def __init__(self):
         self.template = Template()
 
-        # Radio buttons for switching between configurations
         self._configuration_buttons = ipywidgets.RadioButtons(
             options=["trans", "cis"],
             value=self.template.configuration,
@@ -115,16 +113,12 @@ class TemplateTool:
         )
         self._configuration_buttons.observe(self._on_change, names="value")
 
-        # Dropdowns for changing substituents
         self._substituent_dropdowns = []
         for ring in range(2):
             for carbon in range(5):
-                if ring == 0:
-                    description = f"C{carbon + 2}:"
-                else:
-                    description = f"C{carbon + 2}':"
+                description = f"C{carbon + 2}:" if ring == 0 else f"C{carbon + 2}':"
                 dropdown = ipywidgets.Dropdown(
-                    options=Template.substituent_smiles.keys(),
+                    options=list(Template.substituent_smiles.keys()),
                     value=self.template.substituents[ring * 5 + carbon],
                     description=description,
                     layout={"width": "max-content"},
@@ -132,18 +126,13 @@ class TemplateTool:
                 dropdown.observe(self._on_change, names="value")
                 self._substituent_dropdowns.append(dropdown)
 
-        # Output widgets and friends.
         self._mol_output = ipywidgets.Output()
         self._xyz_output = ipywidgets.Output()
 
-        # Copy button
         self._copy_button = ipywidgets.Button(description=common.COPY_TEXT)
         self._copy_button.on_click(self._on_click)
 
     def show(self):
-        """
-        Show the tool.
-        """
         IPython.display.display(
             ipywidgets.Label("Konfiguration", style=common.LABEL_STYLE),
             self._configuration_buttons,
@@ -157,6 +146,7 @@ class TemplateTool:
             self._xyz_output,
             self._copy_button,
         )
+
         with self._mol_output:
             IPython.display.display(self.template.mol)
 
@@ -164,10 +154,7 @@ class TemplateTool:
             self.template.atoms.write("-", format="xyz")
 
     def _on_change(self, change):
-        """
-        Called when a selection widget is changed.
-        """
-        if change["type"] == "change" and change["name"] == "value":
+        if change.get("type") == "change" and change.get("name") == "value":
             self._update_template()
 
             with self._mol_output:
@@ -179,31 +166,22 @@ class TemplateTool:
                 self.template.atoms.write("-", format="xyz")
 
     def _update_template(self):
-        """
-        Update the template object.
-        """
         kwargs = {"configuration": self._configuration_buttons.value}
         for ring in range(2):
             for carbon in range(5):
                 key = f"r{ring + 1}c{carbon + 1}"
-                value = self._substituent_dropdowns[ring * 5 + carbon].value
-                kwargs[key] = value
+                kwargs[key] = self._substituent_dropdowns[ring * 5 + carbon].value
         self.template = Template(**kwargs)
 
     def _on_click(self, button):
-        """
-        Called when the user clicks a button.
-        """
         if button is self._copy_button:
             xyz = common.atoms_to_xyz(self.template.atoms)
             clipboard.copy(xyz)
-            widgets.flash_button(button, message=common.COPY_OK_TEXT)
+            ui.flash_button(button, message=common.COPY_OK_TEXT)
 
 
 class Properties:
-    """
-    Compute selected properties of an azobenzene derivative.
-    """
+    """Compute selected properties of an azobenzene derivative."""
 
     def __init__(self, atoms):
         self.atoms = atoms
@@ -211,99 +189,78 @@ class Properties:
         self.mol = common.atoms_to_mol(atoms)
 
     def _find_azo_bond(self):
-        """
-        Return the indices of the azo bond nitrogen atoms.
-        """
         for bond in self.mol.GetBonds():
-            i, j = bond.GetBeginAtom(), bond.GetEndAtom()
-            if {i.GetSymbol(), j.GetSymbol()} == {
-                "N"
-            } and bond.GetBondType().name == "DOUBLE":
-                n1, n2 = i.GetIdx(), j.GetIdx()
-                return n1, n2
+            a = bond.GetBeginAtom()
+            b = bond.GetEndAtom()
+            if (
+                a.GetSymbol() == "N"
+                and b.GetSymbol() == "N"
+                and bond.GetBondType().name == "DOUBLE"
+            ):
+                return a.GetIdx(), b.GetIdx()
         return None
 
     def _find_carbon_neighbor(self, i):
-        """
-        Find the next carbon neighbor atom of the i'th atom.
-        """
-        for j in self.mol.GetAtomWithIdx(i).GetNeighbors():
-            if j.GetSymbol() == "C":
-                return j.GetIdx()
+        for nbr in self.mol.GetAtomWithIdx(i).GetNeighbors():
+            if nbr.GetSymbol() == "C":
+                return nbr.GetIdx()
         return None
 
     def cnnc_dihedral_indices(self):
-        """
-        Return the indices of the C-N=N-C dihedral angle.
-        """
-        n1, n2 = self._find_azo_bond()
+        azo = self._find_azo_bond()
+        if azo is None:
+            raise ValueError("Could not find azo N=N double bond in molecule.")
+        n1, n2 = azo
+
         c1 = self._find_carbon_neighbor(n1)
         c2 = self._find_carbon_neighbor(n2)
+        if c1 is None or c2 is None:
+            raise ValueError(
+                "Could not find carbon neighbors adjacent to azo nitrogens."
+            )
+
         return [c1, n1, n2, c2]
 
     def cnnc_dihedral(self):
-        """
-        Return the CN=NC dihedral angle.
-        """
-        indices = self.cnnc_dihedral_indices()
-        dihedral = self.atoms.get_dihedral(*indices)
-        return dihedral
+        return self.atoms.get_dihedral(*self.cnnc_dihedral_indices())
 
     def ring_distance(self):
-        """
-        Compute the center-of-mass distance between the rings.
-        """
-        ring_info = self.mol.GetRingInfo()
-        rings = ring_info.AtomRings()
+        rings = self.mol.GetRingInfo().AtomRings()
+        if len(rings) < 2:
+            raise ValueError("Expected at least two rings in azobenzene.")
         com1 = self.atoms[rings[0]].get_center_of_mass()
         com2 = self.atoms[rings[1]].get_center_of_mass()
-        distance = np.linalg.norm(com1 - com2)  # Angstrom
-        distance *= 100.0  # pm
-        return distance
+        return np.linalg.norm(com1 - com2) * 100.0  # pm
 
     def energy(self):
-        """
-        Return the energy of the molecule.
-        """
-        # Discard stdout, because TBLite does not respect its own verbosity setting.
         with contextlib.redirect_stdout(io.StringIO()):
             energy = self.atoms.get_potential_energy()  # eV
-        energy *= scipy.constants.eV * scipy.constants.N_A / 1000.0  # kJ/mol
-        return energy
+        return energy * scipy.constants.eV * scipy.constants.N_A / 1000.0  # kJ/mol
 
 
 class PropertiesTool:
-    """
-    An interactive tool for visualization and property calculation.
-    """
+    """Interactive tool for visualization and property calculation."""
 
     def __init__(self):
         self.atoms = None
         self.properties = None
 
-        # Output widgets and friends.
         self._xyz_output = ipywidgets.Output()
-        self._ngl_accordion = widgets.NGLAccordion()
+        self._ngl_accordion = ui.NGLAccordion()
 
-        # Paste button
         self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
         self._paste_button.on_click(self._on_click)
 
-        # Run button.
         self._run_button = ipywidgets.Button(
             description=common.RUN_START_TEXT, disabled=True
         )
         self._run_button.on_click(self._on_click)
 
-        # Text widgets for displaying molecular properties.
         self._energy_text = ipywidgets.Text(disabled=True)
         self._cnnc_dihedral_text = ipywidgets.Text(disabled=True)
         self._ring_distance_text = ipywidgets.Text(disabled=True)
 
     def show(self):
-        """
-        Show the tool.
-        """
         IPython.display.display(
             ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
             self._paste_button,
@@ -313,7 +270,8 @@ class PropertiesTool:
             self._run_button,
             *[
                 ipywidgets.Accordion(
-                    [ipywidgets.HBox([text, ipywidgets.Label(unit)])], titles=[title]
+                    [ipywidgets.HBox([text, ipywidgets.Label(unit)])],
+                    titles=[title],
                 )
                 for title, text, unit in [
                     ("Energie", self._energy_text, " kJ/mol"),
@@ -324,23 +282,19 @@ class PropertiesTool:
         )
 
     def _reset(self):
-        """
-        Clear the output widgets and reset the properties.
-        """
         self.atoms = None
         self.properties = None
         self._xyz_output.clear_output()
         self._ngl_accordion.clear()
+
         self._energy_text.value = ""
         self._cnnc_dihedral_text.value = ""
         self._ring_distance_text.value = ""
+
         self._run_button.disabled = True
         self._run_button.description = common.RUN_START_TEXT
 
     def _on_click(self, button):
-        """
-        Called when buttons are clicked.
-        """
         if button is self._paste_button:
             self._reset()
             self.atoms = common.clipboard_to_atoms(
@@ -349,10 +303,16 @@ class PropertiesTool:
             if self.atoms is not None:
                 self._ngl_accordion.show_atoms(self.atoms)
                 self._run_button.disabled = False
+
         elif button is self._run_button:
-            self.properties = Properties(self.atoms)
-            self._update()
-            self._run_button.description = common.RUN_OK_TEXT
+            self._run_button.disabled = True
+            self._run_button.description = common.RUN_START_TEXT + "…"
+            try:
+                self.properties = Properties(self.atoms)
+                self._update()
+                self._run_button.description = common.RUN_OK_TEXT
+            finally:
+                self._run_button.disabled = False
 
     def _update(self):
         self._energy_text.value = f"{self.properties.energy():.1f}"
