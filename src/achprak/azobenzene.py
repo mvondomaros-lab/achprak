@@ -6,7 +6,6 @@ import ipywidgets
 import numpy as np
 import rdkit.Chem
 import rdkit.Chem.AllChem
-import scipy.constants
 
 from . import common, ui
 from .clipboard import clipboard
@@ -234,8 +233,7 @@ class Properties:
 
     def energy(self):
         with contextlib.redirect_stdout(io.StringIO()):
-            energy = self.atoms.get_potential_energy()  # eV
-        return energy * scipy.constants.eV * scipy.constants.N_A / 1000.0  # kJ/mol
+            return self.atoms.get_potential_energy()  # eV
 
 
 class PropertiesTool:
@@ -274,7 +272,7 @@ class PropertiesTool:
                     titles=[title],
                 )
                 for title, text, unit in [
-                    ("Energie", self._energy_text, " kJ/mol"),
+                    ("Energie", self._energy_text, " eV"),
                     ("Diederwinkel (C-N=N-C)", self._cnnc_dihedral_text, " °"),
                     ("Ringabstand", self._ring_distance_text, " pm"),
                 ]
@@ -315,6 +313,6 @@ class PropertiesTool:
                 self._run_button.disabled = False
 
     def _update(self):
-        self._energy_text.value = f"{self.properties.energy():.1f}"
+        self._energy_text.value = f"{self.properties.energy():.4f}"
         self._cnnc_dihedral_text.value = f"{self.properties.cnnc_dihedral():.1f}"
         self._ring_distance_text.value = f"{self.properties.ring_distance():.1f}"

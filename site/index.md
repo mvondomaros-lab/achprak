@@ -30,7 +30,7 @@ Nach Abschluss dieses Versuches können Sie:
 
 - erklären, wie ein Photoschalter (am Beispiel Azobenzol) zwischen Isomeren wechselt und welche Rolle Licht dabei
   spielt.
-- den Zusammenhang zwischen Energie $E$ und Wellenlänge $\lambda$ nutzen und Einheiten sicher umrechnen (J, eV, nm).
+- den Zusammenhang zwischen Energie $E$ und Wellenlänge $\lambda$ nutzen und Einheiten sicher umrechnen (kJ/mol, eV, nm).
 - mit den bereitgestellten Werkzeugen Strukturen erzeugen, Eigenschaften visualisieren, Minimumsstrukturen und
   Übergangszustände finden sowie ein UV/Vis‑Spektrum interpretieren.
 - Verschiebungen im UV/Vis-Spektrum erknenn und einzelnen Substituenten zuorden.
@@ -397,7 +397,7 @@ Ist die Summe aller Wechselwirkungen anziehend, so bleibt das Molekül stabil un
 Das ist bei allen hier betrachteten Molekülen der Fall – aus diesem Grund sind die berechneten Energien negativ.
 
 Vom Betrag her erscheinen die berechneten Energien sehr groß (typischerweise in der Größenordnung
-von $-100\,000\ \text{kJ mol}^{-1}$.
+von $-1000\ \text{eV}$).  
 Das liegt daran, dass Energien immer relativ zu einem Bezugspunkt angegeben werden.
 In theoretisch-chemischen Rechnungen ist dieser Bezugspunkt oft ein hypothetischer Zustand, bei dem alle Atomkerne und
 Elektronen unendlich weit voneinander entfernt sind.
@@ -408,28 +408,22 @@ Reaktionen ineinander übergehen.
 Bei solchen Veränderungen spielen meist deutlich kleinere Energiemengen eine Rolle.
 
 Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
-Liegt ein Azobenzolderivat beispielsweise in der *trans*-Konfiguration mit einer Energie von  
-$E_\mathrm{trans} = -90\,000\ \text{kJ mol}^{-1}$ vor und wechselt anschließend in die *cis*-Konfiguration mit  
-$E_\mathrm{cis} = -89\,950\ \text{kJ mol}^{-1}$, so ergibt sich für den Energieunterschied
+Liegt ein Azobenzolderivat beispielsweise in der *cis*-Konfiguration mit einer Energie von  
+$E_\mathrm{cis} = -932.48\ \text{eV}$ vor und wechselt anschließend in die *trans*-Konfiguration mit  
+$E_\mathrm{trans} = -933.00\ \text{eV}$, so ergibt sich zunächst eine Energiedifferenz in eV:
 
 $$
-\Delta_{\mathrm{trans\to cis}}
-= E_\mathrm{cis} - E_\mathrm{trans}
-= -89\,950\ \text{kJ mol}^{-1} - (-90\,000\ \text{kJ mol}^{-1})
-= +50\ \text{kJ mol}^{-1}.
+\Delta_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933.00\ \text{eV} - (-932.48\ \text{eV}) = -0.52\ \text{eV}.
 $$
 
-Ein positiver Wert bedeutet, dass die *cis*-Konfiguration energetisch ungünstiger ist (höhere Energie) – der Übergang von
-*trans* nach *cis* erfordert also Energiezufuhr.
-
-:::{note} Energiedifferenzen
-
-Bitte berechnen Sie Energiedifferenzen zwischen einem Anfangszustand und einem Endzustand immer wie folgt:
+Für das Protokoll berichten Sie solche Energiedifferenzen zwischen Konfigurationen in kJ/mol:
 
 $$
-\Delta_{\mathrm{Anfang\to Ende}} = E_\mathrm{Ende} - E_\mathrm{Anfang}
+-0.52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
 $$
-:::
+
+Ein negativer Wert bedeutet, dass die *trans*-Konfiguration energetisch günstiger ist (niedrigere Energie) – der Übergang von
+*cis* nach *trans* setzt also Energie frei.
 
 ### Strukturoptimierung
 
@@ -448,7 +442,7 @@ charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 Könnte man die Auslenkung aller Atomkoordinaten auf eine einzelne Koordinate projizieren (Reaktionskoordinate), so
 würden die *cis*- und *trans*-Konfigurationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
 geometrische Änderungen weg von diesen Strukturen führen zu einem Energieanstieg.
-Der Übergangsstruktur (ÜS) für die *cis*–*trans*-Umwandlung entspräche in diesem Fall dem lokalen Maximum zwischen den
+Der Übergangsstruktur (ÜS) für die Umwandlung *cis*→*trans* entspräche in diesem Fall dem lokalen Maximum zwischen den
 beiden Minima.
 :::
 
