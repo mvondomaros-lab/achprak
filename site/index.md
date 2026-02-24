@@ -174,8 +174,10 @@ So genannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Ro
 :::{figure} https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Azobenzene-trans-3D-balls.png/512px-Azobenzene-trans-3D-balls.png
 :width: 512px
 :align: left
+
 Kugel-Stab-Modell des Azobenzols.
 :::
+
 ::::
 
 ### Das elektromagnetische Spektrum
