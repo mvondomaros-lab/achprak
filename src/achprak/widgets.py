@@ -1,4 +1,4 @@
-import time
+import asyncio
 
 import IPython.display
 import ipywidgets as widgets
@@ -102,18 +102,39 @@ class NGLAccordion:
         if self.ngl_view is None:
             return
 
-        self.ngl_view._js(f"""
+        self.ngl_view._js(
+            f"""
         setTimeout(() => {{
           try {{ this.handleResize(); }} catch (e) {{}}
           try {{ this.stage?.viewer?.requestRender(); }} catch (e) {{}}
         }}, {int(delay)});
-        """)
+        """
+        )
 
 
-def flash_button(button, message):
-    original = button.description
+def flash_button(button, message: str, seconds: float = 0.5) -> None:
+    """
+    Temporarily change button label and disable it.
+    Prevents overlapping flashes.
+    """
+    # Guard: ignore if already flashing
+    if getattr(button, "_flashing", False):
+        return
+
+    button._flashing = True
+
+    original_desc = button.description
+    original_disabled = button.disabled
+
     button.disabled = True
     button.description = message
-    time.sleep(0.5)
-    button.description = original
-    button.disabled = False
+
+    async def restore_later() -> None:
+        try:
+            await asyncio.sleep(seconds)
+            button.description = original_desc
+            button.disabled = original_disabled
+        finally:
+            button._flashing = False
+
+    asyncio.create_task(restore_later())
