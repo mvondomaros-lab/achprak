@@ -43,7 +43,7 @@ Nach Abschluss dieses Versuches können Sie:
 In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
 Es besteht aus zwei Phenylgruppen, die über eine Azobrücke (–N=N–) miteinander verbunden sind.
 
-:::{figure} ../../figures/drawings/azobenzene.svg
+:::{figure} ../figures/drawings/azobenzene.svg
 :width: 350px
 :align: left
 Azobenzol, dargestellt als Skelettformel.
@@ -60,7 +60,7 @@ Kohlenstoffatom pro Ring bindet die Azobrücke. Die übrigen Kohlenstoffatome tr
 
 Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstellen:
 
-:::{figure} ../../figures/drawings/azobenzene-explicit.svg
+:::{figure} ../figures/drawings/azobenzene-explicit.svg
 :width: 380px
 :align: left
 Die Strukturformel des Azobenzols.
@@ -76,7 +76,7 @@ Diese entstehen durch Substitution, also durch Austausch von Wasserstoffatomen g
 Wird beispielsweise am vierten Kohlenstoffatom eines Phenylrings ein Wasserstoffatom durch eine Methoxygruppe (–OCH₃)
 ersetzt, entsteht eine gelbe Verbindung.
 
-:::{figure} ../../figures/drawings/4-methoxy-azobenzene.svg
+:::{figure} ../figures/drawings/4-methoxy-azobenzene.svg
 :width: 400px
 :align: left
 4-Methoxyazobenzol – ein gelber Farbstoff.
@@ -94,7 +94,7 @@ nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, d
 In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeigersinn) hängt normalerweise von den
 vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
 
-:::{figure} ../../figures/drawings/azobenzene-numbering.svg
+:::{figure} ../figures/drawings/azobenzene-numbering.svg
 :width: 350px
 :align: left
 Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
@@ -122,7 +122,7 @@ Mit diesen Regeln können Sie alle im Versuch vorkommenden Moleküle eindeutig b
 sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
 handelt:
 
-:::{figure} ../../figures/drawings/azobenzene-derivative.svg
+:::{figure} ../figures/drawings/azobenzene-derivative.svg
 :width: 500px
 :align: left
 :::
@@ -143,7 +143,7 @@ Symbole *E* (für entgegen) und *Z* (für zusammen). Für unsere Zwecke reichen 
 Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der räumlichen Anordnung oder Verknüpfung der
 Atome unterscheiden, bezeichnet man als Isomere.
 
-:::{figure} ../../figures/drawings/cis-azobenzene.svg
+:::{figure} ../figures/drawings/cis-azobenzene.svg
 :width: 230px
 :align: left
 *Cis*-Azobenzol.
@@ -156,7 +156,7 @@ Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltba
 Ein Beispiel hierfür ist das oben erwähnte 4-Methoxyazobenzol:
 Bei Bestrahlung mit ultraviolettem Licht wechselt es von seiner gelblichen *trans*-Form in eine rot-braune *cis*-Form.
 
-:::{figure} ../../figures/drawings/azobenzene-isomerism.svg
+:::{figure} ../figures/drawings/azobenzene-isomerism.svg
 :width: 800px
 :align: left
 Die lichtinduzierte Isomerisierung des Azobenzols.
@@ -223,7 +223,7 @@ Stimmt die Energie, so wird das Licht aufgenommen und das Molekül in einen um d
 Zustand versetzt.
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
 
-:::{figure} ../../figures/outputs/jablonski.png
+:::{figure} ../figures/outputs/jablonski.png
 :width: 600px
 :align: left
 
@@ -234,7 +234,7 @@ Zustand versetzt zu werden.
 
 Trägt man auf, wie stark ein Molekül Licht mit einer bestimmten Energie absorbiert, so erhält man ein Linienspektrum.
 
-:::{figure} ../../figures/outputs/line-spectrum.png
+:::{figure} ../figures/outputs/line-spectrum.png
 :width: 600px
 :align: left
 
@@ -255,7 +255,7 @@ Es entsteht ein Bandenspektrum.
 Aus der Lage und Form dieser Banden lassen sich wichtige Informationen über den elektronischen Aufbau eines Moleküls
 gewinnen.
 
-:::{figure} ../../figures/outputs/uvvis-spectrum.png
+:::{figure} ../figures/outputs/uvvis-spectrum.png
 :width: 600px
 :align: left
 
@@ -437,7 +437,7 @@ Im Falle des Azobenzols sind dies die Strukturen, die den *cis*- und *trans*-Kon
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumsstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
-:::{figure} ../../figures/outputs/profile.png
+:::{figure} ../figures/outputs/profile.png
 :align: left
 :width: 600px
 
@@ -474,7 +474,7 @@ Die grundlegende Funktionsweise eines Photoschalters lässt sich wie folgt zusam
 Da *cis*- und *trans*-Form unterschiedliche Eigenschaften besitzen (etwa Farbe, Polarität oder Reaktivität), lässt sich das
 Molekül wie ein Schalter verwenden – mit Licht als Signal zum Ein- bzw. Umschalten.
 
-:::{figure} ../../figures/outputs/photoswitch-mechanism.png
+:::{figure} ../figures/outputs/photoswitch-mechanism.png
 :align: left
 :width: 600px
 
