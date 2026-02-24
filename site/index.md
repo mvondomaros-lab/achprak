@@ -321,8 +321,10 @@ Der innere Aufbau muss nicht bekannt sein – wichtig ist lediglich, dass bestim
 zu bestimmten Ausgaben führen (z. B. Energie oder Spektrum).
 
 :::{figure} https://upload.wikimedia.org/wikipedia/commons/4/44/Blackbox3D.png
-:alt: Krauss, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+:alt: Black box (3D)
 :align: left
+
+Krauss — licensed CC BY-SA 4.0, via Wikimedia Commons.
 :::
 
 ::::{danger} Genauigkeit
