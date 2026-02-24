@@ -171,11 +171,12 @@ Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D
 So genannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
 ähnlich wie in einem Computerspiel – entsteht ein umfassenderes räumliches Bild.
 
-:::{figure} https://upload.wikimedia.org/wikipedia/commons/6/68/Azobenzene-trans-3D-balls.png
+:::{figure} ../figures/commons/Azobenzene-trans-3D-balls.png
 :width: 512px
 :align: left
+:alt: Kugel-Stab-Modell von trans-Azobenzol.
 
-Kugel-Stab-Modell des Azobenzols.
+Kugel-Stab-Modell von trans-Azobenzol. Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
 :::
 
 ::::
@@ -205,14 +206,15 @@ $$
 In der Atom- und Molekülphysik verwendet man häufig die Einheiten Elektronenvolt (eV) und Nanometer (nm), da sich damit
 deutlich handlichere Zahlenwerte ergeben als mit Joule bzw. Meter.
 
-:::{figure} https://upload.wikimedia.org/wikipedia/commons/f/fc/Spectre.svg
+:::{figure} ../figures/commons/Spectre.svg
 :width: 800px
 :align: left
-:alt: Tatoute and Phrood~commonswiki, CC BY-SA 3.0, via Wikimedia Commons
+:alt: Übersicht über das elektromagnetische Spektrum mit markiertem sichtbarem Bereich.
 
 Das elektromagnetische Spektrum. Die obere Reihe zeigt (von links nach rechts) stilisierte Darstellungen von
 Gammastrahlen, Röntgenstrahlen, UV-Strahlung, sichtbarem Licht, Infrarotstrahlung, Mikrowellen und Radiowellen.
 Die untere Reihe vergrößert den sichtbaren Teil des Spektrums.
+Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Spectre.svg).
 :::
 
 ### Absorption elektromagnetischer Strahlung
@@ -289,11 +291,11 @@ Eines der wichtigsten Beispiele ist das Absorptionsspektrum unserer Atmosphäre.
 relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
 Das gelb markierte elektromagnetische Fenster ist dabei von besonderer Bedeutung für den Wärmehaushalt unseres Planeten.
 
-:::{figure} https://upload.wikimedia.org/wikipedia/commons/8/83/Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg
+:::{figure} ../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg
 :width: 1024px
-:alt: PNG-Version: Herbertweidner (Public domain, via Wikimedia Commons)
+:alt: Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster.
 
-Atmosphärische Durchlässigkeit
+Atmosphärische Durchlässigkeit. PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden. Quelle/Lizenz: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg).
 :::
 
 Das elektromagnetische Fenster ist deshalb so wichtig, weil nur in diesem Bereich die Sonnenstrahlung nahezu ungehindert
@@ -322,11 +324,11 @@ Für diesen Versuch können Sie sich die eingesetzten Verfahren zunächst als *B
 Der innere Aufbau muss nicht bekannt sein – wichtig ist lediglich, dass bestimmte Eingaben (z. B. eine Molekülstruktur)
 zu bestimmten Ausgaben führen (z. B. Energie oder Spektrum).
 
-:::{figure} https://upload.wikimedia.org/wikipedia/commons/4/44/Blackbox3D.png
-:alt: Black box (3D)
+:::{figure} ../figures/commons/Blackbox3D.png
+:alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
 :align: left
 
-Krauss — licensed CC BY-SA 4.0, via Wikimedia Commons.
+Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
 :::
 
 ::::{danger} Genauigkeit
