@@ -9,13 +9,6 @@ Available on GitHub Pages.
 
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
 
-## Online Version
-
-Available through GitHub Codespaces.
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mvondomaros-lab/achprak)
-
-
 ## Offline Setup
 
 1. Install [pixi](https://pixi.sh).
@@ -26,10 +19,12 @@ Available through GitHub Codespaces.
 3. Install python dependencies using `pixi`.
     ```bash
     cd achprak 
-    pixi install
+    pixi install -e local
     ```
 4. Start the Jupyter Lab server.
     ```bash
-    pixi run jupyter-lab achprak.ipynb
+    pixi run -e local jupyter-lab achprak.ipynb
     ```
 
+> [!NOTE]
+> Developers: Use `dev` instead of `local`  for development.

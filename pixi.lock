@@ -2212,8 +2212,8 @@ packages:
   timestamp: 1744137672556
 - pypi: ./
   name: achprak
-  version: 0.2.0
-  sha256: 06c5881a9c05fb040f55d4a8f0de952f8eaed9cb7111787fdc325353793528af
+  version: 0.2.1
+  sha256: aae3f74b6c5fcb6b14d915a5d4b1332f31fd43f519d663508c4fb9c04f4d60e8
 - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.15.3-hb03c661_0.conda
   sha256: d88aa7ae766cf584e180996e92fef2aa7d8e0a0a5ab1d4d49c32390c1b5fff31
   md5: dcdc58c15961dbf17a0621312b01f5cb
