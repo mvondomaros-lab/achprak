@@ -3,10 +3,10 @@ import io
 import os
 import tempfile
 
+import IPython.display
 import ase.io
 import ase.optimize
 import ase.vibrations
-import IPython.display
 import ipywidgets
 import rdkit.Chem.AllChem
 import rdkit.Chem.rdMolTransforms
@@ -26,15 +26,15 @@ class OptMin:
         self.atoms.calc = calc or common.DefaultASECalculator()
         self.traj = None
 
-    def run(self, fmax=0.01, steps=1000, output=None):
+    def run(self, output=None):
         """
         Perform a geometry optimization.
         """
         with tempfile.NamedTemporaryFile(suffix=".traj") as tmp:
-            opt = ase.optimize.BFGSLineSearch(self.atoms, trajectory=tmp.name)
+            opt = sella.Sella(self.atoms, order=0, internal=True, trajectory=tmp.name)
             output = output or contextlib.nullcontext()
             with output:
-                converged = opt.run(fmax=fmax, steps=steps)
+                converged = opt.run(fmax=0.01)
             self.traj = ase.io.read(tmp.name, index=":")
         return converged
 
@@ -45,47 +45,76 @@ class OptTS:
     """
 
     def __init__(self, atoms, calc=None):
-        # TODO: This is hardcoded for azobenzene, but should be generalized.
-        # Start by setting the C-N=N-C dihedral angle to 90 degrees.
+        """
+        Build a TS guess for azobenzene-like systems and prepare an ASE Atoms object
+        for TS optimization with Sella.
+
+        Current strategy (hard-coded for azobenzene):
+        - Set the C-N=N-C dihedral to ~90° to seed the rotational pathway.
+        - Pre-optimize with MMFF while restraining the dihedral and both CNN angles.
+
+        Parameters
+        ----------
+        atoms
+            Initial structure as ASE Atoms.
+        calc
+            ASE calculator to be used by Sella (defaults to DefaultASECalculator).
+        """
         properties = azobenzene.Properties(atoms)
         mol = properties.mol
         conf = mol.GetConformer()
-        indices = properties.cnnc_dihedral_indices()
-        rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, *indices, 90.0)
 
-        # Run an optimization with MMFF94s, keeping the dihedral harmonically restrained.
+        # Identify the key torsion (C1-N1=N2-C2) and set it.
+        indices = properties.cnnc_dihedral_indices()
+        c1, n1, n2, c2 = indices
+        rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, c1, n1, n2, c2, 90)
+
+        # MMFF setup.
         mp = rdkit.Chem.AllChem.MMFFGetMoleculeProperties(mol, mmffVariant="MMFF94s")
         ff = rdkit.Chem.AllChem.MMFFGetMoleculeForceField(mol, mp)
-        ff.MMFFAddTorsionConstraint(*indices, False, 90, 90, 1.0e5)
-        ff.Minimize(maxIts=10000)
 
+        # Constrain the C-N=N-C torsion (rotational TS seed).
+        ff.MMFFAddTorsionConstraint(c1, n1, n2, c2, False, 90, 90, 1.0e5)
+
+        # Constrain the adjacent CNN angles to ~120° (sp2-like, rotational TS seed).
+        ff.MMFFAddAngleConstraint(c1, n1, n2, False, 120, 120, 1.0e5)
+        ff.MMFFAddAngleConstraint(n1, n2, c2, False, 120, 120, 1.0e5)
+
+        # Minimize (keep constraints active).
+        ff.Minimize()
+
+        # Convert back to ASE and attach calculator.
         self.atoms = common.mol_to_atoms(mol)
-        self.atoms.calc = calc or common.DefaultASECalculator()
         self.atoms.calc = calc or common.DefaultASECalculator()
         self.traj = None
 
-    def run(
-        self,
-        fmax=0.01,
-        steps=1000,
-        output=None,
-    ):
+    def run(self, output=None):
         """
         Run Sella.
         """
         # Run the TS optimization.
-        opt = sella.Sella(self.atoms, internal=True)
+        opt = sella.Sella(self.atoms, order=1, internal=True)
         output = output or contextlib.nullcontext()
         with output:
-            converged = opt.run(fmax=fmax, steps=steps)
+            converged = opt.run(fmax=0.01)
 
-        # Make a trajectory of the lowest-energy normal mode.
+        # Make a trajectory of the lowest-energy normal mode and print frequencies.
         if converged:
             vibrations = ase.vibrations.Vibrations(self.atoms)
             with common.tempdir() as tmp:
+                # Run the finite-difference vibrational analysis quietly.
                 with contextlib.redirect_stdout(io.StringIO()):
                     vibrations.run()
-                vibrations.write_mode(0, nimages=30, kT=0.1)
+
+                # Print frequencies to the output widget/context.
+                freqs = vibrations.get_frequencies()
+                with output:
+                    print("Vibrational frequencies (cm^-1):")
+                    for i, f in enumerate(freqs):
+                        print(f"  {i:3d}: {f}")
+
+                # Write a mode trajectory for visualization (mode 0 = lowest frequency).
+                vibrations.write_mode(0, nimages=60, kT=0.5)
                 fname = os.path.join(tmp, "vib.0.traj")
                 self.traj = ase.io.Trajectory(fname)
         return converged
@@ -199,11 +228,7 @@ class OptTool:
         else:
             self.opt = OptTS(self.atoms)
 
-        # Supper annoying hack, because TBLite does not respect its own verbosity setting.
-        output = common.nested_context(
-            self._run_output, contextlib.redirect_stdout(io.StringIO())
-        )
-        self.converged = self.opt.run(output=output)
+        self.converged = self.opt.run(output=self._run_output)
         self.atoms = self.opt.atoms
         self.traj = self.opt.traj
 
