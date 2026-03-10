@@ -13,7 +13,7 @@ channels = ["https://prefix.dev/conda-forge"]
 platforms = ["osx-arm64", "linux-64"]
 
 [tool.pixi.dependencies]
-python = ">=3.12"
+python = ">=3.12,<3.13"
 
 ipython = ">=9.10.0,<10"
 ipywidgets = ">=8.1.8,<9"
