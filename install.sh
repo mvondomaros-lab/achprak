@@ -7,6 +7,7 @@ ENV_NAME="hub"
 KERNEL_NAME="achprak"
 KERNEL_DISPLAY_NAME="AChPrak"
 NOTEBOOK_RELATIVE_PATH="notebooks/achprak.ipynb"
+PIXI_INSTALL_URL="https://pixi.sh/install.sh"
 
 info() {
   printf '%s\n' "$*"
@@ -29,9 +30,9 @@ install_pixi() {
 
   info "Installing pixi..."
   if have_cmd curl; then
-    curl -fsSL https://pixi.sh/install.sh | sh
+    curl -fsSL "${PIXI_INSTALL_URL}" | sh
   elif have_cmd wget; then
-    wget -qO- https://pixi.sh/install.sh | sh
+    wget -qO- "${PIXI_INSTALL_URL}" | sh
   else
     fail "Neither curl nor wget is available."
   fi
@@ -57,8 +58,7 @@ clone_or_update_repo() {
 
 install_env() {
   info "Installing pixi environment '${ENV_NAME}'..."
-  cd "${REPO_DIR}"
-  pixi install -e "${ENV_NAME}" || fail "pixi install failed"
+  pixi install -C "${REPO_DIR}" -e "${ENV_NAME}" || fail "pixi install failed"
 }
 
 register_kernel() {
@@ -67,12 +67,14 @@ register_kernel() {
   ENV_BIN="${REPO_DIR}/.pixi/envs/${ENV_NAME}/bin"
   ENV_PYTHON="${ENV_BIN}/python"
   KERNEL_DIR="${HOME}/.local/share/jupyter/kernels/${KERNEL_NAME}"
+  KERNEL_FILE="${KERNEL_DIR}/kernel.json"
+  TMP_KERNEL_FILE="${KERNEL_DIR}/kernel.json.tmp"
 
   [ -x "${ENV_PYTHON}" ] || fail "Expected Python not found: ${ENV_PYTHON}"
 
   mkdir -p "${KERNEL_DIR}"
 
-  cat > "${KERNEL_DIR}/kernel.json" <<EOF
+  cat > "${TMP_KERNEL_FILE}" <<EOF
 {
   "argv": [
     "${ENV_PYTHON}",
@@ -92,7 +94,13 @@ register_kernel() {
 }
 EOF
 
+  mv "${TMP_KERNEL_FILE}" "${KERNEL_FILE}"
+
   info "Kernel registered at ${KERNEL_DIR}"
+
+  # Give JupyterLab/JupyterHub a moment to notice the new kernelspec,
+  # especially on slower network filesystems.
+  sleep 2
 }
 
 patch_notebook_metadata() {
@@ -101,8 +109,7 @@ patch_notebook_metadata() {
 
   info "Patching notebook metadata to use kernel '${KERNEL_NAME}'..."
 
-  cd "${REPO_DIR}"
-  pixi run -e "${ENV_NAME}" python - <<EOF
+  pixi run -C "${REPO_DIR}" -e "${ENV_NAME}" python - <<EOF
 import json
 from pathlib import Path
 
@@ -125,36 +132,48 @@ print_final_instructions() {
   NOTEBOOK_PATH="${REPO_DIR}/${NOTEBOOK_RELATIVE_PATH}"
   [ -f "${NOTEBOOK_PATH}" ] || fail "Notebook not found: ${NOTEBOOK_PATH}"
 
+  case "${REPO_DIR}" in
+    "${HOME}")
+      REL_NOTEBOOK_DIR="notebooks"
+      ;;
+    "${HOME}"/*)
+      REL_NOTEBOOK_DIR="${REPO_DIR#${HOME}/}/notebooks"
+      ;;
+    *)
+      REL_NOTEBOOK_DIR="${REPO_DIR}/notebooks"
+      ;;
+  esac
+
   printf '\n'
   printf '============================================================\n'
   printf ' AChPrak installation complete\n'
   printf '============================================================\n'
   printf '\n'
-  printf 'Next steps in JupyterLab:\n'
+  printf 'IMPORTANT: Please refresh your JupyterLab page now.\n'
+  printf '\n'
+  printf 'In your browser press:\n'
+  printf '  F5   or   Ctrl+R\n'
+  printf '\n'
+  printf 'This step is necessary so that JupyterLab detects the new\n'
+  printf 'AChPrak kernel.\n'
+  printf '\n'
+  printf 'After refreshing JupyterLab:\n'
   printf '\n'
   printf '1. In the file browser on the left, open this folder:\n'
-  printf '   %s\n' "${REPO_DIR}/notebooks"
+  printf '   %s\n' "${REL_NOTEBOOK_DIR}"
   printf '\n'
   printf '2. Double-click this notebook file:\n'
   printf '   achprak.ipynb\n'
   printf '\n'
-  printf '3. When the notebook opens, check the kernel shown in the\n'
-  printf '   top-right corner.\n'
+  printf '3. Check the kernel shown in the top-right corner.\n'
   printf '\n'
   printf '4. It should be:\n'
   printf '   %s\n' "${KERNEL_DISPLAY_NAME}"
   printf '\n'
-  printf '5. If a different kernel is selected, switch manually:\n'
+  printf '5. If a different kernel is selected:\n'
   printf '   Kernel  ->  Change Kernel...  ->  %s\n' "${KERNEL_DISPLAY_NAME}"
   printf '\n'
-  printf 'Notebook path:\n'
-  printf '   %s\n' "${NOTEBOOK_PATH}"
-  printf '\n'
-  printf 'If you already had the notebook open, close it and open it\n'
-  printf 'again so that JupyterLab picks up the updated kernel setting.\n'
-  printf '\n'
-  printf 'If something does not work, first check that the notebook is\n'
-  printf 'really running with the kernel "%s".\n' "${KERNEL_NAME}"
+  printf 'If the notebook was already open, close it and open it again.\n'
   printf '\n'
   printf '============================================================\n'
   printf '\n'
