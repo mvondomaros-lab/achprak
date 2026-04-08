@@ -175,34 +175,6 @@ print_final_instructions() {
   printf ' AChPrak installation complete\n'
   printf '============================================================\n'
   printf '\n'
-  printf 'IMPORTANT: Please refresh your JupyterLab page now.\n'
-  printf '\n'
-  printf 'In your browser press:\n'
-  printf '  F5   or   Ctrl+R\n'
-  printf '\n'
-  printf 'This step is necessary so that JupyterLab detects the new\n'
-  printf 'AChPrak kernel.\n'
-  printf '\n'
-  printf 'After refreshing JupyterLab:\n'
-  printf '\n'
-  printf '1. In the file browser on the left, open this folder:\n'
-  printf '   %s\n' "${REL_NOTEBOOK_DIR}"
-  printf '\n'
-  printf '2. Double-click this notebook file:\n'
-  printf '   achprak.ipynb\n'
-  printf '\n'
-  printf '3. Check the kernel shown in the top-right corner.\n'
-  printf '\n'
-  printf '4. It should be:\n'
-  printf '   %s\n' "${KERNEL_DISPLAY_NAME}"
-  printf '\n'
-  printf '5. If a different kernel is selected:\n'
-  printf '   Kernel  ->  Change Kernel...  ->  %s\n' "${KERNEL_DISPLAY_NAME}"
-  printf '\n'
-  printf 'If the notebook was already open, close it and open it again.\n'
-  printf '\n'
-  printf '============================================================\n'
-  printf '\n'
 }
 
 main() {

@@ -1,6 +1,6 @@
 [project]
 name = "achprak"
-version = "0.2.1"
+version = "0.3"
 authors = [
   { name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }
 ]
@@ -18,7 +18,7 @@ python = ">=3.12,<3.13"
 ipython = ">=9.12.0,<10"
 ipywidgets = ">=8.1.8,<9"
 matplotlib = ">=3.10.8,<4"
-nglview = ">=4.0.1,<5"
+nglview = ">=3,<4"
 
 numpy = ">=2.4.3,<3"
 scipy = ">=1.17.1,<2"
