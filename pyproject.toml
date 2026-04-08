@@ -15,35 +15,35 @@ platforms = ["osx-arm64", "linux-64"]
 [tool.pixi.dependencies]
 python = ">=3.12,<3.13"
 
-ipython = ">=9.10.0,<10"
+ipython = ">=9.12.0,<10"
 ipywidgets = ">=8.1.8,<9"
 matplotlib = ">=3.10.8,<4"
-nglview = ">=4.0,<5"
+nglview = ">=4.0.1,<5"
 
-numpy = ">=2.4.2,<3"
-scipy = ">=1.17.0,<2"
-ase = ">=3.27.0,<4"
-rdkit = ">=2025.9.5,<2026"
+numpy = ">=2.4.3,<3"
+scipy = ">=1.17.1,<2"
+ase = ">=3.28.0,<4"
+rdkit = ">=2026.3.1,<2027"
 tblite-python = ">=0.5.0,<0.6"
-mopac = ">=23.2.2,<24"
+mopac = ">=23.2.4,<24"
 
 [tool.pixi.feature.local.dependencies]
-jupyterlab = ">=4.5.3,<5"
+jupyterlab = ">=4.5.6,<5"
 jupyterlab-myst = ">=2.6.0,<3"
 
 [tool.pixi.feature.hub.dependencies]
-ipykernel = ">=7.1.0,<8"
+ipykernel = ">=7.2.0,<8"
 
 [tool.pixi.pypi-dependencies]
 achprak = { path = ".", editable = true }
-sella = ">=2.3.5, <3"
+sella = ">=2.4.2, <3"
 pymopac = ">=1.1, <2"
 
 [tool.pixi.feature.dev.dependencies]
-pytest = ">=9.0.2,<10"
+pytest = ">=9.0.3,<10"
 jupyter-ruff = ">=0.3.1,<0.4"
-pixi-pycharm = ">=0.0.10,<0.0.11"
-mystmd = ">=1.8.0,<2"
+pixi-pycharm = ">=0.0.11,<0.0.12"
+mystmd = ">=1.8.3,<2"
 pre-commit = ">=4.5.1,<5"
 
 [tool.pixi.environments]
