@@ -62,7 +62,7 @@ Nach dem Start sehen Sie die Jupyter-Oberfläche.
 Die Jupyter-Oberfläche. Öffnen Sie hier ein Terminal.
 ```
 
-:::{note}
+:::{note} Hinweis
 Ein Terminal ist ein Fenster, in das man Befehle eingeben kann.  
 Sie müssen dafür keine Programmierkenntnisse haben: In diesem Versuch kopieren Sie nur eine Zeile und führen sie aus.
 :::
@@ -87,7 +87,7 @@ Fügen Sie die Zeile in das Terminal ein und drücken Sie danach die **Enter-Tas
 Der Installationsbefehl im Terminal.
 ```
 
-:::{tip}
+:::{tip} Tipp
 Das Einfügen funktioniert meist mit **Strg + V** oder mit Rechtsklick.  
 Falls das nicht klappt, hilft Ihnen eine Assistenzperson weiter.
 :::
@@ -108,7 +108,7 @@ Bitte warten Sie, bis der Vorgang vollständig abgeschlossen ist.
 Die Installation läuft im Terminal.
 ```
 
-:::{important}
+:::{important} Wichtig
 Schließen Sie das Terminal während der Installation nicht.
 :::
 
@@ -150,6 +150,10 @@ Falls dort **nicht** AChPrak steht:
 
 - klicken Sie auf den angezeigten Kernel-Namen
 - wählen Sie **AChPrak** aus der Liste aus
+
+:::{note} Hinweis
+Falls **AChPrak** nicht in der Liste auftaucht, laden Sie die Browserseite einmal neu und öffnen Sie das Notebook anschließend erneut.
+:::
 
 ```{figure} ../figures/screenshots/screenshot8.png
 :alt: Auswahl des Kernels AChPrak

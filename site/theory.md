@@ -11,7 +11,7 @@ Es besteht aus zwei Phenylgruppen, die über eine Azobrücke (–N=N–) miteina
 Azobenzol, dargestellt als Skelettformel.
 :::
 
-::::{seealso} Summen-, Struktur- und Skelettformeln
+::::{seealso} Ergänzung: Summen-, Struktur- und Skelettformeln
 :class: dropdown
 
 Azobenzol besteht aus 12 Kohlenstoff-, 10 Wasserstoff- und 2 Stickstoffatomen und besitzt somit die Summenformel
@@ -44,7 +44,7 @@ ersetzt, entsteht eine gelbe Verbindung.
 4-Methoxyazobenzol – ein gelber Farbstoff.
 :::
 
-::::{seealso} Nomenklatur
+::::{seealso} Ergänzung: Nomenklatur
 :class: dropdown
 
 Jede chemische Verbindung kann eindeutig benannt werden; die entsprechenden Regeln werden von der IUPAC (International
@@ -95,7 +95,7 @@ Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beide
 Seiten der Azobrücke stehen.
 Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 
-::::{seealso} *E*,*Z*-Nomenklatur
+::::{seealso} Ergänzung: *E*,*Z*-Nomenklatur
 :class: dropdown
 Eine andere, systematischere Bezeichnungsweise für die Anordnung von Substituenten an Doppelbindungen verwendet die
 Symbole *E* (für entgegen) und *Z* (für zusammen). Für unsere Zwecke reichen jedoch *trans* und *cis* aus.
@@ -124,7 +124,7 @@ Bei Bestrahlung mit ultraviolettem Licht wechselt es von seiner gelblichen *tran
 Die lichtinduzierte Isomerisierung des Azobenzols.
 :::
 
-::::{seealso} Dreidimensionale Visualisierung
+::::{seealso} Ergänzung: Dreidimensionale Visualisierung
 :class: dropdown
 
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
@@ -229,7 +229,7 @@ Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3.0 eV und 4.0 eV ab
 Zur besseren Orientierung wurde das zugrunde liegende Linienspektrum im Hintergrund dargestellt.
 :::
 
-::::{seealso} Für besonders Interessierte: Absorption, Transmission, Extinktion, Übergangswahrscheinlichkeiten
+::::{seealso} Ergänzung: Für besonders Interessierte – Absorption, Transmission, Extinktion, Übergangswahrscheinlichkeiten
 :class: dropdown
 
 Absorption bezeichnet die Aufnahme von Licht durch ein Molekül.
@@ -243,7 +243,7 @@ durch Licht in einen höheren energetischen Zustand angeregt wird.
 Diese Größe ist direkt proportional zur Absorption.
 ::::
 
-::::{seealso} Motivation: Das elektromagnetische Fenster der Atmosphäre
+::::{seealso} Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre
 :class: dropdown
 
 Absorptionsspektren spielen nicht nur bei der Charakterisierung einzelner Moleküle eine Rolle, sondern sind auch
@@ -293,7 +293,7 @@ zu bestimmten Ausgaben führen (z. B. Energie oder Spektrum).
 Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
 :::
 
-::::{danger} Genauigkeit
+::::{danger} Achtung: Genauigkeit
 
 Die Entwicklung theoretischer Methoden mit dem Ziel, Moleküleigenschaften vollständig *ab initio* vorherzusagen, ist ein
 aktiver Bereich der Forschung.
