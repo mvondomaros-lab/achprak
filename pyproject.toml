@@ -1,9 +1,7 @@
 [project]
 name = "achprak"
-version = "0.3"
-authors = [
-  { name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }
-]
+version = "0.4"
+authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
 description = "Jupyter-based practical introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -51,3 +49,6 @@ pre-commit = ">=4.5.1,<5"
 local = { features = ["local"] }
 hub = { features = ["hub"] }
 dev = { features = ["local", "dev"] }
+
+[tool.pixi.activation]
+env = { TF_CPP_MIN_LOG_LEVEL = "3" }
