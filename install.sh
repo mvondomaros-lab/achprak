@@ -22,36 +22,6 @@ have_cmd() {
   command -v "$1" >/dev/null 2>&1
 }
 
-ensure_tf_log_level() {
-  VAR_NAME="TF_CPP_MIN_LOG_LEVEL"
-  VAR_VALUE="3"
-
-  info "Ensuring ${VAR_NAME}=${VAR_VALUE} is set for this session and future shells..."
-
-  # Set for current shell
-  export ${VAR_NAME}="${VAR_VALUE}"
-
-  add_line='export TF_CPP_MIN_LOG_LEVEL=3'
-
-  append_if_missing() {
-    target_file="$1"
-    [ -f "$target_file" ] || return 0
-    if ! grep -q 'TF_CPP_MIN_LOG_LEVEL' "$target_file"; then
-      printf '\n# Suppress verbose XLA/JAX logs\n%s\n' "$add_line" >> "$target_file"
-      info "Added ${VAR_NAME} to ${target_file}"
-    else
-      info "${VAR_NAME} already present in ${target_file}"
-    fi
-  }
-
-  # Prefer .bashrc, fallback to .profile
-  if [ -f "${HOME}/.bashrc" ]; then
-    append_if_missing "${HOME}/.bashrc"
-  else
-    append_if_missing "${HOME}/.profile"
-  fi
-}
-
 install_pixi() {
   if have_cmd pixi; then
     info "pixi already installed: $(command -v pixi)"
@@ -135,7 +105,8 @@ register_kernel() {
     "debugger": true
   },
   "env": {
-    "PATH": "${ENV_BIN}:${PATH}"
+    "PATH": "${ENV_BIN}:${PATH}",
+    "TF_CPP_MIN_LOG_LEVEL": "3"
   }
 }
 EOF
@@ -200,7 +171,6 @@ main() {
   have_cmd git || fail "git is required but not installed."
 
   install_pixi
-  ensure_tf_log_level
   clone_or_update_repo
   install_env
   register_kernel
