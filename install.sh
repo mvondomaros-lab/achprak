@@ -50,22 +50,11 @@ clone_or_update_repo() {
   if [ -d "${REPO_DIR}/.git" ]; then
     info "Repository already exists, updating ${REPO_DIR}..."
 
-    if ! git -C "${REPO_DIR}" pull --ff-only; then
-      printf '\n' >&2
-      printf 'ERROR: Could not update the repository in:\n' >&2
-      printf '  %s\n' "${REPO_DIR}" >&2
-      printf '\n' >&2
-      printf 'This usually means that local files were changed.\n' >&2
-      printf '\n' >&2
-      printf 'Please run these commands manually in a terminal:\n' >&2
-      printf '  cd "%s"\n' "${REPO_DIR}" >&2
-      printf '  git status\n' >&2
-      printf '\n' >&2
-      printf 'If you do not need your local changes, you can remove the folder and run the installer again:\n' >&2
-      printf '  rm -rf "%s"\n' "${REPO_DIR}" >&2
-      printf '\n' >&2
-      exit 1
-    fi
+    cd "${REPO_DIR}"
+    git fetch --all --prune || fail "git fetch failed"
+    git reset --hard HEAD || fail "git reset failed"
+    git clean -fd || fail "git clean failed"
+    git pull --ff-only || fail "git pull failed"
 
   elif [ -e "${REPO_DIR}" ]; then
     printf '\n' >&2
