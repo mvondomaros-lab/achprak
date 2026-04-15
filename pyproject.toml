@@ -17,7 +17,7 @@ python = ">=3.12,<3.13"
 
 ipython = ">=9.12.0,<10"
 ipywidgets = ">=8.1.8,<9"
-nglview = ">=3,<4"  # Pinned to <4 to avoid incompatibility with the server extension.
+nglview = ">=3,<4" # Pinned to avoid javascript error.
 
 numpy = ">=2.4.3,<3"
 scipy = ">=1.17.1,<2"
@@ -27,8 +27,7 @@ ase = ">=3.28.0,<4"
 rdkit = ">=2026.3.1,<2027"
 tblite-python = ">=0.5.0,<0.6"
 mopac = ">=23.2.4,<24"
-
-setuptools = "<=79"  # Pinned to <=79 to provide pkg_resources required by nglview <4.
+setuptools = ">=80,<80.9" # Pinned to provide pkg_resources.
 
 [tool.pixi.feature.local.dependencies]
 jupyterlab = ">=4.5.6,<5"
