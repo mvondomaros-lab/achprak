@@ -36,9 +36,15 @@ SOLVENT_EPS = 24.3
 
 class DefaultASECalculator(tblite.ase.TBLite):
     def __init__(
-        self, method="GFN2-xTB", solvation=("alpb", SOLVENT_NAME), verbosity=0
+        self,
+        method="GFN1-xTB",
+        solvation=("alpb", SOLVENT_NAME),
+        accuracy=1.0,
+        verbosity=0,
     ):
-        super().__init__(method=method, solvation=solvation, verbosity=verbosity)
+        super().__init__(
+            method=method, solvation=solvation, accuracy=accuracy, verbosity=verbosity
+        )
 
 
 def atoms_to_xyz(atoms):

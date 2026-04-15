@@ -34,7 +34,7 @@ class OptMin:
             opt = sella.Sella(self.atoms, order=0, internal=True, trajectory=tmp.name)
             output = output or contextlib.nullcontext()
             with output:
-                converged = opt.run()
+                converged = opt.run(fmax=0.02)
             self.traj = ase.io.read(tmp.name, index=":")
         return converged
 
@@ -85,7 +85,7 @@ class OptTS:
 
         # Convert back to ASE and attach calculator.
         self.atoms = common.mol_to_atoms(mol)
-        self.atoms.calc = calc or common.DefaultASECalculator()
+        self.atoms.calc = calc or common.DefaultASECalculator(accuracy=0.1)
         self.traj = None
 
     def run(self, output=None):
@@ -96,7 +96,7 @@ class OptTS:
         opt = sella.Sella(self.atoms, order=1, internal=True)
         output = output or contextlib.nullcontext()
         with output:
-            converged = opt.run()
+            converged = opt.run(fmax=0.02)
 
         # Make a trajectory of the lowest-energy normal mode and print frequencies.
         if converged:
@@ -114,7 +114,7 @@ class OptTS:
                         print(f"  {i:3d}: {f}")
 
                 # Write a mode trajectory for visualization (mode 0 = lowest frequency).
-                vibrations.write_mode(0, nimages=60, kT=0.5)
+                vibrations.write_mode(0, nimages=60, kT=1.0)
                 fname = os.path.join(tmp, "vib.0.traj")
                 self.traj = ase.io.Trajectory(fname)
         return converged
