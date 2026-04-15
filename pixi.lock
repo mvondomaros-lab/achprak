@@ -174,7 +174,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/numpy-2.4.3-py312h33ff503_0.conda
@@ -427,7 +427,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/numpy-2.4.3-py312h84a4f5f_0.conda
@@ -709,7 +709,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/nodeenv-1.10.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/linux-64/nodejs-25.8.2-he4ff34a_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
@@ -985,7 +985,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/nodeenv-1.10.0-pyhd8ed1ab_0.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/nodejs-25.8.2-h7039424_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
@@ -1262,7 +1262,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/numpy-2.4.3-py312h33ff503_0.conda
@@ -1515,7 +1515,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/numpy-2.4.3-py312h84a4f5f_0.conda
@@ -1784,7 +1784,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/ncurses-6.5-h2d0b736_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/linux-64/numpy-2.4.3-py312h33ff503_0.conda
@@ -2038,7 +2038,7 @@ environments:
       - conda: https://prefix.dev/conda-forge/noarch/nbformat-5.10.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
       - conda: https://prefix.dev/conda-forge/noarch/nest-asyncio-1.6.0-pyhd8ed1ab_1.conda
-      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
+      - conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-7.5.5-pyhcf101f3_0.conda
       - conda: https://prefix.dev/conda-forge/noarch/notebook-shim-0.2.4-pyhd8ed1ab_1.conda
       - conda: https://prefix.dev/conda-forge/osx-arm64/numpy-2.4.3-py312h84a4f5f_0.conda
@@ -2172,7 +2172,7 @@ packages:
 - pypi: ./
   name: achprak
   version: '0.3'
-  sha256: 1d627438402040910896578db381dfbcf2813b71bf256f2f3ff35d3278c85c2d
+  sha256: a846ff0f43b4b3fd1f7250cd0263e28a9d4465f6410ae79c044accd2d2bd04d8
 - conda: https://prefix.dev/conda-forge/linux-64/alsa-lib-1.2.15.3-hb03c661_0.conda
   sha256: d88aa7ae766cf584e180996e92fef2aa7d8e0a0a5ab1d4d49c32390c1b5fff31
   md5: dcdc58c15961dbf17a0621312b01f5cb
@@ -5613,9 +5613,9 @@ packages:
   - pkg:pypi/nest-asyncio?source=hash-mapping
   size: 11543
   timestamp: 1733325673691
-- conda: https://prefix.dev/conda-forge/noarch/nglview-4.0.1-pyh460f6b1_0.conda
-  sha256: af9161e2667741b13477110111cc280689e7ad53a58e0b8cea7c33d91efaef0e
-  md5: 0680a0783467fb3049370f5ad9e3a3c9
+- conda: https://prefix.dev/conda-forge/noarch/nglview-4.0-pyh309af5b_0.conda
+  sha256: db3d69c97f924b6d1a393de928e4d2ad2da3e73d5a0f6c8b7442c856166ccb12
+  md5: b12279f1812218fe19c9513b1b87969a
   depends:
   - ipywidgets >=8
   - jupyterlab_widgets
@@ -5626,8 +5626,8 @@ packages:
   license_family: MIT
   purls:
   - pkg:pypi/nglview?source=hash-mapping
-  size: 8787881
-  timestamp: 1770336503219
+  size: 8092941
+  timestamp: 1762548042026
 - conda: https://prefix.dev/conda-forge/noarch/nodeenv-1.10.0-pyhd8ed1ab_0.conda
   sha256: 4fa40e3e13fc6ea0a93f67dfc76c96190afd7ea4ffc1bac2612d954b42cdc3ee
   md5: eb52d14a901e23c39e9e7b4a1a5c015f
