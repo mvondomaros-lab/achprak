@@ -34,7 +34,7 @@ class OptMin:
             opt = sella.Sella(self.atoms, order=0, internal=True, trajectory=tmp.name)
             output = output or contextlib.nullcontext()
             with output:
-                converged = opt.run(fmax=0.01)
+                converged = opt.run()
             self.traj = ase.io.read(tmp.name, index=":")
         return converged
 
@@ -96,7 +96,7 @@ class OptTS:
         opt = sella.Sella(self.atoms, order=1, internal=True)
         output = output or contextlib.nullcontext()
         with output:
-            converged = opt.run(fmax=0.01)
+            converged = opt.run()
 
         # Make a trajectory of the lowest-energy normal mode and print frequencies.
         if converged:
