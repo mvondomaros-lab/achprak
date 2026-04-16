@@ -133,3 +133,13 @@ def tempdir():
             yield tmp
         finally:
             os.chdir(cwd)
+
+
+def get_threads(default=1):
+    for var in ("SLURM_CPUS_PER_TASK", "OMP_NUM_THREADS", "SLURM_JOB_CPUS_PER_NODE"):
+        if var in os.environ:
+            try:
+                return int(os.environ[var])
+            except ValueError:
+                pass
+    return default

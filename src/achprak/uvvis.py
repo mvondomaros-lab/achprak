@@ -46,7 +46,7 @@ class UVVis:
         xyz = common.atoms_to_xyz(atoms)
         self.mopac = pymopac.MopacInput(
             xyz,
-            model=f"INDO CIS EPS={common.SOLVENT_EPS}",
+            model=f"INDO CIS MAXCI=800 WRTCI=30 WRTCONF=0.2 EPS={common.SOLVENT_EPS} THREADS={common.get_threads()}",
             addHs=False,
             preopt=False,
             aux=False,
