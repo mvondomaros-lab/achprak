@@ -100,7 +100,20 @@ class OptTS:
 
         # Make a trajectory of the lowest-energy normal mode and print frequencies.
         if converged:
-            vibrations = ase.vibrations.Vibrations(self.atoms)
+            properties = azobenzene.Properties(self.atoms)
+            indices = properties.cnnc_dihedral_indices()
+            # NOTE:
+            # We restrict the vibrational analysis to the CNNC atoms only.
+            # This significantly reduces computational cost because ASE
+            # finite-difference vibrations scale with the number of atoms.
+            #
+            # For azobenzene TS validation, this is sufficient because we
+            # only need to confirm the presence of the characteristic
+            # imaginary mode along the N=N torsion / CNN deformation.
+            #
+            # This is NOT a full vibrational analysis and should not be
+            # used for thermochemistry.
+            vibrations = ase.vibrations.Vibrations(self.atoms, indices=indices)
             with common.tempdir() as tmp:
                 # Run the finite-difference vibrational analysis quietly.
                 with contextlib.redirect_stdout(io.StringIO()):
@@ -109,7 +122,7 @@ class OptTS:
                 # Print frequencies to the output widget/context.
                 freqs = vibrations.get_frequencies()
                 with output:
-                    print("Vibrational frequencies (cm^-1):")
+                    print("Vibrational frequencies (cm^-1) [CNNC subset only]:")
                     for i, f in enumerate(freqs):
                         print(f"  {i:3d}: {f}")
 
