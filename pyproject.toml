@@ -45,10 +45,18 @@ pixi-pycharm = ">=0.0.11,<0.0.12"
 mystmd = ">=1.8.3,<2"
 pre-commit = ">=4.5.1,<5"
 
+[tool.pixi.feature.lserver.dependencies]
+jupyterhub = ">=5.4.4,<6"
+
+[tool.pixi.feature.lserver.pypi-dependencies]
+jupyterhub-systemdspawner = ">=1.0.2, <2"
+jupyterhub-nativeauthenticator = ">=1.3.0, <2"
+
 [tool.pixi.environments]
 local = { features = ["local"] }
 hub = { features = ["hub"] }
 dev = { features = ["local", "dev"] }
+lserver = { features = ["local", "lserver"] }
 
 [tool.pixi.activation]
 env = { TF_CPP_MIN_LOG_LEVEL = "3" }
