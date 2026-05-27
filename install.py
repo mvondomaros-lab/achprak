@@ -16,6 +16,8 @@ HOME = Path.home()
 PIXI_BIN = HOME / ".pixi" / "bin"
 PIXI = PIXI_BIN / "pixi"
 
+os.environ["PIXI_CACHE_DIR"] = f"/tmp/pixi-cache-{os.environ['USER']}"
+
 
 def run(*cmd, cwd=None):
     print("+", *cmd, flush=True)
