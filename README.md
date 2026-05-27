@@ -33,11 +33,3 @@ The materials are available on GitHub Pages:
 
 > [!NOTE]
 > For development, use the `dev` environment instead of `local`.
-
-## Installer
-
-For easy deployment on JupyterHub instances, an installer script is available:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/mvondomaros-lab/achprak/main/install.sh | sh
-```
