@@ -48,43 +48,43 @@ Auswahl des passenden Profils.
 
 ---
 
-### 3. Terminal öffnen
+### 3. Python-Konsole öffnen
 
 Nach dem Start sehen Sie die Jupyter-Oberfläche.
 
-Öffnen Sie dort ein **Terminal**.
+Öffnen Sie dort eine **Python-Konsole**.
 
 ```{figure} ../figures/screenshots/screenshot3.png
-:alt: Jupyter-Oberfläche mit markierter Schaltfläche Terminal
+:alt: Jupyter-Oberfläche mit markierter Schaltfläche Python Console
 :width: 800px
 :align: center
 
-Die Jupyter-Oberfläche. Öffnen Sie hier ein Terminal.
+Die Jupyter-Oberfläche. Öffnen Sie hier eine Python-Konsole.
 ```
 
 :::{note} Hinweis
-Ein Terminal ist ein Fenster, in das man Befehle eingeben kann.  
+Eine Python-Konsole ist ein Fenster, in das man Python-Code eingeben kann.  
 Sie müssen dafür keine Programmierkenntnisse haben: In diesem Versuch kopieren Sie nur eine Zeile und führen sie aus.
 :::
 
 ---
 
-### 4. Installationsbefehl kopieren und einfügen
+### 4. Installationscode kopieren und ausführen
 
 Kopieren Sie die folgende Zeile genau so, wie sie hier steht:
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/mvondomaros-lab/achprak/main/install.sh | sh
+```python
+import urllib.request; exec(urllib.request.urlopen("https://raw.githubusercontent.com/mvondomaros-lab/achprak/main/install.py").read().decode())
 ```
 
-Fügen Sie die Zeile in das Terminal ein und drücken Sie danach die **Enter-Taste**.
+Fügen Sie die Zeile in die Python-Konsole ein und drücken Sie danach **Shift + Enter**.
 
 ```{figure} ../figures/screenshots/screenshot4.png
-:alt: Terminal mit eingefügtem Installationsbefehl
+:alt: Python-Konsole mit eingefügtem Installationscode
 :width: 800px
 :align: center
 
-Der Installationsbefehl im Terminal.
+Der Installationscode in der Python-Konsole.
 ```
 
 :::{tip} Tipp
@@ -96,20 +96,20 @@ Falls das nicht klappt, hilft Ihnen eine Assistenzperson weiter.
 
 ### 5. Warten, bis die Installation fertig ist
 
-Nach dem Start der Installation erscheinen mehrere Zeilen im Terminal. Das ist normal.
+Nach dem Start der Installation erscheinen mehrere Zeilen in der Python-Konsole. Das ist normal.
 
 Bitte warten Sie, bis der Vorgang vollständig abgeschlossen ist.
 
 ```{figure} ../figures/screenshots/screenshot5.png
-:alt: Terminal während oder nach der Installation
+:alt: Python-Konsole während oder nach der Installation
 :width: 800px
 :align: center
 
-Die Installation läuft im Terminal.
+Die Installation läuft in der Python-Konsole.
 ```
 
 :::{important} Wichtig
-Schließen Sie das Terminal während der Installation nicht.
+Schließen Sie die Python-Konsole während der Installation nicht.
 :::
 
 ---
