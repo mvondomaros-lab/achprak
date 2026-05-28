@@ -12,7 +12,7 @@ Falls Sie keinen eigenen Laptop dabeihaben, können Sie auch einen Poolrechner m
 
 Bitte folgen Sie diesen Schritten nacheinander.
 
-### 1. JupyterHub öffnen und anmelden
+### JupyterHub öffnen und anmelden
 
 Öffnen Sie im Browser diese Seite:
 
@@ -28,9 +28,18 @@ Melden Sie sich dort mit Ihrer StudentID an.
 Anmeldung in JupyterHub.
 ```
 
+:::{dropdown} Technische Probleme mit JupyterHub?
+Falls JupyterHub nicht erreichbar ist oder technische Probleme auftreten, können Sie stattdessen den folgenden Fallback-Server verwenden:
+
+https://lserver.chemie.uni-marburg.de
+
+Verwenden Sie diesen Server **nur nach ausdrücklicher Anweisung durch die Assistent*innen**.
+:::
+
+
 ---
 
-### 2. Profil auswählen
+### Profil auswählen
 
 Wählen Sie das Profil:
 
@@ -48,7 +57,7 @@ Auswahl des passenden Profils.
 
 ---
 
-### 3. Python-Konsole öffnen
+### Python-Konsole öffnen
 
 Nach dem Start sehen Sie die Jupyter-Oberfläche.
 
@@ -69,15 +78,20 @@ Sie müssen dafür keine Programmierkenntnisse haben: In diesem Versuch kopieren
 
 ---
 
-### 4. Installationscode kopieren und ausführen
+### Installationscode kopieren und ausführen
 
-Kopieren Sie die folgende Zeile genau so, wie sie hier steht:
+Kopieren Sie den folgenden Code genau so, wie er hier steht:
 
 ```python
-import urllib.request; exec(urllib.request.urlopen("https://raw.githubusercontent.com/mvondomaros-lab/achprak/main/install.py").read().decode())
+import urllib.request
+
+url = "https://raw.githubusercontent.com/mvondomaros-lab/achprak/main/install.py"
+code = urllib.request.urlopen(url).read().decode()
+
+exec(code)
 ```
 
-Fügen Sie die Zeile in die Python-Konsole ein und drücken Sie danach **Shift + Enter**.
+Fügen Sie den Code vollständig in die Python-Konsole ein und drücken Sie anschließend **Shift + Enter**.
 
 ```{figure} ../figures/screenshots/screenshot4.png
 :alt: Python-Konsole mit eingefügtem Installationscode
@@ -89,12 +103,12 @@ Der Installationscode in der Python-Konsole.
 
 :::{tip} Tipp
 Das Einfügen funktioniert meist mit **Strg + V** oder mit Rechtsklick.  
-Falls das nicht klappt, hilft Ihnen eine Assistenzperson weiter.
+Falls das nicht klappt, helfen Ihnen die Assistent*innen weiter.
 :::
 
 ---
 
-### 5. Warten, bis die Installation fertig ist
+### Warten, bis die Installation fertig ist
 
 Nach dem Start der Installation erscheinen mehrere Zeilen in der Python-Konsole. Das ist normal.
 
@@ -108,13 +122,9 @@ Bitte warten Sie, bis der Vorgang vollständig abgeschlossen ist.
 Die Installation läuft in der Python-Konsole.
 ```
 
-:::{important} Wichtig
-Schließen Sie die Python-Konsole während der Installation nicht.
-:::
-
 ---
 
-### 6. Das Notebook öffnen
+### Das Notebook öffnen
 
 Öffnen Sie nun die Datei **achprak.ipynb**.
 
@@ -132,7 +142,7 @@ Sie finden sie im Ordner:
 
 ---
 
-### 7. Prüfen, ob der richtige Kernel ausgewählt ist
+### Prüfen, ob der richtige Kernel ausgewählt ist
 
 Oben rechts im Notebook-Fenster sehen Sie die **Kernelauswahl**.
 
@@ -165,7 +175,7 @@ Wählen Sie bei Bedarf den Kernel `AChPrak` aus.
 
 ---
 
-### 8. Das Notebook starten
+### Das Notebook starten
 
 Klicken Sie oben auf das Symbol **⏩**.
 
@@ -181,5 +191,5 @@ Das ⏩-Symbol zum Starten des Notebooks.
 
 ## Wenn etwas nicht klappt
 
-Kein Problem. Melden Sie sich einfach bei einer Assistenzperson.  
+Kein Problem. Melden Sie sich einfach bei den Assistent*innen.  
 Wir helfen Ihnen direkt bei der Einrichtung.
