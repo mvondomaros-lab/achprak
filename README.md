@@ -21,40 +21,71 @@ pixi run -e web web
 Open **http://127.0.0.1:8000/**. Python, RDKit, tblite, Sella and MOPAC are managed
 by Pixi. The NGL browser viewer is bundled locally; no Node build or CDN is needed.
 
-The German-language interface includes structure generation, 2D/3D viewing,
-properties, minimum/transition-state optimization, trajectory and vibration
-playback, UV/Vis spectra, the exercise tasks, unit conversion, and image/data
-exports. Structures are built only from the predefined cis/trans configurations
-and substituent choices; names are generated automatically. XYZ import and custom
-name input are not supported. XYZ export remains available. Select a structure once and carry it through the calculation steps.
-Long calculations run in isolated worker processes and can be cancelled. During
-minimum and transition-state searches, the 3D geometry, energy and maximum force
-update live at accepted optimizer steps (the browser polls every 400 ms). A live
-energy chart shows ΔE relative to the first step, with absolute energies on hover.
-Every geometry and energy is retained in the result, including runs that finish
-between polls. Short runs automatically replay for up to three seconds, explicitly
-labeled as playback, with a skip button; reduced-motion preferences disable this
-automatic replay. The energy chart remains available afterward. Clicking a point in the energy chart selects its structure. Play/Pause and
-the playback mode selector sit beside the chart; there is no separate slider.
-Arrow keys, Home and End step through frames when the chart has focus. Play resumes from the paused
-or manually selected step, stops at the final frame, and never loops. Pressing
-Play at the final frame starts a new playback from the beginning. For transition states,
-a mode selector switches the chart controls between the reaction path, search geometries,
-and the imaginary TS mode. Starting structures are labeled “Startstruktur”. The structure picker searches and wraps full molecule names; result names retain only
-the current optimization type.
+## Student workflow
 
-Step 1 offers only starting structures, with a “Strukturformel / 3D-Startstruktur”
-toggle. It defaults to 2D and remembers the chosen view while switching
-structures or panels. The 3D view allows rotation and zoom and identifies the
-geometry as not yet energy-optimized. Returning
-there from a calculated result selects its source starting structure; returning
-to step 2 restores the result. Explicitly choosing or creating a different
-starting structure makes that structure the next selection in step 2. Minima
-and transition states remain selectable in step 2's 3D view.
-The structure picker also offers “Alle Strukturen löschen” to clear all
-structures and their spectra in the current session after confirmation. This
-includes entries hidden by the current panel or search filter and is unavailable
-while a calculation is active.
+The German-language interface has three steps:
+
+1. **Create a starting structure.** Choose cis or trans and the substituents.
+   View the structure as a 2D formula or a rotatable 3D model. The view selector
+   defaults to 2D and remembers the choice when switching structures or steps.
+2. **Optimize a structure.** Search for a local minimum or, from an optimized
+   minimum, a transition state. Inspect the geometry, energy, CNNC dihedral angle
+   and distance between the ring centres.
+3. **Calculate a UV/Vis spectrum.** Use an optimized minimum to predict electronic
+   excitation energies and relative absorption strengths.
+
+Each step offers an expandable **Was passiert im Hintergrund?** explanation:
+what the method does, how to read the result, and what its limits are.
+The exercise tasks and unit converter are available throughout the app.
+
+Step 1 lists only starting structures. Returning there from a result selects its
+source starting structure; returning to step 2 restores the result. Explicitly
+choosing or creating a different starting structure carries that selection into
+step 2. The structure picker groups related molecules and searches their names
+and formulas. **Alle Strukturen löschen** clears all structures and spectra in
+that browser session after confirmation, including entries hidden by a search
+or step filter. Clearing is unavailable while a calculation is active.
+
+Structures are generated from predefined configurations and substituents.
+Names are assigned automatically; custom names and XYZ imports are not supported.
+Students can export coordinates, images and spectra for their lab reports.
+
+### Calculation progress and playback
+
+Calculations run in isolated worker processes and can be cancelled. During
+optimization, the viewer shows accepted geometries and the energy chart updates
+as the browser polls for progress. All recorded geometries and energies remain
+available, including those calculated between polls.
+
+The chart distinguishes optimization steps from the reaction path. Clicking a
+point selects its geometry. Arrow keys, Home and End select frames when the
+chart has focus. **Abspielen / Pause** is in the viewer toolbar; the playback
+mode selector is beside the chart. Playback resumes at the selected frame and
+stops at the end. Starting playback at the last frame restarts it.
+For a transition state, students can choose the reaction path, search history,
+or the illustrated unstable mode.
+
+Short calculations may finish before students see any live progress. These runs
+replay for up to three seconds, with a clear playback label and a skip button.
+Reduced-motion preferences disable this automatic replay. Neither optimization
+playback nor the illustrated unstable mode represents molecular dynamics.
+
+## Terminology and scientific scope
+
+Use **transition state** (German **Übergangszustand**, abbreviation **TS**) as the
+main teaching term. Use **transition structure** (**Übergangsstruktur**) when
+specifically distinguishing the calculated saddle-point geometry from the wider
+transition-state concept. The student theory page explains this distinction,
+following IUPAC's definitions of [transition state](https://goldbook.iupac.org/terms/view/T06468)
+and [transition structure](https://goldbook.iupac.org/terms/view/T06471).
+
+Call the calculated difference **electronic energy barrier**, $\Delta E^\ddagger$.
+It is not generally the Arrhenius activation energy or a Gibbs energy of activation.
+Student-facing text uses German, addresses students as **Sie**, and explains
+technical terms on first use. Developer documentation and code identifiers use
+English. See [AGENTS.md](AGENTS.md) for the audience and language conventions.
+
+### Transition-state search
 
 TS searches require a converged minimum. A relaxed CNNC torsion scan seeds a
 13-image path toward the opposite cis/trans isomer, preserving atom identity and
@@ -62,21 +93,17 @@ rotating the complete fragment. CNN angles are guided to 120° only during seed
 preparation. The opposite endpoint is then freely minimized. Regular minimum
 searches, opposite endpoints, and connectivity checks all use a final maximum
 atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
-ASE FIRE relaxes
-two unconstrained NEB halves against a provisionally refined central saddle seed.
+ASE FIRE relaxes two unconstrained NEB halves against a provisionally refined central saddle seed.
 This prevents early corner cutting from removing the barrier. The full band is
 then released for climbing-image NEB. Both stages use 0.1 eV/Å² springs;
 stronger springs stalled the trans-2-Me half-path relaxation. Free Sella saddle
 refinement follows, using a full Cartesian Hessian and a 0.005 eV/Å force threshold.
 Candidates with additional imaginary modes are refined to 0.001 eV/Å within the
 shared iteration budget, then their Hessian is recalculated. This resolves soft
-torsions without weakening mode validation. The central seed
-is approached in internal coordinates and finished in Cartesian coordinates;
+torsions without weakening mode validation. The central seed is approached in internal coordinates and finished in Cartesian coordinates;
 final saddle refinement also uses Cartesian coordinates to handle nearly linear
-CNN angles. Both endpoints use
-the same GFN1-xTB/ALPB ethanol
-model as the band. The full search has a shared
-1500-iteration budget, plus the server's wall-time limit.
+CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
+The full search shares a 1500-iteration budget and the server's wall-time limit.
 
 The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
@@ -88,8 +115,8 @@ in the result; the other endpoint is available as the final path image.
 
 A full all-atom finite-difference Hessian (0.01 Å displacement) checks the saddle.
 Rigid translations and rotations are projected out; exactly one imaginary
-internal frequency above 20 cm⁻¹ is required. Smaller negatives are tolerated as
-numerical noise. Displacement by ±0.15 Å maximum atom motion along the unstable
+internal frequency with magnitude above 20 cm⁻¹ is required. Smaller negative frequencies are tolerated by this numerical criterion;
+they are not proof of additional physical instabilities. Displacement by ±0.15 Å maximum atom motion along the unstable
 mode, followed by unconstrained minimization, must reach one cis and one trans
 minimum with the original atom-mapped bond graph preserved. For this comparison,
 copies of both band endpoints and the downhill minima are optimized to 0.002 eV/Å
@@ -102,8 +129,11 @@ not establish an exact conformer match. This is a numerical downhill connectivit
 check, **not an IRC** or a proof of the globally lowest barrier. Failed band, saddle,
 mode or cis/trans connectivity checks leave an unconfirmed search state.
 Only a force-converged saddle passing both mode and connectivity checks is labeled
-a TS. The vibration is illustrative, not dynamics. Barriers are electronic energy
-differences, not free-energy barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
+a TS. The animation illustrates the unstable mode; it is not a periodic vibration or
+a dynamics simulation. Barriers are electronic energy differences, not free-energy
+barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
+
+## Development and session lifetime
 
 For development, use `pixi run -e dev web`.
 New jobs load changes to the chemistry workers automatically. Reload the browser
@@ -116,7 +146,7 @@ pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
 
 Results are held per browser session until server restart or 24 hours of
 inactivity. Download XYZ coordinates, PNG images and SVG/CSV spectra for your
-protocol. A page reload reconnects to any running calculation.
+lab report. A page reload reconnects to any running calculation.
 
 ## Multiple users / self-hosted server
 
@@ -133,7 +163,7 @@ The theory pages remain in `site/`. Regenerate their figures without Jupyter:
 pixi run -e dev python figures/scripts/figures.py
 ```
 
-The webapp replaces the notebook interface. Notebook widgets, clipboard helpers,
+The web app replaces the notebook interface. Notebook widgets, clipboard helpers,
 and the `local`, `hub`, and `lserver` environments have been removed. Use `web`
 for local operation, `dev` for development, or `web-hub` for shared deployment.
 
@@ -167,11 +197,4 @@ timeouts, and the standalone proxy with a `/user/test/` prefix and private Unix
 socket. NGL rendering, optimization playback, 2D structures and spectra were also
 checked in Safari. Linux PAM login and actual switching between Unix accounts
 still need a deployment test on the target server. The optional WebMCP interface
-is feature-detected; this browser does not provide a WebMCP validation context.
-
-The web interface has three steps: create a structure, optimize its geometry,
-and calculate a UV/Vis spectrum. Starting structures and optimization results
-include energy, CNNC angle and ring distance automatically. Exercise numbers
-remain aligned with the original lab handout. Method details are expandable;
-student-facing explanations distinguish search iterations from a reaction path
-and from physical motion.
+is feature-detected and needs separate verification in a supporting browser.

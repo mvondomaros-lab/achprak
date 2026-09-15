@@ -1,4 +1,4 @@
-# Grundlagen 📘
+# Theoretische Grundlagen
 
 ## Azobenzol
 
@@ -33,22 +33,24 @@ Zeichnen zu sparen – lässt man in der Skelettformel die Kohlenstoffatome sowi
 weg.
 ::::
 
-Azobenzol selbst ist farblos, bildet aber das Grundgerüst für zahlreiche Farbstoffe.
-Diese entstehen durch Substitution, also durch Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen.
-Wird beispielsweise am vierten Kohlenstoffatom eines Phenylrings ein Wasserstoffatom durch eine Methoxygruppe (–OCH₃)
-ersetzt, entsteht eine gelbe Verbindung.
+Azobenzol ist selbst farbig; als Feststoff bildet es typischerweise orange bis orange-rote Kristalle
+([Stoffdaten in PubChem](https://pubchem.ncbi.nlm.nih.gov/compound/Azobenzene)).
+Es bildet außerdem das Grundgerüst vieler Azofarbstoffe. Durch **Substitution**, also den Austausch von
+Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich die Absorption und damit die Farbe verändern.
+Ein Beispiel ist 4-Methoxyazobenzol: Hier ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
+Die beobachtete Farbe hängt auch vom Lösungsmittel, der Konzentration und der Zusammensetzung der Probe ab.
 
 :::{figure} ../figures/drawings/4-methoxy-azobenzene.svg
 :width: 400px
 :align: left
-4-Methoxyazobenzol – ein gelber Farbstoff.
+Strukturformel von 4-Methoxyazobenzol.
 :::
 
 ::::{seealso} Ergänzung: Nomenklatur
 :class: dropdown
 
-Jede chemische Verbindung kann eindeutig benannt werden; die entsprechenden Regeln werden von der IUPAC (International
-Union of Pure and Applied Chemistry) festgelegt.
+Systematische Namen beschreiben den Aufbau einer Verbindung. Die IUPAC (International Union of Pure and
+Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können mehrere zulässige Namen gebräuchlich sein.
 
 Ein zentrales Element ist die Durchnummerierung der Kohlenstoffatome im Grundgerüst.
 Beim Azobenzol werden die Kohlenstoffatome des ersten Phenylrings mit 1–6 und die des zweiten Rings mit 1′–6′
@@ -67,7 +69,7 @@ Wird nun beispielsweise am 2. Kohlenstoffatom ein Wasserstoff durch ein Chlorato
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
-| Summenformel | Abkürzung | Name des Substituenten   |
+| Gruppenformel | Abkürzung | Name des Substituenten   |
 |--------------|-----------|--------------------------|
 | CH₃          | Me        | Methyl                   |
 | N(CH₃)₂      | NMe₂      | (Dimethylamino)          |
@@ -115,8 +117,9 @@ Die *trans*-Form ist energetisch stabiler und wird unter normalen Bedingungen be
 Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
 Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
 
-Ein Beispiel hierfür ist das oben erwähnte 4-Methoxyazobenzol:
-Bei Bestrahlung mit ultraviolettem Licht wechselt es von seiner gelblichen *trans*-Form in eine rot-braune *cis*-Form.
+Auch substituierte Azobenzole können durch Licht zwischen *cis* und *trans* umgeschaltet werden.
+Beide Formen besitzen unterschiedliche Absorptionsspektren. Welche Mischung unter Bestrahlung entsteht,
+hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
 
 :::{figure} ../figures/drawings/azobenzene-isomerism.svg
 :width: 800px
@@ -130,7 +133,7 @@ Die lichtinduzierte Isomerisierung des Azobenzols.
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
 *cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
 Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
-So genannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
+Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
 ähnlich wie in einem Computerspiel – entsteht ein umfassenderes räumliches Bild.
 
 :::{figure} ../figures/commons/Azobenzene-trans-3D-balls.png
@@ -150,8 +153,8 @@ Spektrums.
 Dieses umfasst alle Formen elektromagnetischer Strahlung – von energiearmen Radiowellen über Mikrowellen und
 Infrarotstrahlung bis hin zu sichtbarem Licht, UV-Strahlung, Röntgenstrahlen und hochenergetischen Gammastrahlen.
 
-Die einzelnen Bereiche unterscheiden sich in ihrer Energie $E$ bzw. Wellenlänge $\lambda$.
-Grundsätzlich gilt: je höher die Energie, desto kürzer die Wellenlänge.
+Die einzelnen Bereiche unterscheiden sich in der Energie $E$ eines Lichtquants (Photons) und seiner Wellenlänge $\lambda$.
+Für ein Photon gilt: Je höher die Energie, desto kürzer die Wellenlänge im Vakuum.
 Dies wird durch folgende Gleichung beschrieben:
 
 $$
@@ -183,39 +186,37 @@ Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.o
 
 Moleküle können mit Licht wechselwirken, indem sie dieses absorbieren. Wie diese Wechselwirkung abläuft, wird durch die
 Gesetze der Quantenmechanik beschrieben.
-Eine der grundlegenden Erkenntnisse dieser Theorie ist, dass Moleküle nicht Licht beliebiger Energie absorbieren können,
-sondern nur ganz bestimmte Energien.
-Stimmt die Energie, so wird das Licht aufgenommen und das Molekül in einen um diesen Energiebetrag höheren energetischen
-Zustand versetzt.
+Moleküle besitzen bestimmte, erlaubte Energieniveaus. Bei der Absorption eines Photons geht ein Molekül in einen
+höheren Zustand über. Die Energie des Photons entspricht dabei der Energiedifferenz zwischen den beiden Zuständen.
+Nicht jeder energetisch passende Übergang ist gleich wahrscheinlich: Manche tragen stark, andere kaum zur Absorption bei.
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
 
 :::{figure} ../figures/outputs/jablonski.png
 :width: 600px
 :align: left
 
-Jablonskitermschema eines Absorptionsprozesses.
-Das (fiktive) Molekül kann entweder Licht mit 3.0 eV oder 4.0 eV absorbieren, um in den ersten bzw. zweiten angeregten
+Vereinfachtes Energieniveauschema eines Absorptionsprozesses.
+Das (fiktive) Molekül kann entweder Licht mit 3,0 eV oder 4,0 eV absorbieren, um in den ersten bzw. zweiten angeregten
 Zustand versetzt zu werden.
 :::
 
-Trägt man auf, wie stark ein Molekül Licht mit einer bestimmten Energie absorbiert, so erhält man ein Linienspektrum.
+Für eine festgehaltene Molekülgeometrie liefert die hier verwendete Rechnung einzelne elektronische Übergänge.
+Trägt man ihre Energien und Stärken auf, erhält man das folgende Linienspektrum.
 
 :::{figure} ../figures/outputs/line-spectrum.png
 :width: 600px
 :align: left
 
-Das Spektrum eines Moleküls, das Licht mit 3.0 eV und 4.0 eV absorbiert.
-Die genauen Zahlenwerte der Absorption sind für unseren Versuch nicht relevant; daher wird die Einheit *a.u.* (arbitrary
-units) verwendet.
+Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert.
+Die Linienhöhen sind schematische relative Übergangsstärken. *a.u.* bedeutet hier „arbitrary units“, also
+beliebige Einheiten; gemeint sind keine atomaren Einheiten und keine gemessenen Absorbanzwerte.
 :::
 
-In experimentellen Absorptionsspektren erscheinen jedoch keine scharfen Linien, sondern breite Banden.
-Das liegt unter anderem daran, dass im Experiment viele miteinander wechselwirkende Moleküle untersucht werden – häufig
-sogar in Lösung.
-Außerdem bewegen sich Moleküle aufgrund der Temperatur ständig, wodurch die bevorzugte Übergangsenergie leicht variiert.
-Hinzu kommen instrumentelle Effekte (z. B. begrenzte Auflösung) sowie fundamentale quantenmechanische Effekte (z. B.
-endliche Lebensdauer der angeregten Zustände).
-All dies führt zu einer sogenannten Linienverbreiterung.
+In UV/Vis-Spektren von Molekülen in Lösung sieht man meist breite Banden. Dazu tragen viele nahe beieinanderliegende
+Übergänge mit unterschiedlichen Schwingungszuständen sowie Wechselwirkungen mit der Umgebung bei.
+Auch die endliche Lebensdauer angeregter Zustände und die Auflösung des Messgeräts beeinflussen die Linienbreite.
+Die Webapp bildet diese Effekte vereinfacht ab: Sie ersetzt jede berechnete Linie durch eine Gaußkurve mit
+vorgegebener Breite und addiert die Beiträge. Die Breite selbst wird nicht aus Molekülbewegungen berechnet.
 
 Es entsteht ein Bandenspektrum.
 Aus der Lage und Form dieser Banden lassen sich wichtige Informationen über den elektronischen Aufbau eines Moleküls
@@ -225,22 +226,24 @@ gewinnen.
 :width: 600px
 :align: left
 
-Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3.0 eV und 4.0 eV absorbiert.
+Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert.
 Zur besseren Orientierung wurde das zugrunde liegende Linienspektrum im Hintergrund dargestellt.
 :::
 
-::::{seealso} Ergänzung: Für besonders Interessierte – Absorption, Transmission, Extinktion, Übergangswahrscheinlichkeiten
+::::{seealso} Ergänzung: Absorption, Transmission und Oszillatorstärke
 :class: dropdown
 
-Absorption bezeichnet die Aufnahme von Licht durch ein Molekül.
-Transmission ist der Anteil des Lichts, der vom Molekül nicht aufgenommen wird und hindurchtritt.
-Die Extinktion beschreibt die gesamte Abschwächung der Strahlung und umfasst sowohl Absorption als auch Streuung.
-In spektroskopischen Experimenten wird häufig die Extinktion genutzt, da sie direkt von der Konzentration der
-absorbierenden Substanz abhängt (Lambert-Beer-Gesetz, siehe auch PC-Versuch).
+**Absorption** ist die Aufnahme von Strahlungsenergie. Die **Transmission** $T = I/I_0$ gibt an,
+welcher Anteil der einfallenden Lichtintensität $I_0$ als Intensität $I$ durch eine Probe hindurchtritt.
+Die dekadische **Absorbanz** ist $A = -\log_{10}(T)$. Für geeignete verdünnte Lösungen ist sie nach dem
+Lambert-Beer-Gesetz proportional zur Konzentration und zur durchstrahlten Schichtdicke.
+In Praktika wird dafür oft auch „Extinktion“ gesagt; dieser Begriff kann jedoch zusätzlich Streuverluste einschließen.
+Siehe die [IUPAC-Definition der Absorbanz](https://goldbook.iupac.org/terms/view/A00028).
 
-In diesem Computerversuch wird die Übergangswahrscheinlichkeit berechnet, also die Wahrscheinlichkeit, dass ein Molekül
-durch Licht in einen höheren energetischen Zustand angeregt wird.
-Diese Größe ist direkt proportional zur Absorption.
+Die Rechnung liefert **Oszillatorstärken**: dimensionslose Maße für die Stärke elektronischer Übergänge.
+Sie sind keine Absorptionswahrscheinlichkeiten zwischen 0 und 1 und keine Absorbanzwerte einer konkreten Probe.
+Die Kurve in der Webapp zeigt daraus gebildete relative Absorptionsbanden. Für eine gemessene Absorbanz wären
+zusätzlich unter anderem Konzentration und Schichtdicke nötig.
 ::::
 
 ::::{seealso} Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre
@@ -251,7 +254,8 @@ entscheidend für das Verständnis des Energiehaushalts unserer Erde – und dam
 
 Eines der wichtigsten Beispiele ist das Absorptionsspektrum unserer Atmosphäre. Die folgende Darstellung zeigt die
 relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
-Das gelb markierte elektromagnetische Fenster ist dabei von besonderer Bedeutung für den Wärmehaushalt unseres Planeten.
+Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Für den Energiehaushalt der Erde
+sind verschiedene Wellenlängenbereiche wichtig.
 
 :::{figure} ../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg
 :width: 1024px
@@ -260,10 +264,11 @@ Das gelb markierte elektromagnetische Fenster ist dabei von besonderer Bedeutung
 Atmosphärische Durchlässigkeit. PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden. Quelle/Lizenz: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg).
 :::
 
-Das elektromagnetische Fenster ist deshalb so wichtig, weil nur in diesem Bereich die Sonnenstrahlung nahezu ungehindert
-zur Erdoberfläche gelangen kann – und gleichzeitig die von der Erde abgegebene Wärmestrahlung wieder ins Weltall
-entweichen kann.
-Würde die Atmosphäre in diesem Bereich stärker absorbieren, würde sich die Erde deutlich stärker aufheizen. 🌍
+Ein großer Teil des sichtbaren Sonnenlichts kann die Atmosphäre durchdringen. Die deutlich kühlere Erde gibt
+Energie dagegen vor allem als langwellige Infrarotstrahlung ab. Ein anderes, infrarotes Fenster lässt einen Teil
+dieser Wärmestrahlung ins Weltall entweichen. Treibhausgase absorbieren in Teilen des Infrarotbereichs und verändern
+so den Energieaustausch. Sichtbares Licht und terrestrische Wärmestrahlung passieren also unterschiedliche
+Spektralbereiche. Eine Einführung bietet die [NASA zum Strahlungshaushalt der Erde](https://science.nasa.gov/ems/13_radiationbudget/).
 ::::
 
 ## Theoretische Chemie
@@ -282,9 +287,10 @@ In diesem Praktikumsversuch werden Sie verschiedene solcher Berechnungen durchf�
 Wie die zugrundeliegenden Methoden im Detail funktionieren, lernen Sie im Verlauf Ihrer theoretisch-chemischen
 Ausbildung (3./4. Semester, optional 5./6. Semester sowie im Masterstudium).
 
-Für diesen Versuch können Sie sich die eingesetzten Verfahren zunächst als *Blackbox* vorstellen:  
-Der innere Aufbau muss nicht bekannt sein – wichtig ist lediglich, dass bestimmte Eingaben (z. B. eine Molekülstruktur)
-zu bestimmten Ausgaben führen (z. B. Energie oder Spektrum).
+Für den Einstieg hilft das Bild einer *Blackbox*: Eine Eingabe, etwa eine Molekülstruktur, führt über ein
+Rechenmodell zu einer Ausgabe, etwa einer Energie oder einem Spektrum. Sie müssen die mathematischen Details
+noch nicht beherrschen. Wichtig ist aber, welche Frage das Modell beantwortet und welche Grenzen es hat.
+In jedem Schritt der Webapp können Sie dazu „Was passiert im Hintergrund?“ aufklappen.
 
 :::{figure} ../figures/commons/Blackbox3D.png
 :alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
@@ -293,33 +299,23 @@ zu bestimmten Ausgaben führen (z. B. Energie oder Spektrum).
 Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
 :::
 
-::::{danger} Achtung: Genauigkeit
+::::{important} Modell und Genauigkeit
 
-Die Entwicklung theoretischer Methoden mit dem Ziel, Moleküleigenschaften vollständig *ab initio* vorherzusagen, ist ein
-aktiver Bereich der Forschung.
-Für einige Eigenschaften existieren bereits sehr zuverlässige Verfahren – teilweise sogar genauer als entsprechende
-Experimente.
-Andere Eigenschaften lassen sich dagegen deutlich schwieriger vorhersagen.
+Eine Rechnung beschreibt ein Molekül mit einem Modell. Die Genauigkeit hängt von der Methode,
+der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können bessere Ergebnisse liefern,
+benötigen aber meist mehr Rechenzeit.
 
-Für die hier betrachteten Moleküle wäre eine genaue Vorhersage energetischer und spektroskopischer Eigenschaften zwar
-grundsätzlich möglich, würde aber sehr rechenintensive Verfahren erfordern. Solche Berechnungen können Stunden, Tage
-oder sogar Wochen dauern.
-
-Da dieser Versuch in erster Linie das Interesse an theoretischen Methoden wecken soll, wurden bewusst Verfahren
-ausgewählt, die schnelle Ergebnisse liefern – auch wenn diese im Vergleich zum Experiment leichte Abweichungen aufweisen
-können.
-
-➡️ **Beachten Sie daher**:  
-Absolute Aussagen wie *„Molekül A absorbiert bei 3.0 eV“* sollten vorsichtig interpretiert werden.  
-**Vergleichende Aussagen wie *„Molekül B absorbiert bei höheren Energien als Molekül A“* sind hingegen in den meisten
-Fällen zuverlässig**.
+Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energien und Spektren können deshalb
+merklich vom Experiment abweichen. Vergleichen Sie bevorzugt verwandte Moleküle unter gleichen
+Rechenbedingungen und formulieren Sie die Ergebnisse als **Vorhersagen des verwendeten Modells**.
+Auch ein berechneter Trend kann falsch sein; er ist eine überprüfbare Hypothese, kein gesichertes Messergebnis.
 ::::
 
 ## Atomkoordinaten
 
-Strukturformeln sind für Chemiker*innen zwar intuitiv verständlich, für die maschinelle Weiterverarbeitung jedoch
-ungeeignet.
-Deutlich besser geeignet sind atomare Koordinaten, d. h. die Positionen (x, y, z) eines jeden Atoms im Raum.
+Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diesen Bauplan beispielsweise
+als SMILES-Text verarbeiten. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
+benötigt: die Positionen $(x, y, z)$ aller Atome.
 
 Das Strukturerstellungswerkzeug erzeugt für Sie solche atomaren Koordinaten im sogenannten XYZ-Format.
 Dieses einfache Textformat ist wie folgt aufgebaut:
@@ -332,7 +328,7 @@ Dieses einfache Textformat ist wie folgt aufgebaut:
 [...]
 ```
 
-Die Koordinaten werden dabei in der Einheit Ångström angegeben ($1\ \mathrm{\AA} = 10^{-10}\ \mathrm{m}$).
+Die Koordinaten werden dabei in der Einheit Ångström angegeben ($1\ \text{Å} = 10^{-10}\ \mathrm{m}$).
 Die Struktur eines einfachen Wassermoleküls (H₂O) kann zum Beispiel wie folgt im XYZ-Format beschrieben werden:
 
 ```text
@@ -344,46 +340,41 @@ H  0.000  0.757  0.587
 ```
 
 Dieses Format zeigt, dass sich das Sauerstoffatom im Ursprung des Koordinatensystems $(x=0,y=0,z=0)$ befindet und dass
-die beiden Wasserstoffatome in der XY-Ebene liegen $(x = 0)$.
+die beiden Wasserstoffatome in der YZ-Ebene liegen $(x = 0)$.
 
 Das XYZ-Format dient in diesem Versuch zur Übergabe molekularer Strukturen zwischen den einzelnen Werkzeugen. Es
-fungiert damit sowohl als Eingabe- als auch als Ausgabeformat der jeweiligen *Black Boxes*.
+fungiert damit sowohl als Eingabe- als auch als Ausgabeformat der jeweiligen Rechenprogramme.
 Sie selbst müssen keine XYZ-Dateien erstellen – sollten den grundlegenden Aufbau dieses Formats jedoch kennen und
 beschreiben können.
 
 ## Molekulare Energien
 
-Die vermutlich wichtigste Größe in der theoretischen Chemie ist die Energie eines Moleküls.
-Alle Moleküle bestehen aus Atomen – diese wiederum aus Atomkernen und Elektronen.
-Diese Teilchen wechselwirken miteinander:
-anziehende Wechselwirkungen senken die Energie des Systems, abstoßende Wechselwirkungen erhöhen sie.
-Ist die Summe aller Wechselwirkungen anziehend, so bleibt das Molekül stabil und zerfällt nicht in seine Einzelteile.
-Das ist bei allen hier betrachteten Molekülen der Fall – aus diesem Grund sind die berechneten Energien negativ.
+Die Energie ist eine zentrale Größe der theoretischen Chemie. Sie hängt unter anderem von der Anordnung der
+Atomkerne und der Verteilung der Elektronen ab. Neben anziehenden und abstoßenden Wechselwirkungen geht auch
+die kinetische Energie der Elektronen in die Rechnung ein.
 
-Vom Betrag her erscheinen die berechneten Energien sehr groß (typischerweise in der Größenordnung
-von $-1000\ \text{eV}$).  
-Das liegt daran, dass Energien immer relativ zu einem Bezugspunkt angegeben werden.
-In theoretisch-chemischen Rechnungen ist dieser Bezugspunkt oft ein hypothetischer Zustand, bei dem alle Atomkerne und
-Elektronen unendlich weit voneinander entfernt sind.
-Bringt man diese Teilchen in Molekülform zusammen, wird eine sehr große Energiemenge frei – daher der große negative
-Wert.
-In der Realität betrachtet man jedoch häufig Prozesse, bei denen Moleküle ihre Konfiguration ändern oder durch chemische
-Reaktionen ineinander übergehen.
-Bei solchen Veränderungen spielen meist deutlich kleinere Energiemengen eine Rolle.
+Die Webapp zeigt elektronische Energien einschließlich der im Modell berücksichtigten Lösungsmittelwirkung.
+Die Werte sind häufig groß und negativ. Ihr Nullpunkt hängt vom Rechenmodell ab: Ein negativer Wert allein
+beweist weder die Stabilität eines Moleküls noch, dass eine bestimmte Reaktion ablaufen wird.
+
+Für den Versuch sind **Energiedifferenzen** zwischen Strukturen mit gleicher Zusammensetzung entscheidend.
+Vergleichen Sie sie nur bei gleicher Rechenmethode und gleichen Einstellungen. Die niedrigere Energie beschreibt
+die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
+Beiträge von Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
 
 Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
 Liegt ein Azobenzolderivat beispielsweise in der *cis*-Konfiguration mit einer Energie von  
-$E_\mathrm{cis} = -932.48\ \text{eV}$ vor und wechselt anschließend in die *trans*-Konfiguration mit  
-$E_\mathrm{trans} = -933.00\ \text{eV}$, so ergibt sich zunächst eine Energiedifferenz in eV:
+$E_\mathrm{cis} = -932{,}48\ \text{eV}$ vor und wechselt anschließend in die *trans*-Konfiguration mit
+$E_\mathrm{trans} = -933{,}00\ \text{eV}$, so ergibt sich zunächst eine Energiedifferenz in eV:
 
 $$
-\Delta_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933.00\ \text{eV} - (-932.48\ \text{eV}) = -0.52\ \text{eV}.
+\Delta E_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933{,}00\ \text{eV} - (-932{,}48\ \text{eV}) = -0{,}52\ \text{eV}.
 $$
 
 Für das Protokoll berichten Sie solche Energiedifferenzen zwischen Konfigurationen in kJ/mol:
 
 $$
--0.52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
+-0{,}52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
 $$
 
 Ein negativer Wert bedeutet, dass die *trans*-Konfiguration energetisch günstiger ist (niedrigere Energie) – der Übergang von
@@ -403,45 +394,80 @@ charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 :align: left
 :width: 600px
 
-Könnte man die Auslenkung aller Atomkoordinaten auf eine einzelne Koordinate projizieren (Reaktionskoordinate), so
-würden die *cis*- und *trans*-Konfigurationen des Azobenzols den lokalen Minima dieser Funktion entsprechen. Schon kleinste
-geometrische Änderungen weg von diesen Strukturen führen zu einem Energieanstieg.
-Der Übergangsstruktur (ÜS) für die Umwandlung *cis*→*trans* entspräche in diesem Fall dem lokalen Maximum zwischen den
-beiden Minima.
+Das schematische Energieprofil zeigt die Energie entlang eines Reaktionswegs. Die Reaktionskoordinate
+beschreibt den Fortschritt auf diesem Weg, nicht die Zeit. *cis* und *trans* liegen in lokalen Minima.
+Dazwischen liegt ein Maximum entlang des Wegs: der Übergangszustand (TS, englisch *transition state*).
 :::
 
-Mindestens genauso interessant ist jedoch die Suche nach Übergangsstrukturen, also nach lokalen Maxima (bzw.
-Sattelpunkten in mehreren Dimensionen).
-Die Energiedifferenz zwischen stabilen Minimumsstrukturen und Übergangsstrukturen (Aktivierungsenergie, $E_A$) bestimmt
-maßgeblich die Geschwindigkeit chemischer Reaktionen und Umwandlungen.
+Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem **Sattelpunkt erster Ordnung**:
+Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab; in den übrigen inneren Richtungen
+steigt sie bei kleinen Auslenkungen an. Die Webapp prüft diese Eigenschaft näherungsweise mit einer Schwingungsrechnung
+und verfolgt anschließend beide Abwärtsrichtungen zu Minima. Reine Verschiebungen und Drehungen des ganzen Moleküls
+werden bei der Schwingungsprüfung ausgeblendet.
+
+::::{seealso} Ergänzung: Übergangszustand oder Übergangsstruktur?
+:class: dropdown
+
+Wir verwenden im Versuch überwiegend **Übergangszustand** (englisch *transition state*, kurz **TS**).
+Die **Übergangsstruktur** (englisch *transition structure*) bezeichnet genauer die berechnete Geometrie
+am Sattelpunkt der Potentialenergiefläche. In der Webapp ist mit einem gefundenen Übergangszustand diese
+geprüfte Modellstruktur gemeint, kein langlebiges, isolierbares Zwischenprodukt.
+
+In der Übergangszustandstheorie ist der Begriff weiter gefasst: Er bezeichnet eine Menge von Zuständen
+an der Grenze zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
+Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/view/T06468)
+und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
+::::
+
+Die **elektronische Energiebarriere** gegenüber einem Ausgangsminimum ist
+
+$$
+\Delta E^\ddagger = E_\mathrm{TS} - E_\mathrm{Minimum}.
+$$
+
+Sie charakterisiert den untersuchten Weg. Ein anderes Minimum oder ein anderer Weg kann eine andere Barriere
+liefern. Die Barriere beeinflusst die Reaktionsgeschwindigkeit, bestimmt sie aber nicht allein.
+
+::::{seealso} Ergänzung: Energiebarriere und Aktivierungsenergie
+:class: dropdown
+
+Die **Aktivierungsenergie** $E_\mathrm{a}$ beschreibt, wie sich die Geschwindigkeitskonstante einer Reaktion
+mit der Temperatur ändert. Sie ist nicht generell mit unserer elektronischen Energiebarriere
+$\Delta E^\ddagger$ identisch. In der Übergangszustandstheorie wird die Geschwindigkeit über eine freie
+Aktivierungsenergie $\Delta G^\ddagger$ beschrieben; darin gehen auch thermische Beiträge und Entropie ein.
+Diese Größen berechnet die Webapp nicht. Siehe die [IUPAC-Definition der Aktivierungsenergie](https://goldbook.iupac.org/terms/view/A00102).
+::::
 
 ## Funktionsweise von Photoschaltern
 
-Wie eingangs erwähnt, bezeichnet man als Photoschalter ein Molekül, das durch Licht zwischen zwei definierten Zuständen
-umgeschaltet werden kann.  
-Diese beiden Zustände unterscheiden sich in ihrer räumlichen Struktur – und damit auch in ihren chemischen bzw.
-physikalischen Eigenschaften.  
-Das Umschalten erfolgt durch Licht, da die Barrieren zwischen den beiden Zuständen im Grundzustand so hoch sind, dass
-sie durch die thermische Energie bei Raumtemperatur nicht überwunden werden können.
+Ein molekularer Photoschalter kann durch Licht zwischen Formen mit unterschiedlichen Eigenschaften wechseln.
+Bei Azobenzol sind dies die *cis*- und die *trans*-Form. Lichtabsorption eröffnet einen Reaktionsweg über
+angeregte elektronische Zustände.
 
-Die grundlegende Funktionsweise eines Photoschalters lässt sich wie folgt zusammenfassen:
+Vereinfacht läuft das Umschalten so ab:
 
-1. Das Molekül befindet sich zunächst in einem Ausgangszustand (z. B. der *trans*-Form bei Azobenzol).
-2. Trifft Licht der passenden Energie auf das Molekül, wird es absorbiert – das Molekül gelangt in einen angeregten
-   elektronischen Zustand.
-3. In diesem angeregten Zustand kann sich die räumliche Struktur ändern (z. B. Rotation an einer Doppelbindung). Dadurch
-   „schaltet“ das Molekül in den zweiten Zustand um.
-4. Nach der strukturellen Veränderung entspannt das Molekül wieder in einen neuen Grundzustand (z. B. *cis*-Form).
+1. Das Molekül liegt beispielsweise in der *trans*-Form im elektronischen Grundzustand vor.
+2. Es absorbiert ein Photon geeigneter Energie und gelangt in einen angeregten elektronischen Zustand.
+3. Die Atome können sich auf der veränderten Energielandschaft neu anordnen, etwa durch Verdrehung oder
+   Änderung von Bindungswinkeln an der Azogruppe.
+4. Das Molekül kehrt in den elektronischen Grundzustand zurück. Es kann dabei die *cis*-Form erreichen
+   oder wieder in der *trans*-Form enden. Nicht jedes absorbierte Photon bewirkt also einen Formwechsel.
 
-Da *cis*- und *trans*-Form unterschiedliche Eigenschaften besitzen (etwa Farbe, Polarität oder Reaktivität), lässt sich das
-Molekül wie ein Schalter verwenden – mit Licht als Signal zum Ein- bzw. Umschalten.
+Auch ohne Licht kann *cis*-Azobenzol thermisch zur *trans*-Form zurückkehren. Wie schnell dies geschieht,
+hängt unter anderem von Temperatur, Substituenten und Umgebung ab. $RT$ ist eine thermische Energieskala,
+keine harte Obergrenze: Eine Barriere oberhalb von $RT$ schließt eine Reaktion nicht aus.
+Die Möglichkeit einer thermischen Rückreaktion gehört auch zur [IUPAC-Beschreibung der Photochromie](https://www.old.goldbook.iupac.org/html/P/P04589.html).
 
 :::{figure} ../figures/outputs/photoswitch-mechanism.png
 :align: left
 :width: 600px
 
-Schematische Darstellung der Funktionsweise eines Photoschalters.
-Der Wechsel zwischen *cis*- und *trans*-Form erfolgt nicht im Grundzustand durch Überwinden des Übergangszustandes.
-Stattdessen wird das Molekül zunächst in einen angeregten elektronischen Zustand angeregt, in dem die Umwandlung
-stattfinden kann.
+Stark vereinfachtes Schema der lichtinduzierten Isomerisierung. Die gestrichelte Linie deutet einen
+angeregten Zustand an; sie ist keine berechnete Potentialenergiekurve. Die thermische Rückreaktion
+im Grundzustand ist hier nicht eingezeichnet.
 :::
+
+**Was untersucht dieser Versuch?** Die Minimum- und Übergangszustandssuche untersucht die Energielandschaft
+im elektronischen Grundzustand. Die UV/Vis-Rechnung liefert Anregungsenergien und Übergangsstärken bei festgehaltener
+Geometrie. Beide Ergebnisse helfen, Photoschalter zu verstehen; sie simulieren aber nicht den zeitlichen Ablauf
+der lichtinduzierten Isomerisierung und sagen nicht direkt deren Ausbeute voraus.

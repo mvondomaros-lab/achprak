@@ -11,10 +11,11 @@
   >
 </p>
 <p>
-  Dokumentieren Sie Ihre Ergebnisse im Office-Protokoll aus ILIAS und besprechen
-  Sie es mit Ihren Assistent*innen. Bilder, Koordinaten und Spektrendaten können
-  Sie direkt herunterladen. Wählen Sie gespeicherte Strukturen oben links aus,
-  um sie in einem anderen Schritt weiterzuverwenden.
+  Dokumentieren Sie Ihre Ergebnisse im Protokolldokument aus ILIAS und
+  besprechen Sie es mit Ihren Betreuung. Bilder, Koordinaten und Spektrendaten
+  können Sie direkt herunterladen. Wählen Sie gespeicherte Strukturen oben links
+  aus. Schritt 1 zeigt nur Startstrukturen; in Schritt 2 stehen auch berechnete
+  Ergebnisse zur Auswahl.
 </p>
 <details id="guide-build">
   <summary>01 · Struktur erstellen — Aufgaben 1.1–1.3</summary>
@@ -48,8 +49,8 @@
   <summary>02 · Struktur untersuchen und optimieren — Aufgaben 2 und 3</summary>
   <h3>Eigenschaften der Startstrukturen — Aufgaben 2.1–2.5</h3>
   <p>
-    Energie, Diederwinkel und Ringabstand erscheinen automatisch unter dem
-    Modell.
+    In Schritt 2 erscheinen Energie, Diederwinkel und Ringabstand automatisch
+    unter dem 3D-Modell.
   </p>
   <p class="note">
     Erzeugte Startstrukturen sind nur näherungsweise Geometrien. Sie sind noch
@@ -90,12 +91,14 @@
   </p>
 
   <p>
-    Eine Minimumsuche liefert eine stabile Struktur; eine Übergangszustandssuche
-    untersucht die Barriere zwischen den Konfigurationen. Die Ausgangsstruktur
-    bleibt erhalten. Sie können den Verlauf während der Rechnung im 3D-Modell
-    und in der Energiekurve verfolgen. Danach können Sie ihn durch Anklicken der
-    Punkte im Energieprofil oder mit der Abspieltaste erneut ansehen. Die Werte
-    für Energie, Winkel und Abstand werden automatisch aktualisiert.
+    Eine erfolgreiche Minimumsuche liefert ein lokales Minimum, also eine
+    gegenüber kleinen Verformungen stabile Anordnung. Eine
+    Übergangszustandssuche untersucht die Barriere zwischen den Konfigurationen.
+    Die Ausgangsstruktur bleibt erhalten. Sie können den Verlauf während der
+    Rechnung im 3D-Modell und in der Energiekurve verfolgen. Danach können Sie
+    ihn durch Anklicken der Punkte im Energieprofil oder mit der Abspieltaste
+    erneut ansehen. Die Werte für Energie, Winkel und Abstand werden automatisch
+    aktualisiert.
   </p>
   <h3>3.1 · Optimierte Strukturen vergleichen</h3>
   <p>
@@ -120,12 +123,15 @@
     gilt für den untersuchten Weg; Temperatureffekte werden nicht
     berücksichtigt.
   </p>
-  <h3>3.3 · Aktivierungsenergie</h3>
+  <h3>3.3 · Elektronische Energiebarriere</h3>
   <p>
-    Berechnen Sie E<sub>A</sub> = E<sub>TS</sub> − E<sub>trans</sub> in kJ/mol.
-    Bei Zimmertemperatur gilt RT ≈ 2,5 kJ/mol (≈ 0,026 eV). Wie groß ist die
-    Barriere im Vergleich zu RT? Beachten Sie: RT ist keine Obergrenze für die
-    Energie einzelner Moleküle. Aus diesem Vergleich allein lässt sich keine
+    Berechnen Sie ΔE<sup>‡</sup> = E<sub>TS</sub> − E<sub>trans</sub> in kJ/mol.
+    Verwenden Sie dafür die Suche vom trans-Minimum aus. Diese elektronische
+    Energiebarriere ist nicht mit einer experimentellen Aktivierungsenergie
+    gleichzusetzen. Bei Zimmertemperatur gilt RT ≈ 2,5 kJ/mol; das entspricht
+    k<sub>B</sub>T ≈ 0,026 eV pro Molekül. Wie groß ist die Barriere im
+    Vergleich zu RT? Beachten Sie: RT ist keine Obergrenze für die Energie
+    einzelner Moleküle. Aus diesem Vergleich allein lässt sich keine
     Reaktionsgeschwindigkeit bestimmen.
   </p>
   <h3>3.4 · Geometrie nach der Optimierung</h3>
@@ -174,21 +180,25 @@
   <details>
     <summary>Warum verschieben Substituenten die Absorption?</summary>
     <p>
-      Bei der Absorption wird ein Elektron aus dem Grundzustand in einen
-      angeregten Zustand gehoben. Die Energiedifferenz bestimmt die absorbierte
-      Wellenlänge.
+      Bei der Absorption geht das Molekül aus dem elektronischen Grundzustand in
+      einen angeregten elektronischen Zustand über. Die Energiedifferenz
+      bestimmt die Wellenlänge des absorbierten Photons.
     </p>
     <p>
-      Substituenten verändern die Elektronenverteilung und die Energieniveaus.
-      Eine Anhebung des Grundzustands oder Absenkung des angeregten Zustands
-      verkleinert den Energieabstand: Die Absorption verschiebt sich zu längeren
-      Wellenlängen (bathochrom). Eine Vergrößerung des Abstands führt zu
-      kürzeren Wellenlängen (hypsochrom).
+      Substituenten verändern die Elektronenverteilung und können Grundzustand
+      und angeregte Zustände unterschiedlich beeinflussen. Wird der Abstand
+      zwischen zwei Zuständen kleiner, verschiebt sich der zugehörige Übergang
+      zu längeren Wellenlängen (bathochrom). Ein größerer Abstand bedeutet
+      kürzere Wellenlängen (hypsochrom). Das Absorptionsmaximum hängt zusätzlich
+      von den Stärken und der Überlagerung der Übergänge ab.
     </p>
     <p>
-      Ein mit dem Ring wechselwirkendes π-System kann die Delokalisierung
-      erweitern und die Anregungsenergie verringern. Genauere Zusammenhänge
-      lernen Sie in der theoretisch-chemischen Ausbildung kennen.
+      In einem ausgedehnten π-System können Elektronen über mehrere benachbarte
+      Atome verteilt sein; das nennt man Delokalisierung. Sie kann die
+      Anregungsenergie verringern. Substituenten können aber auch die Geometrie
+      und damit die Wechselwirkung zwischen den Molekülteilen verändern. Die
+      Skizze vergleicht nur Energieabstände; ihre Höhen sind keine direkt
+      vergleichbaren Gesamtenergien verschiedener Moleküle.
     </p>
     <img
       src="static/substituent-effects.png"
@@ -199,9 +209,10 @@
   <h3>4.3 · Eigene Versuchsreihe</h3>
   <p>
     Verschieben Sie die Absorption durch geeignete Substitution möglichst weit
-    in den sichtbaren Bereich. Untersuchen Sie mindestens zehn Strukturen:
-    Variieren Sie Art, Anzahl und Position der Substituenten. Planen Sie in der
-    Gruppe eine Versuchsreihe, verteilen Sie die Rechnungen und dokumentieren
-    Sie Hypothesen und Ergebnisse nachvollziehbar.
+    in den sichtbaren Bereich. Untersuchen Sie mindestens zehn Molekülvarianten
+    und berechnen Sie jeweils das Spektrum eines optimierten Minimums: Variieren
+    Sie Art, Anzahl und Position der Substituenten. Planen Sie in der Gruppe
+    eine Versuchsreihe, verteilen Sie die Rechnungen und dokumentieren Sie
+    Hypothesen und Ergebnisse nachvollziehbar.
   </p>
 </details>

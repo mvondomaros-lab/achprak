@@ -195,6 +195,7 @@ def calculate(data):
             raise RuntimeError("MOPAC hat keine elektronischen Übergänge ausgegeben.")
         energies, absorption = spec.spectrum()
         import matplotlib.pyplot as plt
+        from matplotlib.ticker import FuncFormatter
 
         with plt.rc_context(
             {
@@ -229,8 +230,12 @@ def calculate(data):
                     * 1.15,
                 ),
                 xlabel="Energie / eV",
-                ylabel="Absorption / a.u.",
+                ylabel="Relative Absorption / a.u.",
             )
+            for axis in (ax.xaxis, ax.yaxis):
+                axis.set_major_formatter(
+                    FuncFormatter(lambda value, _: f"{value:g}".replace(".", ","))
+                )
             top = ax.twiny()
             top.set_xlim(ax.get_xlim())
             wavelengths = np.array([800, 600, 500, 400, 300, 250])

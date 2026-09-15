@@ -468,7 +468,7 @@ function renderState() {
     ? ""
     : [
         ts.validation
-          ? `Imaginäre Frequenzen über dem Prüfgrenzwert von 20 cm⁻¹: ${ts.validation.imaginary_count}.`
+          ? `Imaginäre Frequenzen mit einem Betrag über 20 cm⁻¹: ${ts.validation.imaginary_count}.`
           : "Schwingungsprüfung noch nicht abgeschlossen.",
         ts.validation?.imaginary_frequency_cm1
           ? `Betrag der imaginären Frequenz: ${fmt(ts.validation.imaginary_frequency_cm1, 1)} cm⁻¹.`
@@ -608,7 +608,7 @@ function renderEnergyHistory(activeStep) {
   if (initialOnly) {
     $("energy-history-value").textContent =
       `Ausgangsenergie: ${fmt(first.energy_ev, 4)} eV`;
-    $("energy-reference").textContent = "ΔE = 0 an der Startstruktur.";
+    $("energy-reference").textContent = "ΔE = 0 an der Ausgangsstruktur.";
   }
   $("energy-chart").setAttribute(
     "aria-label",
@@ -653,7 +653,7 @@ function renderEnergyHistory(activeStep) {
               title: (items) =>
                 items[0].raw.phase === "path"
                   ? `Struktur auf dem Reaktionspfad ${items[0].raw.image + 1}`
-                  : `${{ endpoint: "Andere stabile Form", path_seed: "Pfadvorbereitung", neb: "Weg optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Übergangszustand genauer bestimmen", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
+                  : `${{ endpoint: "Anderes Minimum", path_seed: "Pfadvorbereitung", neb: "Weg optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Übergangszustand genauer bestimmen", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
               label: (item) =>
                 `E = ${fmt(item.raw.energy, 6)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
             },

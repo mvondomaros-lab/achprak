@@ -157,7 +157,7 @@
                   checked
                 /><span
                   ><strong>Minimum</strong
-                  ><small>Stabile Struktur finden</small></span
+                  ><small>Energiearme Struktur finden</small></span
                 ></label
               ><label class="radio-card"
                 ><input type="radio" name="target" value="ts" /><span
@@ -199,22 +199,24 @@
               </p>
               <h3>Wie lese ich das Ergebnis?</h3>
               <p>
-                Am bestätigten Übergangszustand gibt es genau eine wesentliche
-                instabile Bewegungsrichtung: Kleine Auslenkungen senken die
-                Energie. Die Schwingungsrechnung kennzeichnet sie durch eine
-                „imaginäre Frequenz“. Zusätzlich wird geprüft, ob Auslenkungen
-                in beide Richtungen zu cis- und trans-Minima führen. Die
-                Energiebarriere ist die Differenz zum Ausgangsminimum.
+                An der geprüften Struktur des Übergangszustands gibt es genau
+                eine wesentliche instabile Bewegungsrichtung: Kleine
+                Auslenkungen senken die Energie. Die Schwingungsrechnung
+                kennzeichnet sie durch eine „imaginäre Frequenz“. Zusätzlich
+                wird geprüft, ob Auslenkungen in beide Richtungen zu cis- und
+                trans-Minima führen. Die Energiebarriere ist die Differenz zum
+                Ausgangsminimum.
               </p>
               <h3>Was sind die Grenzen?</h3>
               <p>
                 Ein gefundenes Minimum muss nicht das tiefste sein, und ein
                 anderer Reaktionsweg könnte eine niedrigere Barriere haben.
                 Ethanol wird als umgebendes Medium berücksichtigt, ohne einzelne
-                Lösungsmittelmoleküle darzustellen. Die Energien enthalten keine
-                Temperatureffekte. Suchverlauf und vergrößerte TS-Bewegung
-                zeigen keinen tatsächlichen zeitlichen Ablauf; die
-                Ausgangsstruktur bleibt erhalten.
+                Lösungsmittelmoleküle darzustellen. Beiträge von
+                Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
+                Suchverlauf und vergrößerte Bewegung am Übergangszustand zeigen
+                keinen tatsächlichen zeitlichen Ablauf; die Ausgangsstruktur
+                bleibt erhalten.
               </p>
               <dl class="method">
                 <div>
@@ -288,7 +290,10 @@
                 </div>
                 <div>
                   <dt>Verbreiterung</dt>
-                  <dd>Gauß · σ = 0,3 eV (eingestellte Breite)</dd>
+                  <dd>
+                    Gauß · σ = 0,3 eV (Standardabweichung als Maß für die
+                    Breite)
+                  </dd>
                 </div>
               </dl>
             </details>
@@ -444,11 +449,16 @@
             <details id="ts-details" hidden>
               <summary>Wie wurde der Übergangszustand geprüft?</summary>
               <p>
-                Am Übergangszustand gibt es eine Bewegungsrichtung, in der die
-                Energie auf beiden Seiten abnimmt. Die Schwingungsrechnung
-                erkennt dies an einer sogenannten imaginären Frequenz.
-                Zusätzlich wird geprüft, ob die Bewegung zu cis und trans führt,
-                ohne Bindungen zu verändern.
+                Die berechnete Geometrie heißt genauer Übergangsstruktur. Im
+                Versuch verwenden wir dafür kurz „Übergangszustand“ (TS,
+                englisch transition state). Gemeint ist ein Sattelpunkt der
+                berechneten Energielandschaft, kein stabiles Zwischenprodukt.
+                Entlang einer inneren Bewegungsrichtung nimmt die Energie bei
+                kleinen Auslenkungen auf beiden Seiten ab. Die
+                Schwingungsrechnung erkennt dies an einer sogenannten imaginären
+                Frequenz. Zusätzlich wird geprüft, ob die Bewegung zu cis und
+                trans führt, ohne die Verknüpfung der Atome zu verändern.
+                Bindungslängen und Winkel dürfen sich dabei ändern.
               </p>
               <p id="ts-check-result"></p>
               <details>
@@ -484,7 +494,7 @@
                     <thead>
                       <tr>
                         <th>Zustand</th>
-                        <th>Energie / eV</th>
+                        <th>Anregungsenergie / eV</th>
                         <th>Wellenlänge / nm</th>
                         <th>Oszillatorstärke</th>
                       </tr>
@@ -569,7 +579,10 @@
           ×
         </button>
       </div>
-      <p>Energie und Wellenlänge hängen über E = hc / λ zusammen.</p>
+      <p>
+        Die Energie eines Photons und seine Wellenlänge hängen über E = hc / λ
+        zusammen.
+      </p>
       <div class="conversion-fields">
         <label
           >Energie / eV<input
@@ -588,7 +601,9 @@
       </div>
       <p class="note">
         Für Energiedifferenzen sind auch negative Werte möglich. Eine
-        Wellenlänge wird nur für positive Energien angegeben.
+        Wellenlänge wird nur für positive Energien angegeben. Ihre Deutung als
+        absorbiertes Licht ist nur für einen passenden elektronischen Übergang
+        sinnvoll.
       </p>
     </dialog>
     <div id="toast" role="status" hidden></div>

@@ -75,7 +75,7 @@ class Template:
     def _init_mol(self) -> rdkit.Chem.Mol:
         mol = rdkit.Chem.MolFromSmiles(self.smiles)
         if mol is None:
-            raise ValueError(f"Invalid SMILES generated: {self.smiles}")
+            raise ValueError(f"Ungültige Molekülbeschreibung (SMILES): {self.smiles}")
         return mol
 
     def _init_molh(self) -> rdkit.Chem.Mol:
@@ -91,7 +91,9 @@ class Template:
         if rc != 0:
             rc = rdkit.Chem.AllChem.EmbedMolecule(mol, randomSeed=42)
         if rc != 0:
-            raise RuntimeError("RDKit 3D embedding failed for generated molecule.")
+            raise RuntimeError(
+                "RDKit konnte keine 3D-Startstruktur für dieses Molekül erzeugen."
+            )
 
         return common.mol_to_atoms(mol)
 
@@ -125,14 +127,16 @@ class Properties:
     def cnnc_dihedral_indices(self):
         azo = self._find_azo_bond()
         if azo is None:
-            raise ValueError("Could not find azo N=N double bond in molecule.")
+            raise ValueError(
+                "In dieser Struktur wurde keine N=N-Doppelbindung gefunden."
+            )
         n1, n2 = azo
 
         c1 = self._find_carbon_neighbor(n1)
         c2 = self._find_carbon_neighbor(n2)
         if c1 is None or c2 is None:
             raise ValueError(
-                "Could not find carbon neighbors adjacent to azo nitrogens."
+                "An den Stickstoffatomen der Azogruppe wurden keine benachbarten Kohlenstoffatome gefunden."
             )
 
         return [c1, n1, n2, c2]
@@ -143,7 +147,9 @@ class Properties:
     def ring_distance(self):
         rings = self.mol.GetRingInfo().AtomRings()
         if len(rings) < 2:
-            raise ValueError("Expected at least two rings in azobenzene.")
+            raise ValueError(
+                "Für die Azobenzolstruktur werden mindestens zwei Ringe benötigt."
+            )
         com1 = self.atoms[rings[0]].get_center_of_mass()
         com2 = self.atoms[rings[1]].get_center_of_mass()
         return np.linalg.norm(com1 - com2) * 100.0  # pm

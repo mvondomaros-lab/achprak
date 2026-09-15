@@ -9,6 +9,7 @@ matplotlib.use("Agg")
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.ticker import FuncFormatter
 from scipy.signal import argrelextrema
 
 
@@ -54,7 +55,13 @@ def main():
     plt.plot([4.0, 4.0], [0.0, 0.3], color="C1")
     plt.xlim(1.4, 5.6)
     plt.xlabel(r"Energie / eV")
-    plt.ylabel(r"Absorption / a.u.")
+    plt.ylabel(r"Relative Absorption / a.u.")
+    plt.gca().xaxis.set_major_formatter(
+        FuncFormatter(lambda value, _: f"{value:.1f}".replace(".", ","))
+    )
+    plt.gca().yaxis.set_major_formatter(
+        FuncFormatter(lambda value, _: f"{value:.1f}".replace(".", ","))
+    )
     plt.savefig(output_dir / "line-spectrum.png", dpi=300)
     plt.close()
 
@@ -66,7 +73,13 @@ def main():
     plt.plot(x, a)
     plt.xlim(1.4, 5.6)
     plt.xlabel(r"Energie / eV")
-    plt.ylabel(r"Absorption / a.u.")
+    plt.ylabel(r"Relative Absorption / a.u.")
+    plt.gca().xaxis.set_major_formatter(
+        FuncFormatter(lambda value, _: f"{value:.1f}".replace(".", ","))
+    )
+    plt.gca().yaxis.set_major_formatter(
+        FuncFormatter(lambda value, _: f"{value:.1f}".replace(".", ","))
+    )
     plt.savefig(output_dir / "uvvis-spectrum.png", dpi=300)
     plt.close()
 
@@ -121,7 +134,7 @@ def main():
         mutation_scale=10,
     )
     plt.gca().add_patch(arrow_ts)
-    plt.text(x_ts, y_ts + 0.06, "ÜS", ha="center", va="bottom")
+    plt.text(x_ts, y_ts + 0.06, "TS", ha="center", va="bottom")
 
     plt.plot([-0.7, 0.0], [0.0, 0.0], color="black", ls="--")
     plt.plot([-0.6, 0.1], [y_ts, y_ts], color="black", ls="--")
@@ -135,7 +148,7 @@ def main():
         mutation_scale=10,
     )
     plt.gca().add_patch(arrow_vert)
-    plt.text(-0.2, 0.3 * y_ts, "$E_A$", ha="left", va="bottom")
+    plt.text(-0.2, 0.3 * y_ts, r"$\Delta E^\ddagger$", ha="left", va="bottom")
 
     plt.xticks([])
     plt.yticks([])
@@ -218,7 +231,7 @@ def main():
         plt.text(xm, ym + 0.08, conf, ha="center", va="bottom")
 
     plt.plot([x[mask].min(), x[mask].max()], [1.5, 1.5], ls="--")
-    plt.text(0.89, 1.54, "angeregeter Zustand", ha="right", va="bottom", color="C1")
+    plt.text(0.89, 1.54, "angeregter Zustand", ha="right", va="bottom", color="C1")
     plt.text(0.89, 0.05, "Grundzustand", ha="right", va="bottom", color="C0")
 
     arrow_vert = patches.FancyArrowPatch(

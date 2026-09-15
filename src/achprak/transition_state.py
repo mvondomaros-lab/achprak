@@ -82,7 +82,7 @@ class OptTS:
         initial.calc = self.calculator_factory()
         baseline = float(initial.get_potential_energy())
         if np.linalg.norm(initial.get_forces(), axis=1).max() > 0.03:
-            raise ValueError("Bitte vor der TS-Suche eine Minimumsstruktur optimieren.")
+            raise ValueError("Bitte vor der Übergangszustandssuche ein Minimum suchen.")
         source_cis = np.cos(np.radians(initial.get_dihedral(*self.indices))) > 0
 
         def publish(frame, phase, band=None, image_index=None):
@@ -162,7 +162,7 @@ class OptTS:
             self.atoms = frame
             if not relaxed:
                 return failed(
-                    "Die Vorbereitung des Verbindungspfads ist nicht konvergiert."
+                    "Der Reaktionspfad ist nach der Vorbereitung noch nicht ausreichend optimiert."
                 )
             images.append(frame)
         endpoint = images[-1]
@@ -172,11 +172,13 @@ class OptTS:
             200,
             lambda: publish(endpoint, "endpoint"),
         ):
-            return failed("Das gegenüberliegende Minimum ist nicht konvergiert.")
+            return failed(
+                "Die Minimumsuche für das andere Isomer ist nicht abgeschlossen."
+            )
         endpoint_cis = np.cos(np.radians(endpoint.get_dihedral(*self.indices))) > 0
         if endpoint_cis == source_cis:
             return failed(
-                "Die Endpunktoptimierung hat nicht das andere Isomer erreicht."
+                "Die Minimumsuche hat wieder das Ausgangsisomer statt des anderen Isomers erreicht."
             )
         self.endpoint = endpoint.copy()
         self.endpoint.calc = self.calculator_factory()
@@ -230,7 +232,7 @@ class OptTS:
             lambda: publish(center, "refinement"),
         ):
             return failed(
-                "Die Verfeinerung der zentralen Pfadschätzung ist nicht konvergiert."
+                "Die Verfeinerung des Kandidaten für den Übergangszustand ist nicht abgeschlossen."
             )
         # Relax both halves against the central seed before letting it climb.
         # This aligns the local band tangent with the saddle's downhill paths.
@@ -249,14 +251,14 @@ class OptTS:
                 lambda index=preview_index: band_progress(index),
             ):
                 return failed(
-                    "Ein Teilpfad zum zentralen Sattel ist nicht konvergiert."
+                    "Ein Teil des Reaktionspfads zum Übergangszustand ist noch nicht ausreichend optimiert."
                 )
         band.climb = True
         if not optimize(
             FIRE(band, logfile="-", dt=0.05, maxstep=0.05), 0.05, 600, band_progress
         ):
             return failed(
-                "Das CI-NEB-Band ist innerhalb des Schrittlimits nicht konvergiert."
+                "Die Kräfte am Reaktionspfad wurden innerhalb des Schrittlimits nicht ausreichend klein."
             )
         self.band_converged = True
         peak_index = int(np.argmax([a.get_potential_energy() for a in images]))
@@ -276,7 +278,9 @@ class OptTS:
 
         self.search_converged = refine_saddle(0.005)
         if not self.search_converged:
-            return failed("Die freie Sattelpunktverfeinerung ist nicht konvergiert.")
+            return failed(
+                "Die abschließende Verfeinerung des Übergangszustands ist nicht abgeschlossen."
+            )
         publish(atoms, "vibrations")
         frequencies, modes = internal_modes(atoms, hessian(atoms))
         negative = np.flatnonzero(frequencies < -20.0)
@@ -287,7 +291,7 @@ class OptTS:
             self.search_converged = refine_saddle(0.001)
             if not self.search_converged:
                 return failed(
-                    "Die zusätzliche Sattelpunktverfeinerung ist nicht konvergiert."
+                    "Die zusätzliche Verfeinerung des Übergangszustands ist nicht abgeschlossen."
                 )
             publish(atoms, "vibrations")
             frequencies, modes = internal_modes(atoms, hessian(atoms))
@@ -296,7 +300,9 @@ class OptTS:
         if atoms.get_potential_energy() <= max(
             baseline, endpoint.get_potential_energy()
         ):
-            return failed("Der Kandidat liegt nicht oberhalb beider Minima.")
+            return failed(
+                "Die Energie des Kandidaten liegt nicht oberhalb der Energien beider Minima."
+            )
         self.validation = {
             "scope": "all_atoms",
             "rigid_modes_projected_out": True,
@@ -307,7 +313,7 @@ class OptTS:
         }
         if len(negative) != 1:
             return failed(
-                f"Kein bestätigter Übergangszustand: {len(negative)} imaginäre Moden über 20 cm⁻¹."
+                f"Kein bestätigter Übergangszustand: {len(negative)} imaginäre Frequenzen mit einem Betrag über 20 cm⁻¹."
             )
         mode = modes[int(negative[0])].copy()
         mode /= np.linalg.norm(mode, axis=1).max()
@@ -329,7 +335,7 @@ class OptTS:
                 lambda: publish(reference, "connectivity"),
             ):
                 return failed(
-                    "Ein Referenzminimum für den Konformervergleich ist nicht ausreichend konvergiert."
+                    "Ein Vergleichsminimum ist noch nicht ausreichend optimiert, um die räumlichen Anordnungen zu vergleichen."
                 )
         source_bonds = self.bond_graph(initial)
         branches = []
@@ -426,7 +432,7 @@ class OptTS:
         publish(atoms, "complete")
         if not connected:
             return failed(
-                "Der Sattel wurde gefunden, aber seine Verbindung zu cis- und trans-Minima ist nicht bestätigt."
+                "Ein Sattelpunkt wurde gefunden, aber die Verbindung zu cis- und trans-Minima ist nicht bestätigt."
             )
         images[peak_index] = atoms
         self.path = self.path_records(images)

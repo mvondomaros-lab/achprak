@@ -1,6 +1,6 @@
 [project]
 name = "achprak"
-version = "0.4.3"
+version = "0.5.0"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
 description = "Web-based practical introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
@@ -52,6 +52,7 @@ configurable-http-proxy = ">=4.6,<6"
 jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }
 
 [tool.pixi.feature.dev.tasks]
+site = { cmd = "myst start", cwd = "site" }
 test-web = "pytest tests -q"
 test-ts = "ACHPRAK_TS_TESTS=1 pytest tests -m ts_optimization -q"
 

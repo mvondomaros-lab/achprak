@@ -55,7 +55,7 @@ needed for the classroom server.
 Cancellation and timeouts kill the calculation's process group, including its
 MOPAC subprocess. Results survive a page reload in the same browser session, but
 are held in memory and are cleared after 24 hours without activity or when the
-instance stops. Students should download the results needed for their protocol.
+instance stops. Students should download the results needed for their lab reports.
 The app retains up to 100 structures and the last 12 calculation logs per session.
 Temporary calculation directories are removed on session expiry and clean shutdown.
 
@@ -86,6 +86,7 @@ assets and cookies. It does **not** test PAM login or UID switching. Never use
 `--no-authentication` on an externally accessible server.
 
 References:
+
 - [JupyterHub PAM authentication](https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html)
 - [Standalone app proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html)
 - [Private Unix sockets](https://jupyter-server-proxy.readthedocs.io/en/latest/server-process.html)
