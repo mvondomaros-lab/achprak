@@ -881,8 +881,9 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
     ),
     context,
   );
-  elements.get("build-view-toggle").value = "3d";
-  elements.get("build-view-toggle").onchange();
+  elements.get("build-view-toggle").onchange({ target: { value: "3d" } });
+  assert.equal(elements.get("build-view-3d").checked, true);
+  assert.equal(elements.get("build-view-2d").checked, false);
   assert.equal(context.state.mode, "3d");
   assert.equal(elements.get("viewport").hidden, false);
   assert.equal(elements.get("structure-image").hidden, true);
@@ -904,8 +905,9 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   context.state.step = "build";
   context.updateControls();
   assert.equal(context.state.mode, "3d");
-  elements.get("build-view-toggle").value = "2d";
-  elements.get("build-view-toggle").onchange();
+  elements.get("build-view-toggle").onchange({ target: { value: "2d" } });
+  assert.equal(elements.get("build-view-2d").checked, true);
+  assert.equal(elements.get("build-view-3d").checked, false);
   assert.equal(context.state.mode, "2d");
   assert.equal(elements.get("starting-geometry-note").hidden, true);
 });

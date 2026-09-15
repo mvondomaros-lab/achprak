@@ -411,21 +411,30 @@ legend {
   border-bottom: 1px solid #edf1f5;
   gap: 20px;
 }
-.view-toggle {
-  display: flex;
-  gap: 3px;
-}
-.view-toggle button {
-  background: none;
-  border: 0;
-  padding: 7px 10px;
-  border-radius: 5px;
+.build-view-toggle {
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #f3f6fa;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 12px;
+  font-weight: 600;
 }
-.view-toggle button.selected {
-  background: #eaf1fe;
-  color: var(--blue);
+.build-view-toggle span {
+  min-width: 44px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  line-height: 18px;
+  transition:
+    background 0.15s,
+    color 0.15s,
+    box-shadow 0.15s;
+}
+.build-view-toggle input:not(:checked) + span:hover {
+  background: #e7edf5;
+  color: #37526e;
 }
 .viewer-wrap {
   height: 395px;

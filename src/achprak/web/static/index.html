@@ -120,7 +120,7 @@
               <p>
                 Standardmäßig sehen Sie die 2D-Strukturformel. Sie zeigt
                 Bindungen und Substituenten, aber keine maßstabsgetreuen
-                Abstände. Mit „3D-Startstruktur“ wechseln Sie zur räumlichen
+                Abstände. Mit „3D“ wechseln Sie zur räumlichen
                 Ansicht und können das Molekül drehen und vergrößern. Beide
                 Darstellungen gehören zum selben Molekül.
               </p>
@@ -321,15 +321,35 @@
           </div>
           <div id="molecular-panel">
             <div class="viewer-toolbar" id="viewer-toolbar" hidden>
-              <select
+              <div
                 id="build-view-toggle"
-                class="view-mode-select"
+                class="segmented build-view-toggle"
+                role="group"
                 aria-label="Darstellung der Startstruktur"
                 hidden
               >
-                <option value="2d">Strukturformel</option>
-                <option value="3d">3D-Startstruktur</option>
-              </select>
+                <label title="2D-Strukturformel">
+                  <input
+                    id="build-view-2d"
+                    type="radio"
+                    name="build-view"
+                    value="2d"
+                    aria-label="2D-Strukturformel"
+                    checked
+                  />
+                  <span>2D</span>
+                </label>
+                <label title="3D-Startstruktur">
+                  <input
+                    id="build-view-3d"
+                    type="radio"
+                    name="build-view"
+                    value="3d"
+                    aria-label="3D-Startstruktur"
+                  />
+                  <span>3D</span>
+                </label>
+              </div>
               <button
                 id="play"
                 class="text-button"

@@ -318,8 +318,10 @@ async function renderMolecule() {
 function updateMode() {
   state.mode = state.step === "build" ? state.buildMode || "2d" : "3d";
   $("build-view-toggle").hidden = state.step !== "build" || !current();
-  $("build-view-toggle").value = state.buildMode || "2d";
-  $("build-view-toggle").disabled = !current();
+  for (const mode of ["2d", "3d"]) {
+    $("build-view-" + mode).checked = (state.buildMode || "2d") === mode;
+    $("build-view-" + mode).disabled = !current();
+  }
   $("starting-geometry-note").hidden =
     state.step !== "build" || state.mode !== "3d" || !current();
   $("center").hidden = state.mode !== "3d";
@@ -1133,9 +1135,9 @@ $("molecule-select").onclick = () => {
 };
 $("structure-search").oninput = renderStructureOptions;
 
-$("build-view-toggle").onchange = () => {
+$("build-view-toggle").onchange = (event) => {
   if (state.step !== "build" || current()?.kind !== "initial") return;
-  state.buildMode = $("build-view-toggle").value;
+  state.buildMode = event.target.value;
   renderState();
 };
 
