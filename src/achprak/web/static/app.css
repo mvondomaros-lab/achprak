@@ -1321,3 +1321,12 @@ select {
 #starting-geometry-note {
   margin: 12px 27px;
 }
+
+#spectrum-chart { cursor: pointer; }
+.spectrum-selection {
+  margin: 0 24px 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  min-height: 1.5em;
+}

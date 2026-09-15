@@ -490,7 +490,7 @@
                         <div class="energy-toolbar">
                             <div class="spectrum-notes note">
                                 <span class="spectrum-key spectrum-key-band">Blaue Kurve: verbreiterte Banden</span>
-                                <span class="spectrum-key spectrum-key-line">Orange Linien: einzelne Übergänge</span>
+                                <span class="spectrum-key spectrum-key-line">Orange Linien: diskrete Übergänge</span>
                                 <span>Relative Absorption in willkürlichen Einheiten</span>
                             </div>
                             <button id="spectrum-png" class="text-button" type="button"
@@ -501,6 +501,9 @@
                                     aria-label="Berechnetes UV/Vis-Spektrum mit Energie- und Wellenlängenachse"></canvas>
                         </div>
                     </section>
+                    <p id="spectrum-selection" class="spectrum-selection" aria-live="polite">
+                        Klicken Sie auf eine diskrete Linie, um den Übergang abzulesen.
+                    </p>
                     <p class="ts-summary" id="spectrum-caption"></p>
                     <details>
                         <summary>Elektronische Übergänge</summary>

@@ -735,12 +735,15 @@ function renderSpectrumChart(spec) {
       data: { datasets: [
         { label: "Verbreiterte Banden", data: [], borderColor: "#165de1",
           borderWidth: 2, pointRadius: 0, tension: 0 },
-        { label: "Elektronische Übergänge", data: [], borderColor: "#c77825",
+        { label: "Diskrete Übergänge", data: [], borderColor: "#c77825",
           borderWidth: 1.5, pointRadius: 0, spanGaps: false },
+        { label: "Ausgewählter Übergang", data: [], borderColor: "#995511",
+          backgroundColor: "#995511", borderWidth: 3, pointRadius: [0, 4] },
       ] },
       options: {
         locale: "de-DE", color: plotStyle.text, font: plotStyle.font,
         responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+        onClick: selectSpectrumTransition,
         plugins: { legend: { display: false }, tooltip: { enabled: false } },
         scales: {
           x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks },
@@ -759,6 +762,11 @@ function renderSpectrumChart(spec) {
       },
     });
   }
+  if (spectrumChart.spectrumData !== spec) {
+    spectrumChart.data.datasets[2].data = [];
+    $("spectrum-selection").textContent = "Klicken Sie auf eine diskrete Linie, um den Übergang abzulesen.";
+  }
+  spectrumChart.spectrumData = spec;
   spectrumChart.data.datasets[0].data = spec.energy_ev.map((x, i) => ({ x, y: spec.absorption[i] }));
   spectrumChart.data.datasets[1].data = spec.excitations_ev.flatMap((x, i) =>
     x < min || x > max ? [] : [{ x, y: 0 }, { x, y: spec.oscillator_strengths[i] }, { x, y: null }]);
@@ -767,6 +775,22 @@ function renderSpectrumChart(spec) {
     spectrumChart.options.scales[id].max = max;
   }
   spectrumChart.update("none");
+}
+function selectSpectrumTransition(event, _elements, chart) {
+  const area = chart.chartArea, spec = chart.spectrumData;
+  if (!area || !spec || event.x < area.left || event.x > area.right ||
+      event.y < area.top || event.y > area.bottom) return;
+  const axis = chart.scales.x;
+  const candidates = spec.excitations_ev.map((energy, index) => ({ energy, index,
+    distance: Math.abs(axis.getPixelForValue(energy) - event.x) }))
+    .filter((p) => p.energy >= axis.min && p.energy <= axis.max && p.distance <= 12)
+    .sort((a, b) => a.distance - b.distance);
+  if (!candidates.length) return;
+  const { energy, index } = candidates[0];
+  const strength = spec.oscillator_strengths[index];
+  chart.data.datasets[2].data = [{ x: energy, y: 0 }, { x: energy, y: strength }];
+  $("spectrum-selection").textContent = `Übergang ${index + 1} · ${fmt(energy, 4)} eV · ${fmt(HC / energy, 1)} nm · Oszillatorstärke: ${fmt(strength, 4)}`;
+  chart.update("none");
 }
 function collectProgress(job) {
   if (!["minimum", "ts"].includes(job.kind)) return;

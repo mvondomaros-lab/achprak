@@ -30,6 +30,11 @@ frequency and downhill cis/trans connectivity checks. Numerical success does
 not establish experimental barrier accuracy or identify the globally lowest
 barrier.
 
+Reported barriers are electronic energy differences ΔE‡ in electronvolts (eV),
+relative to the source minimum, without zero-point or thermal corrections.
+The optimized minima are local minima; the screen does not establish that
+they are the global minima.
+
 Results and logs are written per case under `results/ts-screen/` (git-ignored).
 A completed JSON record is written atomically, so interrupted cases can be
 rerun. Repeating the command skips completed records, including failures.
