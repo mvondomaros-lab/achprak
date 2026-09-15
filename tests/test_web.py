@@ -470,3 +470,49 @@ def test_clear_structures_is_session_scoped_and_blocked_during_jobs(client, app)
     assert client.get("/api/session").json()["molecules"] == []
     assert list(other.molecules) == ["other"]
     assert client.delete("/api/molecules", headers=HEADERS).status_code == 200
+
+
+def test_spectrum_progress_survives_log_truncation_and_is_session_scoped(client, app, monkeypatch):
+    from achprak.web.worker import spectrum_progress
+
+    session = next(iter(app.state.manager.sessions.values()))
+    session.jobs["spectrum"] = {"id": "spectrum", "kind": "uvvis", "status": "running"}
+    folder = app.state.manager.root / "spectrum"
+    folder.mkdir()
+    monkeypatch.chdir(folder)
+    assert client.get("/api/jobs/spectrum").json()["spectrum_progress"] is None
+    spectrum_progress("excited_states")
+    (folder / "output.log").write_text("unrelated output\n" * 3000)
+    result = client.get("/api/jobs/spectrum").json()
+    assert result["spectrum_progress"] == {"phase": "excited_states"}
+    assert len(result["log"]) == 24000
+    spectrum_progress("plot")
+    assert client.get("/api/jobs/spectrum").json()["spectrum_progress"] == {"phase": "plot"}
+    assert not (folder / "spectrum-progress.tmp").exists()
+    client.cookies.clear()
+    client.get("/api/session")
+    assert client.get("/api/jobs/spectrum").status_code == 404
+
+
+def test_existing_spectrum_is_preserved_and_missing_spectrum_can_be_requested(client, app, monkeypatch):
+    manager = app.state.manager
+    session = next(iter(manager.sessions.values()))
+    spectrum = {"energy_ev": [2.0], "absorption": [1.0]}
+    molecule = {"id": "minimum", "kind": "minimum", "spectrum": spectrum}
+    session.molecules["minimum"] = molecule
+    submissions = []
+
+    def submit(session, payload):
+        submissions.append(payload)
+        return {"kind": payload["kind"], "status": "queued"}
+
+    monkeypatch.setattr(manager, "submit", submit)
+    request = {"kind": "uvvis", "molecule_id": "minimum"}
+    response = client.post("/api/jobs", headers=HEADERS, json=request)
+    assert response.status_code == 422
+    assert "bereits ein Spektrum" in response.json()["detail"]
+    assert submissions == []
+    assert molecule["spectrum"] == spectrum
+    del molecule["spectrum"]
+    assert client.post("/api/jobs", headers=HEADERS, json=request).status_code == 202
+    assert len(submissions) == 1

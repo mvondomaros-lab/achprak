@@ -192,8 +192,9 @@ molecules to this set and run the full `test-ts` set when investigating or fixin
 a TS search failure; normal `test-web` runs do not enable it. The broader
 `ACHPRAK_CHEMISTRY_TESTS=1` run includes this set as well.
 
-The [exhaustive first-ring screen](docs/ts-screening.md) covers 780 labeled
-mono- and disubstituted cis/trans starting cases using the six supported groups.
+The [symmetry-reduced screen](docs/ts-screening.md) covers 750 distinct
+mono- and disubstituted cis/trans starting cases using the six supported groups,
+with two substituents in total allowed anywhere across the two rings.
 Failures are preserved as exact-geometry fixtures in `tests/data/ts_failures/`
 and included in `test-ts`. The search retains its original seed first, then
 tries at most two alternative seeds on failure. Each attempt has a 1500-step

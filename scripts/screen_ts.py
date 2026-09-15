@@ -51,6 +51,37 @@ def cases(scope):
                     }
 
 
+def symmetry_key(case):
+    """Constitutional identity under ring reflections and ring exchange.
+
+    Keep cis/trans distinct. This identifies substitution patterns, not local
+    conformers, and does not claim equivalent embeddings share a TS outcome.
+    """
+    first, second = tuple(case["substituents"][:5]), tuple(case["substituents"][5:])
+    variants = []
+    for a in (first, first[::-1]):
+        for b in (second, second[::-1]):
+            variants.extend((a + b, b + a))
+    return case["configuration"], min(variants)
+
+
+def unique_cases(selected, root):
+    groups = {}
+    for case in selected:
+        groups.setdefault(symmetry_key(case), []).append(case)
+    representatives = []
+    for equivalent in groups.values():
+        # Reuse an actual completed calculation without relabeling its atoms.
+        representative = next(
+            (c for c in equivalent if (root / (c["id"] + ".json")).exists()),
+            equivalent[0],
+        )
+        representatives.append(
+            dict(representative, equivalent_ids=[c["id"] for c in equivalent])
+        )
+    return representatives
+
+
 def run_case(case, output, implementation=None):
     root = Path(output)
     started = time.perf_counter()
@@ -174,6 +205,11 @@ def main():
     parser.add_argument("--case", help="Run one case by its exact ID")
     parser.add_argument("--only-disubstituted", action="store_true")
     parser.add_argument(
+        "--unique",
+        action="store_true",
+        help="Deduplicate ring reflections and ring exchange, retaining cis/trans",
+    )
+    parser.add_argument(
         "--collect-failures",
         action="store_true",
         help="Save completed failures as deterministic opt-in test fixtures, then exit",
@@ -227,6 +263,8 @@ def main():
     ]
     if not selected:
         parser.error("No matching cases")
+    if args.unique:
+        selected = unique_cases(selected, root)
     if args.summarize:
         summary = summarize(root, selected)
         (root / "summary.json").write_text(json.dumps(summary, indent=2))
@@ -235,6 +273,7 @@ def main():
     manifest = {
         "scope": args.scope,
         "count": len(selected),
+        "symmetry_unique": args.unique,
         "seed": 42,
         "method": "GFN1-xTB",
         "solvent": "ALPB ethanol",
@@ -267,6 +306,8 @@ def main():
                 "Use a new --output directory, or the original --implementation."
             )
     selection = args.scope
+    if args.unique:
+        selection += "-unique"
     if args.only_disubstituted:
         selection += "-disubstituted"
     if args.case:

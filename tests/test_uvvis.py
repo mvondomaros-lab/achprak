@@ -55,3 +55,68 @@ def test_parse_realistic_transition_table(tmp_path):
     energies, strengths = uvvis.parse_mopac_excitations(output)
     np.testing.assert_allclose(energies, [2.5, 3.5])
     np.testing.assert_allclose(strengths, [0.001, 0.75])
+
+
+def test_mopac_progress_handles_split_lines_and_ignores_keyword_echoes():
+    from io import StringIO
+
+    output = StringIO()
+    phases = []
+    stream = uvvis.MopacProgressStream(output, phases.append)
+    chunks = [
+        " * CIS - C.I. USES 1 ELECTRON EXCITATIONS ONLY\n",
+        "RHF CALC", "ULATION, NO. OF DOUBLY OCCUPIED LEVELS = 48\n",
+        "MOLECULAR ORBITALS\nROOT NO. 1 2 3\n",
+        "CI excitations= 800: =800\n",
+        "CI excitations= 800: =800\n",
+        "CI trans.  energy frequency wavelength oscillator---------\n",
+        "MOLECULAR ORBITALS\n",  # Do not regress within one run.
+    ]
+    for chunk in chunks:
+        assert stream.write(chunk) == len(chunk)
+    stream.flush()
+    assert output.getvalue() == "".join(chunks)
+    assert phases == ["electrons", "configurations", "excited_states", "transitions"]
+
+
+def test_progress_reports_expanded_output_and_restores_stdout(monkeypatch):
+    import sys
+
+    jobs = []
+
+    class Mopac:
+        def __init__(self, *args, **kwargs):
+            self.outpath = len(jobs)
+            jobs.append(self)
+
+        def run(self):
+            print("RHF CALCULATION, NO. OF DOUBLY OCCUPIED LEVELS = 48")
+            print("CI excitations= 800: =800")
+
+    monkeypatch.setattr(uvvis.pymopac, "MopacInput", Mopac)
+    monkeypatch.setattr(uvvis, "parse_mopac_excitations", lambda index: (
+        np.linspace(2, 5 if index == 0 else 8, 99), np.ones(99),
+    ))
+    original = sys.stdout
+    phases = []
+    spec = uvvis.UVVis(Atoms("H", positions=[[0, 0, 0]]))
+    spec.calculate(observer=phases.append)
+    assert sys.stdout is original
+    assert phases == ["electrons", "excited_states", "read_transitions",
+                      "expanded_output", "read_transitions"]
+    assert spec.coverage_complete
+
+
+def test_progress_restores_stdout_on_mopac_failure(monkeypatch):
+    import sys
+    from types import SimpleNamespace
+
+    def fail():
+        raise RuntimeError("MOPAC failed")
+
+    monkeypatch.setattr(uvvis.pymopac, "MopacInput", lambda *args, **kwargs: SimpleNamespace(run=fail))
+    spec = uvvis.UVVis(Atoms("H", positions=[[0, 0, 0]]))
+    original = sys.stdout
+    with pytest.raises(RuntimeError, match="MOPAC failed"):
+        spec.calculate(observer=lambda phase: None)
+    assert sys.stdout is original

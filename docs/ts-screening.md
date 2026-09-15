@@ -1,19 +1,38 @@
 # Exhaustive azobenzene TS screening
 
-Run the first-ring screen explicitly:
+Run the symmetry-reduced screen with up to four workers:
 
 ```sh
-MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope first-ring --workers 8
+MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-screen-unique
 ```
 
 The six non-hydrogen groups in `Template.substituent_smiles` are combined at
-all five first-ring positions. There are 30 monosubstituted and 360
-disubstituted labeled templates, each tested from both cis and trans: **780
-calculations**. Mixed substituents and repeated substituents are included.
-The second ring remains unsubstituted. Symmetry-related labels are retained
-because RDKit embedding and subsequent local optimization can select different
-conformations. This is exhaustive over the supported labels, not over all
-chemical substituents or conformations.
+all available ring positions, with one or two substituents in total. Mixed
+and repeated substituents are included. Independent reflection of each ring
+and exchange of the two rings identify equivalent substitution patterns;
+cis and trans remain distinct. The enumeration is checked against RDKit
+canonical isomeric SMILES without generating 3D geometries.
+
+| Substitution pattern | Distinct molecules | Cis/trans starting cases |
+| --- | ---: | ---: |
+| One substituent | 18 | 36 |
+| Two substituents on the same ring | 186 | 372 |
+| One substituent on each ring | 171 | 342 |
+| Total | 375 | 750 |
+
+`--unique` chooses one representative of each symmetry class, preferring an
+already completed calculation. The manifest lists its equivalent labels.
+Existing geometries retain their original atom order and case ID. Previously
+observed failures remain regression fixtures even if another embedding of
+the same substitution pattern succeeds. Symmetry reduction identifies
+chemical substitution patterns; it does not sample every conformer or prove
+that different embeddings lead to the same minimum or transition structure.
+
+The earlier first-ring screen used 780 labeled cis/trans cases before symmetry
+reduction. Those results are retained under `results/ts-screen/`; the expanded
+screen uses `results/ts-screen-unique/`, with reused-record hashes in
+`reuse-provenance.json`. This enumeration covers the six supported groups,
+not all possible chemical substituents.
 
 Each case uses deterministic seed 42 and follows the application's XYZ
 serialization and 500-step minimum optimization. The TS search tries up to
@@ -35,7 +54,7 @@ relative to the source minimum, without zero-point or thermal corrections.
 The optimized minima are local minima; the screen does not establish that
 they are the global minima.
 
-Results and logs are written per case under `results/ts-screen/` (git-ignored).
+Results and logs are written per case under the chosen output (git-ignored).
 A completed JSON record is written atomically, so interrupted cases can be
 rerun. Repeating the command skips completed records, including failures.
 Use a **new output directory** after changing the optimizer, to keep baseline
@@ -49,9 +68,9 @@ the archived implementation, not the current optimizer.
 
 ```sh
 # Inspect progress without launching calculations.
-pixi run -e dev python scripts/screen_ts.py --summarize
+pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --output results/ts-screen-unique --summarize
 # Preserve every observed failure in the opt-in regression suite.
-pixi run -e dev python scripts/screen_ts.py --collect-failures
+pixi run -e dev python scripts/screen_ts.py --output results/ts-screen-unique --collect-failures
 # Recheck a single deterministic template in a separate output directory.
 pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-SO2CF3 --output results/ts-recheck
 # Run all saved failures and the existing web-workflow regressions.
@@ -64,3 +83,26 @@ when available. Existing fixtures are never overwritten by later runs.
 The regression tests are marked `ts_optimization` and remain disabled in
 default test runs. A source-minimum failure is reported separately from a TS
 failure, since no valid TS search can start in that case.
+
+## Comparing reliability and cost
+
+The optional `scripts/benchmark_ts_strategy.py` compares the current bounded
+three-seed policy with dynamic NEB and L-BFGS band relaxation, using identical
+saved source minima. Every candidate must produce a fully optimized path. It
+includes every saved failure and 12 passing controls selected by a stable
+hash of the case ID. It records calculator calls and wall time, including
+frequency and connectivity validation. Comparisons run sequentially with one
+numerical thread to avoid competition between benchmark workers.
+
+The L-BFGS candidate changes only the optimizer used to relax the band, keeping
+the maximum step size and all convergence criteria. It uses no line search.
+
+The dynamic candidate uses a uniform 0.05 eV/Å band-force threshold and no
+distance-dependent tolerance scaling. It skips updates to converged images
+and reactivates them if needed. It is an experimental cost comparison; it
+does not change the production optimizer. See the
+[dynamic NEB paper](https://doi.org/10.1021/acs.jctc.9b00633).
+
+```sh
+MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-screen-unique
+```

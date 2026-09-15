@@ -19,6 +19,14 @@ from achprak.transition_state import OptTS
 PROGRESS_PREFIX = "ACHPRAK_PROGRESS "
 
 
+def spectrum_progress(phase):
+    """Persist the latest stage independently of the bounded raw output log."""
+    path = Path("spectrum-progress.json")
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps({"phase": phase}))
+    temporary.replace(path)
+
+
 def progress_observer(source_id, history):
     def publish(atoms, step, phase):
         # ASE calls observers after accepted steps. Calculator results are cached;
@@ -132,7 +140,7 @@ def calculate(data):
         )
     if kind == "ts" and (source["kind"] != "minimum" or not source.get("converged")):
         raise ValueError(
-            "Die Übergangszustandssuche startet von einem Minimum. Suchen Sie zuerst ein Minimum."
+            "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch."
         )
     atoms = read_atoms(source["xyz"])
     if kind in ("minimum", "ts"):
@@ -193,14 +201,17 @@ def calculate(data):
             }
         return {"molecule": m}
     if kind == "uvvis":
+        spectrum_progress("setup")
         spec = uvvis.UVVis(atoms)
-        spec.calculate()
+        spec.calculate(observer=spectrum_progress)
         if len(spec.excitations) == 0:
             raise RuntimeError("MOPAC hat keine elektronischen Übergänge ausgegeben.")
+        spectrum_progress("broaden")
         energies, absorption = spec.spectrum()
         import matplotlib.pyplot as plt
         from matplotlib.ticker import FuncFormatter, MaxNLocator
 
+        spectrum_progress("plot")
         with plt.rc_context(
             {
                 "font.family": "sans-serif",

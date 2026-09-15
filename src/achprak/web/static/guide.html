@@ -1,6 +1,6 @@
 <p>
-  In diesem Computerexperiment untersuchen Sie Azobenzol-Photoschalter: von der
-  Struktur über ihre Energie bis zum Absorptionsspektrum.
+  In diesem Computerexperiment untersuchen Sie die Molekülgeometrien,
+  elektronischen Energien und Absorptionsspektren von Azobenzol und seinen Derivaten.
 </p>
 <p>
   <a
@@ -16,6 +16,10 @@
   können Sie mit „Bild speichern“ als PNG herunterladen. Wählen Sie gespeicherte Strukturen oben links
   aus. Schritt 1 zeigt nur Startstrukturen; in Schritt 2 stehen auch berechnete
   Ergebnisse zur Auswahl.
+  Die Einträge sind nach Konfiguration und Substitutionsmuster gruppiert.
+  Ergebnisse einer Übergangszustandssuche stehen bei der Konfiguration des Ausgangsminimums. Die Bezeichnungen geben
+  Konfiguration, Positionen und Abkürzungen der Substituenten an;
+  den Namen der Verbindung bestimmen Sie in den Aufgaben selbst.
 </p>
 <details id="guide-build">
   <summary>01 · Struktur erstellen — Aufgaben 1.1–1.3</summary>
@@ -34,7 +38,7 @@
     Aus wie vielen Atomen bestehen trans-4,4′-Difluorazobenzol und
     cis-4,4′-Difluorazobenzol? Warum ist die Anzahl gleich?
   </p>
-  <h3>1.3 · Räumlichen Platzbedarf verstehen</h3>
+  <h3>1.3 · Räumliche Anordnung der Substituenten</h3>
   <p>
     Ersetzen Sie in trans-Azobenzol die Wasserstoffatome an den Positionen 2,
     2′, 6 und 6′ durch Methoxygruppen (OMe). Wie heißt das Molekül?
@@ -63,10 +67,10 @@
     Visualisieren Sie cis- und trans-Azobenzol. Sind die Moleküle planar, liegen also alle Atome in einer Ebene? Drehen
     Sie das Modell durch Ziehen mit der Maus und zoomen Sie mit dem Mausrad.
   </p>
-  <h3>2.2 · Sperrige Substituenten</h3>
+  <h3>2.2 · Räumlicher Einfluss der Substituenten</h3>
   <p>
     Betrachten Sie das Molekül aus Aufgabe 1.3 in 3D. Bestätigen sich Ihre
-    Vermutungen aus Aufgabe 1.3? Welche Gruppen weichen aus der Ebene aus,
+    Vermutungen aus Aufgabe 1.3? Welche Gruppen liegen außerhalb der Ringebenen,
     und wo kommen sich Atome besonders nahe?
   </p>
   <h3>2.3 · Energieunterschied der Startstrukturen</h3>
@@ -81,24 +85,26 @@
   <h3>2.4 · Diederwinkel</h3>
   <p>
     Der Diederwinkel A–B–C–D beschreibt den Winkel zwischen den Ebenen
-    A–B–C und B–C–D. Schauen Sie beim trans-Molekül entlang der N=N-Bindung,
+    A–B–C und B–C–D. Betrachten Sie das trans-Molekül entlang der N=N-Bindung,
     schätzen Sie den Winkel und vergleichen Sie mit dem berechneten Wert. Welche
-    Winkel haben cis und trans?
+    Winkel ergeben sich für die cis- und die trans-Form?
   </p>
   <h3>2.5 · Ringabstand</h3>
   <p>
     Der Ringabstand wird zwischen den Massenschwerpunkten der beiden
     Sechsringe gemessen, also ihren nach der Atommasse gewichteten Mittelpunkten.
     Substituenten zählen dabei nicht mit. Welche Abstände finden Sie für
-    cis- und trans-Azobenzol? Die Einheit pm bedeutet Pikometer; 100 pm = 1 Å.
+    cis- und trans-Azobenzol? Die Einheiten pm und Å stehen für Pikometer und Ångström; 100 pm = 1 Å.
   </p>
 
   <p>
-    Eine erfolgreiche Minimumsuche liefert ein lokales Minimum, also eine
-    gegenüber kleinen Verformungen stabile Anordnung. Eine
-    Übergangszustandssuche untersucht die Barriere zwischen den Konfigurationen.
-    Die Ausgangsstruktur bleibt erhalten. Sie können den Verlauf während der
-    Rechnung im 3D-Modell verfolgen. Nach einer Übergangszustandssuche können Sie
+    Die Minimumsuche sucht eine Anordnung, deren Energie sich durch kleine
+    Verformungen nicht weiter verringern lässt: ein lokales Minimum.
+    Dieses ist nicht zwangsläufig die Struktur mit der insgesamt niedrigsten Energie.
+    Die Übergangszustandssuche untersucht die elektronische Energiebarriere
+    entlang eines Reaktionspfads zwischen den Konfigurationen.
+    Die Ausgangsstruktur bleibt erhalten. Das 3D-Modell zeigt während der
+    Rechnung die numerischen Optimierungsschritte, keine Moleküldynamik. Nach einer Übergangszustandssuche können Sie
     den Reaktionspfad durch Anklicken der Punkte im Energieprofil oder mit der
     Abspieltaste ansehen. Die Werte für Energie, Winkel und Abstand werden automatisch
     aktualisiert.
@@ -151,16 +157,16 @@
   <p>
     Bei der Lichtabsorption nimmt das Molekül Energie auf und gelangt in einen
     angeregten elektronischen Zustand. Die Linien zeigen die berechneten
-    Übergänge. Ihre Höhe beschreibt deren Beitrag zur Absorption
-    (Oszillatorstärke). Die blaue Kurve fasst diese Linien zu breiten Banden
-    zusammen.
+    Übergänge. Ihre Höhe gibt die Oszillatorstärke an, ein dimensionsloses Maß für die
+    Stärke des Übergangs. Für die blaue Kurve wird jeder Übergang als Gaußbande
+    mit vorgegebener Breite dargestellt; die Beiträge werden addiert.
   </p>
   <h3>4.1 · cis und trans</h3>
   <p>
     Berechnen Sie die Spektren von cis- und trans-Azobenzol. Bei welchen
     Energien ist die Absorption jeweils maximal? In welchem Bereich des
-    elektromagnetischen Spektrums liegen diese Energien? Wie passen die
-    Vorhersagen zur im Versuch diskutierten Farbe von Azobenzol?
+    elektromagnetischen Spektrums liegen diese Energien? Wie lassen sich die
+    Vorhersagen mit der im Versuch diskutierten Farbe von Azobenzol vereinbaren?
   </p>
   <h3>4.2 · Substituenten vergleichen</h3>
   <p>
@@ -189,9 +195,9 @@
     </p>
     <p>
       Substituenten verändern die Elektronenverteilung und können Grundzustand
-      und angeregte Zustände unterschiedlich beeinflussen. Wird der Abstand
+      und angeregte Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz
       zwischen zwei Zuständen kleiner, verschiebt sich der zugehörige Übergang
-      zu längeren Wellenlängen (bathochrom). Ein größerer Abstand bedeutet
+      zu längeren Wellenlängen (bathochrom). Eine größere Energiedifferenz entspricht
       kürzere Wellenlängen (hypsochrom). Das Absorptionsmaximum hängt zusätzlich
       von den Stärken und der Überlagerung der Übergänge ab.
     </p>
@@ -199,9 +205,9 @@
       In einem ausgedehnten π-System können Elektronen über mehrere benachbarte
       Atome verteilt sein; das nennt man Delokalisierung. Sie kann die
       Anregungsenergie verringern. Substituenten können aber auch die Geometrie
-      und damit die Wechselwirkung zwischen den Molekülteilen verändern. Die
-      Skizze zeigt in A einen Ausgangsabstand, in B.1 und B.2 kleinere und
-      in C.1 und C.2 größere Abstände. Die vertikalen Pfeile stehen für die
+      und damit die Wechselwirkung zwischen den Molekülteilen verändern. Das
+      Schema zeigt in A die Energiedifferenz des Vergleichssystems, in B.1 und
+      B.2 kleinere und in C.1 und C.2 größere Energiedifferenzen. Die vertikalen Pfeile stehen für die
       Anregungsenergien. Die Höhen der Niveaus sind keine direkt vergleichbaren
       Gesamtenergien verschiedener Moleküle.
     </p>

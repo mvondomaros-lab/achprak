@@ -28,9 +28,8 @@ Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstelle
 Die Strukturformel des Azobenzols.
 :::
 
-Organische Moleküle besitzen häufig ein Grundgerüst aus Kohlenstoffatomen. Zur besseren Übersicht – und um Zeit beim
-Zeichnen zu sparen – lässt man in der Skelettformel die Kohlenstoffatome sowie die daran gebundenen Wasserstoffatome
-weg. Kohlenstoffatome liegen dann an den unbeschrifteten Ecken und Enden
+Organische Moleküle besitzen häufig ein Grundgerüst aus Kohlenstoffatomen. In der Skelettformel werden die
+Elementsymbole der Kohlenstoffatome und die daran gebundenen Wasserstoffatome zur besseren Übersicht weggelassen. Kohlenstoffatome liegen dann an den unbeschrifteten Ecken und Enden
 der gezeichneten Bindungen; die gebundenen Wasserstoffatome werden so ergänzt,
 dass Kohlenstoff insgesamt vier Bindungen eingeht.
 ::::
@@ -54,7 +53,7 @@ Strukturformel von 4-Methoxyazobenzol.
 Systematische Namen beschreiben den Aufbau einer Verbindung. Die IUPAC (International Union of Pure and
 Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können mehrere zulässige Namen gebräuchlich sein.
 
-Ein zentrales Element ist die Durchnummerierung der Kohlenstoffatome im Grundgerüst.
+Die Nummerierung der Kohlenstoffatome im Grundgerüst legt die Positionsangaben der Substituenten fest.
 Beim Azobenzol werden die Kohlenstoffatome des ersten Phenylrings mit 1–6 und die des zweiten Rings mit 1′–6′
 nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, die direkt an die Azobrücke gebunden sind.
 In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeigersinn) hängt normalerweise von den
@@ -66,7 +65,7 @@ vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch
 Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
 :::
 
-Wird nun beispielsweise am 2. Kohlenstoffatom ein Wasserstoff durch ein Chloratom ersetzt, erhält man die Verbindung
+Wird beispielsweise am Kohlenstoffatom 2 ein Wasserstoffatom durch ein Chloratom ersetzt, erhält man die Verbindung
 2-Chlorazobenzol.
 
 In diesem Versuch treten die folgenden Substituenten auf:
@@ -84,7 +83,7 @@ Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* o
 2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht
 die Verbindung 2,3′-Dichlorazobenzol.
 
-Mit der gezeigten Nummerierung können Sie angeben, an welchen Positionen die Substituenten sitzen. Überprüfen Sie zur Übung, ob es
+Mit der gezeigten Nummerierung können Sie angeben, an welchen Positionen die Substituenten gebunden sind. Überprüfen Sie zur Übung, ob es
 sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
 handelt:
 
@@ -102,7 +101,7 @@ Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 ::::{seealso} Ergänzung: *E*,*Z*-Nomenklatur
 :class: dropdown
 Eine andere, systematischere Bezeichnungsweise für die Anordnung von Substituenten an Doppelbindungen verwendet die
-Symbole *E* (für entgegen) und *Z* (für zusammen). Für unsere Zwecke reichen jedoch *trans* und *cis* aus.
+Symbole *E* (für entgegen) und *Z* (für zusammen). In diesem Versuch werden für die beiden Konfigurationen von Azobenzol die Bezeichnungen *trans* und *cis* verwendet.
 
 ::::
 
@@ -151,8 +150,7 @@ Kugel-Stab-Modell von trans-Azobenzol. Benjah-bmm27, Public Domain. Quelle: [Wik
 
 ## Das elektromagnetische Spektrum
 
-Das Licht, das wir mit dem Auge wahrnehmen können, ist nur ein kleiner Teil des sogenannten elektromagnetischen
-Spektrums.
+Sichtbares Licht umfasst einen kleinen Bereich des elektromagnetischen Spektrums.
 Dieses umfasst alle Formen elektromagnetischer Strahlung – von energiearmen Radiowellen über Mikrowellen und
 Infrarotstrahlung bis hin zu sichtbarem Licht, UV-Strahlung, Röntgenstrahlen und hochenergetischen Gammastrahlen.
 
@@ -216,7 +214,7 @@ Die Linienhöhen sind schematische relative Übergangsstärken. *a.u.* bedeutet 
 beliebige Einheiten; gemeint sind keine atomaren Einheiten und keine gemessenen Absorbanzwerte.
 :::
 
-In UV/Vis-Spektren von Molekülen in Lösung sieht man meist breite Banden. Dazu tragen viele nahe beieinanderliegende
+UV/Vis-Spektren von Molekülen in Lösung zeigen meist breite Absorptionsbanden. Dazu tragen viele nahe beieinanderliegende
 Übergänge mit unterschiedlichen Schwingungszuständen sowie Wechselwirkungen mit der Umgebung bei.
 Auch die endliche Lebensdauer angeregter Zustände und die Auflösung des Messgeräts beeinflussen die Linienbreite.
 Die Webapp bildet diese Effekte vereinfacht ab: Sie ersetzt jede berechnete Linie durch eine Gaußkurve mit
@@ -290,10 +288,12 @@ In diesem Praktikumsversuch werden Sie verschiedene solcher Berechnungen durchf�
 Wie die zugrundeliegenden Methoden im Detail funktionieren, lernen Sie im Verlauf Ihrer theoretisch-chemischen
 Ausbildung (3./4. Semester, optional 5./6. Semester sowie im Masterstudium).
 
-Für den Einstieg hilft das Bild einer *Blackbox*: Eine Eingabe, etwa eine Molekülstruktur, führt über ein
-Rechenmodell zu einer Ausgabe, etwa einer Energie oder einem Spektrum. Sie müssen die mathematischen Details
-noch nicht beherrschen. Wichtig ist aber, welche Frage das Modell beantwortet und welche Grenzen es hat.
-In jedem Schritt der Webapp können Sie dazu „Was passiert im Hintergrund?“ aufklappen.
+Jede Rechnung verwendet definierte Eingaben, etwa die Molekülstruktur, und liefert Ergebnisse wie Energien
+oder Spektren. Die folgende Abbildung stellt diesen Zusammenhang als *Blackbox* dar: Das Rechenverfahren
+zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt.
+Für diesen Versuch sollen Sie erklären können, welche Größen berechnet werden und welche Annahmen dabei gelten.
+Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. In jedem Schritt der Webapp finden Sie
+unter „Was passiert im Hintergrund?“ Angaben zu Methode, Ergebnissen und Annahmen.
 
 :::{figure} ../figures/commons/Blackbox3D.png
 :alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
@@ -305,19 +305,20 @@ Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 ::::{important} Modell und Genauigkeit
 
 Eine Rechnung beschreibt ein Molekül mit einem Modell. Die Genauigkeit hängt von der Methode,
-der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können bessere Ergebnisse liefern,
-benötigen aber meist mehr Rechenzeit.
+der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können zusätzliche Wechselwirkungen berücksichtigen,
+benötigen aber meist mehr Rechenzeit. Eine längere Rechenzeit allein belegt keine höhere Genauigkeit.
 
 Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energien und Spektren können deshalb
 merklich vom Experiment abweichen. Vergleichen Sie beispielsweise die Absorptionsmaxima einer Reihe von Azobenzolen mit unterschiedlichen
 Substituenten. Formulieren Sie die berechneten Verschiebungen als **Vorhersagen des verwendeten Modells**.
-Auch ein berechneter Trend kann falsch sein; er ist eine überprüfbare Hypothese, kein gesichertes Messergebnis.
+Ob die berechneten Trends das Verhalten der untersuchten Moleküle wiedergeben, muss durch einen Vergleich
+mit Experimenten oder geeigneten Referenzrechnungen geprüft werden.
 ::::
 
 ## Atomkoordinaten
 
-Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diesen Bauplan beispielsweise
-als SMILES-Text verarbeiten, eine Zeichenfolge, die Atome, Bindungen und gegebenenfalls Stereochemie beschreibt. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
+Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diese Information beispielsweise
+als SMILES-Text verarbeiten. Diese Zeichenfolge beschreibt Atome, Bindungen und gegebenenfalls die räumliche Anordnung von Gruppen. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
 benötigt: die Positionen $(x, y, z)$ aller Atome.
 
 Das Strukturerstellungswerkzeug erzeugt für Sie solche atomaren Koordinaten im sogenannten XYZ-Format.
@@ -366,10 +367,10 @@ Die Gesamtenergien unterschiedlich substituierter Moleküle lassen sich so nicht
 Die niedrigere Energie beschreibt die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
 Beiträge von Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
 
-Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
-Liegt ein Azobenzolderivat beispielsweise in der *cis*-Konfiguration mit einer Energie von  
-$E_\mathrm{cis} = -932{,}48\ \text{eV}$ vor und wechselt anschließend in die *trans*-Konfiguration mit
-$E_\mathrm{trans} = -933{,}00\ \text{eV}$, so ergibt sich zunächst eine Energiedifferenz in eV:
+Die Energiedifferenz zwischen zwei Konfigurationen ergibt sich durch Subtraktion ihrer elektronischen Energien.
+Für ein Azobenzolderivat seien beispielsweise die Energien
+$E_\mathrm{cis} = -932{,}48\ \text{eV}$ und
+$E_\mathrm{trans} = -933{,}00\ \text{eV}$ berechnet worden. Dann beträgt die Energiedifferenz:
 
 $$
 \Delta E_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933{,}00\ \text{eV} - (-932{,}48\ \text{eV}) = -0{,}52\ \text{eV}.
@@ -382,8 +383,8 @@ $$
 -0{,}52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
 $$
 
-Ein negativer Wert bedeutet, dass die *trans*-Konfiguration energetisch günstiger ist (niedrigere Energie) – der Übergang von
-*cis* nach *trans* setzt also Energie frei.
+Der negative Wert bedeutet, dass die *trans*-Struktur im verwendeten Modell eine niedrigere elektronische
+Energie besitzt. Daraus allein lässt sich weder die Reaktionsgeschwindigkeit noch die freie Reaktionsenergie bestimmen.
 
 ## Strukturoptimierung
 
@@ -458,19 +459,19 @@ Ein molekularer Photoschalter kann durch Licht zwischen Formen mit unterschiedli
 Bei Azobenzol sind dies die *cis*- und die *trans*-Form. Lichtabsorption eröffnet einen Reaktionsweg über
 angeregte elektronische Zustände.
 
-Vereinfacht läuft das Umschalten so ab:
+Die lichtinduzierte Isomerisierung lässt sich vereinfacht in folgende Schritte gliedern:
 
 1. Das Molekül liegt beispielsweise in der *trans*-Form im elektronischen Grundzustand vor.
 2. Es absorbiert ein Photon geeigneter Energie und gelangt in einen angeregten elektronischen Zustand.
-3. Die Atome können sich auf der veränderten Energielandschaft neu anordnen, etwa durch Verdrehung oder
+3. Im angeregten elektronischen Zustand können sich die Atompositionen verändern, etwa durch Verdrehung oder
    Änderung von Bindungswinkeln an der Azogruppe.
 4. Das Molekül kehrt in den elektronischen Grundzustand zurück. Es kann dabei die *cis*-Form erreichen
-   oder wieder in der *trans*-Form enden. Nicht jedes absorbierte Photon bewirkt also einen Formwechsel.
+   oder wieder die *trans*-Form annehmen. Eine Lichtabsorption führt daher nicht zwangsläufig zur Isomerisierung.
 
 Auch ohne Licht kann *cis*-Azobenzol thermisch zur *trans*-Form zurückkehren. Wie schnell dies geschieht,
 hängt unter anderem von Temperatur, Substituenten und Umgebung ab. $RT$ ist eine thermische Energieskala
 pro Mol; $R$ ist die Gaskonstante und $T$ die absolute Temperatur in Kelvin. Sie ist
-keine harte Obergrenze: Eine Barriere oberhalb von $RT$ schließt eine Reaktion nicht aus.
+keine Obergrenze für die Energie einzelner Moleküle: Eine Barriere oberhalb von $RT$ schließt eine Reaktion nicht aus.
 Die Möglichkeit einer thermischen Rückreaktion gehört auch zur [IUPAC-Beschreibung der Photochromie](https://www.old.goldbook.iupac.org/html/P/P04589.html).
 
 :::{figure} ../figures/outputs/photoswitch-mechanism.png
@@ -482,7 +483,8 @@ angeregten Zustand an; sie ist keine berechnete Potentialenergiekurve. Die therm
 im Grundzustand ist hier nicht eingezeichnet.
 :::
 
-**Was untersucht dieser Versuch?** Die Minimum- und Übergangszustandssuche untersucht die Energielandschaft
-im elektronischen Grundzustand. Die UV/Vis-Rechnung liefert Anregungsenergien und Übergangsstärken bei festgehaltener
-Geometrie. Beide Ergebnisse helfen, Photoschalter zu verstehen; sie simulieren aber nicht den zeitlichen Ablauf
-der lichtinduzierten Isomerisierung und sagen nicht direkt deren Ausbeute voraus.
+**Umfang der Rechnungen in diesem Versuch:** Die Minimum- und Übergangszustandssuche untersucht die
+Abhängigkeit der elektronischen Grundzustandsenergie von der Molekülgeometrie. Die UV/Vis-Rechnung liefert
+Anregungsenergien und Übergangsstärken bei festgehaltener Geometrie. Diese Ergebnisse beschreiben ausgewählte
+energetische und spektroskopische Eigenschaften der Photoschalter. Der zeitliche Ablauf und die Ausbeute
+der lichtinduzierten Isomerisierung werden damit nicht berechnet.

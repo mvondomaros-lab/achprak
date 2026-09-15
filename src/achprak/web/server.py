@@ -88,7 +88,7 @@ class JobManager:
         ):
             raise HTTPException(
                 409,
-                "Bitte zuerst nicht mehr benötigte Strukturen entfernen (maximal 100).",
+                "Die Sitzung enthält bereits 100 Strukturen. Löschen Sie nicht mehr benötigte Strukturen, bevor Sie weitere erstellen.",
             )
         while len(session.jobs) >= 12:
             old = next(iter(session.jobs))
@@ -126,7 +126,7 @@ class JobManager:
         job["status"] = status
         if status == "timeout":
             job["error"] = (
-                "Zeitlimit erreicht. Bitte eine einfachere Struktur versuchen."
+                "Die Berechnung wurde nach Erreichen des Zeitlimits beendet. Wählen Sie eine Struktur mit weniger Substituenten oder besprechen Sie die Berechnung mit Ihrer Betreuung."
             )
 
     def tick(self):
@@ -164,7 +164,7 @@ class JobManager:
                         status="failed",
                         error=str(exc)
                         if (folder / "result.json").exists()
-                        else f"Berechnung wurde beendet (Exit-Code {proc.returncode}). Siehe Programmausgabe.",
+                        else f"Die Berechnung wurde unerwartet beendet (Fehlercode {proc.returncode}). Wenden Sie sich mit dieser Meldung an Ihre Betreuung.",
                     )
         running = sum(task[3] is not None for task in self.tasks.values())
         for job_id, (session, job, folder, proc) in list(self.tasks.items()):
@@ -252,13 +252,13 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             if fresh:
                 if request.url.path != "/api/session" or request.method != "GET":
                     return JSONResponse(
-                        {"detail": "Sitzung abgelaufen. Bitte die Seite neu laden."},
+                        {"detail": "Die Sitzung ist abgelaufen. Laden Sie die Seite neu, um eine neue Sitzung zu starten."},
                         status_code=401,
                     )
                 if len(manager.sessions) >= 100:
                     return JSONResponse(
                         {
-                            "detail": "Zu viele Sitzungen. Bitte später erneut versuchen."
+                            "detail": "Die maximale Anzahl gleichzeitiger Sitzungen ist erreicht. Versuchen Sie es später erneut."
                         },
                         status_code=503,
                     )
@@ -318,12 +318,16 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             if body.kind == "ts" and (m["kind"] != "minimum" or not m.get("converged")):
                 raise HTTPException(
                     422,
-                    "Die Übergangszustandssuche startet von einem Minimum. Suchen Sie zuerst ein Minimum.",
+                    "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch.",
                 )
             if body.kind == "uvvis" and m["kind"] != "minimum":
                 raise HTTPException(
                     422,
-                    "Für ein Spektrum bitte zuerst ein Minimum suchen.",
+                    "Die Spektrenrechnung benötigt ein optimiertes Minimum. Führen Sie zuerst eine Minimumsuche durch.",
+                )
+            if body.kind == "uvvis" and m.get("spectrum"):
+                raise HTTPException(
+                    422, "Für dieses Minimum wurde bereits ein Spektrum berechnet."
                 )
             payload["molecule"] = m
         return manager.submit(session, payload)
@@ -339,7 +343,11 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             with log.open("rb") as handle:
                 handle.seek(max(0, log.stat().st_size - 24000))
                 output = handle.read().decode("utf-8", errors="replace")
-        return {**job, "log": output}
+        spectrum_progress = None
+        progress_path = manager.root / job_id / "spectrum-progress.json"
+        if job["kind"] == "uvvis" and progress_path.exists():
+            spectrum_progress = json.loads(progress_path.read_text())
+        return {**job, "log": output, "spectrum_progress": spectrum_progress}
 
     @app.delete("/api/jobs/{job_id}")
     async def cancel_job(job_id: str, request: Request):
@@ -352,7 +360,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def clear_molecules(request: Request):
         session = request.state.session
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
-            raise HTTPException(409, "Bitte zuerst die laufende Berechnung beenden.")
+            raise HTTPException(409, "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.")
         session.molecules.clear()
         return {"status": "deleted"}
 
@@ -360,7 +368,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def delete_molecule(molecule_id: str, request: Request):
         session = request.state.session
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
-            raise HTTPException(409, "Bitte zuerst die laufende Berechnung beenden.")
+            raise HTTPException(409, "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.")
         if session.molecules.pop(molecule_id, None) is None:
             raise HTTPException(404, "Struktur nicht gefunden.")
         return {"status": "deleted"}

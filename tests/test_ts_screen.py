@@ -52,6 +52,7 @@ def test_screen_failure(fixture, tmp_path):
             {
                 "id": case["id"],
                 "converged": bool(ok),
+                "final_xyz": common.atoms_to_xyz(search.atoms),
                 "attempts": search.attempts,
                 **{
                     key: getattr(search, key)

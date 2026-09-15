@@ -1,3 +1,6 @@
+import sys
+from contextlib import redirect_stdout
+
 import numpy as np
 import pymopac
 
@@ -10,6 +13,40 @@ MAXCI = 800
 PRINTED_STATES = 100
 # At four standard deviations, an individual Gaussian is below 0.04% of its peak.
 COVERAGE_MARGIN = 4 * SIGMA
+
+
+class MopacProgressStream:
+    """Forward output unchanged and recognize completed, ordered INDO milestones."""
+
+    def __init__(self, output, observer):
+        self.output = output
+        self.observer = observer
+        self.pending = ""
+        self.stage = 0
+
+    def write(self, text):
+        self.output.write(text)
+        self.pending += text
+        while "\n" in self.pending:
+            line, self.pending = self.pending.split("\n", 1)
+            line = line.strip()
+            stage = 0
+            if line.startswith("RHF CALCULATION,"):
+                stage = 1
+            elif line == "MOLECULAR ORBITALS":
+                stage = 2
+            elif line.startswith("CI excitations="):
+                stage = 3
+            elif line.startswith("CI trans.  energy frequency wavelength oscillator-"):
+                stage = 4
+            if stage > self.stage:
+                self.stage = stage
+                phases = ("", "electrons", "configurations", "excited_states", "transitions")
+                self.observer(phases[stage])
+        return len(text)
+
+    def flush(self):
+        self.output.flush()
 
 
 def parse_mopac_excitations(fname):
@@ -57,8 +94,17 @@ class UVVis:
             stream=True,
         )
 
-    def calculate(self):
-        self.mopac.run()
+    def _run(self, observer):
+        if observer is None:
+            self.mopac.run()
+        else:
+            with redirect_stdout(MopacProgressStream(sys.stdout, observer)):
+                self.mopac.run()
+
+    def calculate(self, observer=None):
+        self._run(observer)
+        if observer:
+            observer("read_transitions")
         self.excitations, self.oscillator_strengths = parse_mopac_excitations(
             self.mopac.outpath
         )
@@ -71,7 +117,12 @@ class UVVis:
             and self.excitations.max() < EMAX + COVERAGE_MARGIN
         ):
             self.mopac = self._input(self.maxci)
-            self.mopac.run()
+            if observer:
+                observer("expanded_output")
+            # Keep the reason for the repeated run visible throughout it.
+            self._run(None)
+            if observer:
+                observer("read_transitions")
             self.excitations, self.oscillator_strengths = parse_mopac_excitations(
                 self.mopac.outpath
             )

@@ -44,7 +44,6 @@ const state = {
   job: null,
   live: null,
   tracking: null,
-  replaying: false,
   playbackMode: "optimization",
   playbackMolecule: null,
   previewIndex: null,
@@ -66,7 +65,7 @@ const TITLES = {
   ],
   spectrum: [
     "UV/Vis-Spektrum berechnen",
-    "Berechnen Sie, welches Licht Ihr optimiertes Molekül absorbiert.",
+    "Berechnen Sie die elektronischen Anregungsenergien und das UV/Vis-Spektrum eines optimierten Minimums.",
   ],
 };
 const JOBS = {
@@ -162,7 +161,7 @@ function download(data, filename, type) {
 }
 function filename(ext) {
   return (
-    (current()?.name || "photoschalter")
+    (current() ? structureLabel(current()) : "photoschalter")
       .replace(/[^\p{L}\p{N}._-]+/gu, "-")
       .slice(0, 100) +
     "." +
@@ -322,8 +321,6 @@ function updateMode() {
     $("build-view-" + mode).checked = (state.buildMode || "2d") === mode;
     $("build-view-" + mode).disabled = !current();
   }
-  $("starting-geometry-note").hidden =
-    state.step !== "build" || state.mode !== "3d" || !current();
   $("center").hidden = state.mode !== "3d";
   $("viewport").hidden = state.mode !== "3d";
   $("structure-image").hidden = state.mode !== "2d" || !current();
@@ -359,12 +356,12 @@ function updateControls() {
   $("create").disabled = state.busy;
   $("molecule-select").disabled = state.busy || !selectableMolecules().length;
   $("clear-structures").disabled = state.busy || !state.molecules.length;
-  $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum";
+  $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum" || !!m?.spectrum;
   $("spectrum-requirement").hidden = m?.kind === "minimum";
   $("spectrum-requirement").textContent =
     "Suchen Sie zuerst in Schritt 02 ein Minimum.";
   $("calculate-spectrum").textContent = m?.spectrum
-    ? "Spektrum neu berechnen"
+    ? "Spektrum bereits berechnet"
     : "Spektrum berechnen";
   $("structure-library").hidden = !selectableMolecules().length;
   $("structure-picker-title").textContent =
@@ -383,9 +380,9 @@ function renderSpectrum() {
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
   $("spectrum-caption").textContent =
-    `Maximum im berechneten Bereich: ${fmt(e, 3)} eV · ${fmt(HC / e, 1)} nm.` +
+    `Absorptionsmaximum im dargestellten Energiebereich: ${fmt(e, 3)} eV · ${fmt(HC / e, 1)} nm.` +
     (spec.coverage_complete === false
-      ? " Die berechneten Übergänge decken den oberen Energiebereich einschließlich der Bandenränder nicht vollständig ab. Dort kann Absorption fehlen."
+      ? " Die berechneten Übergänge decken den oberen Energiebereich einschließlich der Bandenränder nicht vollständig ab. Die Absorption in diesem Bereich kann dadurch unterschätzt werden."
       : "");
   $("transitions").replaceChildren();
   spec.excitations_ev.forEach((e, i) => {
@@ -413,19 +410,21 @@ function renderState() {
   }
   if (state.live && state.live.source_id !== m?.id) state.live = null;
   $("molecule-select").textContent = m
-    ? `${substituentLabel(m.base_name)} · ${KIND[m.kind]}`
+    ? structureGroupLabel(m)
     : "Noch keine Struktur";
-  $("molecule-select").title = substituentLabel(m?.name || "Struktur auswählen");
+  $("molecule-select").title = m ? structureGroupLabel(m) : "Struktur auswählen";
   $("structure-count").textContent = String(
     structureGroups(selectableMolecules()).length,
   );
-  $("active-name").textContent = substituentLabel(m?.name || "Ihre erste Struktur");
+  $("active-name").textContent = m ? structureGroupLabel(m) : "Startstruktur";
   $("active-meta").textContent = m
     ? `${m.formula} · ${m.atom_count} Atome`
     : "Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf ergänzen.";
   $("geometry-badge").hidden = !m;
   $("geometry-badge").textContent = m ? KIND[m.kind] : "";
-  $("geometry-badge").classList.toggle("optimized", m?.kind === "minimum");
+  $("geometry-badge").classList.remove("live", "playback");
+  for (const kind of ["initial", "minimum", "ts"])
+    $("geometry-badge").classList.toggle(kind, m?.kind === kind);
   $("energy").textContent = m?.properties
     ? fmt(m.properties.energy_ev, 4)
     : "—";
@@ -453,7 +452,7 @@ function renderState() {
   $("ts-check-result").textContent = !ts
     ? ""
     : ts.connectivity?.verified
-      ? `Die Minimumsuche führt auf einer Seite zu cis und auf der anderen zu trans.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minima haben anders angeordnete Ringe oder Substituenten als die Minima am Anfang und Ende des dargestellten Reaktionspfads."} Die Barriere gilt für diesen Weg; Temperatureffekte sind nicht berücksichtigt.`
+      ? `Die Minimumsuche ausgehend von beiden Seiten des Übergangszustands erreicht ein cis- und ein trans-Minimum.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minima haben anders angeordnete Ringe oder Substituenten als die Minima am Anfang und Ende des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Temperatureffekte sind nicht berücksichtigt.`
       : "Die Verbindung zwischen cis und trans wurde nicht bestätigt. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
   $("ts-check-technical").textContent = !ts
     ? ""
@@ -590,7 +589,7 @@ function renderEnergyHistory(activeStep) {
   $("energy-history").hidden = !visible;
   if (!visible) return;
   const pathActive = state.live?.phase === "path" ? state.live : null;
-  const live = state.busy && !state.replaying;
+  const live = state.busy;
   $("energy-history-state").textContent = live ? "· Live" : "";
   const source = current()?.base_name?.match(/^(cis|trans)-/)?.[1];
   const direction = source ? ` · ${source} → ${source === "cis" ? "trans" : "cis"}` : "";
@@ -616,7 +615,7 @@ function renderEnergyHistory(activeStep) {
             tension: 0,
           },
           {
-            label: "Gezeigte Geometrie",
+            label: "Dargestellte Struktur",
             data: [],
             borderColor: "#c77825",
             backgroundColor: "#c77825",
@@ -646,7 +645,7 @@ function renderEnergyHistory(activeStep) {
               title: (items) =>
                 items[0].raw.phase === "path"
                   ? `Struktur auf dem Reaktionspfad ${items[0].raw.image + 1}`
-                  : `${{ endpoint: "Anderes Minimum", path_seed: "Pfadvorbereitung", neb: "Weg optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Übergangszustand genauer bestimmen", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
+                  : `${{ endpoint: "Anderes Minimum", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Geometrie des Übergangszustands verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
               label: (item) =>
                 `E = ${fmt(item.raw.energy, 6)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
             },
@@ -764,7 +763,7 @@ function renderSpectrumChart(spec) {
   }
   if (spectrumChart.spectrumData !== spec) {
     spectrumChart.data.datasets[2].data = [];
-    $("spectrum-selection").textContent = "Klicken Sie auf eine diskrete Linie, um den Übergang abzulesen.";
+    $("spectrum-selection").textContent = "Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs abzulesen.";
   }
   spectrumChart.spectrumData = spec;
   spectrumChart.data.datasets[0].data = spec.energy_ev.map((x, i) => ({ x, y: spec.absorption[i] }));
@@ -801,8 +800,6 @@ function collectProgress(job) {
       kind: job.kind,
       records: [],
       sourceId: state.selected,
-      visibleSince: null,
-      visibleSteps: new Set(),
     };
   const track = state.tracking;
   track.status = job.status;
@@ -812,40 +809,6 @@ function collectProgress(job) {
   ]);
   track.sourceId = track.records[0]?.source_id || track.sourceId;
   return track.records.at(-1);
-}
-async function replayShortRun() {
-  const track = state.tracking;
-  if (
-    !track ||
-    !OptimizationProgress.shouldReplay(
-      track.records,
-      track.visibleSince,
-      performance.now(),
-      track.visibleSteps?.size,
-    )
-  )
-    return;
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  state.replaying = true;
-  $("job-status").hidden = false;
-  $("skip-replay").hidden = false;
-  $("job-title").textContent =
-    "Berechnung abgeschlossen · Verlauf wird wiedergegeben";
-  const delay = Math.min(180, 3000 / track.records.length);
-  try {
-    for (const progress of track.records) {
-      if (!state.replaying) break;
-      state.live = { ...progress, replay: true };
-      applyLiveGeometry();
-      renderEnergyHistory(progress.step);
-      $("job-time").textContent =
-        `Wiedergabe · Schritt ${progress.step} · E = ${fmt(progress.energy_ev, 4)} eV`;
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-  } finally {
-    state.replaying = false;
-    $("skip-replay").hidden = true;
-  }
 }
 function applyLiveGeometry() {
   const progress = state.live;
@@ -876,17 +839,19 @@ function applyLiveGeometry() {
       : "—";
   }
   $("properties-context").hidden = false;
+  const displayStatus = progress.replay ? "Wiedergabe" : "Berechnung läuft";
   $("properties-context").textContent = !in3D
-    ? "Werte der ausgewählten Struktur"
-    : "Werte der aktuell gezeigten Struktur";
+    ? "Werte der Ausgangsstruktur · 2D"
+    : Number.isInteger(progress.neb_image)
+      ? `${displayStatus} · Werte der Struktur auf dem Reaktionspfad ${progress.neb_image + 1}`
+      : `${displayStatus} · Werte des Zwischenschritts ${progress.step}`;
+  $("geometry-badge").hidden = false;
   $("geometry-badge").textContent = in3D
-    ? Number.isInteger(progress.neb_image)
-      ? `${progress.replay ? "Wiedergabe" : "Live"} · Struktur auf dem Reaktionspfad ${progress.neb_image + 1}`
-      : progress.replay
-        ? "Wiedergabe · Zwischenschritt"
-        : "Live · Zwischenschritt"
+    ? progress.replay ? "Wiedergabe" : "Live"
     : "Ausgangsstruktur · 2D";
-  $("geometry-badge").classList.remove("optimized");
+  $("geometry-badge").classList.remove("initial", "minimum", "ts");
+  $("geometry-badge").classList.toggle("live", in3D && state.busy && !progress.replay);
+  $("geometry-badge").classList.toggle("playback", in3D && !!progress.replay);
   if (
     component &&
     in3D &&
@@ -913,8 +878,8 @@ function displayJob(job) {
   const structureStatus = {
     complete: "Struktur erstellt",
     failed: "Struktur konnte nicht erstellt werden",
-    cancelled: "Erstellen abgebrochen",
-    timeout: "Das Erstellen dauert zu lange",
+    cancelled: "Strukturerstellung abgebrochen",
+    timeout: "Zeitlimit für die Strukturerstellung erreicht",
   };
   $("job-title").textContent =
     (job.kind === "template"
@@ -924,8 +889,14 @@ function displayJob(job) {
     job.status === "queued"
       ? job.kind === "template"
         ? "Struktur wird vorbereitet …"
-        : "Wartet auf einen freien Rechenplatz …"
+        : "Berechnung wartet auf verfügbare Rechenkapazität …"
       : `${fmt(job.elapsed || 0, 0)} s`;
+  $("job-detail").hidden = job.kind !== "uvvis" || job.status !== "running";
+  if (!$("job-detail").hidden) {
+    const description = SpectrumProgress.describe(job.spectrum_progress?.phase, job.elapsed);
+    $("job-title").textContent = description.title;
+    $("job-detail").textContent = description.detail;
+  }
   $("cancel").hidden = !["queued", "running"].includes(job.status);
   if (job.log !== undefined) {
     const progress = collectProgress(job);
@@ -939,21 +910,17 @@ function displayJob(job) {
         renderState();
       }
       applyLiveGeometry();
-      if (component && state.mode === "3d" && state.step !== "spectrum") {
-        state.tracking.visibleSince ??= performance.now();
-        state.tracking.visibleSteps.add(progress.step);
-      }
       $("job-time").textContent =
         `${fmt(job.elapsed || 0, 0)} s · Schritt ${progress.step} · E = ${fmt(progress.energy_ev, 4)} eV`;
       const phaseTitle = {
-        endpoint: "Andere Form (cis oder trans) optimieren",
-        path_seed: "Weg zwischen cis und trans vorbereiten",
-        neb: "Strukturen auf dem Weg zwischen cis und trans optimieren",
+        endpoint: "Minimum der anderen cis/trans-Konfiguration suchen",
+        path_seed: "Reaktionspfad zwischen cis und trans vorbereiten",
+        neb: "Strukturen entlang des Reaktionspfads optimieren",
         neb_climb: "Energiebarriere zwischen cis und trans suchen",
-        connectivity: "Prüfen, ob beide Seiten zu cis und trans führen",
+        connectivity: "Verbindung des Übergangszustands zu cis- und trans-Minima prüfen",
         complete: "Prüfung des Übergangszustands abgeschlossen",
-        refinement: "Übergangszustand genauer bestimmen",
-        vibrations: "Mögliche Bewegungen der Atome prüfen",
+        refinement: "Geometrie des Übergangszustands verfeinern",
+        vibrations: "Schwingungsfrequenzen zur Prüfung des Übergangszustands berechnen",
       }[progress.phase];
       if (phaseTitle) $("job-title").textContent = phaseTitle;
     }
@@ -969,15 +936,13 @@ async function monitor(jobId) {
       const job = await api(`jobs/${jobId}`);
       displayJob(job);
       if (!["queued", "running"].includes(job.status)) {
-        if (job.status === "complete" && ["minimum", "ts"].includes(job.kind))
-          await replayShortRun();
         await refresh(job.result?.molecule?.id, true);
         displayJob(job);
         if (job.error) error(job.error);
         if (job.result?.molecule?.converged === false)
           error(
             job.result.molecule.ts_search?.failure_reason ||
-              "Die Optimierung ist noch nicht abgeschlossen. Die letzte Anordnung der Atome wurde gespeichert. Optimieren Sie diese erneut, bevor Sie ein Spektrum berechnen.",
+              "Die Optimierung ist noch nicht abgeschlossen. Die zuletzt berechnete Struktur wurde gespeichert. Optimieren Sie diese erneut, bevor Sie ein Spektrum berechnen.",
           );
         return job;
       }
@@ -995,12 +960,14 @@ async function monitor(jobId) {
   }
 }
 async function startJob(payload) {
+  if (payload.kind === "uvvis" && current()?.spectrum)
+    throw new Error("Für dieses Minimum wurde bereits ein Spektrum berechnet.");
   if (payload.kind === "minimum" && current()?.kind === "minimum")
     throw new Error(
       "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
     );
   if (state.busy)
-    throw new Error("Bitte warten Sie auf die laufende Berechnung.");
+    throw new Error("Warten Sie, bis die laufende Berechnung abgeschlossen ist.");
   error("");
   const wasPreviewing = state.live?.replay;
   state.live = null;
@@ -1072,47 +1039,63 @@ $("optimize").onclick = handle(() =>
 $("calculate-spectrum").onclick = handle(() =>
   startJob({ kind: "uvvis", molecule_id: state.selected }),
 );
-$("skip-replay").onclick = () => {
-  state.replaying = false;
-};
 $("cancel").onclick = handle(async () => {
   if (state.job) await api(`jobs/${state.job}`, { method: "DELETE" });
 });
+function structureIdentity(molecule) {
+  const base = molecule.base_name || "";
+  const configuration = base.match(/^(cis|trans)-/)?.[1] || "";
+  const pattern = base.replace(/^(cis|trans)-/, "").replace(/-?Azobenzol$/, "");
+  return {
+    configuration,
+    pattern: substituentLabel(pattern || "unsubstituiert"),
+    isPath: molecule.kind === "ts" || !!molecule.ts_search,
+  };
+}
+function structureGroupLabel(molecule) {
+  const { configuration, pattern } = structureIdentity(molecule);
+  return `${configuration} · ${pattern}`;
+}
+function structureLabel(molecule) {
+  const { configuration, pattern, isPath } = structureIdentity(molecule);
+  const direction = isPath
+    ? `${configuration} → ${configuration === "cis" ? "trans" : "cis"}`
+    : configuration;
+  return `${direction}${molecule.kind === "ts" ? " Übergangszustand" : ""} · ${pattern}`;
+}
 function structureGroups(molecules, query = "") {
   const groups = new Map();
   for (const m of molecules) {
-    const name = m.base_name.replace(/^(cis|trans)-/, "");
+    const name = structureGroupLabel(m);
     if (!groups.has(name))
       groups.set(name, { name, formula: m.formula, entries: [] });
-    const configuration = m.base_name.match(/^(cis|trans)-/)?.[1] || "";
-    const label =
-      m.kind === "ts"
-        ? `Übergangszustand · aus ${configuration}-Minimum`
-        : `${configuration} · ${KIND[m.kind]}`;
-    groups.get(name).entries.push({ molecule: m, label });
+    const label = KIND[m.kind];
+    const key = m.kind;
+    const kindOrder = { initial: 0, minimum: 1, unconverged: 2, ts: 3 }[m.kind] ?? 4;
+    groups.get(name).entries.push({
+      molecule: m, label, key, order: kindOrder,
+    });
   }
-  const search = query.normalize("NFKC").trim().toLocaleLowerCase("de-DE");
+  const normalize = (text) => text.normalize("NFKC").trim().toLocaleLowerCase("de-DE");
+  const search = normalize(query);
   return [...groups.values()]
     .map((group) => {
-      const totals = new Map(),
-        counts = new Map();
+      const totals = new Map(), counts = new Map();
       for (const entry of group.entries)
-        totals.set(entry.label, (totals.get(entry.label) || 0) + 1);
+        totals.set(entry.key, (totals.get(entry.key) || 0) + 1);
       const entries = group.entries
+        .sort((a, b) => a.order - b.order)
         .map((entry) => {
-          const n = (counts.get(entry.label) || 0) + 1;
-          counts.set(entry.label, n);
+          const n = (counts.get(entry.key) || 0) + 1;
+          counts.set(entry.key, n);
           return {
             ...entry,
-            label: entry.label + (totals.get(entry.label) > 1 ? ` · ${n}` : ""),
+            label: entry.label + (totals.get(entry.key) > 1 ? ` · ${n}` : ""),
           };
         })
-        .filter((entry) =>
-          `${group.name} ${group.formula} ${entry.label}`
-            .normalize("NFKC")
-            .toLocaleLowerCase("de-DE")
-            .includes(search),
-        );
+        .filter((entry) => normalize(
+          `${group.name} ${group.formula} ${entry.label}`,
+        ).includes(search));
       return { ...group, entries };
     })
     .filter((group) => group.entries.length);
@@ -1136,10 +1119,18 @@ function renderStructureOptions() {
       button.className = "structure-option";
       button.classList.toggle("selected", m.id === state.selected);
       if (m.id === state.selected) button.setAttribute("aria-current", "true");
-      const name = document.createElement("strong");
-      name.textContent = label;
-      button.setAttribute("aria-label", `${substituentLabel(group.name)} · ${label}`);
-      button.append(name);
+      const accessibleLabel = `${group.name} · ${label}`;
+      button.setAttribute("aria-label", accessibleLabel);
+      const title = document.createElement("span");
+      title.className = "structure-option-title";
+      title.textContent = label;
+      if (m.id === state.selected) {
+        const check = document.createElement("span");
+        check.textContent = "✓";
+        check.setAttribute("aria-hidden", "true");
+        title.append(check);
+      }
+      button.append(title);
       button.onclick = () => {
         if (state.busy) return;
         state.live = null;
@@ -1152,7 +1143,7 @@ function renderStructureOptions() {
       remove.className = "structure-delete";
       remove.type = "button";
       remove.title = "Struktur löschen";
-      remove.setAttribute("aria-label", `${substituentLabel(group.name)} · ${label} löschen`);
+      remove.setAttribute("aria-label", `${accessibleLabel} löschen`);
       remove.innerHTML =
         '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg>';
       remove.disabled = state.busy;
@@ -1300,7 +1291,7 @@ $("energy-png").onclick = handle(async () => {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#192d43";
   ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
-  ctx.fillText(substituentLabel(current().name), 12 * scale, 25 * scale,
+  ctx.fillText(structureLabel(current()), 12 * scale, 25 * scale,
     canvas.width - 24 * scale);
   ctx.drawImage(source, 0, header);
   ctx.fillStyle = plotStyle.text;
@@ -1340,7 +1331,7 @@ $("spectrum-png").onclick = handle(async () => {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = "#192d43";
   ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
-  ctx.fillText(substituentLabel(current().name), 12 * scale, 25 * scale, canvas.width - 24 * scale);
+  ctx.fillText(structureLabel(current()), 12 * scale, 25 * scale, canvas.width - 24 * scale);
   ctx.drawImage(source, 0, header);
   ctx.fillStyle = plotStyle.text;
   ctx.font = `${12 * scale}px Arial, Helvetica, sans-serif`;
@@ -1383,7 +1374,7 @@ convert("ev");
 $("converter-open").onclick = () => $("converter").showModal();
 async function guide(step) {
   if (!$("guide-content").children.length) {
-    const response = await fetch("static/guide.html");
+    const response = await fetch("static/guide.html?v=ui-33");
     if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden.");
     $("guide-content").innerHTML = await response.text(); // Trusted, bundled teaching material.
   }

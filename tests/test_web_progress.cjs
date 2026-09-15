@@ -61,69 +61,32 @@ test("terminal full history restores steps dropped by the bounded log; vibration
   );
 });
 
-test("instant completion receives a paced, explicitly labeled geometry replay before result refresh", async () => {
-  const records = [0, 1, 2, 3].map((s) => record(s));
-  const elements = new Map();
-  const seen = [];
-  const context = vm.createContext({
-    OptimizationProgress: progress,
-    state: { tracking: { records, visibleSince: null } },
-    performance: { now: () => 5000 },
-    matchMedia: () => ({ matches: false }),
-    $: (id) => {
-      if (!elements.has(id)) elements.set(id, {});
-      return elements.get(id);
-    },
-    applyLiveGeometry: () => seen.push(context.state.live),
-    renderEnergyHistory: () => {},
-    fmt: String,
-    setTimeout: (done, delay) => {
-      assert.ok(delay > 0 && delay <= 180);
-      done();
-    },
-  });
+test("short optimizations load the result directly without automatic playback", async () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
-  vm.runInContext(
-    app.slice(
-      app.indexOf("async function replayShortRun()"),
-      app.indexOf("function applyLiveGeometry()"),
-    ),
-    context,
-  );
-  await context.replayShortRun();
-  assert.deepEqual(
-    seen.map((r) => r.step),
-    [0, 1, 2, 3],
-  );
-  assert.ok(seen.every((r) => r.replay));
-  assert.match(
-    elements.get("job-title").textContent,
-    /abgeschlossen.*wiedergegeben/,
-  );
-  assert.equal(context.state.replaying, false);
-  assert.equal(elements.get("skip-replay").hidden, true);
-  assert.equal(progress.shouldReplay(records, 100, 5000), false);
-});
-
-test("reduced motion disables automatic replay while retaining all chart data", async () => {
-  const records = [record(0), record(1)];
-  const context = vm.createContext({
-    OptimizationProgress: progress,
-    state: { tracking: { records, visibleSince: null } },
-    performance: { now: () => 500 },
-    matchMedia: () => ({ matches: true }),
-  });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
-  vm.runInContext(
-    app.slice(
-      app.indexOf("async function replayShortRun()"),
-      app.indexOf("function applyLiveGeometry()"),
-    ),
-    context,
-  );
-  await context.replayShortRun();
-  assert.equal(context.state.live, undefined);
-  assert.equal(context.state.tracking.records.length, 2);
+  for (const kind of ["minimum", "ts"]) {
+    const events = [];
+    const records = [record(0), record(1)];
+    const job = { status: "complete", kind, result: { molecule: { id: "result" } } };
+    const context = vm.createContext({
+      state: { tracking: { records }, live: record(1) },
+      api: async () => job,
+      updateControls: () => {},
+      displayJob: () => events.push("status"),
+      refresh: async (id, completed) => {
+        assert.equal(id, "result");
+        assert.equal(completed, true);
+        events.push("result");
+        context.state.live = null;
+      },
+      renderEnergyHistory: () => {},
+      error: (message) => assert.fail(message),
+    });
+    vm.runInContext(app.slice(app.indexOf("async function monitor("), app.indexOf("async function startJob(")), context);
+    await context.monitor("job");
+    assert.deepEqual(events, ["status", "result", "status"]);
+    assert.equal(context.state.busy, false);
+    assert.equal(context.state.tracking.records.length, 2);
+  }
 });
 
 test("playback uses search frames and never exposes legacy TS vibration frames", () => {
@@ -466,7 +429,10 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
     },
     $: (id) => {
       if (!elements.has(id))
-        elements.set(id, { style: {}, classList: { remove() {} } });
+        elements.set(id, { style: {}, classList: {
+          remove() {},
+          toggle(name, enabled) { this[name] = enabled; },
+        } });
       return elements.get(id);
     },
   });
@@ -486,13 +452,24 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
     [2, 0, 0],
   ]);
   assert.equal(
-    elements.get("geometry-badge").textContent,
-    "Live · Struktur auf dem Reaktionspfad 4",
+    elements.get("properties-context").textContent,
+    "Berechnung läuft · Werte der Struktur auf dem Reaktionspfad 4",
   );
+  assert.equal(elements.get("geometry-badge").hidden, false);
+  assert.equal(elements.get("geometry-badge").textContent, "Live");
+  assert.equal(elements.get("geometry-badge").classList.live, true);
+  assert.equal(elements.get("geometry-badge").classList.playback, false);
+  context.state.live.replay = true;
+  context.applyLiveGeometry();
+  assert.equal(elements.get("properties-context").textContent,
+    "Wiedergabe · Werte der Struktur auf dem Reaktionspfad 4");
+  assert.equal(elements.get("geometry-badge").textContent, "Wiedergabe");
+  assert.equal(elements.get("geometry-badge").classList.live, false);
+  assert.equal(elements.get("geometry-badge").classList.playback, true);
   assert.equal(elements.get("image-download").disabled, false);
   context.state.live.source_id = "another-molecule";
   context.applyLiveGeometry();
-  assert.equal(positions.length, 2);
+  assert.equal(positions.length, 3);
   assert.equal(elements.get("properties-grid").style.visibility, "visible");
   assert.equal(
     elements.get("energy").textContent,
@@ -842,6 +819,14 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   context.updateControls();
   assert.equal(elements.get("calculate-spectrum").disabled, false);
   assert.equal(elements.get("spectrum-requirement").hidden, true);
+  molecule.spectrum = { energy_ev: [2], absorption: [1] };
+  context.updateControls();
+  assert.equal(elements.get("calculate-spectrum").disabled, true);
+  assert.equal(elements.get("calculate-spectrum").textContent, "Spektrum bereits berechnet");
+  delete molecule.spectrum;
+  context.updateControls();
+  assert.equal(elements.get("calculate-spectrum").disabled, false);
+  assert.equal(elements.get("calculate-spectrum").textContent, "Spektrum berechnen");
   context.state.busy = true;
   context.updateControls();
   assert.equal(elements.get("calculate-spectrum").disabled, true);
@@ -913,7 +898,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   assert.equal(context.state.mode, "3d");
   assert.equal(elements.get("viewport").hidden, false);
   assert.equal(elements.get("structure-image").hidden, true);
-  assert.equal(elements.get("starting-geometry-note").hidden, false);
   assert.equal(elements.get("center").hidden, false);
   assert.equal(elements.get("center").disabled, false);
   assert.equal(elements.get("viewer-hint").hidden, false);
@@ -924,7 +908,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   context.state.step = "optimize";
   context.updateControls();
   assert.equal(elements.get("build-view-toggle").hidden, true);
-  assert.equal(elements.get("starting-geometry-note").hidden, true);
   context.state.step = "build";
   context.updateControls();
   assert.equal(context.state.mode, "3d");
@@ -932,7 +915,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   assert.equal(elements.get("build-view-2d").checked, true);
   assert.equal(elements.get("build-view-3d").checked, false);
   assert.equal(context.state.mode, "2d");
-  assert.equal(elements.get("starting-geometry-note").hidden, true);
 });
 
 test("image export pauses playback and captures the displayed intermediate geometry", async () => {
@@ -981,9 +963,10 @@ test("structure picker groups chemical identities and keeps variants individuall
       unconverged: "Optimierung nicht abgeschlossen",
     },
   });
+  vm.runInContext(app.slice(app.indexOf("function substituentLabel("), app.indexOf("for (let r =")), context);
   vm.runInContext(
     app.slice(
-      app.indexOf("function structureGroups("),
+      app.indexOf("function structureIdentity("),
       app.indexOf("function renderStructureOptions("),
     ),
     context,
@@ -1021,33 +1004,28 @@ test("structure picker groups chemical identities and keeps variants individuall
       kind: "initial",
     },
   ];
+  assert.equal(context.structureLabel(molecules[0]), "cis · unsubstituiert");
+  assert.equal(context.structureGroupLabel(molecules[3]), "cis · unsubstituiert");
+  assert.equal(context.structureGroupLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans · 4-OMe");
+  assert.equal(context.structureLabel(molecules[3]), "cis → trans Übergangszustand · unsubstituiert");
+  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans → cis Übergangszustand · 4-OMe");
+  assert.equal(context.structureLabel(molecules[5]), "trans · 2-F");
+  assert.equal(context.structureLabel({ base_name: "cis-4-F, 4′-NMe2-Azobenzol", kind: "minimum" }), "cis · 4-F, 4′-NMe₂");
+  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "unconverged", ts_search: {} }), "trans → cis · 4-OMe");
   const groups = context.structureGroups(molecules);
-  assert.equal(groups.length, 2);
-  assert.equal(groups[0].name, "Azobenzol");
-  assert.equal(groups[0].entries.length, 5);
-  assert.equal(groups[0].entries[1].label, "cis · Minimum · 1");
-  assert.equal(groups[0].entries[4].label, "cis · Minimum · 2");
-  assert.equal(
-    groups[0].entries[3].label,
-    "Übergangszustand · aus cis-Minimum",
-  );
-  assert.equal(
-    context.structureGroups(molecules, "trans")[0].entries[0].molecule.id,
-    "c",
-  );
-  assert.equal(
-    context.structureGroups(molecules, "C12H9FN2")[0].entries[0].molecule.id,
-    "f",
-  );
-  assert.equal(
-    context.structureGroups(molecules, "Minimum · 2")[0].entries[0].molecule.id,
-    "e",
-  );
-  assert.equal(
-    context.structureGroups(molecules.filter((m) => m.id !== "a"))[0].entries
-      .length,
-    4,
-  );
+  assert.equal(groups.length, 3);
+  assert.equal(groups[0].name, "cis · unsubstituiert");
+  assert.equal(groups[1].name, "trans · unsubstituiert");
+  assert.equal(groups[2].name, "trans · 2-F");
+  assert.deepEqual(Array.from(groups[0].entries, (entry) => entry.molecule.id), ["a", "b", "e", "d"]);
+  assert.equal(groups[0].entries[1].label, "Minimum · 1");
+  assert.equal(groups[0].entries[2].label, "Minimum · 2");
+  assert.equal(groups[0].entries[3].label, "Übergangszustand");
+  assert.equal(context.structureGroups(molecules, "trans")[0].entries[0].molecule.id, "c");
+  assert.equal(context.structureGroups(molecules, "C12H9FN2")[0].entries[0].molecule.id, "f");
+  assert.equal(context.structureGroups(molecules, "Minimum · 2")[0].entries[0].molecule.id, "e");
+  assert.equal(context.structureGroups(molecules.filter((m) => m.id !== "a"))[0].entries.length, 3);
+
 });
 
 function selectionLab(molecules) {
@@ -1328,4 +1306,96 @@ test("spectrum preserves bands and stick strengths with reciprocal wavelength ti
   chart.options.onClick({ x: 350, y: 100 }, [], chart);
   assert.equal(chart.data.datasets[2].data[1].x, 5);
   assert.match(selection.textContent, /Übergang 3/);
+});
+
+test("spectrum notes rotate without inventing stage changes", () => {
+  const spectrum = globalThis.SpectrumProgress;
+  const first = spectrum.describe("excited_states", 0);
+  const later = spectrum.describe("excited_states", 12);
+  assert.equal(first.title, later.title);
+  assert.notEqual(first.detail, later.detail);
+  assert.equal(spectrum.describe("excited_states", 36).detail, first.detail);
+  assert.match(spectrum.describe("unknown", 0).title, /wird berechnet/);
+  assert.match(spectrum.describe("expanded_output", 0).detail, /erneut/);
+});
+
+test("spectrum stage descriptions only appear for a running spectrum job", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  const context = vm.createContext({
+    state: { step: "spectrum", busy: true },
+    SpectrumProgress: globalThis.SpectrumProgress,
+    JOBS: { uvvis: "UV/Vis-Spektrum wird berechnet", minimum: "Minimum wird gesucht" },
+    fmt: String,
+    renderEnergyHistory() {},
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, { classList: { toggle() {} } });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("function displayJob("), app.indexOf("async function monitor(")), context);
+  const job = { kind: "uvvis", status: "running", elapsed: 24,
+    spectrum_progress: { phase: "excited_states" } };
+  context.displayJob(job);
+  assert.equal(elements.get("job-detail").hidden, false);
+  assert.equal(elements.get("job-title").textContent, "Energien angeregter Zustände berechnen");
+  for (const status of ["queued", "failed", "cancelled", "timeout", "complete"]) {
+    context.displayJob({ ...job, status });
+    assert.equal(elements.get("job-detail").hidden, true);
+    assert.notEqual(elements.get("job-title").textContent, "Energien angeregter Zustände berechnen");
+  }
+  context.displayJob({ ...job, kind: "minimum" });
+  assert.equal(elements.get("job-detail").hidden, true);
+});
+
+test("picker groups by starting configuration and substitution without redundant origin text", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const element = () => ({
+    children: [], attributes: {}, classList: { toggle() {} }, textContent: "", value: "",
+    append(...children) { this.children.push(...children); },
+    replaceChildren() { this.children = []; },
+    setAttribute(name, value) { this.attributes[name] = value; },
+  });
+  const elements = new Map();
+  const molecules = [
+    { id: "start", base_name: "trans-4-OMe-Azobenzol", kind: "initial", formula: "C13H12N2O" },
+    { id: "min", base_name: "trans-4-OMe-Azobenzol", kind: "minimum", formula: "C13H12N2O" },
+    { id: "ts", base_name: "trans-4-OMe-Azobenzol", kind: "ts", formula: "C13H12N2O" },
+    { id: "failed", base_name: "cis-4-OMe-Azobenzol", kind: "unconverged", ts_search: {}, formula: "C13H12N2O" },
+  ];
+  const context = vm.createContext({
+    state: { selected: "min", busy: false },
+    KIND: { initial: "Startstruktur", minimum: "Minimum", ts: "Übergangszustand", unconverged: "Optimierung nicht abgeschlossen" },
+    selectableMolecules: () => molecules,
+    document: { createElement: element },
+    handle: (fn) => fn,
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, element());
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("function substituentLabel("), app.indexOf("for (let r =")), context);
+  vm.runInContext(app.slice(app.indexOf("function structureIdentity("), app.indexOf('$("molecule-select").onclick')), context);
+  context.renderStructureOptions();
+  const groups = elements.get("structure-options").children;
+  assert.equal(groups.length, 2);
+  assert.equal(groups[0].children[0].textContent, "trans · 4-OMe");
+  assert.equal(groups[1].children[0].textContent, "cis · 4-OMe");
+  const buttons = groups[0].children.slice(2).map((row) => row.children[0]);
+  const minimum = buttons.find((button) => button.attributes["aria-current"] === "true");
+  assert.equal(minimum.children[0].textContent, "Minimum");
+  assert.equal(minimum.children[0].children[0].textContent, "✓");
+  const ts = buttons.find((button) => button.children[0].textContent === "Übergangszustand");
+  assert.equal(ts.children[0].children.length, 0);
+  assert.equal(ts.children.length, 1);
+  assert.equal(ts.attributes["aria-label"], "trans · 4-OMe · Übergangszustand");
+  const failed = groups[1].children[2].children[0];
+  assert.equal(failed.children[0].textContent, "Optimierung nicht abgeschlossen");
+  for (const button of [...buttons, failed]) {
+    assert.doesNotMatch(button.attributes["aria-label"], /Azobenzol|Ausgangsminimum/);
+  }
+  elements.get("structure-search").value = "cis · 4-OMe";
+  context.renderStructureOptions();
+  assert.equal(elements.get("structure-options").children.length, 1);
+  assert.equal(elements.get("structure-options").children[0].children.length, 3);
 });

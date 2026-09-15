@@ -394,13 +394,57 @@ legend {
   font-weight: 600;
   padding: 6px 9px;
   border-radius: 5px;
-  background: #edf3fb;
-  color: #466580;
+  background: #f0f2f5;
+  color: #526070;
   white-space: nowrap;
 }
-.badge.optimized {
+.badge.initial {
+  background: #f1e5d0;
+  color: #705324;
+}
+.badge.minimum {
   background: #e7f5f0;
   color: #237056;
+}
+.badge.ts {
+  background: #f3eafa;
+  color: #754298;
+}
+.badge.live {
+  background: #fff3e0;
+  color: #875000;
+}
+.badge.playback {
+  background: #edf3fb;
+  color: #466580;
+}
+.badge.playback::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-right: 6px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 6px solid currentColor;
+}
+.badge.live::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  vertical-align: 1px;
+}
+.badge.live::before,
+.badge.playback::before {
+  animation: badge-pulse 1.8s ease-in-out infinite;
+}
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 .viewer-toolbar {
   display: flex;
@@ -609,6 +653,13 @@ details[open] summary {
   font-size: 12px;
   color: var(--muted);
   margin-top: 5px;
+}
+#job-detail {
+  margin: 8px 0 0;
+  max-width: 64ch;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
 }
 .job-status.running {
   border-left-color: var(--blue);
@@ -984,6 +1035,10 @@ dialog textarea {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .badge.live::before,
+  .badge.playback::before {
+    animation: none;
+  }
   * {
     scroll-behavior: auto !important;
     transition: none !important;
@@ -1318,10 +1373,6 @@ select {
   font-size: 14px;
 }
 
-#starting-geometry-note {
-  margin: 12px 27px;
-}
-
 #spectrum-chart { cursor: pointer; }
 .spectrum-selection {
   margin: 0 24px 12px;
@@ -1329,4 +1380,11 @@ select {
   font-size: 13px;
   line-height: 1.5;
   min-height: 1.5em;
+}
+
+.structure-option-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }

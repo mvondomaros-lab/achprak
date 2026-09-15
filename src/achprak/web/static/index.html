@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-24"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-34"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
-    <script src="static/progress.js?v=ui-24" defer></script>
-    <script src="static/app.js?v=ui-24" defer></script>
+    <script src="static/progress.js?v=ui-33" defer></script>
+    <script src="static/app.js?v=ui-39" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -56,7 +56,7 @@
         <aside class="controls">
             <section class="library" id="structure-library" hidden>
                 <label for="molecule-select"
-                >Ihre Moleküle
+                >Gespeicherte Strukturen
                     <span id="structure-count" class="count">0</span></label
                 >
                 <button
@@ -108,16 +108,17 @@
                 </form>
                 <details class="method-help" id="method-build">
                     <summary>Was passiert im Hintergrund?</summary>
-                    <h3>Wie funktioniert die Rechnung?</h3>
+                    <h3>Rechenverfahren</h3>
                     <p>
-                        Aus Ihrer Wahl von cis oder trans und den Substituenten entsteht
-                        zunächst ein Bauplan: Welche Atome gibt es, und wie sind sie
-                        verbunden? Das Programm RDKit erzeugt daraus eine räumliche Anordnung der
-                        Atome. Es nutzt hierfür typische Atomabstände, Bindungswinkel und
-                        bevorzugte Verdrehungen. Die von RDKit verwendete Methode heißt ETKDG und liefert
-                        eine Startstruktur für die anschließende Optimierung.
+                        Die gewählte Konfiguration und die Substituenten legen fest,
+                        welche Atome das Molekül enthält und wie sie verbunden sind.
+                        Das Programm RDKit erzeugt daraus mit dem Verfahren ETKDG eine
+                        dreidimensionale Startstruktur. Dabei verwendet es typische
+                        Atomabstände, Bindungswinkel und bevorzugte Verdrehungen um
+                        Bindungen. Diese Struktur dient als Ausgangspunkt für die
+                        anschließende Geometrieoptimierung.
                     </p>
-                    <h3>Wie lese ich das Ergebnis?</h3>
+                    <h3>Darstellung der Ergebnisse</h3>
                     <p>
                         Standardmäßig sehen Sie die 2D-Strukturformel. Sie zeigt
                         Bindungen und Substituenten, aber keine maßstabsgetreuen
@@ -125,13 +126,13 @@
                         Ansicht und können das Molekül drehen und vergrößern. Beide
                         Darstellungen gehören zum selben Molekül.
                     </p>
-                    <h3>Was sind die Grenzen?</h3>
+                    <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        Die Startstruktur ist noch nicht auf ihre Energie hin optimiert.
-                        Bei gleicher cis/trans-Konfiguration können sich beispielsweise
-                        die Ringe und Substituenten unterschiedlich verdrehen. Der
-                        Strukturaufbau liefert eine solche Anordnung. Erst die Minimumsuche in Schritt
-                        2 sucht eine energetisch günstige Anordnung.
+                        Die Startstruktur wurde noch nicht energetisch optimiert.
+                        Bei gleicher cis/trans-Konfiguration sind unterschiedliche
+                        räumliche Anordnungen der Ringe und Substituenten möglich.
+                        Die Strukturerstellung liefert eine dieser Anordnungen.
+                        In Schritt 2 wird ausgehend davon ein lokales Energieminimum gesucht.
                     </p>
                     <dl class="method">
                         <div>
@@ -158,12 +159,12 @@
                             checked
                     /><span
                     ><strong>Minimum</strong
-                    ><small>Energiearme Struktur finden</small></span
+                    ><small>Lokales Energieminimum suchen</small></span
                     ></label
                     ><label class="radio-card"
                 ><input type="radio" name="target" value="ts"/><span
                 ><strong>Übergangszustand</strong
-                ><small>Barriere zwischen cis und trans finden</small></span
+                ><small>Reaktionspfad zwischen cis und trans untersuchen</small></span
                 ></label
                 >
                 </fieldset>
@@ -175,7 +176,7 @@
                 </button>
                 <details class="method-help" id="method-optimize">
                     <summary>Was passiert im Hintergrund?</summary>
-                    <h3>Wie funktioniert die Rechnung?</h3>
+                    <h3>Rechenverfahren</h3>
                     <p>
                         Für jede Anordnung der Atomkerne berechnet ein vereinfachtes
                         quantenchemisches Modell die elektronische Energie und die
@@ -184,25 +185,28 @@
                         schnelle Rechnungen.
                     </p>
                     <p>
-                        <strong>Minimum:</strong> Ein Optimierungsalgorithmus, Sella, verschiebt die
-                        Atome schrittweise, um eine energiearme Anordnung zu finden.
-                        Anschaulich sucht er einen Talboden in einer Energielandschaft.
-                        Sind die verbleibenden Kräfte ausreichend klein, endet die
-                        Suche.
+                        <strong>Minimum:</strong> Das Optimierungsverfahren Sella passt
+                        die Atompositionen schrittweise an, um die elektronische Energie
+                        zu verringern. Die Suche endet, wenn die verbleibenden Kräfte
+                        unter dem festgelegten Grenzwert liegen. Damit ist das numerische
+                        Abbruchkriterium erfüllt; die Genauigkeit des Rechenmodells wird
+                        dadurch nicht geprüft.
                     </p>
                     <p>
                         <strong>Übergangszustand:</strong> Zwischen dem Ausgangsminimum
                         und einem Minimum der anderen cis/trans-Konfiguration wird ein
-                        Weg aus 13 Strukturen aufgebaut. Rechnerische Federn verbinden
-                        die benachbarten Strukturen zu einer Art Gummiband. Das Verfahren
-                        CI-NEB passt diesen Weg an die Energielandschaft an und sucht
-                        dessen höchsten Punkt – anschaulich einen Gebirgspass.
-                        Sella verfeinert diese Struktur zu einem möglichen Übergangszustand.
+                        Reaktionspfad aus 13 Strukturen aufgebaut. Das Verfahren CI-NEB
+                        optimiert die Strukturen entlang dieses Pfads. Zusätzliche
+                        rechnerische Federkräfte halten die benachbarten Strukturen
+                        auf Abstand. Die Struktur am Energiemaximum des Pfads wird
+                        anschließend mit Sella verfeinert und als möglicher
+                        Übergangszustand geprüft.
                     </p>
-                    <h3>Was bedeutet das Ergebnis?</h3>
+                    <h3>Bedeutung der Ergebnisse</h3>
                     <p>
-                        <strong>Minimum:</strong> Die Atome haben eine energiearme
-                        Anordnung erreicht. Vergleichen Sie die optimierten cis- und
+                        <strong>Minimum:</strong> Gesucht ist eine Anordnung, deren Energie
+                        sich durch kleine Änderungen der Atompositionen nicht weiter
+                        verringern lässt. Vergleichen Sie die optimierten cis- und
                         trans-Formen desselben Moleküls: Die niedrigere Energie kennzeichnet
                         die energetisch günstigere Form im verwendeten Modell.
                     </p>
@@ -210,12 +214,13 @@
                         <strong>Übergangszustand:</strong> Das Energieprofil zeigt den
                         berechneten Weg zwischen den beiden Minima. Die elektronische
                         Energiebarriere ΔE‡ ist die Energie des Übergangszustands minus
-                        die Energie des Ausgangsminimums. Ob der gefundene Kandidat die
-                        Prüfungen bestanden hat, sehen Sie unter dem Diagramm.
+                        die Energie des Ausgangsminimums. Die Ergebnisse der
+                        Schwingungsprüfung und der Prüfung der Verbindung zwischen
+                        cis und trans stehen unter dem Diagramm.
                     </p>
-                    <h3>Was sind die Grenzen?</h3>
+                    <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        <strong>Die Suche erfasst nicht alle Möglichkeiten.</strong>
+                        <strong>Die Suche untersucht einen begrenzten Bereich der möglichen Strukturen.</strong>
                         Je nach Ausgangsstruktur kann sie unterschiedliche Minima finden,
                         etwa mit anders verdrehten Ringen oder Substituenten. Auch ein
                         bestätigter Übergangszustand gehört nur zum untersuchten Weg;
@@ -258,27 +263,28 @@
                 </button>
                 <details class="method-help" id="method-spectrum">
                     <summary>Was passiert im Hintergrund?</summary>
-                    <h3>Wie funktioniert die Rechnung?</h3>
+                    <h3>Rechenverfahren</h3>
                     <p>
-                        Licht kann ein Molekül in einen angeregten elektronischen
-                        Zustand versetzen. Das Programm MOPAC berechnet mit dem
-                        Näherungsverfahren INDO/S–CIS die dafür benötigten Energien. Es
-                        geht von Ihrem optimierten Minimum aus und hält die Atomkerne
-                        während dieser Rechnung an ihren Positionen fest. So wird eine
-                        Anregung beschrieben, die schneller abläuft als die Bewegung der
-                        Kerne.
+                        Das UV/Vis-Spektrum beschreibt die Absorption von ultraviolettem
+                        und sichtbarem Licht. Das Programm MOPAC berechnet mit dem
+                        Näherungsverfahren INDO/S–CIS die Energien und Stärken
+                        elektronischer Anregungen. Die Rechnung verwendet ein
+                        optimiertes Minimum und hält die Atomkerne an ihren Positionen
+                        fest. Diese Näherung beschreibt eine elektronische Anregung,
+                        während der sich die Kernpositionen kaum ändern.
                     </p>
                     <p>
                         INDO/S vereinfacht die Beschreibung der Elektronen und ist für
                         die Berechnung von Spektren angepasst. CIS
-                        berücksichtigt Anregungen, bei denen jeweils ein Elektron in ein
-                        anderes Orbital wechselt. Ein Orbital beschreibt einen möglichen Zustand eines Elektrons;
+                        beschreibt angeregte Zustände als Überlagerung von Anregungen,
+                        bei denen jeweils ein Elektron aus einem besetzten in ein
+                        unbesetztes Orbital übergeht. Ein Orbital beschreibt einen möglichen Zustand eines Elektrons;
                         daraus lässt sich seine räumliche Aufenthaltswahrscheinlichkeit ableiten.
                     </p>
-                    <h3>Wie lese ich das Ergebnis?</h3>
+                    <h3>Darstellung der Ergebnisse</h3>
                     <p>
                         Jede Linie steht für einen elektronischen Übergang. Ihre Höhe
-                        zeigt die Oszillatorstärke: ein Maß dafür, wie stark dieser
+                        zeigt die Oszillatorstärke: ein dimensionsloses Maß dafür, wie stark dieser
                         Übergang zur Lichtabsorption beiträgt. Für die blaue Kurve wird
                         jede Linie zu einer glockenförmigen Gaußkurve verbreitert;
                         anschließend werden die Beiträge addiert.
@@ -287,7 +293,7 @@
                         Kleinere Anregungsenergien entsprechen längeren Wellenlängen.
                         Eine Verschiebung dorthin heißt bathochrome Verschiebung.
                     </p>
-                    <h3>Was sind die Grenzen?</h3>
+                    <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         Das Spektrum ist eine Modellvorhersage für eine einzelne
                         Geometrie. Ethanol wird über seine elektrische Abschirmwirkung
@@ -328,7 +334,7 @@
         <section class="results" aria-label="Struktur und Ergebnisse">
             <div class="result-heading" id="result-heading" hidden>
                 <div>
-                    <h2 id="active-name">Ihre erste Struktur</h2>
+                    <h2 id="active-name">Startstruktur</h2>
                     <p id="active-meta">
                         Wählen Sie Konfiguration und Substituenten für Ihre
                         Startstruktur.
@@ -376,11 +382,9 @@
             <div id="job-status" class="job-status" role="status" hidden>
                 <div>
                     <strong id="job-title"></strong><span id="job-time"></span>
+                    <p id="job-detail" hidden></p>
                 </div>
                 <button id="cancel" class="small-button">Abbrechen</button>
-                <button id="skip-replay" class="small-button" hidden>
-                    Wiedergabe überspringen
-                </button>
             </div>
             <div id="molecular-panel">
                 <div class="viewer-toolbar" id="viewer-toolbar" hidden>
@@ -395,9 +399,6 @@
                         </button>
                     </div>
                 </div>
-                <p id="starting-geometry-note" class="note" hidden>
-                    Diese Startstruktur ist noch nicht energetisch optimiert.
-                </p>
                 <div class="viewer-wrap">
                     <div id="viewport" aria-label="Interaktives 3D-Modell"></div>
                     <img
@@ -407,7 +408,7 @@
                     />
                     <div id="viewer-empty" class="empty">
                         <span class="empty-symbol" aria-hidden="true">N=N</span>
-                        <h3>Hier erscheint Ihr Molekül</h3>
+                        <h3>Noch keine Struktur ausgewählt</h3>
                     </div>
                     <p id="viewer-hint" class="viewer-hint" hidden>
                         Ziehen zum Drehen · Scrollen zum Zoomen
@@ -417,8 +418,8 @@
                 <p id="properties-context" class="note"></p>
                 <div class="properties-grid" id="properties-grid" hidden>
                     <div>
-                        <span>Energie</span><strong id="energy">—</strong
-                    ><small>eV</small>
+                        <span>Elektronische Energie</span><strong id="energy">—</strong
+                    ><small title="Elektronenvolt, eine Energieeinheit">eV</small>
                     </div>
                     <div>
                         <span>Diederwinkel C–N=N–C</span><strong id="dihedral">—</strong
@@ -426,7 +427,7 @@
                     </div>
                     <div>
                         <span>Ringabstand</span><strong id="distance">—</strong
-                    ><small>pm</small>
+                    ><small title="Pikometer; 1 pm = 10⁻¹² m">pm</small>
                     </div>
                 </div>
                 <section
@@ -469,7 +470,7 @@
                 </section>
                 <p id="ts-summary" class="ts-summary" hidden></p>
                 <details id="ts-details" hidden>
-                    <summary>Technische Angaben zur Prüfung</summary>
+                    <summary>Prüfung des Übergangszustands</summary>
                     <p id="ts-check-result"></p>
                     <p id="ts-check-technical"></p>
                 </details>
@@ -477,7 +478,7 @@
             <div id="spectrum-panel" hidden>
                 <div id="spectrum-empty" class="empty spectrum-empty">
                     <span class="empty-symbol" aria-hidden="true">hν</span>
-                    <h3>Hier erscheint Ihr Spektrum</h3>
+                    <h3>Noch kein Spektrum berechnet</h3>
                 </div>
                 <div id="spectrum-result" hidden>
                     <section class="spectrum-plot" aria-label="Berechnetes UV/Vis-Spektrum">
@@ -502,7 +503,7 @@
                         </div>
                     </section>
                     <p id="spectrum-selection" class="spectrum-selection" aria-live="polite">
-                        Klicken Sie auf eine diskrete Linie, um den Übergang abzulesen.
+                        Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs abzulesen.
                     </p>
                     <p class="ts-summary" id="spectrum-caption"></p>
                     <details>
@@ -511,7 +512,7 @@
                             <table>
                                 <thead>
                                 <tr>
-                                    <th>Zustand</th>
+                                    <th>Angeregter Zustand</th>
                                     <th>Anregungsenergie / eV</th>
                                     <th>Wellenlänge / nm</th>
                                     <th>Oszillatorstärke</th>
@@ -545,7 +546,7 @@
     ><input
         id="structure-search"
         type="search"
-        placeholder="Name oder Summenformel"
+        placeholder="Substitution, Konfiguration oder Summenformel"
         autocomplete="off"
 />
     <div id="structure-options" class="structure-options"></div>
@@ -553,7 +554,7 @@
         <button id="clear-structures" class="text-button" type="button">
             Alle Strukturen löschen
         </button>
-        <small>Inklusive aller Minima, Übergangszustände und Spektren.</small>
+        <small>Einschließlich aller Minima, Übergangszustände und Spektren.</small>
     </div>
 </dialog>
 <dialog id="guide" aria-labelledby="guide-title">
@@ -577,7 +578,8 @@
     <p>
         Die Energie E eines Photons und seine Wellenlänge λ hängen über E = hc / λ
         zusammen. Dabei ist h die Planck-Konstante und c die Lichtgeschwindigkeit
-        im Vakuum. 1 eV pro Molekül entspricht etwa 96,49 kJ/mol.
+        im Vakuum. eV steht für Elektronenvolt, kJ/mol für Kilojoule pro Mol
+        und nm für Nanometer. 1 eV pro Molekül entspricht etwa 96,49 kJ/mol.
     </p>
     <div class="conversion-fields">
         <label

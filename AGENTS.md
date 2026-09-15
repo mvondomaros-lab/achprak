@@ -1,13 +1,16 @@
 # Target audience and design
 
 The target audience is first-year chemistry students with little to no experience
-in theoretical chemistry. Keep UI design and descriptive text intuitive and
-simple. Explain necessary technical terms in plain language. Offer additional
-details to interested students through optional, expandable explanations, while
-keeping the main workflow easy to understand.
-Never sacrifice scientific accuracy for simplicity. Simplify the language and
-presentation without introducing misconceptions, and make relevant assumptions
-and limitations clear.
+in theoretical chemistry. Use a scientific but accessible tone: scientific means
+precise about the calculation and its interpretation, not formal or jargon-heavy.
+Use short, direct sentences and explain necessary technical terms in plain language.
+Never sacrifice scientific accuracy for simpler wording.
+
+Keep the main workflow concise and easy to follow. State assumptions and
+limitations next to a result when they are needed to interpret it correctly.
+Put derivations, methodological details, and further explanations in optional,
+expandable sections or the student documentation. A short reminder or a reference
+is sufficient where the explanation is already available.
 
 # Verification
 
@@ -21,15 +24,25 @@ any failures. Keep these expensive tests disabled in default test runs.
 
 - Use German for student-facing text and address students consistently as “Sie”.
   Keep developer documentation and code identifiers in English.
+- Naming the molecules is a student exercise. Generated structure labels should
+  show configuration and substitution pattern (for example, “trans · 4-OMe”),
+  not the full molecule name. Show calculation status separately as a badge.
+- Describe calculations and quantities directly. Avoid playful metaphors,
+  anthropomorphizing molecules or algorithms, and rhetorical questions used as
+  entertainment. Questions that guide an exercise or identify a help topic are
+  appropriate. Use explanatory analogies only when they clarify a concept without
+  introducing a misconception.
 - Avoid vague language. Name the calculation, quantity, assumption, or limitation
   you mean and explain its practical consequence. Replace generic claims such as
   “meaningful results” or “the model has limitations” with concrete statements.
   Keep uncertainty where scientifically necessary; do not replace it with an
-  unsupported promise. Avoid repeating theory in the UI when a short reminder
-  or a reference to the documentation is sufficient.
-- Prefer “Übergangszustand” / “transition state” (TS) in the main teaching flow.
-  Use “Übergangsstruktur” / “transition structure” specifically for the calculated
-  saddle-point geometry, and explain the distinction in optional detail.
+  unsupported promise.
+- Use “Übergangszustand” / “transition state” (TS) in main-workflow labels,
+  actions, and result summaries, including labels for the calculated result.
+  In detailed explanations that distinguish the geometry from the theoretical
+  concept, call the calculated saddle-point geometry “Übergangsstruktur” /
+  “transition structure”. Explain this distinction in optional detail; do not
+  alternate the terms as unexplained synonyms in the main workflow.
 - Call the calculated barrier “elektronische Energiebarriere” / “electronic energy
   barrier”, with notation ΔE‡. Do not equate it with Arrhenius activation energy
   or Gibbs energy of activation.
