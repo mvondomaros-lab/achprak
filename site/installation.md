@@ -15,7 +15,7 @@ Die Webapp führt Sie durch drei Schritte:
 Die Aufgaben und Hinweise finden Sie direkt in der Webapp unter **Versuch & Aufgaben**.
 Schritt 1 bietet nur Startstrukturen zur Auswahl; in Schritt 2 können Sie auch Minima und Übergangszustände auswählen.
 Unter **Was passiert im Hintergrund?** finden Sie in jedem Schritt eine kurze Erklärung der Rechenmethode.
-Laden Sie Bilder und Spektren für Ihr Protokoll herunter. Die Ergebnisse
+Speichern Sie Strukturansichten und Spektren mit **Bild speichern** als PNG für Ihr Protokoll. Die Ergebnisse
 bleiben bis zum Neustart des Servers oder bis zu 24 Stunden Inaktivität erhalten.
 
 ## Lokal auf dem eigenen Computer

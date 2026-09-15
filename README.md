@@ -48,7 +48,7 @@ or step filter. Clearing is unavailable while a calculation is active.
 
 Structures are generated from predefined configurations and substituents.
 Names are assigned automatically; custom names and XYZ imports are not supported.
-Students can export images and spectra for their lab reports.
+Students can save structure images and spectra as PNG for their lab reports.
 
 ### Calculation progress and playback
 
@@ -146,7 +146,7 @@ pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
 ```
 
 Results are held per browser session until server restart or 24 hours of
-inactivity. Download PNG images and CSV spectrum data for your
+inactivity. Download PNG images of structures and spectra for your
 lab report. A page reload reconnects to any running calculation.
 
 ## Multiple users / self-hosted server

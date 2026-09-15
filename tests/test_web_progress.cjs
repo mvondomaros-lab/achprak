@@ -818,7 +818,6 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
     "structure-library",
     "result-heading",
     "viewer-toolbar",
-    "result-details",
   ])
     assert.equal(elements.get(id).hidden, true);
   assert.equal(elements.get("calculate-spectrum").disabled, true);
@@ -829,8 +828,6 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   target = "ts";
   context.updateControls();
   assert.equal(elements.get("result-heading").hidden, false);
-  assert.equal(elements.get("calculation-log").hidden, true);
-  assert.equal(elements.get("result-details").hidden, true);
   assert.equal(elements.get("ts-requirement").hidden, false);
   assert.equal(elements.get("optimize").disabled, true);
 
@@ -858,7 +855,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
       step: "build",
       mode: "3d",
       molecules: [{ id: "m", kind: "initial" }],
-      hasCalculationLog: true,
     },
     current: () => ({ id: "m", kind: "initial" }),
     document: { querySelector: () => ({ value: "minimum" }) },
@@ -896,8 +892,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
     "center",
     "properties-grid",
     "properties-context",
-    "result-details",
-    "calculation-log",
   ])
     assert.equal(elements.get(id).hidden, true, id);
   assert.equal(elements.get("image-download").disabled, false);
@@ -925,8 +919,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   assert.equal(elements.get("viewer-hint").hidden, false);
   for (const id of [
     "properties-grid",
-    "result-details",
-    "calculation-log",
   ])
     assert.equal(elements.get(id).hidden, true, id);
   context.state.step = "optimize";

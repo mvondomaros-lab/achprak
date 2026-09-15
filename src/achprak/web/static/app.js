@@ -371,9 +371,6 @@ function updateControls() {
     state.step === "build" ? "Startstruktur auswählen" : "Struktur auswählen";
   $("result-heading").hidden = !m;
   $("viewer-toolbar").hidden = !m;
-  $("result-details").hidden = state.step !== "spectrum" || !state.hasCalculationLog;
-  $("calculation-log").hidden =
-    state.step !== "spectrum" || !state.hasCalculationLog;
   $("image-download").disabled = !m;
   updateMode();
 }
@@ -879,9 +876,6 @@ function displayJob(job) {
   $("job-status").hidden =
     (job.status === "complete" && !state.busy) ||
     (state.step === "build" && job.kind !== "template");
-  if (job.kind !== "template") state.hasCalculationLog = true;
-  $("calculation-log").hidden =
-    state.step !== "spectrum" || !state.hasCalculationLog;
   $("job-status").classList.toggle(
     "running",
     ["queued", "running"].includes(job.status),
@@ -910,9 +904,7 @@ function displayJob(job) {
       : `${fmt(job.elapsed || 0, 0)} s`;
   $("cancel").hidden = !["queued", "running"].includes(job.status);
   if (job.log !== undefined) {
-    const { output } = OptimizationProgress.parse(job.log);
     const progress = collectProgress(job);
-    $("log").textContent = output || "Berechnung wird vorbereitet …";
     if (job.status === "running" && progress) {
       state.live = progress;
       if (
@@ -943,7 +935,6 @@ function displayJob(job) {
     }
   }
   renderEnergyHistory(state.live?.step);
-  $("log-state").textContent = job.status === "running" ? "· läuft" : "";
 }
 async function monitor(jobId) {
   state.busy = true;
@@ -1015,7 +1006,6 @@ async function startJob(payload) {
       body: JSON.stringify(payload),
     });
     displayJob(job);
-    $("log").textContent = "Berechnung wird vorbereitet …";
     return await monitor(job.id);
   } finally {
     state.busy = false;
@@ -1336,15 +1326,6 @@ $("spectrum-png").onclick = handle(async () => {
   if (!blob) throw new Error("Spektrum konnte nicht gespeichert werden.");
   download(blob, name);
 });
-$("spectrum-csv").onclick = () => {
-  const s = current().spectrum;
-  download(
-    "energy_eV,wavelength_nm,absorption_au\n" +
-      s.energy_ev.map((e, i) => `${e},${HC / e},${s.absorption[i]}`).join("\n"),
-    filename("spectrum.csv"),
-    "text/csv",
-  );
-};
 document
   .querySelectorAll("[data-close]")
   .forEach(

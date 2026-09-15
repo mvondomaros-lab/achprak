@@ -525,9 +525,6 @@ legend {
   color: #718299;
   margin-top: 5px;
 }
-.result-details {
-  border-top: 1px solid var(--line);
-}
 details {
   font-size: 14px;
 }
@@ -538,27 +535,6 @@ summary {
 }
 details[open] summary {
   color: var(--blue);
-}
-.result-details details + details {
-  border-top: 1px solid var(--line);
-}
-.export-row {
-  display: flex;
-  gap: 22px;
-  flex-wrap: wrap;
-  padding: 12px 24px 18px;
-}
-.result-details pre {
-  background: #102238;
-  color: #cbd8e8;
-  max-height: 280px;
-  overflow: auto;
-  padding: 18px 22px;
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.7;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
 }
 .step-panel details {
   margin-top: 18px;
@@ -997,10 +973,7 @@ dialog textarea {
     margin-right: auto;
     font-size: 12px;
   }
-  .export-row {
-    gap: 14px;
-  }
-  dialog {
+    dialog {
     padding: 22px;
   }
   .step-panel > p {
