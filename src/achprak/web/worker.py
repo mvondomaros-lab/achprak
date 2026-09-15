@@ -201,8 +201,10 @@ def calculate(data):
             {
                 "font.family": "sans-serif",
                 "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
-                "font.size": 9,
-                "axes.labelsize": 9,
+                # Match the browser energy plots: readable sans-serif labels,
+                # muted axes, horizontal grid lines and a 2 px-equivalent curve.
+                "font.size": 11,
+                "axes.labelsize": 12,
                 "axes.facecolor": "white",
                 "figure.facecolor": "white",
                 "axes.edgecolor": "#dce4ed",
@@ -221,7 +223,7 @@ def calculate(data):
                 "svg.fonttype": "none",
             }
         ):
-            fig, ax = plt.subplots(figsize=(9, 3), layout="constrained")
+            fig, ax = plt.subplots(figsize=(9, 3.3), layout="constrained")
             ax.set_axisbelow(True)
             ax.yaxis.grid(True)
             ax.spines[["top", "right"]].set_visible(False)
@@ -259,7 +261,7 @@ def calculate(data):
             wavelengths = np.array([800, 600, 500, 400, 300, 250])
             top.set_xticks(1239.8419843320026 / wavelengths, wavelengths)
             top.set_xlabel("Wellenlänge / nm")
-            top.spines[["left", "right", "bottom"]].set_visible(False)
+            top.spines[:].set_visible(False)
             top.grid(False)
             image = io.StringIO()
             fig.savefig(image, format="svg")

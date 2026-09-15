@@ -538,6 +538,14 @@ async function refresh(selected) {
   return data;
 }
 let energyChart = null;
+// Keep aligned with the Matplotlib spectrum style in web/worker.py.
+const plotStyle = {
+  font: { family: "Arial, Helvetica, sans-serif", size: 16 },
+  titleFont: { family: "Arial, Helvetica, sans-serif", size: 17 },
+  text: "#586b80",
+  border: "#dce4ed",
+  grid: "#e7edf5",
+};
 function energyRecords() {
   if (
     state.tracking?.sourceId === state.selected &&
@@ -650,6 +658,9 @@ function renderEnergyHistory(activeStep) {
         ],
       },
       options: {
+        locale: "de-DE",
+        color: plotStyle.text,
+        font: plotStyle.font,
         responsive: true,
         maintainAspectRatio: false,
         animation: false,
@@ -659,6 +670,10 @@ function renderEnergyHistory(activeStep) {
         plugins: {
           legend: { display: false },
           tooltip: {
+            titleFont: plotStyle.titleFont,
+            bodyFont: plotStyle.font,
+            backgroundColor: "#192d43",
+            padding: 10,
             callbacks: {
               title: (items) =>
                 items[0].raw.phase === "path"
@@ -672,14 +687,28 @@ function renderEnergyHistory(activeStep) {
         scales: {
           x: {
             type: "linear",
-            title: { display: true, text: "Suchschritt" },
-            ticks: { precision: 0, maxTicksLimit: 7 },
-            grid: { display: false },
+            title: {
+              display: true, text: "Suchschritt", color: plotStyle.text,
+              font: plotStyle.titleFont, padding: { top: 10, bottom: 0 },
+            },
+            ticks: {
+              precision: 0, maxTicksLimit: 7, maxRotation: 0,
+              color: plotStyle.text, font: plotStyle.font, padding: 8,
+            },
+            grid: { display: false, drawTicks: false },
+            border: { color: plotStyle.border },
           },
           y: {
-            title: { display: true, text: "ΔE / eV" },
-            ticks: { maxTicksLimit: 5 },
-            grid: { color: "#e7edf5" },
+            title: {
+              display: true, text: "ΔE / eV", color: plotStyle.text,
+              font: plotStyle.titleFont, padding: { top: 0, bottom: 10 },
+            },
+            ticks: {
+              maxTicksLimit: 5, color: plotStyle.text,
+              font: plotStyle.font, padding: 8,
+            },
+            grid: { color: plotStyle.grid, lineWidth: 1, drawTicks: false },
+            border: { color: plotStyle.border },
           },
         },
       },
