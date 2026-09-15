@@ -1,18 +1,13 @@
 import contextlib
-import io
-import os
 import tempfile
 
 import IPython.display
 import ase.io
-import ase.optimize
-import ase.vibrations
 import ipywidgets
-import rdkit.Chem.AllChem
-import rdkit.Chem.rdMolTransforms
 import sella
 
-from . import azobenzene, common, ui
+from . import common, ui
+from .transition_state import OptTS
 from .clipboard import clipboard
 
 
@@ -23,113 +18,23 @@ class OptMin:
 
     def __init__(self, atoms, calc=None):
         self.atoms = atoms
-        self.atoms.calc = calc or common.DefaultASECalculator()
+        self.atoms.calc = calc or common.DefaultASECalculator(
+            accuracy=common.OPTIMIZATION_ACCURACY
+        )
         self.traj = None
 
-    def run(self, output=None):
+    def run(self, output=None, steps=500, observer=None):
         """
         Perform a geometry optimization.
         """
         with tempfile.NamedTemporaryFile(suffix=".traj") as tmp:
             opt = sella.Sella(self.atoms, order=0, internal=True, trajectory=tmp.name)
+            if observer is not None:
+                opt.attach(lambda: observer(self.atoms, opt.nsteps, "optimization"))
             output = output or contextlib.nullcontext()
             with output:
-                converged = opt.run(fmax=0.02)
+                converged = opt.run(fmax=common.MINIMUM_FMAX, steps=steps)
             self.traj = ase.io.read(tmp.name, index=":")
-        return converged
-
-
-class OptTS:
-    """
-    Transition state optimization using Sella.
-    """
-
-    def __init__(self, atoms, calc=None):
-        """
-        Build a TS guess for azobenzene-like systems and prepare an ASE Atoms object
-        for TS optimization with Sella.
-
-        Current strategy (hard-coded for azobenzene):
-        - Set the C-N=N-C dihedral to ~90° to seed the rotational pathway.
-        - Pre-optimize with MMFF while restraining the dihedral and both CNN angles.
-
-        Parameters
-        ----------
-        atoms
-            Initial structure as ASE Atoms.
-        calc
-            ASE calculator to be used by Sella (defaults to DefaultASECalculator).
-        """
-        properties = azobenzene.Properties(atoms)
-        mol = properties.mol
-        conf = mol.GetConformer()
-
-        # Identify the key torsion (C1-N1=N2-C2) and set it.
-        indices = properties.cnnc_dihedral_indices()
-        c1, n1, n2, c2 = indices
-        rdkit.Chem.rdMolTransforms.SetDihedralDeg(conf, c1, n1, n2, c2, 90)
-
-        # MMFF setup.
-        mp = rdkit.Chem.AllChem.MMFFGetMoleculeProperties(mol, mmffVariant="MMFF94s")
-        ff = rdkit.Chem.AllChem.MMFFGetMoleculeForceField(mol, mp)
-
-        # Constrain the C-N=N-C torsion (rotational TS seed).
-        ff.MMFFAddTorsionConstraint(c1, n1, n2, c2, False, 90, 90, 1.0e5)
-
-        # Constrain the adjacent CNN angles to ~120° (sp2-like, rotational TS seed).
-        ff.MMFFAddAngleConstraint(c1, n1, n2, False, 120, 120, 1.0e5)
-        ff.MMFFAddAngleConstraint(n1, n2, c2, False, 120, 120, 1.0e5)
-
-        # Minimize (keep constraints active).
-        ff.Minimize()
-
-        # Convert back to ASE and attach calculator.
-        self.atoms = common.mol_to_atoms(mol)
-        self.atoms.calc = calc or common.DefaultASECalculator(accuracy=0.1)
-        self.traj = None
-
-    def run(self, output=None):
-        """
-        Run Sella.
-        """
-        # Run the TS optimization.
-        opt = sella.Sella(self.atoms, order=1, internal=True)
-        output = output or contextlib.nullcontext()
-        with output:
-            converged = opt.run(fmax=0.02)
-
-        # Make a trajectory of the lowest-energy normal mode and print frequencies.
-        if converged:
-            properties = azobenzene.Properties(self.atoms)
-            indices = properties.cnnc_dihedral_indices()
-            # NOTE:
-            # We restrict the vibrational analysis to the CNNC atoms only.
-            # This significantly reduces computational cost because ASE
-            # finite-difference vibrations scale with the number of atoms.
-            #
-            # For azobenzene TS validation, this is sufficient because we
-            # only need to confirm the presence of the characteristic
-            # imaginary mode along the N=N torsion / CNN deformation.
-            #
-            # This is NOT a full vibrational analysis and should not be
-            # used for thermochemistry.
-            vibrations = ase.vibrations.Vibrations(self.atoms, indices=indices)
-            with common.tempdir() as tmp:
-                # Run the finite-difference vibrational analysis quietly.
-                with contextlib.redirect_stdout(io.StringIO()):
-                    vibrations.run()
-
-                # Print frequencies to the output widget/context.
-                freqs = vibrations.get_frequencies()
-                with output:
-                    print("Vibrational frequencies (cm^-1) [CNNC subset only]:")
-                    for i, f in enumerate(freqs):
-                        print(f"  {i:3d}: {f}")
-
-                # Write a mode trajectory for visualization (mode 0 = lowest frequency).
-                vibrations.write_mode(0, nimages=60, kT=1.0)
-                fname = os.path.join(tmp, "vib.0.traj")
-                self.traj = ase.io.Trajectory(fname)
         return converged
 
 

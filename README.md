@@ -9,27 +9,127 @@ The materials are available on GitHub Pages:
 
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
 
-## Local Setup
+## Web app (local development)
 
-1. Install [pixi](https://pixi.sh).
-2. Clone the repository:
+Install [Pixi](https://pixi.sh), clone this repository, then run:
 
-    ```bash
-    git clone https://github.com/mvondomaros-lab/achprak.git
-    ```
+```sh
+pixi install -e web
+pixi run -e web web
+```
 
-3. Enter the project directory and install the dependencies:
+Open **http://127.0.0.1:8000/**. Python, RDKit, tblite, Sella and MOPAC are managed
+by Pixi. The NGL browser viewer is bundled locally; no Node build or CDN is needed.
 
-    ```bash
-    cd achprak
-    pixi install -e local
-    ```
+The German-language interface includes structure generation, 2D/3D viewing,
+properties, minimum/transition-state optimization, trajectory and vibration
+playback, UV/Vis spectra, the exercise tasks, unit conversion, and image/data
+exports. Structures are built only from the predefined cis/trans configurations
+and substituent choices; names are generated automatically. XYZ import and custom
+name input are not supported. XYZ export remains available. Select a structure once and carry it through the calculation steps.
+Long calculations run in isolated worker processes and can be cancelled. During
+minimum and transition-state searches, the 3D geometry, energy and maximum force
+update live at accepted optimizer steps (the browser polls every 400 ms). A live
+energy chart shows ΔE relative to the first step, with absolute energies on hover.
+Every geometry and energy is retained in the result, including runs that finish
+between polls. Short runs automatically replay for up to three seconds, explicitly
+labeled as playback, with a skip button; reduced-motion preferences disable this
+automatic replay. The energy chart remains available afterward. A single playback
+row below it provides a step slider and Play/Pause. Play resumes from the paused
+or manually selected step, stops at the final frame, and never loops. Pressing
+Play at the final frame starts a new playback from the beginning. For transition states,
+a mode selector switches this same row between the reaction path, search geometries,
+and the imaginary TS mode. Starting structures are labeled “Startstruktur”. The structure picker searches and wraps full molecule names; result names retain only
+the current optimization type.
 
-4. Start JupyterLab with the exercise notebook:
+TS searches require a converged minimum. A relaxed CNNC torsion scan seeds a
+13-image path toward the opposite cis/trans isomer, preserving atom identity and
+rotating the complete fragment. CNN angles are guided to 120° only during seed
+preparation. The opposite endpoint is then freely minimized. Regular minimum
+searches, opposite endpoints, and connectivity checks all use a final maximum
+atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
+ASE BFGS relaxes
+two unconstrained NEB halves against a provisionally refined central saddle seed.
+This prevents early corner cutting from removing the barrier. The full band is
+then released for climbing-image NEB, followed by free Sella saddle refinement
+using a full Cartesian Hessian and a 0.005 eV/Å force threshold. The central seed
+is approached in internal coordinates and finished in Cartesian coordinates;
+final saddle refinement also uses Cartesian coordinates to handle nearly linear
+CNN angles. Both endpoints use
+the same GFN1-xTB/ALPB ethanol
+model as the band. No two-attempt heuristic is used. The full search has a shared
+1500-iteration budget, plus the server's wall-time limit.
 
-    ```bash
-    pixi run -e local jupyter-lab notebooks/achprak.ipynb
-    ```
+The live chart shows the evolving band's energy against normalized Cartesian
+path length, not optimization time. The live 3D preview follows a moving image
+of the active half-band, then the climbing image during CI-NEB. The plot highlights
+the displayed image. On completion, the existing slider and
+single-pass Play control can show the reaction path, optimization history, or
+imaginary vibration. Both endpoint geometries and their energies are retained
+in the result; the other endpoint is available as the final path image.
 
-> [!NOTE]
-> For development, use the `dev` environment instead of `local`.
+A full all-atom finite-difference Hessian (0.01 Å displacement) checks the saddle.
+Rigid translations and rotations are projected out; exactly one imaginary
+internal frequency above 20 cm⁻¹ is required. Smaller negatives are tolerated as
+numerical noise. Displacement by ±0.15 Å maximum atom motion along the unstable
+mode, followed by unconstrained minimization, must reach one cis and one trans
+minimum with the original atom-mapped bond graph preserved. For this comparison,
+copies of both band endpoints and the downhill minima are optimized to 0.002 eV/Å
+to resolve soft torsions. Polishing takes place after the TS search and preserves
+the original band and its energy reference. These actual downhill
+minima (XYZ, energy, isomer) are retained separately. Matching to the polished
+endpoint references additionally uses aligned RMSD <0.35 Å and energy difference <0.05 eV.
+A different endpoint conformer is explicitly reported; isomer connectivity does
+not establish an exact conformer match. This is a numerical downhill connectivity
+check, **not an IRC** or a proof of the globally lowest barrier. Failed band, saddle,
+mode or cis/trans connectivity checks leave an unconfirmed search state.
+Only a force-converged saddle passing both mode and connectivity checks is labeled
+a TS. The vibration is illustrative, not dynamics. Barriers are electronic energy
+differences, not free-energy barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
+
+For development, `pixi run -e dev web` uses the existing development environment.
+New jobs load changes to the chemistry workers automatically. Reload the browser
+after HTML/CSS/JS changes; restart the process for changes to the server itself
+(this clears in-memory sessions). Optional command-line settings:
+
+```sh
+pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
+```
+
+Results are held per browser session until server restart or 24 hours of
+inactivity. Download XYZ coordinates, PNG images and SVG/CSV spectra for your
+protocol. A page reload reconnects to any running calculation.
+
+## Multiple users / self-hosted server
+
+See [deploy/README.md](deploy/README.md) for the included JupyterHub configuration:
+standard Unix accounts via PAM, one app instance per Unix user, authenticated
+proxying, and a private Unix socket for each app. The optional `web-hub` Pixi
+environment contains the server dependencies. Local development needs no Hub.
+
+## Verification
+
+```sh
+pixi run -e dev test-web
+# Also run real minimum, UV/Vis and transition-state calculations:
+ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web
+# Frontend polling and short-run replay regressions (Node is test-only):
+node --test tests/test_web_progress.cjs
+```
+
+## Original notebook
+
+The original notebook remains usable:
+
+```sh
+pixi install -e local
+pixi run -e local jupyter-lab notebooks/achprak.ipynb
+```
+
+Local validation on macOS included the complete chemistry workflow (including
+60 transition-state vibration frames), API session isolation, cancellation and
+timeouts, and the standalone proxy with a `/user/test/` prefix and private Unix
+socket. NGL rendering, optimization playback, 2D structures and spectra were also
+checked in Safari. Linux PAM login and actual switching between Unix accounts
+still need a deployment test on the target server. The optional WebMCP interface
+is feature-detected; this browser does not provide a WebMCP validation context.

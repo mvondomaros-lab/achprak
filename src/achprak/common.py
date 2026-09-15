@@ -33,6 +33,9 @@ RUN_ERROR_TEXT = "Fehler ❌"
 SOLVENT_NAME = "ethanol"
 SOLVENT_EPS = 24.3
 
+MINIMUM_FMAX = 0.002  # eV/Å; also used for endpoint connectivity checks.
+OPTIMIZATION_ACCURACY = 0.1
+
 
 class DefaultASECalculator(tblite.ase.TBLite):
     def __init__(

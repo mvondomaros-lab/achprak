@@ -5,6 +5,8 @@ results
 .ipynb_checkpoints
 .virtual_documents
 __pycache__
+*.egg-info/
+.pytest_cache/
 
 # System
 .DS_Store

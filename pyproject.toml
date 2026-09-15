@@ -6,6 +6,9 @@ description = "Jupyter-based practical introducing theoretical chemistry to firs
 readme = "README.md"
 license = { file = "LICENSE" }
 
+[tool.setuptools.package-data]
+"achprak.web" = ["static/*", "static/vendor/*"]
+
 [tool.pixi.workspace]
 channels = ["https://prefix.dev/conda-forge"]
 platforms = ["osx-arm64", "linux-64"]
@@ -39,6 +42,9 @@ sella = ">=2.4.2, <3"
 pymopac = ">=1.1, <2"
 
 [tool.pixi.feature.dev.dependencies]
+fastapi = ">=0.115,<1"
+uvicorn = ">=0.34,<1"
+httpx = ">=0.28,<1"
 pytest = ">=9.0.3,<10"
 jupyter-ruff = ">=0.3.1,<0.4"
 pixi-pycharm = ">=0.0.11,<0.0.12"
@@ -52,11 +58,31 @@ jupyterhub = ">=5.4.4,<6"
 jupyterhub-systemdspawner = ">=1.0.2, <2"
 jupyterhub-nativeauthenticator = ">=1.3.0, <2"
 
+[tool.pixi.feature.web.dependencies]
+fastapi = ">=0.115,<1"
+uvicorn = ">=0.34,<1"
+
+[tool.pixi.feature.web.tasks]
+web = "python -m achprak.web"
+
+[tool.pixi.feature.web-hub.dependencies]
+jupyterhub = ">=5.4.4,<6"
+configurable-http-proxy = ">=4.6,<6"
+
+[tool.pixi.feature.web-hub.pypi-dependencies]
+jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }
+
+[tool.pixi.feature.dev.tasks]
+web = "python -m achprak.web"
+test-web = "pytest tests -q"
+
 [tool.pixi.environments]
 local = { features = ["local"] }
 hub = { features = ["hub"] }
 dev = { features = ["local", "dev"] }
 lserver = { features = ["local", "lserver"] }
+web = { features = ["web"] }
+web-hub = { features = ["web", "web-hub"] }
 
 [tool.pixi.activation]
 env = { TF_CPP_MIN_LOG_LEVEL = "3" }
