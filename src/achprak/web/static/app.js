@@ -80,9 +80,11 @@ const HC = 1239.8419843320026,
   EV_KJ = 96.48533212331002;
 const current = () => state.molecules.find((m) => m.id === state.selected);
 function selectableMolecules() {
-  return state.step === "build"
-    ? state.molecules.filter((m) => m.kind === "initial")
-    : state.molecules;
+  if (state.step === "build")
+    return state.molecules.filter((m) => m.kind === "initial");
+  if (state.step === "spectrum")
+    return state.molecules.filter((m) => m.kind === "minimum");
+  return state.molecules;
 }
 function startingStructure(molecule) {
   const seen = new Set();
@@ -100,9 +102,13 @@ function startingStructure(molecule) {
 function selectMolecule(id, rememberResult = true) {
   const molecule = state.molecules.find((m) => m.id === id);
   if (rememberResult) state.resultSelection = molecule?.id || null;
+  const candidates = selectableMolecules();
+  let preferred = state.step === "build" ? startingStructure(molecule) : molecule;
+  if (state.step === "spectrum" && molecule?.kind === "ts")
+    preferred = candidates.find((m) => m.id === molecule.parent_id);
   state.selected =
-    (state.step === "build" ? startingStructure(molecule)?.id : molecule?.id) ||
-    selectableMolecules().at(-1)?.id ||
+    candidates.find((m) => m.id === preferred?.id)?.id ||
+    candidates.at(-1)?.id ||
     null;
 }
 const fmt = (value, digits = 2) =>
@@ -362,9 +368,9 @@ function updateControls() {
   $("molecule-select").disabled = state.busy || !selectableMolecules().length;
   $("clear-structures").disabled = state.busy || !state.molecules.length;
   $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum";
-  $("spectrum-requirement").hidden = !m || m.kind === "minimum";
+  $("spectrum-requirement").hidden = m?.kind === "minimum";
   $("spectrum-requirement").textContent =
-    "Suchen Sie für diese Struktur zuerst ein Minimum.";
+    "Suchen Sie zuerst in Schritt 02 ein Minimum.";
   $("calculate-spectrum").textContent = m?.spectrum
     ? "Spektrum neu berechnen"
     : "Spektrum berechnen";
