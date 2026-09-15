@@ -41,6 +41,6 @@ Zur Vorbereitung auf den Versuch lesen Sie bitte die theoretischen Grundlagen.
 
 {button}`Zu den Grundlagen 📘<theory.md>`
 
-Am Versuchstag kommen Sie bitte in den Computerraum der Theoretischen Chemie und folgen den Installationsanweisungen. Sie können gern auch Ihren eigenen Laptop nutzen. Ihre Assistent*innen helfen Ihnen bei der Einrichtung.
+Am Versuchstag kommen Sie bitte in den Computerraum der Theoretischen Chemie und öffnen die bereitgestellte Webapp. Sie können gern auch Ihren eigenen Laptop nutzen. Ihre Assistent*innen helfen Ihnen bei der Einrichtung.
 
-{button}`Einrichtung ⚙️<installation.md>`
+{button}`Webapp starten ⚙️<installation.md>`

@@ -1,33 +1,22 @@
-"""One calculation per process: no shared calculator, clipboard or working directory."""
+"""One calculation per process: no shared calculator or working directory."""
 
-import json
 import io
+import json
 import os
-import re
-from pathlib import Path
 import sys
 import traceback
 import uuid
+from pathlib import Path
 
-import ase.io
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdDepictor, rdMolDescriptors
 from rdkit.Chem.Draw import rdMolDraw2D
 
 from achprak import azobenzene, common, optimization, uvvis
+from achprak.transition_state import OptTS
 
 PROGRESS_PREFIX = "ACHPRAK_PROGRESS "
-
-
-def base_name(source):
-    """Keep a stable molecular name through repeated optimization steps."""
-    if "base_name" in source:
-        return source["base_name"]
-    name = source["name"]
-    if source.get("parent_id"):
-        name = re.sub(r"(?: · (?:Minimum|Übergangszustand))+$", "", name)
-    return name
 
 
 def progress_observer(source_id, history):
@@ -44,15 +33,11 @@ def progress_observer(source_id, history):
                 np.linalg.norm(atoms.get_forces(apply_constraint=False), axis=1).max()
             ),
         }
-        if "ts_attempt" in atoms.info:
-            progress["attempt"] = atoms.info["ts_attempt"]
-            progress["restart"] = atoms.info["ts_restart"]
         if "neb_path" in atoms.info:
             progress["neb_path"] = atoms.info["neb_path"]
             progress["neb_image"] = atoms.info["neb_image"]
         history.append(progress)
-        # Reuse the session-protected job log stream, including in already-running
-        # app instances. The frontend separates these records from ordinary output.
+        # The frontend separates progress records from ordinary job output.
         print(PROGRESS_PREFIX + json.dumps(progress, allow_nan=False), flush=True)
 
     return publish
@@ -83,7 +68,15 @@ def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     drawer.drawOptions().clearBackground = False
     drawer.DrawMolecule(flat)
     drawer.FinishDrawing()
+    geometry = azobenzene.Properties(atoms.copy())
     return {
+        "geometry_definition": {
+            "dihedral_indices": geometry.cnnc_dihedral_indices(),
+            "rings": [
+                list(ring) for ring in geometry.mol.GetRingInfo().AtomRings()[:2]
+            ],
+            "masses": atoms.get_masses().tolist(),
+        },
         "id": uuid.uuid4().hex,
         "name": name,
         "base_name": name,
@@ -99,7 +92,7 @@ def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
 
 def properties(atoms):
     p = azobenzene.Properties(atoms)
-    # Keep the same single-point method as the notebook, also for TS structures.
+    # Use the same single-point method for all structures.
     return {
         "energy_ev": float(p.energy()),
         "dihedral_deg": float(p.cnnc_dihedral()),
@@ -109,7 +102,7 @@ def properties(atoms):
 
 def calculate(data):
     kind = data["kind"]
-    if kind not in {"template", "properties", "minimum", "ts", "uvvis"}:
+    if kind not in {"template", "minimum", "ts", "uvvis"}:
         raise ValueError("Nur vordefinierte Azobenzolstrukturen werden unterstützt.")
     if kind == "template":
         settings = data["settings"]
@@ -128,21 +121,20 @@ def calculate(data):
         name = f"{settings['configuration']}-{substitutions + '-' if labels else ''}Azobenzol"
         m = molecule(t.atoms, name, mol=t.molh)
         m["settings"] = settings
+        m["properties"] = properties(t.atoms)
         return {"molecule": m}
     source = data["molecule"]
+    if kind == "minimum" and source["kind"] == "minimum":
+        raise ValueError(
+            "Diese Struktur ist bereits ein optimiertes Minimum. Der vorhandene Verlauf bleibt erhalten."
+        )
     if kind == "ts" and (source["kind"] != "minimum" or not source.get("converged")):
         raise ValueError(
             "Die TS-Suche startet von einem optimierten Minimum. Bitte zuerst minimieren."
         )
     atoms = read_atoms(source["xyz"])
-    if kind == "properties":
-        return {"molecule_id": source["id"], "properties": properties(atoms)}
     if kind in ("minimum", "ts"):
-        opt = (
-            optimization.OptMin(atoms)
-            if kind == "minimum"
-            else optimization.OptTS(atoms)
-        )
+        opt = optimization.OptMin(atoms) if kind == "minimum" else OptTS(atoms)
         history = []
         converged = bool(
             opt.run(
@@ -155,11 +147,11 @@ def calculate(data):
             suffix = "TS-Suchstand"
         m = molecule(
             opt.atoms,
-            f"{base_name(source)} · {suffix}",
+            f"{source['base_name']} · {suffix}",
             kind if converged else "unconverged",
             parent_id=source["id"],
         )
-        m["base_name"] = base_name(source)
+        m["base_name"] = source["base_name"]
         m["converged"] = converged
         # Preserve every accepted step even when a short run finishes between
         # browser polls, or the bounded job log has dropped its earliest lines.

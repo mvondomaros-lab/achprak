@@ -160,6 +160,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     OptimizationProgress: progress,
     state: {
       selected: "result",
+      step: "optimize",
       busy: false,
       mode: "3d",
       playbackMode: "optimization",
@@ -172,6 +173,8 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     $: (id) => {
       if (!elements.has(id))
         elements.set(id, {
+          style: {},
+          classList: { toggle() {} },
           setAttribute() {},
           querySelector() {
             return {};
@@ -181,7 +184,11 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     },
     applyLiveGeometry: () => geometries.push(context.state.live.positions),
     renderEnergyHistory: (step) => energies.push(step),
-    renderState: () => {},
+    renderState: () => {
+      context.updateMode();
+      geometries.push(records.at(-1).positions);
+      energies.push(records.at(-1).step);
+    },
     setInterval: (callback) => {
       timers.set(++timerId, callback);
       return timerId;
@@ -198,8 +205,15 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   );
   vm.runInContext(
     app.slice(
-      app.indexOf('$("frame").oninput'),
+      app.indexOf("function selectPlaybackFrame("),
       app.indexOf('$("xyz-download").onclick'),
+    ),
+    context,
+  );
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function updateMode()"),
+      app.indexOf("function updateControls()"),
     ),
     context,
   );
@@ -214,9 +228,12 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   play.onclick();
   assert.equal(context.state.previewIndex, 1);
   tick();
-  assert.equal(context.state.previewIndex, 2);
+  assert.equal(context.state.previewIndex, null);
   assert.equal(timers.size, 0);
   assert.equal(play.textContent, "Abspielen");
+  assert.equal(context.state.live, null);
+  assert.equal(elements.get("properties-grid").style.visibility, "visible");
+  assert.equal(elements.get("properties-context").style.visibility, "visible");
   assert.deepEqual(energies, [0, 1, 1, 2]);
   assert.deepEqual(
     geometries,
@@ -227,28 +244,24 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   assert.equal(timers.size, 1);
   tick();
   tick();
-  assert.equal(context.state.previewIndex, 2);
+  assert.equal(context.state.previewIndex, null);
   assert.equal(timers.size, 0);
-  elements.get("frame").value = "2";
-  elements.get("frame").oninput();
+  context.selectPlaybackFrame(2);
   play.onclick(); // The same applies to a manually selected final frame.
   assert.equal(context.state.previewIndex, 0);
   play.onclick(); // Pause before testing intermediate-step resume.
 
-  elements.get("frame").value = "1";
-  elements.get("frame").oninput();
+  context.selectPlaybackFrame(1);
   play.onclick(); // Resume from the manually selected step.
   assert.equal(context.state.previewIndex, 1);
   tick();
-  assert.equal(context.state.previewIndex, 2);
+  assert.equal(context.state.previewIndex, null);
   assert.equal(timers.size, 0);
 
-  elements.get("frame").value = "0";
-  elements.get("frame").oninput();
+  context.selectPlaybackFrame(0);
   play.onclick();
   tick();
-  elements.get("frame").value = "0";
-  elements.get("frame").oninput(); // Scrubbing pauses ongoing playback.
+  context.selectPlaybackFrame(0); // Scrubbing pauses ongoing playback.
   assert.equal(timers.size, 0);
   play.onclick();
   assert.equal(context.state.previewIndex, 0);
@@ -259,8 +272,8 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
 
 test("TS scan, refinement and all-atom validation keep one continuous energy history", () => {
   const records = [
-    record(0, "scan"),
-    record(1, "scan"),
+    record(0, "path_seed"),
+    record(1, "path_seed"),
     record(2, "refinement"),
     record(2, "vibrations"),
   ];
@@ -272,30 +285,6 @@ test("TS scan, refinement and all-atom validation keep one continuous energy his
     [0, 1, 2],
   );
   assert.equal(history.at(-1).phase, "vibrations");
-});
-
-test("retry history preserves both attempts without plotting a fictitious downhill connection", () => {
-  const records = [
-    { ...record(0, "scan"), energy_ev: -10, attempt: 1 },
-    { ...record(1, "refinement"), energy_ev: -9, attempt: 1 },
-    { ...record(2, "scan"), energy_ev: -10, attempt: 2, restart: true },
-    { ...record(3, "refinement"), energy_ev: -8, attempt: 2 },
-  ];
-  const history = progress.merge(
-    [],
-    progress.parse(records.map(line).join("\n")).records,
-  );
-  assert.equal(history.length, 4);
-  const points = progress.energyPoints(history);
-  assert.deepEqual(
-    points.map((p) => p.y),
-    [0, 1, null, 0, 2],
-  );
-  assert.equal(points[3].attempt, 2);
-  assert.deepEqual(
-    progress.playback({}, history, "optimization").frames,
-    records.map((p) => p.positions),
-  );
 });
 
 test("NEB snapshots survive polling and reaction-path playback remains separate from iterations", () => {
@@ -353,7 +342,13 @@ test("energy chart switches between reaction coordinate and iteration history wi
   let chart;
   const context = vm.createContext({
     OptimizationProgress: progress,
-    state: { selected: "m", busy: false, playbackMode: "path", live: null },
+    state: {
+      step: "optimize",
+      selected: "m",
+      busy: false,
+      playbackMode: "path",
+      live: null,
+    },
     current: () => m,
     fmt: String,
     $: (id) => {
@@ -381,7 +376,7 @@ test("energy chart switches between reaction coordinate and iteration history wi
     Array.from(chart.data.datasets[0].data, (p) => p.x),
     [0, 0.5, 1],
   );
-  assert.match(chart.options.scales.x.title.text, /Reaktionspfad/);
+  assert.match(chart.options.scales.x.title.text, /Ausgangsform/);
   context.state.live = { ...path[1], phase: "path" };
   context.renderEnergyHistory(1);
   assert.equal(chart.data.datasets[1].data[0].x, 0.5);
@@ -414,7 +409,10 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
   const elements = new Map();
   const context = vm.createContext({
     Float32Array,
+    OptimizationProgress: progress,
+    fmt: String,
     state: {
+      step: "optimize",
       busy: true,
       mode: "3d",
       live: {
@@ -435,7 +433,8 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
       updateRepresentations() {},
     },
     $: (id) => {
-      if (!elements.has(id)) elements.set(id, { classList: { remove() {} } });
+      if (!elements.has(id))
+        elements.set(id, { style: {}, classList: { remove() {} } });
       return elements.get(id);
     },
   });
@@ -454,8 +453,444 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
     [1, 0, 0],
     [2, 0, 0],
   ]);
-  assert.equal(elements.get("geometry-badge").textContent, "Live · NEB-Bild 4");
+  assert.equal(
+    elements.get("geometry-badge").textContent,
+    "Live · Struktur auf dem Reaktionspfad 4",
+  );
+  assert.equal(elements.get("image-download").disabled, false);
   context.state.live.source_id = "another-molecule";
   context.applyLiveGeometry();
   assert.equal(positions.length, 2);
+  assert.equal(elements.get("properties-grid").style.visibility, "visible");
+  assert.equal(
+    elements.get("energy").textContent,
+    String(context.state.live.energy_ev),
+  );
+  context.state.live.source_id = "m";
+  context.state.live.phase = "vibration-preview";
+  context.applyLiveGeometry();
+  assert.equal(elements.get("energy").textContent, "—");
+});
+
+test("same molecule reuses its viewer and restores result positions without resetting the camera", async () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  const positions = [];
+  let loads = 0,
+    cameraChanges = 0;
+  const molecule = { id: "m", svg: "svg", xyz: "1\nresult\nH 1 2 3\n" };
+  const context = vm.createContext({
+    Float32Array,
+    Blob,
+    state: { mode: "3d", step: "optimize", live: null },
+    renderVersion: 0,
+    renderedMolecule: "m",
+    loadingMolecule: null,
+    current: () => molecule,
+    svgURL: (s) => s,
+    component: {
+      structure: { updatePosition: (p) => positions.push(Array.from(p)) },
+      updateRepresentations() {},
+      autoView() {
+        cameraChanges++;
+      },
+    },
+    stage: {
+      handleResize() {},
+      removeAllComponents() {
+        throw Error("Unexpected teardown");
+      },
+    },
+    ensureStage: () => ({
+      loadFile() {
+        loads++;
+      },
+    }),
+    applyLiveGeometry() {},
+    renderPlaybackControls() {},
+    $: (id) => {
+      if (!elements.has(id))
+        elements.set(id, {
+          getAttribute() {
+            return this.src;
+          },
+        });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function restoreResultGeometry()"),
+      app.indexOf("function updateMode()"),
+    ),
+    context,
+  );
+  await context.renderMolecule();
+  context.state.mode = "2d";
+  await context.renderMolecule();
+  context.state.mode = "3d";
+  await context.renderMolecule();
+  context.state.step = "spectrum";
+  await context.renderMolecule();
+  context.state.step = "build";
+  await context.renderMolecule();
+  assert.equal(loads, 0);
+  assert.equal(cameraChanges, 0);
+  assert.deepEqual(positions, [
+    [1, 2, 3],
+    [1, 2, 3],
+    [1, 2, 3],
+  ]);
+});
+
+test("playback appears when frames exist and the mode picker is hidden without alternatives", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  let frames = [];
+  const context = vm.createContext({
+    state: { step: "optimize", busy: false, mode: "3d", previewIndex: null },
+    component: {},
+    current: () => ({ kind: "minimum" }),
+    energyRecords: () => [],
+    playbackData: () => ({ kind: "optimization", frames, records: [] }),
+    $: (id) => {
+      if (!elements.has(id))
+        elements.set(id, { querySelector: () => ({}), setAttribute() {} });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function renderPlaybackControls()"),
+      app.indexOf("function showFrame("),
+    ),
+    context,
+  );
+  for (const phase of ["empty", "running", "result", "2d", "build"]) {
+    context.state.step = phase === "build" ? "build" : "optimize";
+    context.state.busy = phase === "running";
+    context.state.mode = phase === "2d" ? "2d" : "3d";
+    frames =
+      phase === "empty"
+        ? []
+        : [
+            [0, 0, 0],
+            [1, 0, 0],
+          ];
+    context.renderPlaybackControls();
+    assert.equal(
+      elements.get("trajectory").hidden,
+      ["build", "empty"].includes(phase),
+    );
+    assert.equal(elements.get("playback-mode").hidden, true);
+    assert.equal(
+      elements.get("play").disabled,
+      !["result", "build"].includes(phase),
+    );
+    assert.equal(
+      elements.get("play").disabled,
+      !["result", "build"].includes(phase),
+    );
+  }
+});
+
+test("known starting energy is shown before progress without creating playback frames", () => {
+  const elements = new Map();
+  const m = { id: "m", properties: { energy_ev: -10 } };
+  let chart;
+  const context = vm.createContext({
+    OptimizationProgress: progress,
+    state: {
+      step: "optimize",
+      selected: "m",
+      busy: false,
+      playbackMode: "optimization",
+    },
+    current: () => m,
+    fmt: String,
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, { setAttribute() {} });
+      return elements.get(id);
+    },
+    Chart: class {
+      constructor(_, config) {
+        Object.assign(this, config);
+        chart = this;
+      }
+      update() {}
+    },
+  });
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  vm.runInContext(
+    app.slice(
+      app.indexOf("let energyChart = null;"),
+      app.indexOf("function collectProgress("),
+    ),
+    context,
+  );
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.match(
+    elements.get("energy-history-value").textContent,
+    /Ausgangsenergie: -10/,
+  );
+  assert.equal(chart.data.datasets[1].data[0].y, 0);
+  assert.equal(context.energyRecords().length, 0);
+  const original = chart;
+  context.state.busy = true;
+  context.state.tracking = {
+    sourceId: "m",
+    status: "running",
+    records: [
+      { ...record(0), energy_ev: -10 },
+      { ...record(1), energy_ev: -11 },
+    ],
+  };
+  context.renderEnergyHistory();
+  assert.equal(chart, original);
+  assert.equal(chart.data.datasets[0].data.length, 2);
+  assert.equal(chart.data.datasets[1].data[0].y, -1);
+  context.state.step = "build";
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, true);
+  context.state.step = "optimize";
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, false);
+});
+
+test("plot clicks select the matching structure, including reaction paths, and ignore unavailable interactions", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const selected = [];
+  const context = vm.createContext({
+    state: {
+      busy: false,
+      mode: "3d",
+      step: "optimize",
+      playbackMode: "optimization",
+    },
+    component: {},
+    playbackData: () => ({
+      records:
+        context.state.playbackMode === "path"
+          ? [{ image: 2 }, { image: 5 }, { image: 9 }]
+          : [{ step: 0 }, { step: 4 }, { step: 10 }],
+    }),
+    selectPlaybackFrame: (index) => selected.push(index),
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function selectEnergyPoint("),
+      app.indexOf("function renderEnergyHistory("),
+    ),
+    context,
+  );
+  const chart = {
+    chartArea: { left: 0, right: 100, top: 0, bottom: 100 },
+    scales: { x: { getValueForPixel: (x) => x } },
+    data: {
+      datasets: [
+        {
+          data: [
+            { x: 0, y: 0 },
+            { x: 4, y: -1 },
+            { x: 10, y: -2 },
+          ],
+        },
+      ],
+    },
+  };
+  context.selectEnergyPoint({ x: 3, y: 50 }, [], chart);
+  context.selectEnergyPoint({ x: 10, y: 50 }, [], chart);
+  assert.deepEqual(selected, [1, 2]);
+  context.state.playbackMode = "vibration";
+  chart.data.datasets[0].data = [
+    { x: 0, y: 0, image: 2, phase: "path" },
+    { x: 0.5, y: 1, image: 5, phase: "path" },
+    { x: 1, y: 0, image: 9, phase: "path" },
+  ];
+  context.selectEnergyPoint({ x: 0.6, y: 50 }, [], chart);
+  assert.equal(context.state.playbackMode, "path");
+  assert.deepEqual(selected, [1, 2, 1]);
+  context.state.busy = true;
+  context.selectEnergyPoint({ x: 1, y: 50 }, [], chart);
+  context.state.busy = false;
+  context.selectEnergyPoint({ x: -1, y: 50 }, [], chart);
+  context.state.mode = "2d";
+  context.selectEnergyPoint({ x: 1, y: 50 }, [], chart);
+  assert.equal(selected.length, 3);
+});
+
+test("intermediate geometry properties use the shown positions and mass-weighted ring centers", () => {
+  const definition = {
+    dihedral_indices: [0, 1, 2, 3],
+    rings: [
+      [0, 1],
+      [2, 3],
+    ],
+    masses: [1, 3, 1, 3],
+  };
+  const positions = [0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1];
+  const props = progress.geometryProperties(positions, definition);
+  assert.equal(props.dihedral_deg, 90);
+  assert.ok(
+    Math.abs(
+      props.ring_distance_pm - Math.sqrt(1 + 0.25 ** 2 + 0.75 ** 2) * 100,
+    ) < 1e-9,
+  );
+  const translated = positions.map((x, i) => x + [3, 5, 7][i % 3]);
+  assert.deepEqual(progress.geometryProperties(translated, definition), props);
+  const rotated = [...positions];
+  rotated[11] = -1;
+  assert.equal(
+    progress.geometryProperties(rotated, definition).dihedral_deg,
+    270,
+  );
+  const linear = [...positions];
+  linear[1] = 0;
+  assert.equal(
+    progress.geometryProperties(linear, definition).dihedral_deg,
+    null,
+  );
+});
+
+test("result tools appear only when useful and spectrum prerequisites remain enforced", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  let molecule;
+  let target = "minimum";
+  const context = vm.createContext({
+    state: { busy: false, molecules: [], step: "build", live: null, job: null },
+    current: () => molecule,
+    document: { querySelector: () => ({ value: target }) },
+    updateMode() {},
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, {});
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function updateControls()"),
+      app.indexOf("function renderSpectrum()"),
+    ),
+    context,
+  );
+  context.updateControls();
+  for (const id of [
+    "structure-library",
+    "result-heading",
+    "viewer-toolbar",
+    "result-details",
+  ])
+    assert.equal(elements.get(id).hidden, true);
+  assert.equal(elements.get("calculate-spectrum").disabled, true);
+
+  molecule = { kind: "initial" };
+  context.state.molecules = [molecule];
+  context.state.step = "optimize";
+  target = "ts";
+  context.updateControls();
+  assert.equal(elements.get("result-heading").hidden, false);
+  assert.equal(elements.get("ts-requirement").hidden, false);
+  assert.equal(elements.get("optimize").disabled, true);
+  assert.equal(elements.get("trajectory-download").hidden, true);
+
+  molecule.kind = "minimum";
+  target = "minimum";
+  context.updateControls();
+  assert.equal(elements.get("optimize").disabled, true);
+  target = "ts";
+  context.updateControls();
+  assert.equal(elements.get("optimize").disabled, false);
+  context.state.step = "spectrum";
+  context.updateControls();
+  assert.equal(elements.get("calculate-spectrum").disabled, false);
+  assert.equal(elements.get("spectrum-requirement").hidden, true);
+  assert.equal(elements.get("coordinate-details").hidden, true);
+  context.state.busy = true;
+  context.updateControls();
+  assert.equal(elements.get("calculate-spectrum").disabled, true);
+});
+
+test("structure step shows only the 2D formula without properties or calculation tools", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  const context = vm.createContext({
+    state: {
+      step: "build",
+      mode: "3d",
+      molecules: [{ id: "m" }],
+      hasCalculationLog: true,
+    },
+    current: () => ({ id: "m", kind: "initial" }),
+    document: { querySelector: () => ({ value: "minimum" }) },
+    renderPlaybackControls() {},
+    stopAnimation() {},
+    $: (id) => {
+      if (!elements.has(id))
+        elements.set(id, {
+          style: {},
+          classList: { toggle() {} },
+          setAttribute() {},
+        });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function updateMode()"),
+      app.indexOf("function renderSpectrum()"),
+    ),
+    context,
+  );
+  context.updateControls();
+  assert.equal(context.state.mode, "2d");
+  assert.equal(elements.get("structure-image").hidden, false);
+  for (const id of [
+    "viewport",
+    "center",
+    "properties-grid",
+    "properties-context",
+    "property-help",
+    "result-details",
+    "calculation-log",
+  ])
+    assert.equal(elements.get(id).hidden, true, id);
+  assert.equal(elements.get("image-download").disabled, false);
+});
+
+test("image export pauses playback and captures the displayed intermediate geometry", async () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const button = {};
+  const calls = [];
+  const context = vm.createContext({
+    state: { mode: "3d", previewIndex: 3, live: { positions: [1, 2, 3] } },
+    component: {},
+    $: () => button,
+    handle: (fn) => fn,
+    stopAnimation: () => calls.push("pause"),
+    filename: (ext) => `structure.${ext}`,
+    stage: {
+      makeImage: async () => {
+        calls.push("capture");
+        return "intermediate image";
+      },
+    },
+    download: (image, name) => calls.push([image, name]),
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf('$("image-download").onclick'),
+      app.indexOf('$("spectrum-svg").onclick'),
+    ),
+    context,
+  );
+  await button.onclick();
+  assert.deepEqual(calls, [
+    "pause",
+    "capture",
+    ["intermediate image", "structure.png"],
+  ]);
+  assert.equal(context.state.previewIndex, 3);
+  assert.deepEqual(context.state.live.positions, [1, 2, 3]);
 });

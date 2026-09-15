@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#102238" />
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="static/app.css?v=neb-3" />
+    <link rel="stylesheet" href="static/app.css?v=ui-22" />
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
-    <script src="static/progress.js?v=neb-3" defer></script>
-    <script src="static/app.js?v=neb-3" defer></script>
+    <script src="static/progress.js?v=ui-22" defer></script>
+    <script src="static/app.js?v=ui-22" defer></script>
   </head>
   <body>
     <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -31,33 +31,27 @@
       <button class="step active" data-step="build" aria-current="step">
         <span>01</span> Struktur erstellen
       </button>
-      <button class="step" data-step="properties">
-        <span>02</span> Eigenschaften
-      </button>
       <button class="step" data-step="optimize">
-        <span>03</span> Optimieren
+        <span>02</span> Struktur optimieren
       </button>
       <button class="step" data-step="spectrum">
-        <span>04</span> UV/Vis-Spektrum
+        <span>03</span> UV/Vis-Spektrum
       </button>
     </nav>
     <main id="workspace">
       <div id="alert" class="alert" role="alert" hidden></div>
       <div class="workspace-heading">
         <div>
-          <p class="eyebrow">VIRTUELLES LABOR</p>
-          <h1 id="step-title">Ein Molekül, viele Möglichkeiten.</h1>
+          <h1 id="step-title">Struktur erstellen</h1>
           <p id="step-description">
-            Wählen Sie Konfiguration und Substituenten für Ihre Startstruktur.
+            Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf
+            ergänzen.
           </p>
         </div>
-        <button id="task-open" class="text-button">
-          Aufgaben zu diesem Schritt ↗
-        </button>
       </div>
       <div class="workbench">
         <aside class="controls">
-          <section class="library">
+          <section class="library" id="structure-library" hidden>
             <label for="molecule-select"
               >Ihre Strukturen
               <span id="structure-count" class="count">0</span></label
@@ -72,14 +66,8 @@
             >
               Noch keine Struktur
             </button>
-            <div class="inline-actions">
-              <button id="delete-molecule" class="text-button muted" disabled>
-                Entfernen
-              </button>
-            </div>
           </section>
           <section class="step-panel" data-panel="build">
-            <h2>Struktur erstellen</h2>
             <form id="builder">
               <fieldset>
                 <legend>Konfiguration</legend>
@@ -100,56 +88,21 @@
                   >
                 </div>
               </fieldset>
-              <div class="rings" id="rings"></div>
+              <details id="substituents">
+                <summary>
+                  Substituenten <span id="substituent-count">keine</span>
+                </summary>
+                <p class="field-hint">
+                  H steht für eine Position ohne zusätzlichen Substituenten.
+                </p>
+                <div class="rings" id="rings"></div>
+              </details>
               <button class="primary full" type="submit" id="create">
                 Struktur erstellen
               </button>
             </form>
-            <p class="note">
-              Die Startstruktur ist noch nicht optimiert. Prüfen Sie die
-              räumliche Struktur im 3D-Modell.
-            </p>
-          </section>
-          <section class="step-panel" data-panel="properties" hidden>
-            <h2>Eigenschaften berechnen</h2>
-            <p>
-              Energie, Diederwinkel und Ringabstand der ausgewählten Struktur
-              bestimmen.
-            </p>
-            <dl class="method">
-              <div>
-                <dt>Methode</dt>
-                <dd>GFN1-xTB</dd>
-              </div>
-              <div>
-                <dt>Lösungsmittel</dt>
-                <dd>Ethanol · ALPB</dd>
-              </div>
-            </dl>
-            <button id="calculate-properties" class="primary full" disabled>
-              Eigenschaften berechnen
-            </button>
-            <details>
-              <summary>Was bedeuten die Werte?</summary>
-              <p>
-                Der Diederwinkel beschreibt die Verdrehung um C–N=N–C. Der
-                Ringabstand wird zwischen den Massenschwerpunkten der beiden
-                Phenylringe gemessen.
-              </p>
-              <p>
-                Vergleichen Sie die Energien von cis und trans: ΔE = E<sub
-                  >trans</sub
-                >
-                − E<sub>cis</sub>.
-              </p>
-            </details>
           </section>
           <section class="step-panel" data-panel="optimize" hidden>
-            <h2>Geometrie optimieren</h2>
-            <p>
-              Aus Ihrer gewählten Struktur entsteht ein neues Ergebnis. Die
-              Ausgangsstruktur bleibt in Ihrer Liste.
-            </p>
             <fieldset>
               <legend>Zielstruktur</legend>
               <label class="radio-card"
@@ -160,77 +113,48 @@
                   checked
                 /><span
                   ><strong>Minimum</strong
-                  ><small>Energetisch stabile Struktur</small></span
+                  ><small>Stabile Struktur finden</small></span
                 ></label
               ><label class="radio-card"
                 ><input type="radio" name="target" value="ts" /><span
                   ><strong>Übergangszustand</strong
-                  ><small>Barriere der cis–trans-Isomerisierung</small></span
+                  ><small>Barriere zwischen cis und trans finden</small></span
                 ></label
               >
             </fieldset>
-            <dl class="method">
-              <div>
-                <dt>Methode</dt>
-                <dd id="optimization-method">GFN1-xTB · Sella</dd>
-              </div>
-              <div>
-                <dt>Lösungsmittel</dt>
-                <dd>Ethanol · ALPB</dd>
-              </div>
-            </dl>
             <p id="ts-requirement" class="note" hidden>
-              Die TS-Suche startet von einem optimierten Minimum. Bitte zuerst
-              minimieren.
+              Optimieren Sie zuerst ein Minimum.
             </p>
             <button id="optimize" class="primary full" disabled>
               Optimierung starten
             </button>
             <details>
-              <summary>Trajektorie &amp; Schwingung</summary>
+              <summary>Hinweise &amp; Rechenmethode</summary>
               <p>
-                Die TS-Suche optimiert zunächst das gegenüberliegende
-                cis/trans-Minimum. Anschließend wird ein Verbindungspfad
-                zwischen beiden Minima mit CI-NEB optimiert und der Sattel frei
-                verfeinert. Das Live-Energieprofil zeigt die Bilder entlang des
-                Reaktionspfads, keine Zeitentwicklung.
+                Die Minimumsuche findet eine stabile Anordnung der Atome. Die
+                Übergangszustandssuche berechnet einen Weg zwischen cis und
+                trans und prüft die Energiebarriere. Die Ausgangsstruktur bleibt
+                erhalten.
               </p>
               <p>
-                Anschließend werden alle Atome in der Schwingungsanalyse
-                berücksichtigt. Genau eine imaginäre innere Mode über 20 cm⁻¹
-                bestätigt einen Sattel erster Ordnung; kleinere negative
-                Frequenzen werden als numerisches Rauschen toleriert. Die
-                TS-Schwingung zeigt diesen Modus mit vergrößerter Amplitude,
-                keine reale Dynamik. Abwärtsoptimierungen in beide Richtungen
-                der instabilen Mode prüfen, ob cis- und trans-Minima ohne
-                Änderung der Bindungen erreicht werden. Ein zusätzlicher
-                Geometrie- und Energievergleich zeigt, ob auch die
-                Endpunktkonformere übereinstimmen. Dies ist keine strenge
-                IRC-Rechnung. Der torsionsbasierte Startpfad garantiert nicht
-                die global niedrigste Barriere.
+                Das Energieprofil zeigt diesen Weg, keinen zeitlichen Ablauf.
+                Die Bewegung am Übergangszustand ist zur besseren Sichtbarkeit
+                vergrößert. Ein anderer Weg könnte eine niedrigere Barriere
+                haben.
               </p>
+              <dl class="method">
+                <div>
+                  <dt>Methode</dt>
+                  <dd id="optimization-method">GFN1-xTB · Sella</dd>
+                </div>
+                <div>
+                  <dt>Lösungsmittel</dt>
+                  <dd>Ethanol (rechnerisch berücksichtigt)</dd>
+                </div>
+              </dl>
             </details>
           </section>
           <section class="step-panel" data-panel="spectrum" hidden>
-            <h2>Absorption berechnen</h2>
-            <p>
-              Untersuchen Sie, bei welchen Energien Ihr Molekül Licht
-              absorbiert.
-            </p>
-            <dl class="method">
-              <div>
-                <dt>Methode</dt>
-                <dd>INDO/CIS · MOPAC</dd>
-              </div>
-              <div>
-                <dt>Lösungsmittel</dt>
-                <dd>Ethanol · ε = 24,3</dd>
-              </div>
-              <div>
-                <dt>Verbreiterung</dt>
-                <dd>Gauß · σ = 0,3 eV</dd>
-              </div>
-            </dl>
             <p id="spectrum-requirement" class="note">
               Wählen Sie eine optimierte Minimumsstruktur.
             </p>
@@ -238,21 +162,35 @@
               Spektrum berechnen
             </button>
             <details>
-              <summary>Spektrum interpretieren</summary>
+              <summary>Hinweise &amp; Rechenmethode</summary>
               <p>
                 Die Kurve zeigt das verbreiterte Spektrum, die Linien die
-                einzelnen Übergänge. Die Oszillatorstärke beschreibt ihre
-                Intensität.
+                einzelnen Übergänge. Die Oszillatorstärke gibt an, wie stark ein
+                einzelner Übergang zur Lichtabsorption beiträgt.
               </p>
               <p>
                 Eine Verschiebung zu kleineren Energien entspricht längeren
                 Wellenlängen (bathochrome Verschiebung).
               </p>
+              <dl class="method">
+                <div>
+                  <dt>Methode</dt>
+                  <dd>INDO/CIS · MOPAC</dd>
+                </div>
+                <div>
+                  <dt>Lösungsmittel</dt>
+                  <dd>Ethanol · ε = 24,3</dd>
+                </div>
+                <div>
+                  <dt>Verbreiterung</dt>
+                  <dd>Gauß · σ = 0,3 eV</dd>
+                </div>
+              </dl>
             </details>
           </section>
         </aside>
         <section class="results" aria-label="Struktur und Ergebnisse">
-          <div class="result-heading">
+          <div class="result-heading" id="result-heading" hidden>
             <div>
               <h2 id="active-name">Ihre erste Struktur</h2>
               <p id="active-meta">
@@ -272,15 +210,17 @@
             </button>
           </div>
           <div id="molecular-panel">
-            <div class="viewer-toolbar">
-              <div class="view-toggle" aria-label="Darstellung">
-                <button id="view-3d" class="selected" aria-pressed="true">
-                  3D-Modell</button
-                ><button id="view-2d" aria-pressed="false">
-                  Strukturformel
-                </button>
-              </div>
-              <div class="inline-actions">
+            <div class="viewer-toolbar" id="viewer-toolbar" hidden>
+              <button
+                id="play"
+                class="text-button"
+                disabled
+                hidden
+                aria-label="Verlauf einmal abspielen"
+              >
+                Abspielen
+              </button>
+              <div class="inline-actions viewer-actions">
                 <button id="center" class="text-button" disabled>
                   Zentrieren</button
                 ><button id="image-download" class="text-button" disabled>
@@ -297,11 +237,7 @@
               />
               <div id="viewer-empty" class="empty">
                 <span class="empty-symbol" aria-hidden="true">N=N</span>
-                <h3>Von der Struktur zum Spektrum</h3>
-                <p>
-                  Konfiguration wählen, Substituenten setzen<br />und Ihre erste
-                  Struktur erstellen.
-                </p>
+                <h3>Hier erscheint Ihr Molekül</h3>
               </div>
               <p id="viewer-hint" class="viewer-hint" hidden>
                 Ziehen zum Drehen · Scrollen zum Zoomen
@@ -318,38 +254,36 @@
                   >Energieverlauf <span id="energy-history-state"></span
                 ></strong>
                 <span id="energy-history-value"></span>
+                <div id="trajectory" class="plot-controls">
+                  <select
+                    id="playback-mode"
+                    aria-label="Angezeigter Verlauf"
+                    disabled
+                  >
+                    <option value="path">Reaktionspfad</option>
+                    <option value="optimization">Optimierungsverlauf</option>
+                    <option value="vibration">
+                      Bewegung am Übergangszustand
+                    </option>
+                  </select>
+                </div>
               </div>
               <div class="energy-canvas">
                 <canvas
                   id="energy-chart"
                   role="img"
+                  tabindex="0"
+                  aria-describedby="plot-hint"
                   aria-label="Energieänderung in eV über dem Optimierungsschritt"
                 ></canvas>
               </div>
+              <p id="plot-hint" class="note">
+                Struktur ansehen: Punkt anklicken oder Pfeiltasten verwenden.
+              </p>
               <p id="energy-reference" class="note"></p>
             </section>
-            <div id="trajectory" class="trajectory" hidden>
-              <select
-                id="playback-mode"
-                aria-label="Angezeigter Verlauf"
-                hidden
-              >
-                <option value="path">Reaktionspfad</option>
-                <option value="optimization">Optimierungsverlauf</option>
-                <option value="vibration">TS-Schwingung</option>
-              </select>
-              <button
-                id="play"
-                class="small-button"
-                aria-label="Verlauf einmal abspielen"
-              >
-                Abspielen
-              </button>
-              <label for="frame" id="trajectory-label">Schritt ansehen</label>
-              <input id="frame" type="range" min="0" max="0" value="0" />
-              <output id="frame-label" for="frame">Ergebnis</output>
-            </div>
-            <div class="properties-grid" id="properties-grid">
+            <p id="properties-context" class="note"></p>
+            <div class="properties-grid" id="properties-grid" hidden>
               <div>
                 <span>Energie</span><strong id="energy">—</strong
                 ><small>eV</small>
@@ -363,16 +297,52 @@
                 ><small>pm</small>
               </div>
             </div>
+            <details id="property-help" hidden>
+              <summary>Eigenschaften verstehen</summary>
+              <p>
+                Die Energie beschreibt die ausgewählte Anordnung der Atome.
+                Vergleichen Sie cis und trans desselben Moleküls mit derselben
+                Rechenmethode: Die Form mit der niedrigeren Energie ist
+                energetisch günstiger. Startstrukturen sind noch nicht
+                optimiert.
+              </p>
+              <p>
+                Der Diederwinkel beschreibt die Verdrehung um C–N=N–C. Schauen
+                Sie entlang der N=N-Bindung und vergleichen Sie die Richtungen
+                der beiden N–C-Bindungen.
+              </p>
+              <p>
+                Der Ringabstand ist der Abstand zwischen den Massenschwerpunkten
+                der beiden Sechsringe, also ihren nach der Atommasse gewichteten
+                Mittelpunkten. 100 pm entsprechen 1 Å.
+              </p>
+              <p>
+                Die Energie wird in Elektronenvolt (eV) angegeben. 1 eV pro
+                Molekül entspricht etwa 96,49 kJ/mol. Nutzen Sie „Einheiten
+                umrechnen“ für Ihre Energiedifferenzen.
+              </p>
+            </details>
             <p id="ts-summary" class="ts-summary" hidden></p>
+            <details id="ts-details" hidden>
+              <summary>Wie wurde der Übergangszustand geprüft?</summary>
+              <p>
+                Am Übergangszustand gibt es eine Bewegungsrichtung, in der die
+                Energie auf beiden Seiten abnimmt. Die Schwingungsrechnung
+                erkennt dies an einer sogenannten imaginären Frequenz.
+                Zusätzlich wird geprüft, ob die Bewegung zu cis und trans führt,
+                ohne Bindungen zu verändern.
+              </p>
+              <p id="ts-check-result"></p>
+              <details>
+                <summary>Technische Angaben zur Prüfung</summary>
+                <p id="ts-check-technical"></p>
+              </details>
+            </details>
           </div>
           <div id="spectrum-panel" hidden>
             <div id="spectrum-empty" class="empty spectrum-empty">
               <span class="empty-symbol" aria-hidden="true">hν</span>
-              <h3>Wie reagiert Ihr Molekül auf Licht?</h3>
-              <p>
-                Optimieren Sie eine Minimumsstruktur<br />und berechnen Sie ihr
-                Absorptionsspektrum.
-              </p>
+              <h3>Hier erscheint Ihr Spektrum</h3>
             </div>
             <div id="spectrum-result" hidden>
               <img
@@ -407,9 +377,9 @@
               </details>
             </div>
           </div>
-          <div class="result-details">
-            <details>
-              <summary>Koordinaten &amp; Export</summary>
+          <div class="result-details" id="result-details" hidden>
+            <details id="coordinate-details">
+              <summary>Koordinaten &amp; Verlauf exportieren</summary>
               <textarea
                 id="xyz-output"
                 readonly
@@ -421,22 +391,20 @@
                 ><button id="xyz-copy" class="text-button" disabled>
                   Koordinaten kopieren</button
                 ><button id="trajectory-download" class="text-button" disabled>
-                  Trajektorie als XYZ
+                  Bewegungsfolge als XYZ
                 </button>
               </div>
             </details>
-            <details>
-              <summary>Programmausgabe <span id="log-state"></span></summary>
+            <details id="calculation-log" hidden>
+              <summary>Rechenprotokoll <span id="log-state"></span></summary>
               <pre id="log">Noch keine Berechnung gestartet.</pre>
             </details>
           </div>
         </section>
       </div>
       <footer>
-        Ergebnisse für Ihr Protokoll herunterladen. Die Sitzung bleibt bis zum
-        Serverneustart oder nach 24 Stunden Inaktivität erhalten.<span
-          >GFN1-xTB / INDO-CIS · Ethanol</span
-        >
+        Ergebnisse für Ihr Protokoll herunterladen. Die Sitzung endet bei einem
+        Serverneustart oder nach 24 Stunden Inaktivität.
       </footer>
     </main>
     <dialog id="structure-picker" aria-labelledby="structure-picker-title">
@@ -459,11 +427,10 @@
       />
       <div id="structure-options" class="structure-options"></div>
     </dialog>
-    <dialog id="guide">
+    <dialog id="guide" aria-labelledby="guide-title">
       <div class="dialog-heading">
         <div>
-          <p class="eyebrow">PRAKTISCHER VERSUCH</p>
-          <h2>Versuch &amp; Aufgaben</h2>
+          <h2 id="guide-title">Versuch &amp; Aufgaben</h2>
         </div>
         <button class="close" data-close="guide" aria-label="Schließen">
           ×
@@ -471,9 +438,9 @@
       </div>
       <div id="guide-content"></div>
     </dialog>
-    <dialog id="converter">
+    <dialog id="converter" aria-labelledby="converter-title">
       <div class="dialog-heading">
-        <h2>Einheiten umrechnen</h2>
+        <h2 id="converter-title">Einheiten umrechnen</h2>
         <button class="close" data-close="converter" aria-label="Schließen">
           ×
         </button>

@@ -2,7 +2,7 @@
 name = "achprak"
 version = "0.4.3"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
-description = "Jupyter-based practical introducing theoretical chemistry to first-year chemistry students"
+description = "Web-based practical introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
 license = { file = "LICENSE" }
 
@@ -16,10 +16,6 @@ platforms = ["osx-arm64", "linux-64"]
 [tool.pixi.dependencies]
 python = ">=3.12,<3.13"
 
-ipython = ">=9.12.0,<10"
-ipywidgets = ">=8.1.8,<9"
-nglview = "==4.0.0"
-
 numpy = ">=2.4.3,<3"
 scipy = ">=1.17.1,<2"
 matplotlib = ">=3.10.8,<4"
@@ -29,34 +25,17 @@ rdkit = ">=2026.3.1,<2027"
 tblite-python = ">=0.5.0,<0.6"
 mopac = ">=23.2.4,<24"
 
-[tool.pixi.feature.local.dependencies]
-jupyterlab = ">=4.5.6,<5"
-jupyterlab-myst = ">=2.6.0,<3"
-
-[tool.pixi.feature.hub.dependencies]
-ipykernel = ">=7.2.0,<8"
-
 [tool.pixi.pypi-dependencies]
 achprak = { path = ".", editable = true }
 sella = ">=2.4.2, <3"
 pymopac = ">=1.1, <2"
 
 [tool.pixi.feature.dev.dependencies]
-fastapi = ">=0.115,<1"
-uvicorn = ">=0.34,<1"
 httpx = ">=0.28,<1"
 pytest = ">=9.0.3,<10"
-jupyter-ruff = ">=0.3.1,<0.4"
 pixi-pycharm = ">=0.0.11,<0.0.12"
 mystmd = ">=1.8.3,<2"
 pre-commit = ">=4.5.1,<5"
-
-[tool.pixi.feature.lserver.dependencies]
-jupyterhub = ">=5.4.4,<6"
-
-[tool.pixi.feature.lserver.pypi-dependencies]
-jupyterhub-systemdspawner = ">=1.0.2, <2"
-jupyterhub-nativeauthenticator = ">=1.3.0, <2"
 
 [tool.pixi.feature.web.dependencies]
 fastapi = ">=0.115,<1"
@@ -73,16 +52,9 @@ configurable-http-proxy = ">=4.6,<6"
 jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }
 
 [tool.pixi.feature.dev.tasks]
-web = "python -m achprak.web"
 test-web = "pytest tests -q"
 
 [tool.pixi.environments]
-local = { features = ["local"] }
-hub = { features = ["hub"] }
-dev = { features = ["local", "dev"] }
-lserver = { features = ["local", "lserver"] }
+dev = { features = ["web", "dev"] }
 web = { features = ["web"] }
 web-hub = { features = ["web", "web-hub"] }
-
-[tool.pixi.activation]
-env = { TF_CPP_MIN_LOG_LEVEL = "3" }

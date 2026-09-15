@@ -9,7 +9,7 @@ The materials are available on GitHub Pages:
 
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
 
-## Web app (local development)
+## Web app
 
 Install [Pixi](https://pixi.sh), clone this repository, then run:
 
@@ -34,11 +34,12 @@ energy chart shows ΔE relative to the first step, with absolute energies on hov
 Every geometry and energy is retained in the result, including runs that finish
 between polls. Short runs automatically replay for up to three seconds, explicitly
 labeled as playback, with a skip button; reduced-motion preferences disable this
-automatic replay. The energy chart remains available afterward. A single playback
-row below it provides a step slider and Play/Pause. Play resumes from the paused
+automatic replay. The energy chart remains available afterward. Clicking a point in the energy chart selects its structure. Play/Pause and
+the playback mode selector sit beside the chart; there is no separate slider.
+Arrow keys, Home and End step through frames when the chart has focus. Play resumes from the paused
 or manually selected step, stops at the final frame, and never loops. Pressing
 Play at the final frame starts a new playback from the beginning. For transition states,
-a mode selector switches this same row between the reaction path, search geometries,
+a mode selector switches the chart controls between the reaction path, search geometries,
 and the imaginary TS mode. Starting structures are labeled “Startstruktur”. The structure picker searches and wraps full molecule names; result names retain only
 the current optimization type.
 
@@ -63,7 +64,7 @@ model as the band. No two-attempt heuristic is used. The full search has a share
 The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
 of the active half-band, then the climbing image during CI-NEB. The plot highlights
-the displayed image. On completion, the existing slider and
+the displayed image. On completion, clickable energy points and the
 single-pass Play control can show the reaction path, optimization history, or
 imaginary vibration. Both endpoint geometries and their energies are retained
 in the result; the other endpoint is available as the final path image.
@@ -87,7 +88,7 @@ Only a force-converged saddle passing both mode and connectivity checks is label
 a TS. The vibration is illustrative, not dynamics. Barriers are electronic energy
 differences, not free-energy barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
 
-For development, `pixi run -e dev web` uses the existing development environment.
+For development, use `pixi run -e dev web`.
 New jobs load changes to the chemistry workers automatically. Reload the browser
 after HTML/CSS/JS changes; restart the process for changes to the server itself
 (this clears in-memory sessions). Optional command-line settings:
@@ -107,6 +108,18 @@ standard Unix accounts via PAM, one app instance per Unix user, authenticated
 proxying, and a private Unix socket for each app. The optional `web-hub` Pixi
 environment contains the server dependencies. Local development needs no Hub.
 
+## Teaching materials
+
+The theory pages remain in `site/`. Regenerate their figures without Jupyter:
+
+```sh
+pixi run -e dev python figures/scripts/figures.py
+```
+
+The webapp replaces the notebook interface. Notebook widgets, clipboard helpers,
+and the `local`, `hub`, and `lserver` environments have been removed. Use `web`
+for local operation, `dev` for development, or `web-hub` for shared deployment.
+
 ## Verification
 
 ```sh
@@ -117,15 +130,6 @@ ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web
 node --test tests/test_web_progress.cjs
 ```
 
-## Original notebook
-
-The original notebook remains usable:
-
-```sh
-pixi install -e local
-pixi run -e local jupyter-lab notebooks/achprak.ipynb
-```
-
 Local validation on macOS included the complete chemistry workflow (including
 60 transition-state vibration frames), API session isolation, cancellation and
 timeouts, and the standalone proxy with a `/user/test/` prefix and private Unix
@@ -133,3 +137,10 @@ socket. NGL rendering, optimization playback, 2D structures and spectra were als
 checked in Safari. Linux PAM login and actual switching between Unix accounts
 still need a deployment test on the target server. The optional WebMCP interface
 is feature-detected; this browser does not provide a WebMCP validation context.
+
+The web interface has three steps: create a structure, optimize its geometry,
+and calculate a UV/Vis spectrum. Starting structures and optimization results
+include energy, CNNC angle and ring distance automatically. Exercise numbers
+remain aligned with the original lab handout. Method details are expandable;
+student-facing explanations distinguish search iterations from a reaction path
+and from physical motion.

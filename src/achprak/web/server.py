@@ -34,7 +34,7 @@ class Settings(BaseModel):
 
 class JobRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    kind: Literal["template", "properties", "minimum", "ts", "uvvis"]
+    kind: Literal["template", "minimum", "ts", "uvvis"]
     settings: Settings = Field(default_factory=Settings)
     molecule_id: str | None = None
 
@@ -279,6 +279,11 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             m = session.molecules.get(body.molecule_id)
             if m is None:
                 raise HTTPException(404, "Struktur nicht gefunden.")
+            if body.kind == "minimum" and m["kind"] == "minimum":
+                raise HTTPException(
+                    422,
+                    "Diese Struktur ist bereits ein optimiertes Minimum. Der vorhandene Verlauf bleibt erhalten.",
+                )
             if body.kind == "ts" and (m["kind"] != "minimum" or not m.get("converged")):
                 raise HTTPException(
                     422,

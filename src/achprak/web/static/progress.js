@@ -1,19 +1,50 @@
 "use strict";
 // Kept independent of the DOM so polling edge cases can be regression tested.
 globalThis.OptimizationProgress = {
+  geometryProperties(positions, definition) {
+    if (!definition || !positions) return {};
+    const at = (i) => positions.slice(3 * i, 3 * i + 3);
+    const sub = (a, b) => a.map((v, i) => v - b[i]);
+    const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+    const norm = (a) => Math.sqrt(dot(a, a));
+    const cross = (a, b) => [
+      a[1] * b[2] - a[2] * b[1],
+      a[2] * b[0] - a[0] * b[2],
+      a[0] * b[1] - a[1] * b[0],
+    ];
+    const [a, b, c, d] = definition.dihedral_indices.map(at);
+    const axis = sub(c, b),
+      length = norm(axis);
+    const unit = axis.map((v) => v / length);
+    const perpendicular = (v) => v.map((x, i) => x - dot(v, unit) * unit[i]);
+    const v = perpendicular(sub(a, b)),
+      w = perpendicular(sub(d, c));
+    const angle =
+      length > 1e-12 && norm(v) > 1e-12 && norm(w) > 1e-12
+        ? ((Math.atan2(dot(cross(unit, v), w), dot(v, w)) * 180) / Math.PI +
+            360) %
+          360
+        : null;
+    const centers = definition.rings.map((ring) => {
+      const mass = ring.reduce((s, i) => s + definition.masses[i], 0);
+      return [0, 1, 2].map(
+        (k) =>
+          ring.reduce((s, i) => s + at(i)[k] * definition.masses[i], 0) / mass,
+      );
+    });
+    return {
+      dihedral_deg: angle,
+      ring_distance_pm: norm(sub(centers[0], centers[1])) * 100,
+    };
+  },
   energyPoints(records) {
     const baseline = records[0]?.energy_ev || 0;
-    return records.flatMap((p) => {
-      const point = {
-        x: p.step,
-        y: p.energy_ev - baseline,
-        energy: p.energy_ev,
-        phase: p.phase,
-        attempt: p.attempt || 1,
-      };
-      // A restarted search is not a physical downhill segment of the path.
-      return p.restart ? [{ ...point, y: null }, point] : [point];
-    });
+    return records.map((p) => ({
+      x: p.step,
+      y: p.energy_ev - baseline,
+      energy: p.energy_ev,
+      phase: p.phase,
+    }));
   },
   playback(molecule, records, mode) {
     const path = molecule?.ts_search?.path;
@@ -49,7 +80,6 @@ globalThis.OptimizationProgress = {
       typeof record.source_id === "string" &&
       [
         "optimization",
-        "scan",
         "refinement",
         "vibrations",
         "endpoint",

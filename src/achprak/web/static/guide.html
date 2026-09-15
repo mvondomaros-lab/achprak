@@ -1,6 +1,6 @@
 <p>
   In diesem Computerexperiment untersuchen Sie Azobenzol-Photoschalter: von der
-  molekularen Struktur über ihre Energie bis zum Absorptionsspektrum.
+  Struktur über ihre Energie bis zum Absorptionsspektrum.
 </p>
 <p>
   <a
@@ -44,8 +44,13 @@
     Atome das Problem in der Realität umgehen?
   </p>
 </details>
-<details id="guide-properties">
-  <summary>02 · Eigenschaften — Aufgaben 2.1–2.5</summary>
+<details id="guide-optimize">
+  <summary>02 · Struktur untersuchen und optimieren — Aufgaben 2 und 3</summary>
+  <h3>Eigenschaften der Startstrukturen — Aufgaben 2.1–2.5</h3>
+  <p>
+    Energie, Diederwinkel und Ringabstand erscheinen automatisch unter dem
+    Modell.
+  </p>
   <p class="note">
     Erzeugte Startstrukturen sind nur näherungsweise Geometrien. Sie sind noch
     nicht energetisch optimiert und müssen Ihrer chemischen Intuition nicht
@@ -64,9 +69,12 @@
   </p>
   <h3>2.3 · Reaktionsenergie</h3>
   <p>
-    Berechnen Sie die Energien von cis- und trans-Azobenzol. Bestimmen Sie ΔE =
-    E<sub>trans</sub> − E<sub>cis</sub> in kJ/mol. Nutzen Sie „Einheiten
-    umrechnen“. Welche Konfiguration ist stabiler?
+    Lesen Sie die automatisch berechneten Energien der cis- und
+    trans-Startstrukturen ab. Bestimmen Sie ΔE = E<sub>trans</sub> − E<sub
+      >cis</sub
+    >
+    in kJ/mol. Nutzen Sie „Einheiten umrechnen“. Welche Struktur hat die
+    niedrigere Energie?
   </p>
   <h3>2.4 · Diederwinkel</h3>
   <p>
@@ -80,44 +88,46 @@
     Welche Abstände zwischen den Massenschwerpunkten der Phenylringe liegen in
     cis- und trans-Azobenzol vor?
   </p>
-</details>
-<details id="guide-optimize">
-  <summary>03 · Optimieren — Aufgaben 3.1–3.4</summary>
+
   <p>
     Eine Minimumssuche liefert eine stabile Struktur; eine
     Übergangszustandssuche untersucht die Barriere zwischen den Konfigurationen.
-    Die Ausgangsstruktur bleibt erhalten. Der Verlauf erscheint nach der
-    Rechnung im 3D-Modell; die Programmausgabe enthält Energien und
-    Konvergenzinformationen.
+    Die Ausgangsstruktur bleibt erhalten. Sie können den Verlauf während der
+    Rechnung im 3D-Modell und in der Energiekurve verfolgen. Danach können Sie
+    ihn durch Anklicken der Punkte im Energieprofil oder mit der Abspieltaste
+    erneut ansehen. Die Werte für Energie, Winkel und Abstand werden automatisch
+    aktualisiert.
   </p>
   <h3>3.1 · Optimierte Strukturen vergleichen</h3>
   <p>
     Optimieren Sie cis- und trans-Azobenzol. Sind die Strukturen jetzt planar?
     Bestimmen Sie erneut ΔE = E<sub>trans</sub> − E<sub>cis</sub> in kJ/mol.
-    Welche Konfiguration ist stabiler?
+    Welche Struktur hat die niedrigere Energie?
   </p>
   <h3>3.2 · Übergangszustand</h3>
   <p>
-    Starten Sie vom optimierten Minimum und verfolgen Sie den Energieanstieg
-    während der TS-Suche. Bestimmen Sie die Übergangsstruktur. Spielen Sie ihre
-    Schwingung ab und beschreiben Sie die molekularen Bewegungen: Verdrehung der
-    Ringe, Änderungen von Bindungslängen oder Winkeln.
+    Starten Sie vom optimierten Minimum und wählen Sie „Übergangszustand“.
+    Betrachten Sie das Energieprofil zwischen cis und trans. Die Suche umfasst
+    auch die Optimierung anderer Strukturen; die Energie steigt während der
+    Rechnung daher nicht durchgehend an. Wählen Sie nach Abschluss „Bewegung am
+    Übergangszustand“ und beschreiben Sie die molekularen Bewegungen: Verdrehung
+    der Ringe, Änderungen von Bindungslängen oder Winkeln.
   </p>
   <p class="note">
-    Die Animation zeigt den imaginären Modus aus einer Analyse aller Atome mit
-    vergrößerter Amplitude. Für einen bestätigten Sattel erster Ordnung wird
-    genau eine imaginäre innere Frequenz über 20 cm⁻¹ verlangt; kleinere
-    negative Frequenzen werden als numerisches Rauschen toleriert. Die
-    elektronische Barriere des geführten Rotationspfads ist keine freie
-    Aktivierungsenergie. Eine IRC-Rechnung zur Prüfung der verbundenen Minima
-    wird nicht durchgeführt.
+    Die Animation veranschaulicht eine Bewegung, die vom Übergangszustand
+    wegführt. Sie ist zur besseren Sichtbarkeit vergrößert und zeigt keinen
+    tatsächlichen zeitlichen Ablauf. Die Rechnung prüft, ob auf beiden Seiten
+    eine cis- bzw. trans-Struktur erreicht wird. Die berechnete Energiebarriere
+    gilt für den untersuchten Weg; Temperatureffekte werden nicht
+    berücksichtigt.
   </p>
   <h3>3.3 · Aktivierungsenergie</h3>
   <p>
     Berechnen Sie E<sub>A</sub> = E<sub>TS</sub> − E<sub>trans</sub> in kJ/mol.
-    Bei Zimmertemperatur gilt RT ≈ 2,5 kJ/mol (≈ 0,026 eV). Reicht diese
-    typische thermische Energie aus, um die Barriere von trans nach cis zu
-    überwinden?
+    Bei Zimmertemperatur gilt RT ≈ 2,5 kJ/mol (≈ 0,026 eV). Wie groß ist die
+    Barriere im Vergleich zu RT? Beachten Sie: RT ist keine Obergrenze für die
+    Energie einzelner Moleküle. Aus diesem Vergleich allein lässt sich keine
+    Reaktionsgeschwindigkeit bestimmen.
   </p>
   <h3>3.4 · Geometrie nach der Optimierung</h3>
   <p>
@@ -126,16 +136,18 @@
   </p>
 </details>
 <details id="guide-spectrum">
-  <summary>04 · UV/Vis-Spektrum — Aufgaben 4.1–4.3</summary>
+  <summary>03 · UV/Vis-Spektrum — Aufgaben 4.1–4.3</summary>
   <p class="note">
     Für aussagekräftige Spektren benötigen Sie optimierte Minimumsstrukturen.
     Der Ablauf ist: Struktur erstellen → Minimum optimieren → Spektrum
     berechnen.
   </p>
   <p>
-    MOPAC berechnet elektronische Anregungen mit INDO/CIS. Die Linien zeigen die
-    Übergangsenergien und Oszillatorstärken; die blaue Kurve ist das mit
-    Gaußfunktionen verbreiterte Spektrum.
+    Bei der Lichtabsorption nimmt das Molekül Energie auf und gelangt in einen
+    angeregten elektronischen Zustand. Die Linien zeigen die berechneten
+    Übergänge. Ihre Höhe beschreibt deren Beitrag zur Absorption
+    (Oszillatorstärke). Die blaue Kurve fasst diese Linien zu breiten Banden
+    zusammen.
   </p>
   <h3>4.1 · cis und trans</h3>
   <p>

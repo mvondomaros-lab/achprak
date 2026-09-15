@@ -63,7 +63,12 @@ def test_structure_properties_and_session_isolation(client):
     assert molecule["atom_count"] == 24
     assert molecule["formula"] == "C12H10N2"
     assert "<svg" in molecule["svg"] and "M  END" in molecule["sdf"]
-    props = run(client, "properties", molecule_id=molecule["id"])["properties"]
+    assert all(np.isfinite(list(molecule["properties"].values())))
+    definition = molecule["geometry_definition"]
+    assert len(definition["dihedral_indices"]) == 4
+    assert [len(ring) for ring in definition["rings"]] == [6, 6]
+    assert len(definition["masses"]) == molecule["atom_count"]
+    props = molecule["properties"]
     assert all(np.isfinite(list(props.values())))
     assert props["ring_distance_pm"] > 0
     assert (
@@ -102,7 +107,7 @@ def test_validation_and_csrf(client):
         client.post(
             "/api/jobs",
             headers=HEADERS,
-            json={"kind": "properties", "molecule_id": "missing"},
+            json={"kind": "minimum", "molecule_id": "missing"},
         ).status_code
         == 404
     )
@@ -241,21 +246,6 @@ def test_minimum_spectrum_and_transition_state(client):
     )
 
 
-def test_result_names_do_not_accumulate():
-    from achprak.web.worker import base_name
-
-    source = {
-        "name": "trans-Azobenzol · Minimum · Übergangszustand",
-        "parent_id": "parent",
-    }
-    assert base_name(source) == "trans-Azobenzol"
-    assert (
-        base_name({"name": "Custom Minimum", "base_name": "Custom Minimum"})
-        == "Custom Minimum"
-    )
-    assert base_name({"name": "Custom · Minimum"}) == "Custom · Minimum"
-
-
 def test_live_optimization_records(client):
     from achprak.web.worker import PROGRESS_PREFIX
 
@@ -267,6 +257,18 @@ def test_live_optimization_records(client):
     )
     job_id = response.json()["id"]
     minimum = finish(client, job_id)["molecule"]
+    rejected = client.post(
+        "/api/jobs",
+        headers=HEADERS,
+        json={"kind": "minimum", "molecule_id": minimum["id"]},
+    )
+    assert rejected.status_code == 422
+    saved = next(
+        m
+        for m in client.get("/api/session").json()["molecules"]
+        if m["id"] == minimum["id"]
+    )
+    assert saved["optimization_history"] == minimum["optimization_history"]
     job = client.get(f"/api/jobs/{job_id}").json()
     records = [
         json.loads(line.removeprefix(PROGRESS_PREFIX))

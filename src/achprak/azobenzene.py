@@ -1,14 +1,11 @@
 import contextlib
 import io
 
-import IPython.display
-import ipywidgets
 import numpy as np
 import rdkit.Chem
 import rdkit.Chem.AllChem
 
-from . import common, ui
-from .clipboard import clipboard
+from . import common
 
 
 class Template:
@@ -99,86 +96,6 @@ class Template:
         return common.mol_to_atoms(mol)
 
 
-class TemplateTool:
-    """Interactive tool for creating an azobenzene template."""
-
-    def __init__(self):
-        self.template = Template()
-
-        self._configuration_buttons = ipywidgets.RadioButtons(
-            options=["trans", "cis"],
-            value=self.template.configuration,
-            orientation="horizontal",
-        )
-        self._configuration_buttons.observe(self._on_change, names="value")
-
-        self._substituent_dropdowns = []
-        for ring in range(2):
-            for carbon in range(5):
-                description = f"C{carbon + 2}:" if ring == 0 else f"C{carbon + 2}':"
-                dropdown = ipywidgets.Dropdown(
-                    options=list(Template.substituent_smiles.keys()),
-                    value=self.template.substituents[ring * 5 + carbon],
-                    description=description,
-                    layout={"width": "max-content"},
-                )
-                dropdown.observe(self._on_change, names="value")
-                self._substituent_dropdowns.append(dropdown)
-
-        self._mol_output = ipywidgets.Output()
-        self._xyz_output = ipywidgets.Output()
-
-        self._copy_button = ipywidgets.Button(description=common.COPY_TEXT)
-        self._copy_button.on_click(self._on_click)
-
-    def show(self):
-        IPython.display.display(
-            ipywidgets.Label("Konfiguration", style=common.LABEL_STYLE),
-            self._configuration_buttons,
-            ipywidgets.Label("Substituenten am ersten Ring", style=common.LABEL_STYLE),
-            ipywidgets.HBox(self._substituent_dropdowns[:5]),
-            ipywidgets.Label("Substituenten am zweiten Ring", style=common.LABEL_STYLE),
-            ipywidgets.HBox(self._substituent_dropdowns[5:]),
-            ipywidgets.Label("2D-Struktur", style=common.LABEL_STYLE),
-            self._mol_output,
-            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
-            self._xyz_output,
-            self._copy_button,
-        )
-
-        with self._mol_output:
-            IPython.display.display(self.template.mol)
-
-        with self._xyz_output:
-            self.template.atoms.write("-", format="xyz")
-
-    def _on_change(self, change):
-        if change.get("type") == "change" and change.get("name") == "value":
-            self._update_template()
-
-            with self._mol_output:
-                IPython.display.clear_output(wait=True)
-                IPython.display.display(self.template.mol)
-
-            with self._xyz_output:
-                IPython.display.clear_output(wait=True)
-                self.template.atoms.write("-", format="xyz")
-
-    def _update_template(self):
-        kwargs = {"configuration": self._configuration_buttons.value}
-        for ring in range(2):
-            for carbon in range(5):
-                key = f"r{ring + 1}c{carbon + 1}"
-                kwargs[key] = self._substituent_dropdowns[ring * 5 + carbon].value
-        self.template = Template(**kwargs)
-
-    def _on_click(self, button):
-        if button is self._copy_button:
-            xyz = common.atoms_to_xyz(self.template.atoms)
-            clipboard.copy(xyz)
-            ui.flash_button(button, message=common.COPY_OK_TEXT)
-
-
 class Properties:
     """Compute selected properties of an azobenzene derivative."""
 
@@ -234,85 +151,3 @@ class Properties:
     def energy(self):
         with contextlib.redirect_stdout(io.StringIO()):
             return self.atoms.get_potential_energy()  # eV
-
-
-class PropertiesTool:
-    """Interactive tool for visualization and property calculation."""
-
-    def __init__(self):
-        self.atoms = None
-        self.properties = None
-
-        self._xyz_output = ipywidgets.Output()
-        self._ngl_accordion = ui.NGLAccordion()
-
-        self._paste_button = ipywidgets.Button(description=common.PASTE_TEXT)
-        self._paste_button.on_click(self._on_click)
-
-        self._run_button = ipywidgets.Button(
-            description=common.RUN_START_TEXT, disabled=True
-        )
-        self._run_button.on_click(self._on_click)
-
-        self._energy_text = ipywidgets.Text(disabled=True)
-        self._cnnc_dihedral_text = ipywidgets.Text(disabled=True)
-        self._ring_distance_text = ipywidgets.Text(disabled=True)
-
-    def show(self):
-        IPython.display.display(
-            ipywidgets.Label("Koordinaten (XYZ-Format)", style=common.LABEL_STYLE),
-            self._paste_button,
-            self._xyz_output,
-            self._ngl_accordion.accordion,
-            ipywidgets.Label("Berechnung", style=common.LABEL_STYLE),
-            self._run_button,
-            *[
-                ipywidgets.Accordion(
-                    [ipywidgets.HBox([text, ipywidgets.Label(unit)])],
-                    titles=[title],
-                )
-                for title, text, unit in [
-                    ("Energie", self._energy_text, " eV"),
-                    ("Diederwinkel (C-N=N-C)", self._cnnc_dihedral_text, " °"),
-                    ("Ringabstand", self._ring_distance_text, " pm"),
-                ]
-            ],
-        )
-
-    def _reset(self):
-        self.atoms = None
-        self.properties = None
-        self._xyz_output.clear_output()
-        self._ngl_accordion.clear()
-
-        self._energy_text.value = ""
-        self._cnnc_dihedral_text.value = ""
-        self._ring_distance_text.value = ""
-
-        self._run_button.disabled = True
-        self._run_button.description = common.RUN_START_TEXT
-
-    def _on_click(self, button):
-        if button is self._paste_button:
-            self._reset()
-            self.atoms = common.clipboard_to_atoms(
-                button=button, output=self._xyz_output
-            )
-            if self.atoms is not None:
-                self._ngl_accordion.show_atoms(self.atoms)
-                self._run_button.disabled = False
-
-        elif button is self._run_button:
-            self._run_button.disabled = True
-            self._run_button.description = common.RUN_START_TEXT + "…"
-            try:
-                self.properties = Properties(self.atoms)
-                self._update()
-                self._run_button.description = common.RUN_OK_TEXT
-            finally:
-                self._run_button.disabled = False
-
-    def _update(self):
-        self._energy_text.value = f"{self.properties.energy():.4f}"
-        self._cnnc_dihedral_text.value = f"{self.properties.cnnc_dihedral():.1f}"
-        self._ring_distance_text.value = f"{self.properties.ring_distance():.1f}"
