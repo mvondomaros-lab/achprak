@@ -126,7 +126,7 @@ test("reduced motion disables automatic replay while retaining all chart data", 
   assert.equal(context.state.tracking.records.length, 2);
 });
 
-test("one playback control selects search frames or TS vibration frames", () => {
+test("playback uses search frames and never exposes legacy TS vibration frames", () => {
   const records = [record(0), record(1)];
   const molecule = {
     trajectory_kind: "vibration",
@@ -143,12 +143,13 @@ test("one playback control selects search frames or TS vibration frames", () => 
   assert.equal(search.kind, "optimization");
   assert.deepEqual(
     progress.playback(molecule, records, "vibration").frames,
-    molecule.frames,
+    records.map((r) => r.positions),
   );
   assert.equal(
     progress.playback(molecule, [], "optimization").kind,
-    "vibration",
+    "optimization",
   );
+  assert.deepEqual(progress.playback(molecule, [], "vibration").frames, []);
   assert.deepEqual(
     progress.playback(
       { trajectory_kind: "optimization", frames: [[1, 2, 3]] },
@@ -178,7 +179,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     },
     component: {},
     animation: null,
-    current: () => ({ trajectory_kind: "optimization" }),
+    current: () => ({ ts_search: { path: records.map((p, i) => ({ ...p, image: i, coordinate: i / 2 })) } }),
     energyRecords: () => records,
     $: (id) => {
       if (!elements.has(id))
@@ -222,7 +223,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   vm.runInContext(
     app.slice(
       app.indexOf("function selectPlaybackFrame("),
-      app.indexOf('$("xyz-download").onclick'),
+      app.indexOf("async function svgToPNG"),
     ),
     context,
   );
@@ -234,22 +235,25 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     context,
   );
   const play = elements.get("play");
+  const energyPlay = elements.get("energy-play");
+  assert.equal(energyPlay.onclick, play.onclick);
   const tick = () => [...timers.values()][0]();
   play.onclick();
+  assert.equal(energyPlay.textContent, "Pause");
   assert.equal(context.state.previewIndex, 0);
   tick();
-  play.onclick(); // Pause at step 1.
+  energyPlay.onclick(); // The repeated button pauses the same playback.
+  assert.equal(play.textContent, "Abspielen");
+  assert.equal(energyPlay.textContent, "Abspielen");
   assert.equal(context.state.previewIndex, 1);
   assert.equal(timers.size, 0);
   play.onclick();
   assert.equal(context.state.previewIndex, 1);
   tick();
-  assert.equal(context.state.previewIndex, null);
+  assert.equal(context.state.previewIndex, 2);
   assert.equal(timers.size, 0);
   assert.equal(play.textContent, "Abspielen");
-  assert.equal(context.state.live, null);
-  assert.equal(elements.get("properties-grid").style.visibility, "visible");
-  assert.equal(elements.get("properties-context").style.visibility, "visible");
+  assert.equal(context.state.live.phase, "path");
   assert.deepEqual(energies, [0, 1, 1, 2]);
   assert.deepEqual(
     geometries,
@@ -260,7 +264,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   assert.equal(timers.size, 1);
   tick();
   tick();
-  assert.equal(context.state.previewIndex, null);
+  assert.equal(context.state.previewIndex, 2);
   assert.equal(timers.size, 0);
   context.selectPlaybackFrame(2);
   play.onclick(); // The same applies to a manually selected final frame.
@@ -271,7 +275,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
   play.onclick(); // Resume from the manually selected step.
   assert.equal(context.state.previewIndex, 1);
   tick();
-  assert.equal(context.state.previewIndex, null);
+  assert.equal(context.state.previewIndex, 2);
   assert.equal(timers.size, 0);
 
   context.selectPlaybackFrame(0);
@@ -337,11 +341,11 @@ test("NEB snapshots survive polling and reaction-path playback remains separate 
   );
   assert.equal(
     progress.playback(molecule, parsed, "vibration").kind,
-    "vibration",
+    "optimization",
   );
 });
 
-test("energy chart switches between reaction coordinate and iteration history without mixing axes", () => {
+test("energy chart shows only reaction coordinates and describes the path", () => {
   const path = [0, 1, 2].map((i) => ({
     image: i,
     coordinate: i / 2,
@@ -353,7 +357,7 @@ test("energy chart switches between reaction coordinate and iteration history wi
     { ...record(8, "neb_climb"), energy_ev: -10, neb_path: path, neb_image: 0 },
     { ...record(9, "vibrations"), energy_ev: -8 },
   ];
-  const m = { id: "m", ts_search: { path }, optimization_history: records };
+  const m = { id: "m", base_name: "trans-Azobenzol", ts_search: { path }, optimization_history: records };
   const elements = new Map();
   let chart;
   const context = vm.createContext({
@@ -392,7 +396,7 @@ test("energy chart switches between reaction coordinate and iteration history wi
     Array.from(chart.data.datasets[0].data, (p) => p.x),
     [0, 0.5, 1],
   );
-  assert.match(chart.options.scales.x.title.text, /Ausgangsform/);
+  assert.equal(chart.options.scales.x.title.text, "Reaktionspfad");
   context.state.live = { ...path[1], phase: "path" };
   context.renderEnergyHistory(1);
   assert.equal(chart.data.datasets[1].data[0].x, 0.5);
@@ -401,11 +405,23 @@ test("energy chart switches between reaction coordinate and iteration history wi
   context.renderEnergyHistory(8);
   assert.deepEqual(
     Array.from(chart.data.datasets[0].data, (p) => p.x),
-    [0, 8, 9],
+    [0, 0.5, 1],
   );
-  assert.equal(chart.options.scales.x.title.text, "Optimierungsschritt");
+  assert.equal(chart.options.scales.x.title.text, "Reaktionspfad");
+  assert.equal(elements.get("energy-path-meta").textContent, "Reaktionspfad im elektronischen Grundzustand · trans → cis");
   context.state.busy = true;
-  context.state.tracking = { sourceId: "m", status: "running", records };
+  context.state.tracking = { sourceId: "m", kind: "ts", status: "queued", records: [] };
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.equal(chart.data.datasets[0].data.length, 0);
+  context.state.tracking.status = "running";
+  context.state.tracking.records = [records[0], { ...record(1, "path_seed"), energy_ev: -9 }];
+  context.renderEnergyHistory(1);
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.equal(chart.options.scales.x.title.text, "Suchschritt");
+  assert.deepEqual(Array.from(chart.data.datasets[0].data, (p) => p.y), [0, 1]);
+  assert.match(elements.get("energy-reference").textContent, /noch kein Reaktionspfad/);
+  context.state.tracking.records = records;
   context.renderEnergyHistory(8);
   assert.equal(chart.data.datasets[1].data[0].image, 0);
   context.renderEnergyHistory(9);
@@ -414,10 +430,10 @@ test("energy chart switches between reaction coordinate and iteration history wi
     [0, 0.5, 1],
   );
   context.state.busy = false;
-  context.state.playbackMode = "vibration";
-  context.state.live = { phase: "vibration-preview" };
+  context.state.playbackMode = "path";
+  context.state.live = null;
   context.renderEnergyHistory();
-  assert.equal(chart.data.datasets[1].data.length, 0);
+  assert.equal(chart.data.datasets[1].data.length, 1);
 });
 
 test("live NEB coordinates reach the 3D viewer and identify the displayed image", () => {
@@ -482,10 +498,6 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
     elements.get("energy").textContent,
     String(context.state.live.energy_ev),
   );
-  context.state.live.source_id = "m";
-  context.state.live.phase = "vibration-preview";
-  context.applyLiveGeometry();
-  assert.equal(elements.get("energy").textContent, "—");
 });
 
 test("same molecule reuses its viewer and restores result positions without resetting the camera", async () => {
@@ -559,7 +571,7 @@ test("same molecule reuses its viewer and restores result positions without rese
   ]);
 });
 
-test("playback appears when frames exist and the mode picker is hidden without alternatives", () => {
+test("both playback buttons appear only when frames exist", () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
   const elements = new Map();
   let frames = [];
@@ -595,12 +607,12 @@ test("playback appears when frames exist and the mode picker is hidden without a
           ];
     context.renderPlaybackControls();
     assert.equal(
-      elements.get("trajectory").hidden,
+      elements.get("play").hidden,
       ["build", "empty"].includes(phase),
     );
-    assert.equal(elements.get("playback-mode").hidden, true);
+    assert.equal(elements.get("energy-play").hidden, ["build", "empty"].includes(phase));
     assert.equal(
-      elements.get("play").disabled,
+      elements.get("energy-play").disabled,
       !["result", "build"].includes(phase),
     );
     assert.equal(
@@ -610,7 +622,7 @@ test("playback appears when frames exist and the mode picker is hidden without a
   }
 });
 
-test("known starting energy is shown before progress without creating playback frames", () => {
+test("minimum energy history appears live and remains available after completion", () => {
   const elements = new Map();
   const m = { id: "m", properties: { energy_ev: -10 } };
   let chart;
@@ -645,17 +657,18 @@ test("known starting energy is shown before progress without creating playback f
     context,
   );
   context.renderEnergyHistory();
-  assert.equal(elements.get("energy-history").hidden, false);
-  assert.match(
-    elements.get("energy-history-value").textContent,
-    /Ausgangsstruktur/,
-  );
-  assert.equal(chart.data.datasets[1].data[0].y, 0);
+  assert.equal(elements.get("energy-history").hidden, true);
+  assert.equal(chart, undefined);
   assert.equal(context.energyRecords().length, 0);
-  const original = chart;
   context.state.busy = true;
+  context.state.tracking = { sourceId: "m", kind: "minimum", status: "queued", records: [] };
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.equal(chart.data.datasets[0].data.length, 0);
+  const queuedChart = chart;
   context.state.tracking = {
     sourceId: "m",
+    kind: "minimum",
     status: "running",
     records: [
       { ...record(0), energy_ev: -10 },
@@ -663,9 +676,17 @@ test("known starting energy is shown before progress without creating playback f
     ],
   };
   context.renderEnergyHistory();
-  assert.equal(chart, original);
-  assert.equal(chart.data.datasets[0].data.length, 2);
-  assert.equal(chart.data.datasets[1].data[0].y, -1);
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.equal(chart, queuedChart);
+  assert.equal(chart.options.scales.x.title.text, "Optimierungsschritt");
+  assert.deepEqual(Array.from(chart.data.datasets[0].data, (p) => p.y), [0, -1]);
+  assert.equal(context.energyRecords().length, 2);
+  m.optimization_history = context.state.tracking.records;
+  context.state.tracking.status = "complete";
+  context.state.busy = false;
+  context.renderEnergyHistory();
+  assert.equal(elements.get("energy-history").hidden, false);
+  assert.deepEqual(Array.from(chart.data.datasets[0].data, (p) => p.x), [0, 1]);
   context.state.step = "build";
   context.renderEnergyHistory();
   assert.equal(elements.get("energy-history").hidden, true);
@@ -808,9 +829,10 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   target = "ts";
   context.updateControls();
   assert.equal(elements.get("result-heading").hidden, false);
+  assert.equal(elements.get("calculation-log").hidden, true);
+  assert.equal(elements.get("result-details").hidden, true);
   assert.equal(elements.get("ts-requirement").hidden, false);
   assert.equal(elements.get("optimize").disabled, true);
-  assert.equal(elements.get("trajectory-download").hidden, true);
 
   molecule.kind = "minimum";
   target = "minimum";
@@ -823,7 +845,6 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   context.updateControls();
   assert.equal(elements.get("calculate-spectrum").disabled, false);
   assert.equal(elements.get("spectrum-requirement").hidden, true);
-  assert.equal(elements.get("coordinate-details").hidden, true);
   context.state.busy = true;
   context.updateControls();
   assert.equal(elements.get("calculate-spectrum").disabled, true);
@@ -875,7 +896,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
     "center",
     "properties-grid",
     "properties-context",
-    "property-help",
     "result-details",
     "calculation-log",
   ])
@@ -905,7 +925,6 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
   assert.equal(elements.get("viewer-hint").hidden, false);
   for (const id of [
     "properties-grid",
-    "property-help",
     "result-details",
     "calculation-log",
   ])
@@ -946,7 +965,7 @@ test("image export pauses playback and captures the displayed intermediate geome
   vm.runInContext(
     app.slice(
       app.indexOf('$("image-download").onclick'),
-      app.indexOf('$("spectrum-svg").onclick'),
+      app.indexOf('$("spectrum-png").onclick'),
     ),
     context,
   );
@@ -1224,4 +1243,83 @@ test("clear structures confirms the full scope and resets selection only after s
   ])
     assert.equal(context.state[field], null);
   assert.equal(context.state.molecules.length, 0);
+});
+
+test("completion keeps the live view until the result is loaded, then switches atomically", async () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  let resolveSession;
+  const elements = new Map();
+  const source = { id: "source" };
+  const result = { id: "result" };
+  const live = { source_id: "source", step: 3 };
+  const rendered = [];
+  const context = vm.createContext({
+    state: { molecules: [source], selected: "source", step: "optimize", busy: true, live },
+    api: () => new Promise((resolve) => { resolveSession = resolve; }),
+    selectMolecule: (id) => { context.state.selected = id; },
+    renderState: () => rendered.push({
+      selected: context.state.selected,
+      busy: context.state.busy,
+      live: context.state.live,
+    }),
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, {});
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("async function refresh("), app.indexOf("let energyChart = null;")), context);
+  const refresh = context.refresh("result", true);
+  assert.equal(context.state.busy, true);
+  assert.equal(context.state.live, live);
+  assert.equal(context.state.selected, "source");
+  assert.equal(rendered.length, 0);
+  resolveSession({ molecules: [source, result] });
+  await refresh;
+  assert.deepEqual(rendered, [{ selected: "result", busy: false, live: null }]);
+});
+
+
+test("minimum playback uses its optimization history without a mode toggle", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const records = [record(0), record(1), record(2)];
+  let molecule = { id: "minimum", kind: "minimum" };
+  const context = vm.createContext({
+    OptimizationProgress: progress,
+    current: () => molecule,
+    energyRecords: () => records,
+  });
+  vm.runInContext(app.slice(app.indexOf("function playbackData()"), app.indexOf("function renderPlaybackControls()")), context);
+  const data = context.playbackData();
+  assert.equal(data.kind, "optimization");
+  assert.deepEqual(Array.from(data.frames), records.map((p) => p.positions));
+  molecule = { id: "ts", ts_search: {}, trajectory_kind: "vibration", frames: [[0, 0, 0]] };
+  assert.equal(context.playbackData().frames.length, 0);
+});
+
+test("spectrum preserves bands and stick strengths with reciprocal wavelength ticks", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  let chart;
+  const context = vm.createContext({
+    spectrumChart: null,
+    HC: 1239.8419843320026,
+    fmt: (value) => String(Math.round(value)),
+    plotStyle: { text: "#586b80", font: { size: 16 }, titleFont: { size: 17 } },
+    $: () => ({}),
+    Chart: class {
+      constructor(_, config) { Object.assign(this, config); chart = this; }
+      update() {}
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("function renderSpectrumChart("), app.indexOf("function collectProgress(")), context);
+  context.renderSpectrumChart({ energy_ev: [1.5, 3, 5.5], absorption: [0, 1, 0.2],
+    excitations_ev: [1, 3, 5, 6], oscillator_strengths: [2, 0.7, 0.1, 3] });
+  assert.deepEqual(Array.from(chart.data.datasets[0].data, (p) => p.y), [0, 1, 0.2]);
+  assert.deepEqual(Array.from(chart.data.datasets[1].data, (p) => p.y), [0, 0.7, null, 0, 0.1, null]);
+  assert.equal(chart.options.scales.x.min, 1.5);
+  assert.equal(chart.options.scales.wavelength.max, 5.5);
+  const axis = { min: 1.5, max: 5.5 };
+  chart.options.scales.wavelength.afterBuildTicks(axis);
+  assert.deepEqual(Array.from(axis.ticks, (t) => chart.options.scales.wavelength.ticks.callback(t.value)),
+    ["800", "600", "500", "400", "300", "250"]);
+  assert.equal(chart.options.scales.y.title.font.size, 17);
 });

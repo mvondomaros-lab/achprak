@@ -36,6 +36,8 @@ def progress_observer(source_id, history):
         if "neb_path" in atoms.info:
             progress["neb_path"] = atoms.info["neb_path"]
             progress["neb_image"] = atoms.info["neb_image"]
+        if "ts_attempt" in atoms.info:
+            progress["ts_attempt"] = atoms.info["ts_attempt"]
         history.append(progress)
         # The frontend separates progress records from ordinary job output.
         print(PROGRESS_PREFIX + json.dumps(progress, allow_nan=False), flush=True)
@@ -182,6 +184,8 @@ def calculate(data):
                     else None
                 ),
                 "iterations": opt.iterations_used,
+                "attempts": opt.attempts,
+                "step_limit_per_attempt": opt.step_limit_per_attempt,
                 "validation": opt.validation,
                 "barrier_ev": opt.barrier_ev,
                 "failure_reason": opt.failure_reason,

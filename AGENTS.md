@@ -21,6 +21,12 @@ any failures. Keep these expensive tests disabled in default test runs.
 
 - Use German for student-facing text and address students consistently as “Sie”.
   Keep developer documentation and code identifiers in English.
+- Avoid vague language. Name the calculation, quantity, assumption, or limitation
+  you mean and explain its practical consequence. Replace generic claims such as
+  “meaningful results” or “the model has limitations” with concrete statements.
+  Keep uncertainty where scientifically necessary; do not replace it with an
+  unsupported promise. Avoid repeating theory in the UI when a short reminder
+  or a reference to the documentation is sufficient.
 - Prefer “Übergangszustand” / “transition state” (TS) in the main teaching flow.
   Use “Übergangsstruktur” / “transition structure” specifically for the calculated
   saddle-point geometry, and explain the distinction in optional detail.

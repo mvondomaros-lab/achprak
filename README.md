@@ -48,27 +48,29 @@ or step filter. Clearing is unavailable while a calculation is active.
 
 Structures are generated from predefined configurations and substituents.
 Names are assigned automatically; custom names and XYZ imports are not supported.
-Students can export coordinates, images and spectra for their lab reports.
+Students can export images and spectra for their lab reports.
 
 ### Calculation progress and playback
 
 Calculations run in isolated worker processes and can be cancelled. During
-optimization, the viewer shows accepted geometries and the energy chart updates
-as the browser polls for progress. All recorded geometries and energies remain
-available, including those calculated between polls.
+optimization, the viewer shows accepted geometries as the browser polls for
+progress. All recorded geometries and energies remain stored, including those
+calculated between polls.
 
-The chart distinguishes optimization steps from the reaction path. Clicking a
-point selects its geometry. Arrow keys, Home and End select frames when the
-chart has focus. **Abspielen / Pause** is at the top right of the structure
-heading; the playback mode selector is beside the chart. Playback resumes at the selected frame and
-stops at the end. Starting playback at the last frame restarts it.
-For a transition state, students can choose the reaction path, search history,
-or the illustrated unstable mode.
+The energy chart shows optimization steps during and after minimum searches,
+and the reaction path for transition-state results. No view toggle is needed.
+On either energy chart, clicking a point selects its geometry.
+Arrow keys, Home and End select frames
+when the chart has focus. **Abspielen / Pause** is at the top right of the
+structure heading and repeated beside the chart. Playback resumes at the
+selected frame and stops at the end. Starting playback at the last frame
+restarts it. Manual playback is available for minimum searches and reaction paths. Unstable-mode animations are
+not exposed, including for older results.
 
 Short calculations may finish before students see any live progress. These runs
 replay for up to three seconds, with a clear playback label and a skip button.
 Reduced-motion preferences disable this automatic replay. Neither optimization
-playback nor the illustrated unstable mode represents molecular dynamics.
+playback nor reaction-path playback represents molecular dynamics.
 
 ## Terminology and scientific scope
 
@@ -109,8 +111,8 @@ The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
 of the active half-band, then the climbing image during CI-NEB. The plot highlights
 the displayed image. On completion, clickable energy points and the
-single-pass Play control can show the reaction path, optimization history, or
-imaginary vibration. Both endpoint geometries and their energies are retained
+single-pass Play controls can show the reaction path or optimization history.
+Both endpoint geometries and their energies are retained
 in the result; the other endpoint is available as the final path image.
 
 A full all-atom finite-difference Hessian (0.01 Å displacement) checks the saddle.
@@ -129,8 +131,7 @@ not establish an exact conformer match. This is a numerical downhill connectivit
 check, **not an IRC** or a proof of the globally lowest barrier. Failed band, saddle,
 mode or cis/trans connectivity checks leave an unconfirmed search state.
 Only a force-converged saddle passing both mode and connectivity checks is labeled
-a TS. The animation illustrates the unstable mode; it is not a periodic vibration or
-a dynamics simulation. Barriers are electronic energy differences, not free-energy
+a TS. Playback is not a dynamics simulation. Barriers are electronic energy differences, not free-energy
 barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
 
 ## Development and session lifetime
@@ -145,7 +146,7 @@ pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
 ```
 
 Results are held per browser session until server restart or 24 hours of
-inactivity. Download XYZ coordinates, PNG images and SVG/CSV spectra for your
+inactivity. Download PNG images and CSV spectrum data for your
 lab report. A page reload reconnects to any running calculation.
 
 ## Multiple users / self-hosted server
@@ -190,6 +191,13 @@ directory, including the search history and failure reason. Add new failing
 molecules to this set and run the full `test-ts` set when investigating or fixing
 a TS search failure; normal `test-web` runs do not enable it. The broader
 `ACHPRAK_CHEMISTRY_TESTS=1` run includes this set as well.
+
+The [exhaustive first-ring screen](docs/ts-screening.md) covers 780 labeled
+mono- and disubstituted cis/trans starting cases using the six supported groups.
+Failures are preserved as exact-geometry fixtures in `tests/data/ts_failures/`
+and included in `test-ts`. The search retains its original seed first, then
+tries at most two alternative seeds on failure. Each attempt has a 1500-step
+limit; reported total iterations include all attempts.
 
 Local validation on macOS included the complete chemistry workflow (including
 60 transition-state vibration frames), API session isolation, cancellation and

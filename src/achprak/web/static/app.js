@@ -1,10 +1,15 @@
 "use strict";
 const $ = (id) => document.getElementById(id);
 const SUBS = ["H", "Me", "NMe2", "CF3", "OMe", "F", "SO2CF3"];
+function substituentLabel(text) {
+  return text.replace(/\b(?:SO2CF3|NMe2|CF3)\b/g, (sub) =>
+    ({ SO2CF3: "SO₂CF₃", NMe2: "NMe₂", CF3: "CF₃" })[sub],
+  );
+}
 for (let r = 0; r < 2; r++) {
   const field = document.createElement("fieldset");
   const legend = document.createElement("legend");
-  legend.textContent = r ? "Ring 2′–6′" : "Ring 2–6";
+  legend.textContent = r ? "Zweiter Ring" : "Erster Ring";
   field.append(legend);
   for (let c = 0; c < 5; c++) {
     const row = document.createElement("div");
@@ -15,7 +20,7 @@ for (let r = 0; r < 2; r++) {
     const select = document.createElement("select");
     select.id = label.htmlFor;
     select.setAttribute("aria-label", `Substituent an C${label.textContent}`);
-    SUBS.forEach((s) => select.add(new Option(s, s)));
+    SUBS.forEach((s) => select.add(new Option(substituentLabel(s), s)));
     row.append(label, select);
     field.append(row);
   }
@@ -170,37 +175,30 @@ function svgURL(svg) {
 function stopAnimation() {
   clearInterval(animation);
   animation = null;
-  $("play").textContent = "Abspielen";
-  $("play").setAttribute("aria-label", "Verlauf einmal abspielen");
+  for (const id of ["play", "energy-play"]) {
+    $(id).textContent = "Abspielen";
+    $(id).setAttribute("aria-label", "Verlauf einmal abspielen");
+  }
 }
 function playbackData() {
-  return OptimizationProgress.playback(
-    current(),
-    energyRecords(),
-    state.playbackMode,
-  );
+  const molecule = current();
+  if (molecule?.ts_search?.path?.length)
+    return OptimizationProgress.playback(molecule, [], "path");
+  if (molecule?.ts_search)
+    return { kind: "path", frames: [], records: [] };
+  const records = energyRecords().filter((p) => p.phase === "optimization");
+  return OptimizationProgress.playback(molecule, records, "optimization");
 }
 function renderPlaybackControls() {
   const data = playbackData();
   const unavailable =
     state.busy || state.mode !== "3d" || !component || !data.frames.length;
-  $("trajectory").hidden = state.step !== "optimize" || !data.frames.length;
-  $("play").hidden = state.step !== "optimize";
-  $("play").disabled = unavailable;
+  for (const id of ["play", "energy-play"]) {
+    $(id).hidden = state.step !== "optimize" || !data.frames.length;
+    $(id).disabled = unavailable;
+  }
   $("energy-chart").setAttribute("aria-disabled", String(unavailable));
-  $("playback-mode").hidden =
-    !current()?.ts_search?.path?.length &&
-    current()?.trajectory_kind !== "vibration";
   $("plot-hint").hidden = unavailable;
-  $("playback-mode").disabled =
-    unavailable ||
-    (!current()?.ts_search?.path?.length &&
-      current()?.trajectory_kind !== "vibration");
-  $("playback-mode").querySelector('[value="path"]').hidden =
-    !current()?.ts_search?.path?.length;
-  $("playback-mode").querySelector('[value="vibration"]').hidden =
-    current()?.trajectory_kind !== "vibration";
-  $("playback-mode").value = data.kind;
 }
 function showFrame(index) {
   const data = playbackData();
@@ -216,11 +214,7 @@ function showFrame(index) {
     positions: data.frames[index],
     replay: true,
     phase:
-      data.kind === "vibration"
-        ? "vibration-preview"
-        : data.kind === "path"
-          ? "path"
-          : data.records[index]?.phase || "optimization",
+      data.kind === "path" ? "path" : data.records[index]?.phase || "optimization",
   };
   applyLiveGeometry();
   renderEnergyHistory(data.records[index]?.step);
@@ -339,8 +333,6 @@ function updateMode() {
   $("properties-grid").style.visibility = "visible";
   $("properties-context").hidden = state.step !== "optimize" || !state.live;
   $("properties-context").style.visibility = "visible";
-  $("property-help").hidden = state.step !== "optimize" || !current();
-  $("property-help").style.visibility = "visible";
   renderPlaybackControls();
   if (state.mode !== "3d") {
     stopAnimation();
@@ -379,16 +371,10 @@ function updateControls() {
     state.step === "build" ? "Startstruktur auswählen" : "Struktur auswählen";
   $("result-heading").hidden = !m;
   $("viewer-toolbar").hidden = !m;
-  $("result-details").hidden = state.step === "build" || (!m && !state.job);
+  $("result-details").hidden = state.step !== "spectrum" || !state.hasCalculationLog;
   $("calculation-log").hidden =
-    state.step === "build" || !state.hasCalculationLog;
-  $("coordinate-details").hidden = !m || state.step === "spectrum";
-  $("trajectory-download").hidden = !m?.frames?.length;
-  for (const id of ["xyz-download", "xyz-copy"])
-    $(id).disabled = !m || (!!state.live && state.step === "optimize");
+    state.step !== "spectrum" || !state.hasCalculationLog;
   $("image-download").disabled = !m;
-  $("trajectory-download").disabled =
-    !m?.frames?.length || (!!state.live && state.step === "optimize");
   updateMode();
 }
 function renderSpectrum() {
@@ -396,9 +382,7 @@ function renderSpectrum() {
   $("spectrum-empty").hidden = !!spec;
   $("spectrum-result").hidden = !spec;
   if (!spec) return;
-  const spectrumImage = svgURL(spec.svg);
-  if ($("spectrum-image").getAttribute("src") !== spectrumImage)
-    $("spectrum-image").src = spectrumImage;
+  if (state.step === "spectrum") renderSpectrumChart(spec);
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
   $("spectrum-caption").textContent =
@@ -432,20 +416,19 @@ function renderState() {
   }
   if (state.live && state.live.source_id !== m?.id) state.live = null;
   $("molecule-select").textContent = m
-    ? `${m.base_name} · ${KIND[m.kind]}`
+    ? `${substituentLabel(m.base_name)} · ${KIND[m.kind]}`
     : "Noch keine Struktur";
-  $("molecule-select").title = m?.name || "Struktur auswählen";
+  $("molecule-select").title = substituentLabel(m?.name || "Struktur auswählen");
   $("structure-count").textContent = String(
     structureGroups(selectableMolecules()).length,
   );
-  $("active-name").textContent = m?.name || "Ihre erste Struktur";
+  $("active-name").textContent = substituentLabel(m?.name || "Ihre erste Struktur");
   $("active-meta").textContent = m
     ? `${m.formula} · ${m.atom_count} Atome`
     : "Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf ergänzen.";
   $("geometry-badge").hidden = !m;
   $("geometry-badge").textContent = m ? KIND[m.kind] : "";
   $("geometry-badge").classList.toggle("optimized", m?.kind === "minimum");
-  $("xyz-output").value = m?.xyz || "";
   $("energy").textContent = m?.properties
     ? fmt(m.properties.energy_ev, 4)
     : "—";
@@ -467,14 +450,14 @@ function renderState() {
   $("ts-summary").textContent = !ts
     ? ""
     : m.converged
-      ? `Energiebarriere: ${fmt(ts.barrier_ev * EV_KJ, 1)} kJ/mol (${fmt(ts.barrier_ev, 3)} eV) gegenüber dem Ausgangsminimum.`
+      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev * EV_KJ, 1)} kJ/mol`
       : "Übergangszustand noch nicht bestätigt.";
   $("ts-details").hidden = state.step !== "optimize" || !ts;
   $("ts-check-result").textContent = !ts
     ? ""
     : ts.connectivity?.verified
-      ? `Beide Seiten führen zu cis und trans.${ts.connectivity.endpoint_conformers_match ? "" : " Die genaue räumliche Anordnung weicht von den nachoptimierten Vergleichsstrukturen ab."} Die Barriere gilt für diesen Weg; Temperatureffekte sind nicht berücksichtigt.`
-      : "Die Prüfung ist nicht abgeschlossen. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
+      ? `Die Minimumsuche führt auf einer Seite zu cis und auf der anderen zu trans.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minima haben anders angeordnete Ringe oder Substituenten als die Minima am Anfang und Ende des dargestellten Reaktionspfads."} Die Barriere gilt für diesen Weg; Temperatureffekte sind nicht berücksichtigt.`
+      : "Die Verbindung zwischen cis und trans wurde nicht bestätigt. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
   $("ts-check-technical").textContent = !ts
     ? ""
     : [
@@ -523,8 +506,13 @@ function navigate(step) {
   state.previewIndex = null;
   renderState();
 }
-async function refresh(selected) {
+async function refresh(selected, finishCalculation = false) {
   const data = await api("session");
+  // Keep the live view intact until the complete result is available.
+  if (finishCalculation) {
+    state.live = null;
+    state.busy = false;
+  }
   state.molecules = data.molecules;
   selectMolecule(
     selected ||
@@ -538,6 +526,7 @@ async function refresh(selected) {
   return data;
 }
 let energyChart = null;
+let spectrumChart = null;
 // Keep aligned with the Matplotlib spectrum style in web/worker.py.
 const plotStyle = {
   font: { family: "Arial, Helvetica, sans-serif", size: 16 },
@@ -587,51 +576,33 @@ function selectEnergyPoint(event, _elements, chart) {
   if (index >= 0) selectPlaybackFrame(index);
 }
 function renderEnergyHistory(activeStep) {
-  let records = energyRecords();
-  const initialOnly =
-    !records.length && Number.isFinite(current()?.properties?.energy_ev);
-  if (initialOnly)
-    records = [
-      {
-        step: 0,
-        energy_ev: current().properties.energy_ev,
-        phase: "optimization",
-      },
-    ];
-  $("energy-history").hidden = state.step !== "optimize" || !records.length;
-  if (state.step !== "optimize" || !records.length) return;
-  const first = records[0],
-    last = records.at(-1);
-  const active = records.find((p) => p.step === activeStep) || last;
-  const savedPath = current()?.ts_search?.path;
+  const records = energyRecords();
+  const active = records.find((p) => p.step === activeStep) || records.at(-1);
   const path = state.busy
-    ? records.findLast((p) => p.step <= active.step && p.neb_path)?.neb_path
-    : state.playbackMode !== "optimization"
-      ? savedPath
-      : null;
-  const pathActive = state.live?.phase === "path" ? state.live : null;
-  const live =
-    state.busy &&
-    !state.replaying &&
-    state.tracking?.sourceId === state.selected &&
-    ["queued", "running"].includes(state.tracking?.status);
-  $("energy-history-state").textContent = state.replaying
-    ? "· Wiedergabe"
-    : live
-      ? "· Live"
-      : "";
-  $("energy-history-value").textContent =
-    `${state.live?.phase === "vibration-preview" ? "Optimierung · " : ""}Schritt ${active.step}`;
-  $("energy-reference").textContent =
-    `ΔE relativ zu Schritt ${first.step}: E₀ = ${fmt(first.energy_ev, 6)} eV. `;
-  if (initialOnly) {
-    $("energy-history-value").textContent = "Ausgangsstruktur";
-    $("energy-reference").textContent = "ΔE = 0 an der Ausgangsstruktur.";
-  }
-  $("energy-chart").setAttribute(
-    "aria-label",
-    `Energieverlauf, ${records.length} Schritte. Anfang ${fmt(first.energy_ev, 6)} eV, zuletzt ${fmt(last.energy_ev, 6)} eV.`,
+    ? records.findLast((p) => p.step <= (active?.step ?? Infinity) && p.neb_path)?.neb_path
+    : current()?.ts_search?.path;
+  const exploringTS = state.busy && state.tracking?.kind === "ts" &&
+    state.tracking.sourceId === state.selected;
+  const searchRecords = records.filter((p) =>
+    (exploringTS || p.phase === "optimization") && Number.isFinite(p.energy_ev),
   );
+  const pendingSearch = state.busy && ["minimum", "ts"].includes(state.tracking?.kind) &&
+    state.tracking.sourceId === state.selected;
+  const visible = state.step === "optimize" &&
+    (!!path?.length || searchRecords.length > 0 || pendingSearch);
+  $("energy-history").hidden = !visible;
+  if (!visible) return;
+  const pathActive = state.live?.phase === "path" ? state.live : null;
+  const live = state.busy && !state.replaying;
+  $("energy-history-state").textContent = live ? "· Live" : "";
+  const source = current()?.base_name?.match(/^(cis|trans)-/)?.[1];
+  const direction = source ? ` · ${source} → ${source === "cis" ? "trans" : "cis"}` : "";
+  $("energy-path-meta").textContent = path?.length
+    ? `Reaktionspfad im elektronischen Grundzustand${direction}`
+    : exploringTS ? "Übergangszustandssuche · Vorbereitung des Reaktionspfads"
+      : "Minimumsuche · Energie der Optimierungsschritte";
+  $("energy-history").setAttribute("aria-label",
+    path?.length ? "Energieprofil des Reaktionspfads" : "Energieverlauf der Suche");
   if (!energyChart) {
     energyChart = new Chart($("energy-chart"), {
       type: "line",
@@ -714,19 +685,7 @@ function renderEnergyHistory(activeStep) {
       },
     });
   }
-  const point = (p) => ({
-    x: p.step,
-    y: p.energy_ev - first.energy_ev,
-    energy: p.energy_ev,
-    phase: p.phase,
-  });
-  energyChart.data.datasets[0].data =
-    OptimizationProgress.energyPoints(records);
-  energyChart.data.datasets[1].data =
-    state.live?.phase === "vibration-preview" ? [] : [point(active)];
-  energyChart.options.scales.x.title.text = path?.length
-    ? "Weg von der Ausgangsform (0) zur anderen Form (1)"
-    : "Optimierungsschritt";
+  energyChart.options.scales.x.title.text = path?.length ? "Reaktionspfad" : exploringTS ? "Suchschritt" : "Optimierungsschritt";
   energyChart.options.scales.x.ticks.precision = path?.length ? 2 : 0;
   if (path?.length) {
     const pathPoint = (p) => ({
@@ -739,24 +698,78 @@ function renderEnergyHistory(activeStep) {
     energyChart.data.datasets[0].data = path.map(pathPoint);
     const selected =
       pathActive ||
-      (state.busy && active.neb_path
+      (state.busy && active?.neb_path
         ? path.find((p) => p.image === active.neb_image)
         : null) ||
-      (state.live?.phase !== "vibration-preview"
-        ? path.reduce((a, b) => (a.energy_ev > b.energy_ev ? a : b))
-        : null);
+      path.reduce((a, b) => (a.energy_ev > b.energy_ev ? a : b));
     energyChart.data.datasets[1].data = selected ? [pathPoint(selected)] : [];
     $("energy-reference").textContent =
-      "ΔE relativ zum Ausgangsminimum. Reaktionspfad zwischen den Minima, keine Zeitachse.";
-    $("energy-history-value").textContent = pathActive
-      ? `Struktur auf dem Reaktionspfad ${pathActive.image + 1} / ${path.length}`
-      : `Reaktionsprofil · ${path.length} Bilder`;
+      "ΔE relativ zum Ausgangsminimum · keine Zeitachse.";
     $("energy-chart").setAttribute(
       "aria-label",
       `Energieprofil des Reaktionspfads mit ${path.length} Bildern`,
     );
+  } else {
+    const reference = searchRecords[0]?.energy_ev ?? 0;
+    const point = (p) => ({
+      x: p.step, y: p.energy_ev - reference, energy: p.energy_ev,
+      phase: p.phase,
+    });
+    energyChart.data.datasets[0].data = searchRecords.map(point);
+    const selected = searchRecords.find((p) => p.step === activeStep) || searchRecords.at(-1);
+    energyChart.data.datasets[1].data = selected ? [point(selected)] : [];
+    $("energy-reference").textContent = exploringTS
+      ? "ΔE relativ zum ersten Suchschritt · noch kein Reaktionspfad."
+      : "ΔE relativ zum ersten Optimierungsschritt · keine Zeitachse.";
+    $("energy-chart").setAttribute("aria-label",
+      `Energieverlauf der Suche mit ${searchRecords.length} Schritten`);
   }
   energyChart.update("none");
+}
+function renderSpectrumChart(spec) {
+  const min = spec.energy_ev[0], max = spec.energy_ev.at(-1);
+  if (!spectrumChart) {
+    const title = (text) => ({ display: true, text, color: plotStyle.text,
+      font: plotStyle.titleFont, padding: 10 });
+    const ticks = { color: plotStyle.text, font: plotStyle.font, padding: 8,
+      maxRotation: 0, maxTicksLimit: 7 };
+    spectrumChart = new Chart($("spectrum-chart"), {
+      type: "line",
+      data: { datasets: [
+        { label: "Verbreiterte Banden", data: [], borderColor: "#165de1",
+          borderWidth: 2, pointRadius: 0, tension: 0 },
+        { label: "Elektronische Übergänge", data: [], borderColor: "#c77825",
+          borderWidth: 1.5, pointRadius: 0, spanGaps: false },
+      ] },
+      options: {
+        locale: "de-DE", color: plotStyle.text, font: plotStyle.font,
+        responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks },
+            grid: { display: false, drawTicks: false }, border: { color: plotStyle.border } },
+          wavelength: { type: "linear", position: "top", title: title("Wellenlänge / nm"),
+            afterBuildTicks: (axis) => { axis.ticks = [800, 600, 500, 400, 300, 250]
+              .map((nm) => ({ value: HC / nm }))
+              .filter((tick) => tick.value >= axis.min && tick.value <= axis.max); },
+            ticks: { ...ticks, autoSkip: false, callback: (value) => fmt(HC / value, 0) },
+            grid: { display: false, drawTicks: false }, border: { display: false } },
+          y: { title: title("Relative Absorption"), beginAtZero: true,
+            ticks: { ...ticks, maxTicksLimit: 5 },
+            grid: { color: plotStyle.grid, lineWidth: 1, drawTicks: false },
+            border: { color: plotStyle.border } },
+        },
+      },
+    });
+  }
+  spectrumChart.data.datasets[0].data = spec.energy_ev.map((x, i) => ({ x, y: spec.absorption[i] }));
+  spectrumChart.data.datasets[1].data = spec.excitations_ev.flatMap((x, i) =>
+    x < min || x > max ? [] : [{ x, y: 0 }, { x, y: spec.oscillator_strengths[i] }, { x, y: null }]);
+  for (const id of ["x", "wavelength"]) {
+    spectrumChart.options.scales[id].min = min;
+    spectrumChart.options.scales[id].max = max;
+  }
+  spectrumChart.update("none");
 }
 function collectProgress(job) {
   if (!["minimum", "ts"].includes(job.kind)) return;
@@ -764,6 +777,7 @@ function collectProgress(job) {
   if (state.tracking?.jobId !== job.id)
     state.tracking = {
       jobId: job.id,
+      kind: job.kind,
       records: [],
       sourceId: state.selected,
       visibleSince: null,
@@ -820,9 +834,6 @@ function applyLiveGeometry() {
   renderPlaybackControls();
   $("properties-grid").style.visibility = "visible";
   $("properties-context").style.visibility = "visible";
-  $("property-help").style.visibility = "visible";
-  for (const id of ["xyz-download", "xyz-copy", "trajectory-download"])
-    $(id).disabled = true;
   $("image-download").disabled = !current();
   const in3D = state.mode === "3d";
   const displayed = in3D
@@ -831,8 +842,7 @@ function applyLiveGeometry() {
           progress.positions,
           current().geometry_definition,
         ),
-        energy_ev:
-          progress.phase === "vibration-preview" ? null : progress.energy_ev,
+        energy_ev: progress.energy_ev,
       }
     : current().properties;
   for (const [id, key, digits] of [
@@ -847,17 +857,13 @@ function applyLiveGeometry() {
   $("properties-context").hidden = false;
   $("properties-context").textContent = !in3D
     ? "Werte der ausgewählten Struktur"
-    : progress.phase === "vibration-preview"
-      ? "Werte der gezeigten Bewegung · Für diese verformten Strukturen wurde keine Energie berechnet."
-      : "Werte der aktuell gezeigten Struktur";
+    : "Werte der aktuell gezeigten Struktur";
   $("geometry-badge").textContent = in3D
     ? Number.isInteger(progress.neb_image)
       ? `${progress.replay ? "Wiedergabe" : "Live"} · Struktur auf dem Reaktionspfad ${progress.neb_image + 1}`
-      : progress.phase === "vibration-preview"
-        ? "Wiedergabe · Bewegung am Übergangszustand"
-        : progress.replay
-          ? "Wiedergabe · Zwischenschritt"
-          : "Live · Zwischenschritt"
+      : progress.replay
+        ? "Wiedergabe · Zwischenschritt"
+        : "Live · Zwischenschritt"
     : "Ausgangsstruktur · 2D";
   $("geometry-badge").classList.remove("optimized");
   if (
@@ -871,11 +877,11 @@ function applyLiveGeometry() {
 }
 function displayJob(job) {
   $("job-status").hidden =
-    job.status === "complete" ||
+    (job.status === "complete" && !state.busy) ||
     (state.step === "build" && job.kind !== "template");
   if (job.kind !== "template") state.hasCalculationLog = true;
   $("calculation-log").hidden =
-    state.step === "build" || !state.hasCalculationLog;
+    state.step !== "spectrum" || !state.hasCalculationLog;
   $("job-status").classList.toggle(
     "running",
     ["queued", "running"].includes(job.status),
@@ -950,10 +956,8 @@ async function monitor(jobId) {
       if (!["queued", "running"].includes(job.status)) {
         if (job.status === "complete" && ["minimum", "ts"].includes(job.kind))
           await replayShortRun();
-        state.live = null;
-        state.busy = false;
+        await refresh(job.result?.molecule?.id, true);
         displayJob(job);
-        await refresh(job.result?.molecule?.id);
         if (job.error) error(job.error);
         if (job.result?.molecule?.converged === false)
           error(
@@ -998,6 +1002,7 @@ async function startJob(payload) {
   if (["minimum", "ts"].includes(payload.kind)) {
     state.tracking = {
       sourceId: state.selected,
+      kind: payload.kind,
       status: "queued",
       records: [],
     };
@@ -1056,10 +1061,6 @@ $("calculate-spectrum").onclick = handle(() =>
 $("skip-replay").onclick = () => {
   state.replaying = false;
 };
-$("playback-mode").onchange = () => {
-  state.playbackMode = $("playback-mode").value;
-  showResult();
-};
 $("cancel").onclick = handle(async () => {
   if (state.job) await api(`jobs/${state.job}`, { method: "DELETE" });
 });
@@ -1076,7 +1077,7 @@ function structureGroups(molecules, query = "") {
         : `${configuration} · ${KIND[m.kind]}`;
     groups.get(name).entries.push({ molecule: m, label });
   }
-  const search = query.trim().toLocaleLowerCase("de-DE");
+  const search = query.normalize("NFKC").trim().toLocaleLowerCase("de-DE");
   return [...groups.values()]
     .map((group) => {
       const totals = new Map(),
@@ -1094,6 +1095,7 @@ function structureGroups(molecules, query = "") {
         })
         .filter((entry) =>
           `${group.name} ${group.formula} ${entry.label}`
+            .normalize("NFKC")
             .toLocaleLowerCase("de-DE")
             .includes(search),
         );
@@ -1108,7 +1110,7 @@ function renderStructureOptions() {
     const section = document.createElement("section");
     section.className = "structure-group";
     const heading = document.createElement("h3");
-    heading.textContent = group.name;
+    heading.textContent = substituentLabel(group.name);
     const formula = document.createElement("p");
     formula.className = "structure-group-formula";
     formula.textContent = group.formula;
@@ -1122,7 +1124,7 @@ function renderStructureOptions() {
       if (m.id === state.selected) button.setAttribute("aria-current", "true");
       const name = document.createElement("strong");
       name.textContent = label;
-      button.setAttribute("aria-label", `${group.name} · ${label}`);
+      button.setAttribute("aria-label", `${substituentLabel(group.name)} · ${label}`);
       button.append(name);
       button.onclick = () => {
         if (state.busy) return;
@@ -1136,7 +1138,7 @@ function renderStructureOptions() {
       remove.className = "structure-delete";
       remove.type = "button";
       remove.title = "Struktur löschen";
-      remove.setAttribute("aria-label", `${group.name} · ${label} löschen`);
+      remove.setAttribute("aria-label", `${substituentLabel(group.name)} · ${label} löschen`);
       remove.innerHTML =
         '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg>';
       remove.disabled = state.busy;
@@ -1231,7 +1233,7 @@ $("energy-chart").onkeydown = (event) => {
   event.preventDefault();
   selectPlaybackFrame(Math.max(0, Math.min(index, data.frames.length - 1)));
 };
-$("play").onclick = () => {
+$("play").onclick = $("energy-play").onclick = () => {
   if (animation) {
     stopAnimation();
     return;
@@ -1242,37 +1244,14 @@ $("play").onclick = () => {
   if (index >= count - 1) index = 0;
   showFrame(index);
   if (index >= count - 1) return;
-  $("play").textContent = "Pause";
-  $("play").setAttribute("aria-label", "Wiedergabe pausieren");
+  for (const id of ["play", "energy-play"]) {
+    $(id).textContent = "Pause";
+    $(id).setAttribute("aria-label", "Wiedergabe pausieren");
+  }
   animation = setInterval(() => {
     showFrame(++index);
     if (index >= count - 1) stopAnimation();
   }, 150);
-};
-$("xyz-download").onclick = () =>
-  download(current().xyz, filename("xyz"), "chemical/x-xyz");
-$("xyz-copy").onclick = handle(async () => {
-  await navigator.clipboard.writeText(current().xyz);
-  toast("Koordinaten kopiert");
-});
-$("trajectory-download").onclick = () => {
-  const m = current(),
-    symbols = m.xyz
-      .trim()
-      .split("\n")
-      .slice(2)
-      .map((line) => line.trim().split(/\s+/)[0]);
-  const xyz = playbackData()
-    .frames.map(
-      (frame, n) =>
-        `${symbols.length}\nFrame ${n + 1}\n` +
-        symbols
-          .map((s, i) => `${s} ${frame.slice(i * 3, i * 3 + 3).join(" ")}`)
-          .join("\n") +
-        "\n",
-    )
-    .join("");
-  download(xyz, filename("trajectory.xyz"), "chemical/x-xyz");
 };
 async function svgToPNG(svg, name) {
   const img = new Image();
@@ -1291,6 +1270,35 @@ async function svgToPNG(svg, name) {
   if (!blob) throw new Error("Bild konnte nicht gespeichert werden.");
   download(blob, name);
 }
+$("energy-png").onclick = handle(async () => {
+  if (!energyChart || !current()) return;
+  stopAnimation();
+  // Capture the visible plot and its reference before asynchronous encoding.
+  const source = energyChart.canvas;
+  const scale = source.width / energyChart.width;
+  const header = Math.round(38 * scale);
+  const footer = Math.round(34 * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = source.width;
+  canvas.height = source.height + header + footer;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#192d43";
+  ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
+  ctx.fillText(substituentLabel(current().name), 12 * scale, 25 * scale,
+    canvas.width - 24 * scale);
+  ctx.drawImage(source, 0, header);
+  ctx.fillStyle = plotStyle.text;
+  ctx.font = `${12 * scale}px Arial, Helvetica, sans-serif`;
+  ctx.fillText($("energy-reference").textContent, 12 * scale,
+    header + source.height + 22 * scale, canvas.width - 24 * scale);
+  const isPath = energyChart.data.datasets[0].data.some((p) => p.phase === "path");
+  const name = filename(isPath ? "reaction-path.png" : "optimization-energy.png");
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) throw new Error("Energieverlauf konnte nicht gespeichert werden.");
+  download(blob, name);
+});
 $("image-download").onclick = handle(async () => {
   if (state.mode === "2d") await svgToPNG(current().svg, filename("png"));
   else {
@@ -1304,11 +1312,30 @@ $("image-download").onclick = handle(async () => {
     );
   }
 });
-$("spectrum-svg").onclick = () =>
-  download(current().spectrum.svg, filename("spectrum.svg"), "image/svg+xml");
-$("spectrum-png").onclick = handle(() =>
-  svgToPNG(current().spectrum.svg, filename("spectrum.png")),
-);
+$("spectrum-png").onclick = handle(async () => {
+  if (!spectrumChart || !current()?.spectrum) return;
+  const name = filename("spectrum.png");
+  const source = spectrumChart.canvas;
+  const scale = source.width / spectrumChart.width;
+  const header = Math.round(38 * scale), footer = Math.round(34 * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = source.width;
+  canvas.height = source.height + header + footer;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#192d43";
+  ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
+  ctx.fillText(substituentLabel(current().name), 12 * scale, 25 * scale, canvas.width - 24 * scale);
+  ctx.drawImage(source, 0, header);
+  ctx.fillStyle = plotStyle.text;
+  ctx.font = `${12 * scale}px Arial, Helvetica, sans-serif`;
+  ctx.fillText("Relative Absorption in willkürlichen Einheiten · INDO/S–CIS", 12 * scale,
+    header + source.height + 22 * scale, canvas.width - 24 * scale);
+  const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+  if (!blob) throw new Error("Spektrum konnte nicht gespeichert werden.");
+  download(blob, name);
+});
 $("spectrum-csv").onclick = () => {
   const s = current().spectrum;
   download(

@@ -542,11 +542,6 @@ details[open] summary {
 .result-details details + details {
   border-top: 1px solid var(--line);
 }
-.result-details textarea {
-  width: calc(100% - 48px);
-  margin: 0 24px;
-  height: 150px;
-}
 .export-row {
   display: flex;
   gap: 22px;
@@ -669,14 +664,42 @@ details[open] summary {
   color: var(--muted);
   font-variant-numeric: tabular-nums;
 }
+.energy-heading h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.energy-heading span {
+  font-size: 13px;
+  font-weight: 400;
+}
+#energy-play {
+  margin-left: auto;
+}
+.energy-toolbar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+.energy-notes {
+  flex: 1 1 280px;
+}
+#energy-png {
+  margin-left: auto;
+  flex-shrink: 0;
+}
 .energy-canvas {
   position: relative;
   height: 210px;
-  margin-top: 12px;
+  margin-top: 6px;
+  margin-bottom: 8px;
 }
-.energy-history .note {
-  margin: 6px 0;
-  font-size: 11px;
+.energy-history .energy-notes .note {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .alert {
@@ -691,17 +714,26 @@ details[open] summary {
 .spectrum-empty {
   height: 250px;
 }
-#spectrum-image {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  padding: 16px 24px 0;
-  display: block;
+.spectrum-plot {
+  padding: 16px 24px 8px;
+  border-top: 1px solid var(--line);
 }
-.spectrum-caption {
-  padding: 0 27px;
-  color: var(--muted);
-  font-size: 14px;
+.spectrum-canvas {
+  position: relative;
+  height: 300px;
+  margin-top: 6px;
+}
+.spectrum-notes {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 280px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+#spectrum-png {
+  margin-left: auto;
+  flex-shrink: 0;
 }
 .table-wrap {
   overflow: auto;
@@ -1083,18 +1115,13 @@ select {
   font-variant-numeric: tabular-nums;
 }
 
-.view-mode-select {
-  width: auto;
-  max-width: 100%;
-  font-size: 12px;
-}
-
 .ts-summary {
   margin: 12px 24px 20px;
   padding: 12px 16px;
-  background: #eef4ff;
-  color: #37526e;
-  font-size: 13px;
+  background: #f1f5fb;
+  color: #26415d;
+  font-size: 15px;
+  font-weight: 600;
   line-height: 1.6;
   border-radius: 6px;
 }
@@ -1102,19 +1129,16 @@ select {
 #properties-context {
   margin: 18px 27px 10px;
 }
-#property-help,
 #ts-details {
   margin: 0 27px 20px;
 }
 #ts-details p {
   margin-top: 12px;
 }
-.view-mode-select {
-  max-width: 100%;
-}
 
 /* Match the heading controls across the structure and optimization steps. */
-#play {
+#play,
+#energy-play {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1129,14 +1153,16 @@ select {
   font-size: 12px;
   font-weight: 600;
 }
-#play::before {
+#play::before,
+#energy-play::before {
   content: "";
   width: 12px;
   height: 12px;
   background: currentColor;
   clip-path: polygon(15% 0, 100% 50%, 15% 100%);
 }
-#play[aria-label="Wiedergabe pausieren"]::before {
+#play[aria-label="Wiedergabe pausieren"]::before,
+#energy-play[aria-label="Wiedergabe pausieren"]::before {
   clip-path: none;
   background: linear-gradient(
     to right,
@@ -1206,25 +1232,20 @@ select {
   background: #fff1f0;
 }
 
-/* Reserve playback controls before and during calculations. */
-
-.view-mode-select {
-  width: 180px;
-}
 #play:disabled,
-.view-mode-select:disabled {
+#energy-play:disabled {
   opacity: 0.5;
   cursor: default;
 }
-
-.plot-controls {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
+.energy-path-meta {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
 }
 .energy-heading {
   flex-wrap: wrap;
+  align-items: center;
 }
 #energy-chart[aria-disabled="false"] {
   cursor: pointer;
@@ -1232,9 +1253,6 @@ select {
 #energy-chart:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
-}
-#plot-hint {
-  margin-bottom: 8px;
 }
 
 #substituents {
@@ -1266,7 +1284,6 @@ select {
   font-size: 13px;
   color: var(--muted);
 }
-#property-help > summary,
 #ts-details > summary {
   padding-left: 0;
   padding-right: 0;

@@ -7,14 +7,12 @@ verändern. Dadurch ändern sich auch ihre chemischen und physikalischen Eigensc
 Kippschalter vorstellen – sie werden jedoch nicht mechanisch betätigt, sondern durch gezielte Lichtbestrahlung zwischen
 zwei Zuständen umgeschaltet.
 
-Solche Systeme sind nicht nur faszinierend, sondern auch technologisch relevant.
-Sie werden zum Beispiel für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren Eigenschaften
+Solche Systeme werden zum Beispiel für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren Eigenschaften
 sich durch Bestrahlung verändern lassen.
 
-In diesem Computerexperiment untersuchen Sie exemplarisch einige Photoschalter und berechnen deren Absorptionsspektren
-im sichtbaren und ultravioletten Bereich des elektromagnetischen Spektrums.
-So erhalten Sie einen ersten Einblick, wie Methoden der theoretischen Chemie zur strukturellen und spektroskopischen
-Analyse lichtinduzierter Schaltprozesse eingesetzt werden können.
+In diesem Computerexperiment vergleichen Sie die cis- und trans-Formen von Azobenzol und substituierten Azobenzolen.
+Sie berechnen ihre Strukturen, elektronische Energieunterschiede und Absorptionsspektren im ultravioletten
+und sichtbaren Bereich (UV/Vis). Dabei untersuchen Sie, wie Substituenten die Geometrie und die Absorption verändern.
 
 :::{important} Computerexperiment
 Dieser Versuch wird ausschließlich am Computer durchgeführt.

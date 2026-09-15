@@ -61,14 +61,13 @@ globalThis.OptimizationProgress = {
         records: points,
       };
     }
-    const vibration = molecule?.trajectory_kind === "vibration";
-    if (vibration && (mode === "vibration" || !records.length))
-      return { kind: "vibration", frames: molecule.frames || [], records: [] };
     return {
       kind: "optimization",
       frames: records.length
         ? records.map((p) => p.positions)
-        : molecule?.frames || [],
+        : molecule?.trajectory_kind === "vibration"
+          ? []
+          : molecule?.frames || [],
       records,
     };
   },

@@ -1,6 +1,6 @@
 # Webapp starten
 
-Am Versuchstag erhalten Sie die Adresse der Webapp von Ihren Betreuung.
+Am Versuchstag erhalten Sie die Adresse der Webapp von Ihrer Betreuung.
 Öffnen Sie diese Adresse im Browser und melden Sie sich gegebenenfalls mit dem
 bereitgestellten Benutzerkonto an.
 
@@ -15,7 +15,7 @@ Die Webapp führt Sie durch drei Schritte:
 Die Aufgaben und Hinweise finden Sie direkt in der Webapp unter **Versuch & Aufgaben**.
 Schritt 1 bietet nur Startstrukturen zur Auswahl; in Schritt 2 können Sie auch Minima und Übergangszustände auswählen.
 Unter **Was passiert im Hintergrund?** finden Sie in jedem Schritt eine kurze Erklärung der Rechenmethode.
-Laden Sie Koordinaten, Bilder und Spektren für Ihr Protokoll herunter. Die Ergebnisse
+Laden Sie Bilder und Spektren für Ihr Protokoll herunter. Die Ergebnisse
 bleiben bis zum Neustart des Servers oder bis zu 24 Stunden Inaktivität erhalten.
 
 ## Lokal auf dem eigenen Computer

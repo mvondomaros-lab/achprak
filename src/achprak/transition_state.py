@@ -69,6 +69,79 @@ class OptTS:
         self.iterations_used = 0
 
     def run(self, steps=1500, observer=None):
+        """Try at most three deterministic seeds, with ``steps`` per attempt.
+
+        Retain the original route first. A crowded endpoint can relax back to
+        the source isomer, while substituent conformations can stall one sense
+        of rotation. Alternative seeds still require the full unconstrained
+        saddle, frequency, and connectivity validation.
+        """
+        source = self.atoms.copy()
+        self.attempts = []
+        self.step_limit_per_attempt = steps
+        frames = []
+        seeds = [(False, 120.0, 250)]
+        index = 0
+        while index < len(seeds):
+            reverse, angle, downhill_steps = seeds[index]
+            self.atoms = source.copy()
+            offset = len(frames)
+
+            def observe(frame, step, phase):
+                frame.info["ts_attempt"] = index + 1
+                if observer is not None:
+                    observer(frame, offset + step, phase)
+
+            ok = self._run_path(
+                steps,
+                observe,
+                reverse=reverse,
+                seed_angle=angle,
+                downhill_steps=downhill_steps,
+            )
+            self.attempts.append(
+                {
+                    "reverse_rotation": reverse,
+                    "seed_angle_deg": angle,
+                    "iterations": self.iterations_used,
+                    "converged": bool(ok),
+                    "failure_reason": self.failure_reason,
+                }
+            )
+            frames.extend(self.search_traj)
+            if ok:
+                break
+            if index == 0:
+                reversed_seed = (True, 120.0, 250)
+                # A more open CNN geometry avoids crowded cis seeds. Use a
+                # short downhill warmup before the internal-coordinate minimum
+                # optimizer so soft substituent torsions do not use its budget.
+                open_seed = (False, 135.0, 50)
+                changed_bonds = self.connectivity is not None and any(
+                    not branch["bonds_preserved"]
+                    for branch in self.connectivity["branches"]
+                )
+                seeds.extend(
+                    [open_seed, reversed_seed]
+                    if self.endpoint is None or changed_bonds
+                    else [reversed_seed, open_seed]
+                )
+            index += 1
+        self.iterations_used = sum(a["iterations"] for a in self.attempts)
+        self.search_traj = frames
+        if not ok:
+            self.traj = list(frames)
+        return ok
+
+    def _run_path(
+        self,
+        steps,
+        observer,
+        *,
+        reverse=False,
+        seed_angle=120.0,
+        downhill_steps=250,
+    ):
         self.traj, self.search_traj = [], []
         self.validation = self.failure_reason = self.barrier_ev = None
         self.search_converged = False
@@ -135,6 +208,13 @@ class OptTS:
         target = 180.0 if source_cis else (0.0 if start < 180 else 360.0)
         images = [initial]
         quarter = 90.0 if start < 180 else 270.0
+        if reverse:
+            if source_cis:
+                quarter = -90.0 if start < 180 else 450.0
+                target = -180.0 if start < 180 else 540.0
+            else:
+                quarter = 270.0 if start < 180 else 90.0
+                target = 360.0 if start < 180 else 0.0
         angles = np.r_[
             np.linspace(start, quarter, 7)[1:], np.linspace(quarter, target, 7)[1:]
         ]
@@ -148,8 +228,8 @@ class OptTS:
                 FixInternals(
                     dihedrals_deg=[[float(angle), self.indices]],
                     angles_deg=[
-                        [120.0, self.indices[:3]],
-                        [120.0, self.indices[1:]],
+                        [seed_angle, self.indices[:3]],
+                        [seed_angle, self.indices[1:]],
                     ],
                 )
             )
@@ -348,7 +428,7 @@ class OptTS:
             optimize(
                 BFGS(downhill, logfile="-", maxstep=0.08),
                 0.02,
-                250,
+                downhill_steps,
                 lambda: publish(downhill, "connectivity"),
             )
             ok = optimize(

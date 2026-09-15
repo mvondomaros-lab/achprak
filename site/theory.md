@@ -30,7 +30,9 @@ Die Strukturformel des Azobenzols.
 
 Organische Moleküle besitzen häufig ein Grundgerüst aus Kohlenstoffatomen. Zur besseren Übersicht – und um Zeit beim
 Zeichnen zu sparen – lässt man in der Skelettformel die Kohlenstoffatome sowie die daran gebundenen Wasserstoffatome
-weg.
+weg. Kohlenstoffatome liegen dann an den unbeschrifteten Ecken und Enden
+der gezeichneten Bindungen; die gebundenen Wasserstoffatome werden so ergänzt,
+dass Kohlenstoff insgesamt vier Bindungen eingeht.
 ::::
 
 Azobenzol ist selbst farbig; als Feststoff bildet es typischerweise orange bis orange-rote Kristalle
@@ -82,7 +84,7 @@ Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* o
 2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht
 die Verbindung 2,3′-Dichlorazobenzol.
 
-Mit diesen Regeln können Sie alle im Versuch vorkommenden Moleküle eindeutig benennen. Überprüfen Sie zur Übung, ob es
+Mit der gezeigten Nummerierung können Sie angeben, an welchen Positionen die Substituenten sitzen. Überprüfen Sie zur Übung, ob es
 sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
 handelt:
 
@@ -113,7 +115,8 @@ Atome unterscheiden, bezeichnet man als Isomere.
 *Cis*-Azobenzol.
 :::
 
-Die *trans*-Form ist energetisch stabiler und wird unter normalen Bedingungen bevorzugt.
+Bei unsubstituiertem Azobenzol liegt die *trans*-Form energetisch tiefer als die *cis*-Form.
+Ohne Bestrahlung überwiegt sie im thermischen Gleichgewicht bei Raumtemperatur.
 Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
 Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
 
@@ -133,8 +136,8 @@ Die lichtinduzierte Isomerisierung des Azobenzols.
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
 *cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
 Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
-Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Durch Rotation und Bewegung des Moleküls –
-ähnlich wie in einem Computerspiel – entsteht ein umfassenderes räumliches Bild.
+Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
+Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
 
 :::{figure} ../figures/commons/Azobenzene-trans-3D-balls.png
 :width: 512px
@@ -168,8 +171,9 @@ $$
 hc \approx 1{,}9864 \times 10^{-25}\;\text{J\ m} \;\;\approx\;\; 1239{,}8\;\text{eV\ nm}.
 $$
 
-In der Atom- und Molekülphysik verwendet man häufig die Einheiten Elektronenvolt (eV) und Nanometer (nm), da sich damit
-deutlich handlichere Zahlenwerte ergeben als mit Joule bzw. Meter.
+Ein Elektronenvolt (eV) ist eine Energieeinheit: 1 eV ≈ 1,602 × 10⁻¹⁹ J.
+Ein Nanometer (nm) ist ein Milliardstel Meter: 1 nm = 10⁻⁹ m. Mit diesen Einheiten
+lassen sich die hier betrachteten Photonenenergien und Wellenlängen ohne sehr kleine Dezimalzahlen angeben.
 
 :::{figure} ../figures/commons/Spectre.svg
 :width: 800px
@@ -219,8 +223,8 @@ Die Webapp bildet diese Effekte vereinfacht ab: Sie ersetzt jede berechnete Lini
 vorgegebener Breite und addiert die Beiträge. Die Breite selbst wird nicht aus Molekülbewegungen berechnet.
 
 Es entsteht ein Bandenspektrum.
-Aus der Lage und Form dieser Banden lassen sich wichtige Informationen über den elektronischen Aufbau eines Moleküls
-gewinnen.
+Die Bandenlagen zeigen, welche Anregungsenergien zur Absorption beitragen.
+Ihre relativen Höhen hängen von den Übergangsstärken und der Überlagerung benachbarter Banden ab.
 
 :::{figure} ../figures/outputs/uvvis-spectrum.png
 :width: 600px
@@ -254,8 +258,7 @@ entscheidend für das Verständnis des Energiehaushalts unserer Erde – und dam
 
 Eines der wichtigsten Beispiele ist das Absorptionsspektrum unserer Atmosphäre. Die folgende Darstellung zeigt die
 relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
-Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Für den Energiehaushalt der Erde
-sind verschiedene Wellenlängenbereiche wichtig.
+Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Sonnenlicht und die Wärmestrahlung der Erde liegen dabei in unterschiedlichen Wellenlängenbereichen.
 
 :::{figure} ../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg
 :width: 1024px
@@ -306,15 +309,15 @@ der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können
 benötigen aber meist mehr Rechenzeit.
 
 Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energien und Spektren können deshalb
-merklich vom Experiment abweichen. Vergleichen Sie bevorzugt verwandte Moleküle unter gleichen
-Rechenbedingungen und formulieren Sie die Ergebnisse als **Vorhersagen des verwendeten Modells**.
+merklich vom Experiment abweichen. Vergleichen Sie beispielsweise die Absorptionsmaxima einer Reihe von Azobenzolen mit unterschiedlichen
+Substituenten. Formulieren Sie die berechneten Verschiebungen als **Vorhersagen des verwendeten Modells**.
 Auch ein berechneter Trend kann falsch sein; er ist eine überprüfbare Hypothese, kein gesichertes Messergebnis.
 ::::
 
 ## Atomkoordinaten
 
 Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diesen Bauplan beispielsweise
-als SMILES-Text verarbeiten. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
+als SMILES-Text verarbeiten, eine Zeichenfolge, die Atome, Bindungen und gegebenenfalls Stereochemie beschreibt. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
 benötigt: die Positionen $(x, y, z)$ aller Atome.
 
 Das Strukturerstellungswerkzeug erzeugt für Sie solche atomaren Koordinaten im sogenannten XYZ-Format.
@@ -358,8 +361,9 @@ Die Werte sind häufig groß und negativ. Ihr Nullpunkt hängt vom Rechenmodell 
 beweist weder die Stabilität eines Moleküls noch, dass eine bestimmte Reaktion ablaufen wird.
 
 Für den Versuch sind **Energiedifferenzen** zwischen Strukturen mit gleicher Zusammensetzung entscheidend.
-Vergleichen Sie sie nur bei gleicher Rechenmethode und gleichen Einstellungen. Die niedrigere Energie beschreibt
-die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
+Vergleichen Sie beispielsweise cis und trans desselben Azobenzolderivats.
+Die Gesamtenergien unterschiedlich substituierter Moleküle lassen sich so nicht nach Stabilität ordnen.
+Die niedrigere Energie beschreibt die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
 Beiträge von Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
 
 Die Energieunterschiede zwischen zwei Konfigurationen lassen sich einfach berechnen.  
@@ -371,7 +375,8 @@ $$
 \Delta E_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933{,}00\ \text{eV} - (-932{,}48\ \text{eV}) = -0{,}52\ \text{eV}.
 $$
 
-Für das Protokoll berichten Sie solche Energiedifferenzen zwischen Konfigurationen in kJ/mol:
+1 eV pro Molekül entspricht etwa 96,49 kJ/mol. Für das Protokoll berichten Sie solche
+Energiedifferenzen zwischen Konfigurationen in kJ/mol:
 
 $$
 -0{,}52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
@@ -386,7 +391,9 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
-Im Falle des Azobenzols sind dies die Strukturen, die den *cis*- und *trans*-Konfigurationen zugeordnet werden können.
+Bei Azobenzol und seinen Derivaten gibt es Minima sowohl in der *cis*- als auch in der *trans*-Konfiguration.
+Innerhalb einer Konfiguration können weitere Minima auftreten, etwa mit anders verdrehten Substituenten.
+Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt niedrigsten Energie.
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumsstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
@@ -437,7 +444,7 @@ $\Delta E^\ddagger$ identisch. In der Übergangszustandstheorie wird die Geschwi
 Aktivierungsenergie $\Delta G^\ddagger$ beschrieben; darin gehen auch thermische Beiträge und Entropie ein.
 Diese Größen berechnet die Webapp nicht. Siehe die [IUPAC-Definition der Aktivierungsenergie](https://goldbook.iupac.org/terms/view/A00102).
 
-Die Rechnung verfolgt außerdem nur eine elektronische Energielandschaft. Bei Azobenzolen können
+Die Rechnung untersucht außerdem nur den elektronischen Grundzustand. Bei Azobenzolen können
 Wechsel zwischen Zuständen mit unterschiedlicher Elektronenspin-Anordnung (Singulett und Triplett)
 zur thermischen Isomerisierung beitragen. Solche Zustandswechsel werden hier nicht berechnet.
 Auch eine numerisch bestätigte Übergangsstruktur belegt deshalb nicht den experimentell maßgeblichen
@@ -461,7 +468,8 @@ Vereinfacht läuft das Umschalten so ab:
    oder wieder in der *trans*-Form enden. Nicht jedes absorbierte Photon bewirkt also einen Formwechsel.
 
 Auch ohne Licht kann *cis*-Azobenzol thermisch zur *trans*-Form zurückkehren. Wie schnell dies geschieht,
-hängt unter anderem von Temperatur, Substituenten und Umgebung ab. $RT$ ist eine thermische Energieskala,
+hängt unter anderem von Temperatur, Substituenten und Umgebung ab. $RT$ ist eine thermische Energieskala
+pro Mol; $R$ ist die Gaskonstante und $T$ die absolute Temperatur in Kelvin. Sie ist
 keine harte Obergrenze: Eine Barriere oberhalb von $RT$ schließt eine Reaktion nicht aus.
 Die Möglichkeit einer thermischen Rückreaktion gehört auch zur [IUPAC-Beschreibung der Photochromie](https://www.old.goldbook.iupac.org/html/P/P04589.html).
 

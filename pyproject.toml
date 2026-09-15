@@ -54,7 +54,7 @@ jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }
 [tool.pixi.feature.dev.tasks]
 site = { cmd = "myst start", cwd = "site" }
 test-web = "pytest tests -q"
-test-ts = "ACHPRAK_TS_TESTS=1 pytest tests -m ts_optimization -q"
+test-ts = "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 ACHPRAK_TS_TESTS=1 pytest tests -m ts_optimization -q"
 test-science = "ACHPRAK_SCIENCE_TESTS=1 pytest tests/test_science.py -q"
 
 [tool.pytest.ini_options]

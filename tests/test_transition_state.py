@@ -67,3 +67,50 @@ def test_bond_graph_does_not_replace_the_energy_calculator():
     assert OptTS.bond_graph(atoms) == {(0, 1, 1.0)}
     assert atoms.calc is calculator
     assert atoms.get_potential_energy() == -1.0
+
+
+@pytest.mark.parametrize("failure_kind", ["endpoint", "path", "connectivity"])
+@pytest.mark.parametrize("succeed_on", [1, 2, None])
+def test_seed_retries_restore_source_and_account_for_all_work(
+    monkeypatch, failure_kind, succeed_on
+):
+    from achprak.transition_state import OptTS
+
+    search = object.__new__(OptTS)
+    search.atoms = Atoms("HH", positions=[[0, 0, 0], [0, 0, 0.74]])
+    source = search.atoms.positions.copy()
+    seeds, observed = [], []
+
+    def attempt(self, steps, observer, **seed):
+        np.testing.assert_array_equal(self.atoms.positions, source)
+        assert steps == 7
+        seeds.append(seed)
+        self.atoms.positions += len(seeds)
+        self.search_traj = [self.atoms.copy()]
+        self.traj = [self.atoms.copy()]
+        self.iterations_used = len(seeds)
+        self.endpoint = self.atoms.copy() if failure_kind != "endpoint" else None
+        self.connectivity = (
+            {"branches": [{"bonds_preserved": False}]}
+            if failure_kind == "connectivity"
+            else None
+        )
+        ok = len(seeds) == succeed_on
+        self.failure_reason = None if ok else "Test failure"
+        observer(self.atoms, 0, "endpoint")
+        return ok
+
+    monkeypatch.setattr(OptTS, "_run_path", attempt)
+    assert search.run(
+        steps=7, observer=lambda a, i, p: observed.append((i, a.info["ts_attempt"]))
+    ) == (succeed_on is not None)
+    count = succeed_on or 3
+    assert len(search.attempts) == count
+    assert search.iterations_used == sum(range(1, count + 1))
+    assert observed == list(enumerate(range(1, count + 1)))
+    assert len(search.search_traj) == count
+    if count > 1:
+        assert seeds[1]["reverse"] == (failure_kind == "path")
+        assert seeds[1]["seed_angle"] == (120 if failure_kind == "path" else 135)
+    if succeed_on is None:
+        assert len(search.traj) == count
