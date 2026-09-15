@@ -604,12 +604,11 @@ function renderEnergyHistory(activeStep) {
       ? "· Live"
       : "";
   $("energy-history-value").textContent =
-    `${state.live?.phase === "vibration-preview" ? "Optimierung · " : ""}Schritt ${active.step} · ${fmt(active.energy_ev, 4)} eV`;
+    `${state.live?.phase === "vibration-preview" ? "Optimierung · " : ""}Schritt ${active.step}`;
   $("energy-reference").textContent =
     `ΔE relativ zu Schritt ${first.step}: E₀ = ${fmt(first.energy_ev, 6)} eV. `;
   if (initialOnly) {
-    $("energy-history-value").textContent =
-      `Ausgangsenergie: ${fmt(first.energy_ev, 4)} eV`;
+    $("energy-history-value").textContent = "Ausgangsstruktur";
     $("energy-reference").textContent = "ΔE = 0 an der Ausgangsstruktur.";
   }
   $("energy-chart").setAttribute(
@@ -712,7 +711,7 @@ function renderEnergyHistory(activeStep) {
     $("energy-reference").textContent =
       "ΔE relativ zum Ausgangsminimum. Reaktionspfad zwischen den Minima, keine Zeitachse.";
     $("energy-history-value").textContent = pathActive
-      ? `Struktur auf dem Reaktionspfad ${pathActive.image + 1} / ${path.length} · ${fmt(pathActive.energy_ev, 4)} eV`
+      ? `Struktur auf dem Reaktionspfad ${pathActive.image + 1} / ${path.length}`
       : `Reaktionsprofil · ${path.length} Bilder`;
     $("energy-chart").setAttribute(
       "aria-label",

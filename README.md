@@ -59,8 +59,8 @@ available, including those calculated between polls.
 
 The chart distinguishes optimization steps from the reaction path. Clicking a
 point selects its geometry. Arrow keys, Home and End select frames when the
-chart has focus. **Abspielen / Pause** is in the viewer toolbar; the playback
-mode selector is beside the chart. Playback resumes at the selected frame and
+chart has focus. **Abspielen / Pause** is at the top right of the structure
+heading; the playback mode selector is beside the chart. Playback resumes at the selected frame and
 stops at the end. Starting playback at the last frame restarts it.
 For a transition state, students can choose the reaction path, search history,
 or the illustrated unstable mode.

@@ -189,6 +189,12 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
           querySelector() {
             return {};
           },
+          prepend(child) {
+            child.parentElement = this;
+          },
+          append(child) {
+            child.parentElement = this;
+          },
         });
       return elements.get(id);
     },
@@ -642,7 +648,7 @@ test("known starting energy is shown before progress without creating playback f
   assert.equal(elements.get("energy-history").hidden, false);
   assert.match(
     elements.get("energy-history-value").textContent,
-    /Ausgangsenergie: -10/,
+    /Ausgangsstruktur/,
   );
   assert.equal(chart.data.datasets[1].data[0].y, 0);
   assert.equal(context.energyRecords().length, 0);
@@ -843,6 +849,12 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
           style: {},
           classList: { toggle() {} },
           setAttribute() {},
+          prepend(child) {
+            child.parentElement = this;
+          },
+          append(child) {
+            child.parentElement = this;
+          },
         });
       return elements.get(id);
     },

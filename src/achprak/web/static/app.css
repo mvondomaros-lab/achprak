@@ -1110,15 +1110,50 @@ select {
   max-width: 100%;
 }
 
-/* Separate playback from the right-aligned view and export controls. */
+/* Match the heading controls across the structure and optimization steps. */
 #play {
-  flex: 0 0 auto;
-  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 112px;
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #f3f6fa;
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 600;
+}
+#play::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  clip-path: polygon(15% 0, 100% 50%, 15% 100%);
+}
+#play[aria-label="Wiedergabe pausieren"]::before {
+  clip-path: none;
+  background: linear-gradient(
+    to right,
+    currentColor 35%,
+    transparent 35% 65%,
+    currentColor 65%
+  );
 }
 .result-heading {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 8px;
+}
+.result-heading:has(.build-view-toggle:not([hidden]), #play:not([hidden])) {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
+}
+.result-heading > .build-view-toggle,
+.result-heading > #play {
+  justify-self: end;
 }
 #geometry-badge {
   justify-self: start;
