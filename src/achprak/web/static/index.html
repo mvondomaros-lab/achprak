@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#102238" />
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="static/app.css?v=ui-22" />
+    <link rel="stylesheet" href="static/app.css?v=ui-24" />
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
-    <script src="static/progress.js?v=ui-22" defer></script>
-    <script src="static/app.js?v=ui-22" defer></script>
+    <script src="static/progress.js?v=ui-24" defer></script>
+    <script src="static/app.js?v=ui-24" defer></script>
   </head>
   <body>
     <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -53,7 +53,7 @@
         <aside class="controls">
           <section class="library" id="structure-library" hidden>
             <label for="molecule-select"
-              >Ihre Strukturen
+              >Ihre Moleküle
               <span id="structure-count" class="count">0</span></label
             >
             <button
@@ -101,6 +101,50 @@
                 Struktur erstellen
               </button>
             </form>
+            <details class="method-help" id="method-build">
+              <summary>Was passiert im Hintergrund?</summary>
+              <h3>Wie funktioniert die Rechnung?</h3>
+              <p>
+                Aus Ihrer Wahl von cis oder trans und den Substituenten entsteht
+                zunächst ein Bauplan: Welche Atome gibt es, und wie sind sie
+                verbunden? Wasserstoffatome werden ergänzt, auch wenn sie in der
+                Strukturformel nicht einzeln eingezeichnet sind.
+              </p>
+              <p>
+                Das Programm RDKit erzeugt daraus eine räumliche Anordnung der
+                Atome. Es nutzt dafür typische Atomabstände, Bindungswinkel und
+                bevorzugte Verdrehungen. Die Methode heißt ETKDG und liefert
+                einen plausiblen Vorschlag für die 3D-Struktur.
+              </p>
+              <h3>Wie lese ich das Ergebnis?</h3>
+              <p>
+                Standardmäßig sehen Sie die 2D-Strukturformel. Sie zeigt
+                Bindungen und Substituenten, aber keine maßstabsgetreuen
+                Abstände. Mit „3D-Startstruktur“ wechseln Sie zur räumlichen
+                Ansicht und können das Molekül drehen und vergrößern. Beide
+                Darstellungen gehören zum selben Molekül.
+              </p>
+              <h3>Was sind die Grenzen?</h3>
+              <p>
+                Die Startstruktur ist noch nicht auf ihre Energie hin optimiert.
+                Ein Molekül kann mehrere räumliche Anordnungen besitzen; dieser
+                Aufbau liefert nur eine davon. Erst die Minimumsuche in Schritt
+                2 sucht eine energetisch günstige Anordnung in ihrer Nähe.
+              </p>
+              <dl class="method">
+                <div>
+                  <dt>Strukturaufbau</dt>
+                  <dd>RDKit · ETKDG</dd>
+                </div>
+                <div>
+                  <dt>Eingabeformat</dt>
+                  <dd>
+                    SMILES · Textbeschreibung der Atome, Bindungen und
+                    Konfiguration
+                  </dd>
+                </div>
+              </dl>
+            </details>
           </section>
           <section class="step-panel" data-panel="optimize" hidden>
             <fieldset>
@@ -123,24 +167,54 @@
               >
             </fieldset>
             <p id="ts-requirement" class="note" hidden>
-              Optimieren Sie zuerst ein Minimum.
+              Suchen Sie zuerst ein Minimum.
             </p>
             <button id="optimize" class="primary full" disabled>
               Optimierung starten
             </button>
-            <details>
-              <summary>Hinweise &amp; Rechenmethode</summary>
+            <details class="method-help" id="method-optimize">
+              <summary>Was passiert im Hintergrund?</summary>
+              <h3>Wie funktioniert die Rechnung?</h3>
               <p>
-                Die Minimumsuche findet eine stabile Anordnung der Atome. Die
-                Übergangszustandssuche berechnet einen Weg zwischen cis und
-                trans und prüft die Energiebarriere. Die Ausgangsstruktur bleibt
-                erhalten.
+                Für jede Anordnung der Atomkerne berechnet ein vereinfachtes
+                quantenchemisches Modell die elektronische Energie und die
+                Kräfte auf die Atome. GFN1-xTB heißt dieses Modell; es
+                beschreibt die Elektronen näherungsweise und ermöglicht dadurch
+                schnelle Rechnungen.
               </p>
               <p>
-                Das Energieprofil zeigt diesen Weg, keinen zeitlichen Ablauf.
-                Die Bewegung am Übergangszustand ist zur besseren Sichtbarkeit
-                vergrößert. Ein anderer Weg könnte eine niedrigere Barriere
-                haben.
+                <strong>Minimum:</strong> Der Optimierer Sella verschiebt die
+                Atome schrittweise, um eine energiearme Anordnung zu finden.
+                Anschaulich sucht er einen Talboden auf einer Energielandschaft.
+                Sind die verbleibenden Kräfte ausreichend klein, endet die
+                Suche.
+              </p>
+              <p>
+                <strong>Übergangszustand:</strong> Von einem Minimum aus wird
+                zunächst eine Folge von 13 Strukturen bis zur anderen
+                cis/trans-Form aufgebaut. Die Strukturen sind rechnerisch wie
+                durch Federn verbunden. Das Verfahren CI-NEB passt diesen Weg an
+                die Energielandschaft an; Sella verfeinert den Kandidaten für
+                den höchsten Punkt, ähnlich einem Gebirgspass.
+              </p>
+              <h3>Wie lese ich das Ergebnis?</h3>
+              <p>
+                Am bestätigten Übergangszustand gibt es genau eine wesentliche
+                instabile Bewegungsrichtung: Kleine Auslenkungen senken die
+                Energie. Die Schwingungsrechnung kennzeichnet sie durch eine
+                „imaginäre Frequenz“. Zusätzlich wird geprüft, ob Auslenkungen
+                in beide Richtungen zu cis- und trans-Minima führen. Die
+                Energiebarriere ist die Differenz zum Ausgangsminimum.
+              </p>
+              <h3>Was sind die Grenzen?</h3>
+              <p>
+                Ein gefundenes Minimum muss nicht das tiefste sein, und ein
+                anderer Reaktionsweg könnte eine niedrigere Barriere haben.
+                Ethanol wird als umgebendes Medium berücksichtigt, ohne einzelne
+                Lösungsmittelmoleküle darzustellen. Die Energien enthalten keine
+                Temperatureffekte. Suchverlauf und vergrößerte TS-Bewegung
+                zeigen keinen tatsächlichen zeitlichen Ablauf; die
+                Ausgangsstruktur bleibt erhalten.
               </p>
               <dl class="method">
                 <div>
@@ -149,28 +223,56 @@
                 </div>
                 <div>
                   <dt>Lösungsmittel</dt>
-                  <dd>Ethanol (rechnerisch berücksichtigt)</dd>
+                  <dd>Ethanol · Kontinuumsmodell ALPB</dd>
                 </div>
               </dl>
             </details>
           </section>
           <section class="step-panel" data-panel="spectrum" hidden>
             <p id="spectrum-requirement" class="note">
-              Wählen Sie eine optimierte Minimumsstruktur.
+              Wählen Sie ein Minimum.
             </p>
             <button id="calculate-spectrum" class="primary full" disabled>
               Spektrum berechnen
             </button>
-            <details>
-              <summary>Hinweise &amp; Rechenmethode</summary>
+            <details class="method-help" id="method-spectrum">
+              <summary>Was passiert im Hintergrund?</summary>
+              <h3>Wie funktioniert die Rechnung?</h3>
               <p>
-                Die Kurve zeigt das verbreiterte Spektrum, die Linien die
-                einzelnen Übergänge. Die Oszillatorstärke gibt an, wie stark ein
-                einzelner Übergang zur Lichtabsorption beiträgt.
+                Licht kann ein Molekül in einen angeregten elektronischen
+                Zustand versetzen. Das Programm MOPAC berechnet mit dem
+                Näherungsverfahren INDO/CIS die dafür benötigten Energien. Es
+                geht von Ihrem optimierten Minimum aus und hält die Atomkerne
+                während dieser Rechnung an ihren Positionen fest. So wird eine
+                Anregung beschrieben, die schneller abläuft als die Bewegung der
+                Kerne.
               </p>
               <p>
-                Eine Verschiebung zu kleineren Energien entspricht längeren
-                Wellenlängen (bathochrome Verschiebung).
+                INDO vereinfacht die Beschreibung der Elektronen. CIS
+                berücksichtigt Anregungen, bei denen jeweils ein Elektron in ein
+                anderes Orbital wechselt. Ein Orbital beschreibt, wie ein
+                Elektron im Molekül räumlich verteilt sein kann.
+              </p>
+              <h3>Wie lese ich das Ergebnis?</h3>
+              <p>
+                Jede Linie steht für einen elektronischen Übergang. Ihre Höhe
+                zeigt die Oszillatorstärke: ein Maß dafür, wie stark dieser
+                Übergang zur Lichtabsorption beiträgt. Für die blaue Kurve wird
+                jede Linie zu einer glockenförmigen Gaußkurve verbreitert;
+                anschließend werden die Beiträge addiert.
+              </p>
+              <p>
+                Kleinere Anregungsenergien entsprechen längeren Wellenlängen.
+                Eine Verschiebung dorthin heißt bathochrome Verschiebung.
+              </p>
+              <h3>Was sind die Grenzen?</h3>
+              <p>
+                Das Spektrum ist eine Modellvorhersage für eine einzelne
+                Geometrie. Ethanol wird über seine elektrische Abschirmwirkung
+                berücksichtigt. Die Breite der Banden ist vorgegeben, nicht aus
+                Molekülbewegungen berechnet. Die Kurvenhöhe ist daher keine
+                gemessene Absorbanz einer Probe; auch die Lage der Banden kann
+                vom Experiment abweichen.
               </p>
               <dl class="method">
                 <div>
@@ -179,11 +281,14 @@
                 </div>
                 <div>
                   <dt>Lösungsmittel</dt>
-                  <dd>Ethanol · ε = 24,3</dd>
+                  <dd>
+                    Ethanol · relative Permittivität ε = 24,3 (Maß für die
+                    elektrische Abschirmung)
+                  </dd>
                 </div>
                 <div>
                   <dt>Verbreiterung</dt>
-                  <dd>Gauß · σ = 0,3 eV</dd>
+                  <dd>Gauß · σ = 0,3 eV (eingestellte Breite)</dd>
                 </div>
               </dl>
             </details>
@@ -211,6 +316,15 @@
           </div>
           <div id="molecular-panel">
             <div class="viewer-toolbar" id="viewer-toolbar" hidden>
+              <select
+                id="build-view-toggle"
+                class="view-mode-select"
+                aria-label="Darstellung der Startstruktur"
+                hidden
+              >
+                <option value="2d">Strukturformel</option>
+                <option value="3d">3D-Startstruktur</option>
+              </select>
               <button
                 id="play"
                 class="text-button"
@@ -228,6 +342,9 @@
                 </button>
               </div>
             </div>
+            <p id="starting-geometry-note" class="note" hidden>
+              Diese Startstruktur ist noch nicht energetisch optimiert.
+            </p>
             <div class="viewer-wrap">
               <div id="viewport" aria-label="Interaktives 3D-Modell"></div>
               <img
@@ -257,6 +374,7 @@
                 <div id="trajectory" class="plot-controls">
                   <select
                     id="playback-mode"
+                    class="view-mode-select"
                     aria-label="Angezeigter Verlauf"
                     disabled
                   >
@@ -426,6 +544,12 @@
         autocomplete="off"
       />
       <div id="structure-options" class="structure-options"></div>
+      <div class="structure-picker-footer">
+        <button id="clear-structures" class="text-button" type="button">
+          Alle Strukturen löschen
+        </button>
+        <small>Inklusive aller Minima, Übergangszustände und Spektren.</small>
+      </div>
     </dialog>
     <dialog id="guide" aria-labelledby="guide-title">
       <div class="dialog-heading">

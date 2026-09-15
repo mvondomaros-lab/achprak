@@ -275,6 +275,14 @@ textarea {
   font-size: 14px;
   color: var(--muted);
 }
+.method-help h3 {
+  margin: 20px 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.method-help p {
+  line-height: 1.65;
+}
 fieldset {
   border: 0;
   padding: 0;
@@ -1063,7 +1071,7 @@ select {
   font-variant-numeric: tabular-nums;
 }
 
-#playback-mode {
+.view-mode-select {
   width: auto;
   max-width: 100%;
   font-size: 12px;
@@ -1089,7 +1097,7 @@ select {
 #ts-details p {
   margin-top: 12px;
 }
-#playback-mode {
+.view-mode-select {
   max-width: 100%;
 }
 
@@ -1133,13 +1141,31 @@ select {
   border-color: #f2c4c0;
 }
 
+.structure-picker-footer {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.structure-picker-footer small {
+  color: var(--muted);
+}
+#clear-structures {
+  color: #b42318;
+}
+#clear-structures:hover:not(:disabled) {
+  background: #fff1f0;
+}
+
 /* Reserve playback controls before and during calculations. */
 
-#playback-mode {
+.view-mode-select {
   width: 180px;
 }
 #play:disabled,
-#playback-mode:disabled {
+.view-mode-select:disabled {
   opacity: 0.5;
   cursor: default;
 }
@@ -1228,4 +1254,33 @@ select {
   margin-left: auto;
   justify-content: flex-end;
   gap: 16px;
+}
+
+.structure-group {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+}
+.structure-group h3 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+.structure-group-formula {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.structure-group .structure-row + .structure-row {
+  margin-top: 8px;
+}
+.structure-group .structure-option {
+  padding: 10px 12px;
+}
+.structure-group .structure-option strong {
+  font-size: 14px;
+}
+
+#starting-geometry-note {
+  margin: 12px 27px;
 }

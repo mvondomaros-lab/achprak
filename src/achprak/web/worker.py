@@ -126,11 +126,11 @@ def calculate(data):
     source = data["molecule"]
     if kind == "minimum" and source["kind"] == "minimum":
         raise ValueError(
-            "Diese Struktur ist bereits ein optimiertes Minimum. Der vorhandene Verlauf bleibt erhalten."
+            "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten."
         )
     if kind == "ts" and (source["kind"] != "minimum" or not source.get("converged")):
         raise ValueError(
-            "Die TS-Suche startet von einem optimierten Minimum. Bitte zuerst minimieren."
+            "Die Übergangszustandssuche startet von einem Minimum. Suchen Sie zuerst ein Minimum."
         )
     atoms = read_atoms(source["xyz"])
     if kind in ("minimum", "ts"):
@@ -143,8 +143,12 @@ def calculate(data):
             )
         )
         suffix = "Minimum" if kind == "minimum" else "Übergangszustand"
-        if kind == "ts" and not converged:
-            suffix = "TS-Suchstand"
+        if not converged:
+            suffix = (
+                "Minimumsuche nicht abgeschlossen"
+                if kind == "minimum"
+                else "Übergangszustandssuche nicht abgeschlossen"
+            )
         m = molecule(
             opt.atoms,
             f"{source['base_name']} · {suffix}",

@@ -304,18 +304,29 @@ def test_live_optimization_records(client):
 
 
 @pytest.mark.skipif(
-    os.environ.get("ACHPRAK_CHEMISTRY_TESTS") != "1",
+    os.environ.get("ACHPRAK_CHEMISTRY_TESTS") != "1"
+    and os.environ.get("ACHPRAK_TS_TESTS") != "1",
     reason="Opt-in minimum-to-TS path checks",
 )
+@pytest.mark.ts_optimization
 @pytest.mark.parametrize(
     "configuration,substituents",
     [
-        ("cis", ["H"] * 10),
-        ("trans", ["NMe2"] + ["H"] * 9),
-        ("trans", ["H", "H", "NMe2", "H", "H", "H", "H", "CF3", "H", "H"]),
+        pytest.param("trans", ["H"] * 10, id="trans-H"),
+        pytest.param("cis", ["H"] * 10, id="cis-H"),
+        pytest.param("trans", ["Me"] + ["H"] * 9, id="trans-2-Me"),
+        pytest.param("cis", ["Me"] + ["H"] * 9, id="cis-2-Me"),
+        pytest.param("trans", ["NMe2"] + ["H"] * 9, id="trans-2-NMe2"),
+        pytest.param(
+            "trans",
+            ["H", "H", "NMe2", "H", "H", "H", "H", "CF3", "H", "H"],
+            id="trans-4-NMe2-4prime-CF3",
+        ),
     ],
 )
-def test_ts_paths_from_cis_and_substituted_minima(client, configuration, substituents):
+def test_ts_paths_from_cis_and_substituted_minima(
+    client, configuration, substituents, tmp_path
+):
     initial = run(
         client,
         "template",
@@ -325,11 +336,19 @@ def test_ts_paths_from_cis_and_substituted_minima(client, configuration, substit
     assert minimum["converged"]
     assert minimum["optimization_history"][-1]["fmax_ev_angstrom"] <= 0.002
     ts = run(client, "ts", molecule_id=minimum["id"])["molecule"]
-    assert ts["converged"], ts.get("ts_search")
+    report = tmp_path / "ts-result.json"
+    report.write_text(json.dumps({"initial": initial, "minimum": minimum, "ts": ts}))
+    assert ts["converged"], (
+        f"{ts.get('ts_search', {}).get('failure_reason')}; diagnostics: {report}"
+    )
     search = ts["ts_search"]
     assert search["source_minimum_id"] == minimum["id"]
     assert search["validation"]["verified"]
     assert search["validation"]["imaginary_count"] == 1
+    frequencies = np.array(search["validation"]["frequencies_cm1"])
+    assert len(frequencies) == 3 * initial["atom_count"] - 6
+    assert np.isfinite(frequencies).all()
+    assert np.count_nonzero(frequencies < -20.0) == 1
     assert search["barrier_ev"] > 0
     assert search["iterations"] <= 1500
     assert search["method"] == "ci_neb_then_sella"
@@ -373,5 +392,81 @@ def test_ts_paths_from_cis_and_substituted_minima(client, configuration, substit
         assert p["energy_ev"] == pytest.approx(
             p["neb_path"][p["neb_image"]]["energy_ev"]
         )
-    assert history[-1]["fmax_ev_angstrom"] < 0.02
+    assert history[-1]["fmax_ev_angstrom"] <= 0.005
     assert len(ts["frames"]) == 60
+
+
+@pytest.mark.parametrize("kind", ["minimum", "ts"])
+@pytest.mark.parametrize("ok", [True, False])
+def test_repeated_search_replaces_only_its_previous_result(kind, ok):
+    from achprak.web.server import JobManager, Session
+
+    manager = JobManager()
+    source = {"id": "start", "kind": "initial", "base_name": "cis-Azobenzol"}
+    previous = {
+        "id": "old",
+        "kind": kind,
+        "base_name": "cis-Azobenzol",
+        "optimization_history": [1, 2, 3],
+    }
+    unrelated = {"id": "other", "kind": kind, "base_name": "trans-Azobenzol"}
+    session = Session(molecules={m["id"]: m for m in [source, previous, unrelated]})
+
+    class Finished:
+        returncode = 0
+
+        def poll(self):
+            return 0
+
+    try:
+        job = manager.submit(session, {"kind": kind, "molecule": source})
+        folder = manager.root / job["id"]
+        result = {
+            "id": "new",
+            "kind": kind,
+            "base_name": "cis-Azobenzol",
+            "optimization_history": [4, 5],
+        }
+        (folder / "result.json").write_text(
+            json.dumps(
+                {"ok": ok, "result": {"molecule": result}, "error": "Search failed"}
+            )
+        )
+        job.update(started=time.monotonic(), status="running")
+        manager.tasks[job["id"]] = (session, job, folder, Finished())
+        assert session.molecules["old"] == previous
+        manager.tick()
+        assert session.molecules["start"] == source
+        assert session.molecules["other"] == unrelated
+        if ok:
+            assert "old" not in session.molecules
+            assert session.molecules["new"]["optimization_history"] == [4, 5]
+        else:
+            assert session.molecules["old"] == previous
+            assert "new" not in session.molecules
+    finally:
+        manager.close()
+
+
+def test_clear_structures_is_session_scoped_and_blocked_during_jobs(client, app):
+    session = next(iter(app.state.manager.sessions.values()))
+    session.molecules.update(
+        {kind: {"id": kind, "kind": kind} for kind in ("initial", "minimum", "ts")}
+    )
+    cookies = dict(client.cookies)
+    client.cookies.clear()
+    client.get("/api/session")
+    other = next(s for s in app.state.manager.sessions.values() if s is not session)
+    other.molecules["other"] = {"id": "other", "kind": "initial"}
+    client.cookies.clear()
+    client.cookies.update(cookies)
+    assert client.delete("/api/molecules").status_code == 403
+    for status in ("queued", "running"):
+        session.jobs["active"] = {"status": status}
+        assert client.delete("/api/molecules", headers=HEADERS).status_code == 409
+        assert len(session.molecules) == 3
+    session.jobs.clear()
+    assert client.delete("/api/molecules", headers=HEADERS).status_code == 200
+    assert client.get("/api/session").json()["molecules"] == []
+    assert list(other.molecules) == ["other"]
+    assert client.delete("/api/molecules", headers=HEADERS).status_code == 200

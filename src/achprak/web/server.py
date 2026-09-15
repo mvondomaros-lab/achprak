@@ -46,6 +46,23 @@ class Session:
     touched: float = field(default_factory=time.monotonic)
 
 
+def matching_results(session, base_name, kind):
+    if kind not in {"minimum", "ts"}:
+        return []
+    return [
+        key
+        for key, m in session.molecules.items()
+        if m.get("base_name") == base_name
+        and (
+            m.get("kind") == kind
+            or (
+                m.get("kind") == "unconverged"
+                and ("ts" if m.get("ts_search") else "minimum") == kind
+            )
+        )
+    ]
+
+
 class JobManager:
     def __init__(self, max_jobs=2, timeout=600, session_ttl=86400):
         self.sessions = {}
@@ -56,11 +73,19 @@ class JobManager:
     def submit(self, session, payload):
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
             raise HTTPException(409, "Eine Berechnung läuft bereits in dieser Sitzung.")
-        if len(session.molecules) >= 100 and payload["kind"] in {
-            "template",
-            "minimum",
-            "ts",
-        }:
+        replacing = matching_results(
+            session, payload.get("molecule", {}).get("base_name"), payload["kind"]
+        )
+        if (
+            not replacing
+            and len(session.molecules) >= 100
+            and payload["kind"]
+            in {
+                "template",
+                "minimum",
+                "ts",
+            }
+        ):
             raise HTTPException(
                 409,
                 "Bitte zuerst nicht mehr benötigte Strukturen entfernen (maximal 100).",
@@ -120,6 +145,12 @@ class JobManager:
                     result = envelope["result"]
                     if "molecule" in result:
                         m = result["molecule"]
+                        # Keep the previous result until a complete replacement
+                        # arrives. Failed/cancelled jobs never remove it.
+                        for old_id in matching_results(
+                            session, m.get("base_name"), job["kind"]
+                        ):
+                            session.molecules.pop(old_id)
                         session.molecules[m["id"]] = m
                     else:
                         m = session.molecules.get(result["molecule_id"])
@@ -282,17 +313,17 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             if body.kind == "minimum" and m["kind"] == "minimum":
                 raise HTTPException(
                     422,
-                    "Diese Struktur ist bereits ein optimiertes Minimum. Der vorhandene Verlauf bleibt erhalten.",
+                    "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
                 )
             if body.kind == "ts" and (m["kind"] != "minimum" or not m.get("converged")):
                 raise HTTPException(
                     422,
-                    "Die TS-Suche startet von einem optimierten Minimum. Bitte zuerst minimieren.",
+                    "Die Übergangszustandssuche startet von einem Minimum. Suchen Sie zuerst ein Minimum.",
                 )
             if body.kind == "uvvis" and m["kind"] != "minimum":
                 raise HTTPException(
                     422,
-                    "Für ein Spektrum bitte zuerst eine Minimumsstruktur optimieren.",
+                    "Für ein Spektrum bitte zuerst ein Minimum suchen.",
                 )
             payload["molecule"] = m
         return manager.submit(session, payload)
@@ -316,6 +347,14 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             raise HTTPException(404, "Berechnung nicht gefunden.")
         manager.stop(job_id)
         return {"status": request.state.session.jobs[job_id]["status"]}
+
+    @app.delete("/api/molecules")
+    async def clear_molecules(request: Request):
+        session = request.state.session
+        if any(j["status"] in ACTIVE for j in session.jobs.values()):
+            raise HTTPException(409, "Bitte zuerst die laufende Berechnung beenden.")
+        session.molecules.clear()
+        return {"status": "deleted"}
 
     @app.delete("/api/molecules/{molecule_id}")
     async def delete_molecule(molecule_id: str, request: Request):

@@ -181,9 +181,12 @@ class OptTS:
         self.endpoint = endpoint.copy()
         self.endpoint.calc = self.calculator_factory()
         # All path constraints have now been removed; endpoints remain fixed.
+        # Strong springs (1 eV/Å²) stall the methyl-substituted half-path.
+        # Use the same softer springs during half-band and climbing relaxation.
+        spring_constant = 0.1  # eV/Å²
         band = NEB(
             images,
-            k=1.0,
+            k=spring_constant,
             climb=False,
             method="improvedtangent",
             remove_rotation_and_translation=True,
@@ -234,13 +237,13 @@ class OptTS:
         for half, preview_index in ((images[:7], 3), (images[6:], 9)):
             approach = NEB(
                 half,
-                k=1.0,
+                k=spring_constant,
                 climb=False,
                 method="improvedtangent",
                 remove_rotation_and_translation=True,
             )
             if not optimize(
-                BFGS(approach, logfile="-", maxstep=0.05),
+                FIRE(approach, logfile="-", dt=0.05, maxstep=0.05),
                 0.05,
                 400,
                 lambda index=preview_index: band_progress(index),
@@ -262,27 +265,38 @@ class OptTS:
         atoms = images[peak_index].copy()
         atoms.calc = self.calculator_factory()
         self.atoms = atoms
-        self.search_converged = optimize(
-            sella.Sella(
-                atoms,
-                order=1,
-                internal=False,
-                hessian_function=hessian,
-            ),
-            0.005,
-            150,
-            lambda: publish(atoms, "refinement"),
-        )
+
+        def refine_saddle(fmax):
+            return optimize(
+                sella.Sella(atoms, order=1, internal=False, hessian_function=hessian),
+                fmax,
+                150,
+                lambda: publish(atoms, "refinement"),
+            )
+
+        self.search_converged = refine_saddle(0.005)
         if not self.search_converged:
             return failed("Die freie Sattelpunktverfeinerung ist nicht konvergiert.")
+        publish(atoms, "vibrations")
+        frequencies, modes = internal_modes(atoms, hessian(atoms))
+        negative = np.flatnonzero(frequencies < -20.0)
+        # A loose force threshold can leave soft torsions unresolved: cis-2-Me
+        # retains a second imaginary mode near -26 cm⁻¹. Polish such candidates
+        # within the shared budget, then recompute all modes at the new geometry.
+        if len(negative) > 1:
+            self.search_converged = refine_saddle(0.001)
+            if not self.search_converged:
+                return failed(
+                    "Die zusätzliche Sattelpunktverfeinerung ist nicht konvergiert."
+                )
+            publish(atoms, "vibrations")
+            frequencies, modes = internal_modes(atoms, hessian(atoms))
+            negative = np.flatnonzero(frequencies < -20.0)
         self.barrier_ev = float(atoms.get_potential_energy()) - baseline
         if atoms.get_potential_energy() <= max(
             baseline, endpoint.get_potential_energy()
         ):
             return failed("Der Kandidat liegt nicht oberhalb beider Minima.")
-        publish(atoms, "vibrations")
-        frequencies, modes = internal_modes(atoms, hessian(atoms))
-        negative = np.flatnonzero(frequencies < -20.0)
         self.validation = {
             "scope": "all_atoms",
             "rigid_modes_projected_out": True,

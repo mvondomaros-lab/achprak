@@ -2,6 +2,16 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
+function loadSelectionFunctions(context) {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function selectableMolecules()"),
+      app.indexOf("const fmt ="),
+    ),
+    context,
+  );
+}
 require("../src/achprak/web/static/progress.js");
 const progress = globalThis.OptimizationProgress;
 const record = (step, phase = "optimization") => ({
@@ -768,6 +778,7 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
       return elements.get(id);
     },
   });
+  loadSelectionFunctions(context);
   vm.runInContext(
     app.slice(
       app.indexOf("function updateControls()"),
@@ -812,14 +823,14 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   assert.equal(elements.get("calculate-spectrum").disabled, true);
 });
 
-test("structure step shows only the 2D formula without properties or calculation tools", () => {
+test("structure step defaults to 2D and remembers optional 3D without calculation tools", () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
   const elements = new Map();
   const context = vm.createContext({
     state: {
       step: "build",
       mode: "3d",
-      molecules: [{ id: "m" }],
+      molecules: [{ id: "m", kind: "initial" }],
       hasCalculationLog: true,
     },
     current: () => ({ id: "m", kind: "initial" }),
@@ -836,6 +847,7 @@ test("structure step shows only the 2D formula without properties or calculation
       return elements.get(id);
     },
   });
+  loadSelectionFunctions(context);
   vm.runInContext(
     app.slice(
       app.indexOf("function updateMode()"),
@@ -857,6 +869,45 @@ test("structure step shows only the 2D formula without properties or calculation
   ])
     assert.equal(elements.get(id).hidden, true, id);
   assert.equal(elements.get("image-download").disabled, false);
+  context.renderState = () => context.updateControls();
+  const toggleStart = app.indexOf(
+    '$("build-view-toggle").onchange',
+    app.indexOf('$("structure-search").oninput'),
+  );
+  vm.runInContext(
+    app.slice(
+      toggleStart,
+      app.indexOf('$("clear-structures").onclick', toggleStart),
+    ),
+    context,
+  );
+  elements.get("build-view-toggle").value = "3d";
+  elements.get("build-view-toggle").onchange();
+  assert.equal(context.state.mode, "3d");
+  assert.equal(elements.get("viewport").hidden, false);
+  assert.equal(elements.get("structure-image").hidden, true);
+  assert.equal(elements.get("starting-geometry-note").hidden, false);
+  assert.equal(elements.get("center").hidden, false);
+  assert.equal(elements.get("center").disabled, false);
+  assert.equal(elements.get("viewer-hint").hidden, false);
+  for (const id of [
+    "properties-grid",
+    "property-help",
+    "result-details",
+    "calculation-log",
+  ])
+    assert.equal(elements.get(id).hidden, true, id);
+  context.state.step = "optimize";
+  context.updateControls();
+  assert.equal(elements.get("build-view-toggle").hidden, true);
+  assert.equal(elements.get("starting-geometry-note").hidden, true);
+  context.state.step = "build";
+  context.updateControls();
+  assert.equal(context.state.mode, "3d");
+  elements.get("build-view-toggle").value = "2d";
+  elements.get("build-view-toggle").onchange();
+  assert.equal(context.state.mode, "2d");
+  assert.equal(elements.get("starting-geometry-note").hidden, true);
 });
 
 test("image export pauses playback and captures the displayed intermediate geometry", async () => {
@@ -893,4 +944,270 @@ test("image export pauses playback and captures the displayed intermediate geome
   ]);
   assert.equal(context.state.previewIndex, 3);
   assert.deepEqual(context.state.live.positions, [1, 2, 3]);
+});
+
+test("structure picker groups chemical identities and keeps variants individually selectable", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const context = vm.createContext({
+    KIND: {
+      initial: "Startstruktur",
+      minimum: "Minimum",
+      ts: "Übergangszustand",
+      unconverged: "Optimierung nicht abgeschlossen",
+    },
+  });
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function structureGroups("),
+      app.indexOf("function renderStructureOptions("),
+    ),
+    context,
+  );
+  const molecules = [
+    {
+      id: "a",
+      base_name: "cis-Azobenzol",
+      formula: "C12H10N2",
+      kind: "initial",
+    },
+    {
+      id: "b",
+      base_name: "cis-Azobenzol",
+      formula: "C12H10N2",
+      kind: "minimum",
+    },
+    {
+      id: "c",
+      base_name: "trans-Azobenzol",
+      formula: "C12H10N2",
+      kind: "minimum",
+    },
+    { id: "d", base_name: "cis-Azobenzol", formula: "C12H10N2", kind: "ts" },
+    {
+      id: "e",
+      base_name: "cis-Azobenzol",
+      formula: "C12H10N2",
+      kind: "minimum",
+    },
+    {
+      id: "f",
+      base_name: "trans-2-F-Azobenzol",
+      formula: "C12H9FN2",
+      kind: "initial",
+    },
+  ];
+  const groups = context.structureGroups(molecules);
+  assert.equal(groups.length, 2);
+  assert.equal(groups[0].name, "Azobenzol");
+  assert.equal(groups[0].entries.length, 5);
+  assert.equal(groups[0].entries[1].label, "cis · Minimum · 1");
+  assert.equal(groups[0].entries[4].label, "cis · Minimum · 2");
+  assert.equal(
+    groups[0].entries[3].label,
+    "Übergangszustand · aus cis-Minimum",
+  );
+  assert.equal(
+    context.structureGroups(molecules, "trans")[0].entries[0].molecule.id,
+    "c",
+  );
+  assert.equal(
+    context.structureGroups(molecules, "C12H9FN2")[0].entries[0].molecule.id,
+    "f",
+  );
+  assert.equal(
+    context.structureGroups(molecules, "Minimum · 2")[0].entries[0].molecule.id,
+    "e",
+  );
+  assert.equal(
+    context.structureGroups(molecules.filter((m) => m.id !== "a"))[0].entries
+      .length,
+    4,
+  );
+});
+
+function selectionLab(molecules) {
+  const elements = new Map();
+  const context = vm.createContext({
+    state: { molecules, selected: null, resultSelection: null, step: "build" },
+    TITLES: { build: [], optimize: [], spectrum: [] },
+    document: { querySelectorAll: () => [] },
+    stopAnimation() {},
+    renderState() {},
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, {});
+      return elements.get(id);
+    },
+    api: async () => ({ molecules: context.state.molecules }),
+  });
+  loadSelectionFunctions(context);
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  vm.runInContext(
+    app.slice(
+      app.indexOf("function navigate("),
+      app.indexOf("let energyChart ="),
+    ),
+    context,
+  );
+  return context;
+}
+
+const selectionMolecules = () => [
+  { id: "start", kind: "initial", base_name: "trans-Azobenzol" },
+  { id: "other", kind: "initial", base_name: "cis-Azobenzol" },
+  {
+    id: "min",
+    kind: "minimum",
+    parent_id: "start",
+    base_name: "trans-Azobenzol",
+  },
+  { id: "ts", kind: "ts", parent_id: "min", base_name: "trans-Azobenzol" },
+];
+
+test("build offers only starting structures and a round trip restores the selected result", () => {
+  const lab = selectionLab(selectionMolecules());
+  lab.selectMolecule("ts");
+  assert.equal(lab.state.selected, "start");
+  assert.deepEqual(
+    Array.from(lab.selectableMolecules(), (m) => m.id),
+    ["start", "other"],
+  );
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "ts");
+  assert.equal(lab.selectableMolecules().length, 4);
+  lab.navigate("build");
+  assert.equal(lab.state.selected, "start");
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "ts");
+  lab.navigate("spectrum");
+  lab.selectMolecule("min");
+  lab.navigate("build");
+  assert.equal(lab.state.selected, "start");
+  lab.navigate("spectrum");
+  assert.equal(lab.state.selected, "min");
+  lab.navigate("build");
+  lab.selectMolecule("other");
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "other");
+});
+
+test("refresh and background results preserve the build filter and remember the latest result", async () => {
+  const lab = selectionLab(selectionMolecules());
+  await lab.refresh();
+  assert.equal(lab.state.selected, "start");
+  await lab.refresh();
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "ts");
+  lab.navigate("build");
+  lab.state.molecules.push({
+    id: "new-ts",
+    kind: "ts",
+    parent_id: "min",
+    base_name: "trans-Azobenzol",
+  });
+  await lab.refresh("new-ts");
+  assert.equal(lab.state.selected, "start");
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "new-ts");
+  lab.navigate("build");
+  lab.state.molecules.push({
+    id: "new-start",
+    kind: "initial",
+    base_name: "trans-2-Me-Azobenzol",
+  });
+  await lab.refresh("new-start");
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "new-start");
+});
+
+test("deleted parents and results never expose a result as a starting structure", async () => {
+  const lab = selectionLab(selectionMolecules().filter((m) => m.id !== "min"));
+  lab.selectMolecule("ts");
+  assert.equal(lab.state.selected, "start");
+  lab.state.molecules = lab.state.molecules.filter((m) => m.id !== "ts");
+  await lab.refresh();
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "start");
+  lab.navigate("build");
+  lab.state.molecules = [
+    {
+      id: "orphan",
+      kind: "minimum",
+      parent_id: "deleted",
+      base_name: "trans-Azobenzol",
+    },
+  ];
+  await lab.refresh("orphan");
+  assert.equal(lab.state.selected, null);
+  assert.equal(lab.selectableMolecules().length, 0);
+  lab.navigate("optimize");
+  assert.equal(lab.state.selected, "orphan");
+});
+
+test("clear structures confirms the full scope and resets selection only after successful deletion", async () => {
+  const elements = new Map();
+  let approved = false,
+    fail = false;
+  const calls = [];
+  const context = vm.createContext({
+    state: {
+      busy: false,
+      molecules: [{ id: "start" }, { id: "ts" }],
+      selected: "start",
+      resultSelection: "ts",
+      step: "build",
+      tracking: {},
+      live: {},
+    },
+    window: {
+      confirm: (message) => {
+        assert.match(message, /Minima.*Übergangszustände.*Spektren/);
+        return approved;
+      },
+    },
+    handle: (fn) => fn,
+    api: async (path, options) => {
+      calls.push([path, options.method]);
+      if (fail) throw Error("busy elsewhere");
+    },
+    stopAnimation() {},
+    refresh: async () => {
+      context.state.molecules = [];
+    },
+    updateControls() {},
+    toast() {},
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, { close() {}, focus() {} });
+      return elements.get(id);
+    },
+  });
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const start = app.indexOf('$("clear-structures").onclick');
+  vm.runInContext(
+    app.slice(start, app.indexOf("\ndocument\n", start)),
+    context,
+  );
+  const clear = elements.get("clear-structures").onclick;
+  await clear();
+  assert.equal(calls.length, 0);
+  assert.equal(context.state.selected, "start");
+  approved = true;
+  context.state.busy = true;
+  await clear();
+  assert.equal(calls.length, 0);
+  context.state.busy = false;
+  fail = true;
+  await assert.rejects(clear(), /busy elsewhere/);
+  assert.equal(context.state.resultSelection, "ts");
+  fail = false;
+  await clear();
+  assert.deepEqual(calls.at(-1), ["molecules", "DELETE"]);
+  for (const field of [
+    "selected",
+    "resultSelection",
+    "live",
+    "tracking",
+    "previewIndex",
+  ])
+    assert.equal(context.state[field], null);
+  assert.equal(context.state.molecules.length, 0);
 });

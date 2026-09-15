@@ -31,8 +31,10 @@ $("rings").addEventListener("change", summarizeSubstituents);
 const state = {
   molecules: [],
   selected: null,
+  resultSelection: null,
   step: "build",
   mode: "2d",
+  buildMode: "2d",
   busy: false,
   job: null,
   live: null,
@@ -64,19 +66,45 @@ const TITLES = {
 };
 const JOBS = {
   template: "Struktur wird erstellt",
-  minimum: "Minimum wird optimiert",
+  minimum: "Minimum wird gesucht",
   ts: "Übergangszustand wird gesucht",
   uvvis: "UV/Vis-Spektrum wird berechnet",
 };
 const KIND = {
   initial: "Startstruktur",
-  minimum: "Optimiertes Minimum",
+  minimum: "Minimum",
   ts: "Übergangszustand",
   unconverged: "Optimierung nicht abgeschlossen",
 };
 const HC = 1239.8419843320026,
   EV_KJ = 96.48533212331002;
 const current = () => state.molecules.find((m) => m.id === state.selected);
+function selectableMolecules() {
+  return state.step === "build"
+    ? state.molecules.filter((m) => m.kind === "initial")
+    : state.molecules;
+}
+function startingStructure(molecule) {
+  const seen = new Set();
+  let source = molecule;
+  while (source && !seen.has(source.id)) {
+    if (source.kind === "initial") return source;
+    seen.add(source.id);
+    source = state.molecules.find((m) => m.id === source.parent_id);
+  }
+  // A recalculated/deleted minimum can break a TS's parent chain.
+  return state.molecules.find(
+    (m) => m.kind === "initial" && m.base_name === molecule?.base_name,
+  );
+}
+function selectMolecule(id, rememberResult = true) {
+  const molecule = state.molecules.find((m) => m.id === id);
+  if (rememberResult) state.resultSelection = molecule?.id || null;
+  state.selected =
+    (state.step === "build" ? startingStructure(molecule)?.id : molecule?.id) ||
+    selectableMolecules().at(-1)?.id ||
+    null;
+}
 const fmt = (value, digits = 2) =>
   Number(value).toLocaleString("de-DE", {
     minimumFractionDigits: digits,
@@ -288,7 +316,13 @@ async function renderMolecule() {
   }
 }
 function updateMode() {
-  state.mode = state.step === "build" ? "2d" : "3d";
+  state.mode = state.step === "build" ? state.buildMode || "2d" : "3d";
+  $("build-view-toggle").hidden = state.step !== "build" || !current();
+  $("build-view-toggle").value = state.buildMode || "2d";
+  $("build-view-toggle").disabled = !current();
+  $("starting-geometry-note").hidden =
+    state.step !== "build" || state.mode !== "3d" || !current();
+  $("center").hidden = state.mode !== "3d";
   $("viewport").hidden = state.mode !== "3d";
   $("structure-image").hidden = state.mode !== "2d" || !current();
   $("viewer-hint").hidden = !current() || state.mode !== "3d";
@@ -323,18 +357,20 @@ function updateControls() {
       ? "Minimum bereits gefunden"
       : "Optimierung starten";
   $("create").disabled = state.busy;
-  $("molecule-select").disabled = state.busy || !state.molecules.length;
+  $("molecule-select").disabled = state.busy || !selectableMolecules().length;
+  $("clear-structures").disabled = state.busy || !state.molecules.length;
   $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum";
   $("spectrum-requirement").hidden = !m || m.kind === "minimum";
   $("spectrum-requirement").textContent =
-    "Optimieren Sie diese Struktur zuerst als Minimum.";
+    "Suchen Sie für diese Struktur zuerst ein Minimum.";
   $("calculate-spectrum").textContent = m?.spectrum
     ? "Spektrum neu berechnen"
     : "Spektrum berechnen";
-  $("structure-library").hidden = !state.molecules.length;
+  $("structure-library").hidden = !selectableMolecules().length;
+  $("structure-picker-title").textContent =
+    state.step === "build" ? "Startstruktur auswählen" : "Struktur auswählen";
   $("result-heading").hidden = !m;
   $("viewer-toolbar").hidden = !m;
-  $("center").hidden = state.step === "build";
   $("result-details").hidden = state.step === "build" || (!m && !state.job);
   $("calculation-log").hidden =
     state.step === "build" || !state.hasCalculationLog;
@@ -384,9 +420,13 @@ function renderState() {
     state.previewIndex = null;
   }
   if (state.live && state.live.source_id !== m?.id) state.live = null;
-  $("molecule-select").textContent = m?.name || "Noch keine Struktur";
+  $("molecule-select").textContent = m
+    ? `${m.base_name} · ${KIND[m.kind]}`
+    : "Noch keine Struktur";
   $("molecule-select").title = m?.name || "Struktur auswählen";
-  $("structure-count").textContent = String(state.molecules.length);
+  $("structure-count").textContent = String(
+    structureGroups(selectableMolecules()).length,
+  );
   $("active-name").textContent = m?.name || "Ihre erste Struktur";
   $("active-meta").textContent = m
     ? `${m.formula} · ${m.atom_count} Atome`
@@ -445,7 +485,14 @@ function renderState() {
 function navigate(step) {
   if (!(step in TITLES)) throw new Error("Unbekannter Versuchsschritt.");
   if (state.step === step) return;
+  if (state.step !== "build") state.resultSelection = state.selected;
+  const selection =
+    state.step === "build" &&
+    state.molecules.some((m) => m.id === state.resultSelection)
+      ? state.resultSelection
+      : state.selected;
   state.step = step;
+  selectMolecule(selection, step !== "build");
   if (step === "optimize") state.mode = "3d";
   document.querySelectorAll("[data-step]").forEach((button) => {
     button.classList.toggle("active", button.dataset.step === step);
@@ -468,12 +515,13 @@ function navigate(step) {
 async function refresh(selected) {
   const data = await api("session");
   state.molecules = data.molecules;
-  state.selected =
+  selectMolecule(
     selected ||
-    (state.molecules.some((m) => m.id === state.selected)
-      ? state.selected
-      : state.molecules.at(-1)?.id) ||
-    null;
+      (state.molecules.some((m) => m.id === state.selected)
+        ? state.selected
+        : state.molecules.at(-1)?.id),
+    !!selected || state.step !== "build" || !state.resultSelection,
+  );
   $("user-label").textContent = data.user || "";
   renderState();
   return data;
@@ -826,7 +874,7 @@ function displayJob(job) {
         state.selected !== progress.source_id &&
         state.molecules.some((m) => m.id === progress.source_id)
       ) {
-        state.selected = progress.source_id;
+        selectMolecule(progress.source_id);
         renderState();
       }
       applyLiveGeometry();
@@ -891,7 +939,7 @@ async function monitor(jobId) {
 async function startJob(payload) {
   if (payload.kind === "minimum" && current()?.kind === "minimum")
     throw new Error(
-      "Diese Struktur ist bereits ein optimiertes Minimum. Der vorhandene Verlauf bleibt erhalten.",
+      "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
     );
   if (state.busy)
     throw new Error("Bitte warten Sie auf die laufende Berechnung.");
@@ -976,54 +1024,100 @@ $("playback-mode").onchange = () => {
 $("cancel").onclick = handle(async () => {
   if (state.job) await api(`jobs/${state.job}`, { method: "DELETE" });
 });
+function structureGroups(molecules, query = "") {
+  const groups = new Map();
+  for (const m of molecules) {
+    const name = m.base_name.replace(/^(cis|trans)-/, "");
+    if (!groups.has(name))
+      groups.set(name, { name, formula: m.formula, entries: [] });
+    const configuration = m.base_name.match(/^(cis|trans)-/)?.[1] || "";
+    const label =
+      m.kind === "ts"
+        ? `Übergangszustand · aus ${configuration}-Minimum`
+        : `${configuration} · ${KIND[m.kind]}`;
+    groups.get(name).entries.push({ molecule: m, label });
+  }
+  const search = query.trim().toLocaleLowerCase("de-DE");
+  return [...groups.values()]
+    .map((group) => {
+      const totals = new Map(),
+        counts = new Map();
+      for (const entry of group.entries)
+        totals.set(entry.label, (totals.get(entry.label) || 0) + 1);
+      const entries = group.entries
+        .map((entry) => {
+          const n = (counts.get(entry.label) || 0) + 1;
+          counts.set(entry.label, n);
+          return {
+            ...entry,
+            label: entry.label + (totals.get(entry.label) > 1 ? ` · ${n}` : ""),
+          };
+        })
+        .filter((entry) =>
+          `${group.name} ${group.formula} ${entry.label}`
+            .toLocaleLowerCase("de-DE")
+            .includes(search),
+        );
+      return { ...group, entries };
+    })
+    .filter((group) => group.entries.length);
+}
 function renderStructureOptions() {
   const query = $("structure-search").value.trim().toLocaleLowerCase("de-DE");
   $("structure-options").replaceChildren();
-  for (const m of state.molecules.filter((m) =>
-    `${m.name} ${m.formula}`.toLocaleLowerCase("de-DE").includes(query),
-  )) {
-    const row = document.createElement("div");
-    row.className = "structure-row";
-    const button = document.createElement("button");
-    button.className = "structure-option";
-    button.classList.toggle("selected", m.id === state.selected);
-    if (m.id === state.selected) button.setAttribute("aria-current", "true");
-    const name = document.createElement("strong");
-    name.textContent = m.name;
-    const detail = document.createElement("small");
-    detail.textContent = `${m.formula} · ${KIND[m.kind]}`;
-    button.append(name, detail);
-    button.onclick = () => {
-      if (state.busy) return;
-      state.live = null;
-      state.selected = m.id;
-      error("");
-      renderState();
-      $("structure-picker").close();
-    };
-    const remove = document.createElement("button");
-    remove.className = "structure-delete";
-    remove.type = "button";
-    remove.title = "Struktur löschen";
-    remove.setAttribute("aria-label", `${m.name} löschen`);
-    remove.innerHTML =
-      '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg>';
-    remove.disabled = state.busy;
-    remove.onclick = handle(async () => {
-      if (state.busy || remove.disabled) return;
-      remove.disabled = true;
-      try {
-        await api(`molecules/${m.id}`, { method: "DELETE" });
-        await refresh();
-        renderStructureOptions();
-        $("structure-search").focus();
-        toast("Struktur gelöscht.");
-      } finally {
-        remove.disabled = state.busy;
-      }
-    });
-    row.append(button, remove);
-    $("structure-options").append(row);
+  for (const group of structureGroups(selectableMolecules(), query)) {
+    const section = document.createElement("section");
+    section.className = "structure-group";
+    const heading = document.createElement("h3");
+    heading.textContent = group.name;
+    const formula = document.createElement("p");
+    formula.className = "structure-group-formula";
+    formula.textContent = group.formula;
+    section.append(heading, formula);
+    for (const { molecule: m, label } of group.entries) {
+      const row = document.createElement("div");
+      row.className = "structure-row";
+      const button = document.createElement("button");
+      button.className = "structure-option";
+      button.classList.toggle("selected", m.id === state.selected);
+      if (m.id === state.selected) button.setAttribute("aria-current", "true");
+      const name = document.createElement("strong");
+      name.textContent = label;
+      button.setAttribute("aria-label", `${group.name} · ${label}`);
+      button.append(name);
+      button.onclick = () => {
+        if (state.busy) return;
+        state.live = null;
+        selectMolecule(m.id, state.step !== "build" || m.id !== state.selected);
+        error("");
+        renderState();
+        $("structure-picker").close();
+      };
+      const remove = document.createElement("button");
+      remove.className = "structure-delete";
+      remove.type = "button";
+      remove.title = "Struktur löschen";
+      remove.setAttribute("aria-label", `${group.name} · ${label} löschen`);
+      remove.innerHTML =
+        '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7M14 10v7"/></svg>';
+      remove.disabled = state.busy;
+      remove.onclick = handle(async () => {
+        if (state.busy || remove.disabled) return;
+        remove.disabled = true;
+        try {
+          await api(`molecules/${m.id}`, { method: "DELETE" });
+          await refresh();
+          renderStructureOptions();
+          $("structure-search").focus();
+          toast("Struktur gelöscht.");
+        } finally {
+          remove.disabled = state.busy;
+        }
+      });
+      row.append(button, remove);
+      section.append(row);
+    }
+    $("structure-options").append(section);
   }
   if (!$("structure-options").children.length) {
     const message = document.createElement("p");
@@ -1038,6 +1132,39 @@ $("molecule-select").onclick = () => {
   $("structure-search").focus();
 };
 $("structure-search").oninput = renderStructureOptions;
+
+$("build-view-toggle").onchange = () => {
+  if (state.step !== "build" || current()?.kind !== "initial") return;
+  state.buildMode = $("build-view-toggle").value;
+  renderState();
+};
+
+$("clear-structures").onclick = handle(async () => {
+  if (state.busy || !state.molecules.length) return;
+  if (
+    !window.confirm(
+      "Alle Startstrukturen, Minima, Übergangszustände und Spektren dieser Sitzung löschen? Dies gilt auch für ausgeblendete Strukturen und kann nicht rückgängig gemacht werden.",
+    )
+  )
+    return;
+  $("clear-structures").disabled = true;
+  try {
+    await api("molecules", { method: "DELETE" });
+    stopAnimation();
+    state.selected = state.resultSelection = null;
+    state.live = state.tracking = null;
+    state.previewIndex = null;
+    await refresh();
+    $("structure-picker").close();
+    (state.step === "build"
+      ? $("create")
+      : document.querySelector('[data-step="build"]')
+    ).focus();
+    toast("Alle Strukturen gelöscht.");
+  } finally {
+    updateControls();
+  }
+});
 
 document
   .querySelectorAll("[data-step]")

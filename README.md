@@ -43,22 +43,39 @@ a mode selector switches the chart controls between the reaction path, search ge
 and the imaginary TS mode. Starting structures are labeled “Startstruktur”. The structure picker searches and wraps full molecule names; result names retain only
 the current optimization type.
 
+Step 1 offers only starting structures, with a “Strukturformel / 3D-Startstruktur”
+toggle. It defaults to 2D and remembers the chosen view while switching
+structures or panels. The 3D view allows rotation and zoom and identifies the
+geometry as not yet energy-optimized. Returning
+there from a calculated result selects its source starting structure; returning
+to step 2 restores the result. Explicitly choosing or creating a different
+starting structure makes that structure the next selection in step 2. Minima
+and transition states remain selectable in step 2's 3D view.
+The structure picker also offers “Alle Strukturen löschen” to clear all
+structures and their spectra in the current session after confirmation. This
+includes entries hidden by the current panel or search filter and is unavailable
+while a calculation is active.
+
 TS searches require a converged minimum. A relaxed CNNC torsion scan seeds a
 13-image path toward the opposite cis/trans isomer, preserving atom identity and
 rotating the complete fragment. CNN angles are guided to 120° only during seed
 preparation. The opposite endpoint is then freely minimized. Regular minimum
 searches, opposite endpoints, and connectivity checks all use a final maximum
 atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
-ASE BFGS relaxes
+ASE FIRE relaxes
 two unconstrained NEB halves against a provisionally refined central saddle seed.
 This prevents early corner cutting from removing the barrier. The full band is
-then released for climbing-image NEB, followed by free Sella saddle refinement
-using a full Cartesian Hessian and a 0.005 eV/Å force threshold. The central seed
+then released for climbing-image NEB. Both stages use 0.1 eV/Å² springs;
+stronger springs stalled the trans-2-Me half-path relaxation. Free Sella saddle
+refinement follows, using a full Cartesian Hessian and a 0.005 eV/Å force threshold.
+Candidates with additional imaginary modes are refined to 0.001 eV/Å within the
+shared iteration budget, then their Hessian is recalculated. This resolves soft
+torsions without weakening mode validation. The central seed
 is approached in internal coordinates and finished in Cartesian coordinates;
 final saddle refinement also uses Cartesian coordinates to handle nearly linear
 CNN angles. Both endpoints use
 the same GFN1-xTB/ALPB ethanol
-model as the band. No two-attempt heuristic is used. The full search has a shared
+model as the band. The full search has a shared
 1500-iteration budget, plus the server's wall-time limit.
 
 The live chart shows the evolving band's energy against normalized Cartesian
@@ -124,11 +141,25 @@ for local operation, `dev` for development, or `web-hub` for shared deployment.
 
 ```sh
 pixi run -e dev test-web
+# Dedicated real TS regression set (run whenever investigating a TS failure):
+pixi run -e dev test-ts
+# One case while debugging; rerun the full set before finishing:
+pixi run -e dev test-ts -k trans-2-Me
 # Also run real minimum, UV/Vis and transition-state calculations:
 ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web
 # Frontend polling and short-run replay regressions (Node is test-only):
 node --test tests/test_web_progress.cjs
 ```
+
+The TS regression set is skipped by default. It starts from deterministic template
+geometries and exercises the real web worker, minimum optimization, path search,
+saddle modes and downhill connectivity. Cases cover cis/trans azobenzene,
+cis/trans 2-Me, trans 2-NMe2 and trans 4-NMe2-4′-CF3. Each case retains its input,
+optimized minimum and TS result in `ts-result.json` under pytest's temporary
+directory, including the search history and failure reason. Add new failing
+molecules to this set and run the full `test-ts` set when investigating or fixing
+a TS search failure; normal `test-web` runs do not enable it. The broader
+`ACHPRAK_CHEMISTRY_TESTS=1` run includes this set as well.
 
 Local validation on macOS included the complete chemistry workflow (including
 60 transition-state vibration frames), API session isolation, cancellation and
