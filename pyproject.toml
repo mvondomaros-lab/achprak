@@ -55,6 +55,7 @@ jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }
 site = { cmd = "myst start", cwd = "site" }
 test-web = "pytest tests -q"
 test-ts = "ACHPRAK_TS_TESTS=1 pytest tests -m ts_optimization -q"
+test-science = "ACHPRAK_SCIENCE_TESTS=1 pytest tests/test_science.py -q"
 
 [tool.pytest.ini_options]
 markers = ["ts_optimization: opt-in real minimum-to-TS optimization regression set"]

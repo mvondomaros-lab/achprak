@@ -198,3 +198,23 @@ socket. NGL rendering, optimization playback, 2D structures and spectra were als
 checked in Safari. Linux PAM login and actual switching between Unix accounts
 still need a deployment test on the target server. The optional WebMCP interface
 is feature-detected and needs separate verification in a supporting browser.
+
+### Scientific settings and offline benchmarks
+
+Final property energies and optimization energies both use xTB numerical accuracy
+0.1. Spectra use INDO/S–CIS (MOPAC's `INDO` keyword), COSMO ethanol, and Gaussian
+standard deviation 0.15 eV. The band width is illustrative and is not fitted to
+experiment. Output starts with `WRTCI=100`; if those transitions do not reach
+5.5 eV plus four standard deviations, the calculation requests all states within
+the chosen configuration limit. Insufficient coverage is reported in the UI.
+Coverage of the energy window does not establish convergence with respect to
+the configuration limit. Off-screen transitions do not set the plot's vertical scale.
+
+Run `pixi run -e dev test-science` for the opt-in parent-azobenzene planarity and
+cis/trans ordering guardrail. It is excluded from default tests, like the TS set.
+The reproducible sensitivity study and numerical results are described in
+[the scientific benchmark](docs/science-benchmark.md). It compares GFN1/GFN2,
+force thresholds, spectral configuration limits, and alternative conformations.
+These comparisons measure sensitivity; they are not experimental validation.
+See [the resulting default choices](docs/science-decisions.md) for why GFN1-xTB,
+the 0.002 eV/Å force threshold, and MAXCI=800 are retained.

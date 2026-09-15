@@ -211,6 +211,15 @@
               <p>
                 Ein gefundenes Minimum muss nicht das tiefste sein, und ein
                 anderer Reaktionsweg könnte eine niedrigere Barriere haben.
+              </p>
+              <p>
+                Das Modell verfolgt nur eine elektronische Energielandschaft.
+                Bei Azobenzolen können auch Wechsel zwischen elektronischen
+                Zuständen zur thermischen Umwandlung beitragen; diese werden
+                hier nicht berechnet. Die Barriere liefert daher keine
+                Vorhersage der Lebensdauer der cis-Form.
+              </p>
+              <p>
                 Ethanol wird als umgebendes Medium berücksichtigt, ohne einzelne
                 Lösungsmittelmoleküle darzustellen. Beiträge von
                 Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
@@ -243,14 +252,15 @@
               <p>
                 Licht kann ein Molekül in einen angeregten elektronischen
                 Zustand versetzen. Das Programm MOPAC berechnet mit dem
-                Näherungsverfahren INDO/CIS die dafür benötigten Energien. Es
+                Näherungsverfahren INDO/S–CIS die dafür benötigten Energien. Es
                 geht von Ihrem optimierten Minimum aus und hält die Atomkerne
                 während dieser Rechnung an ihren Positionen fest. So wird eine
                 Anregung beschrieben, die schneller abläuft als die Bewegung der
                 Kerne.
               </p>
               <p>
-                INDO vereinfacht die Beschreibung der Elektronen. CIS
+                INDO/S vereinfacht die Beschreibung der Elektronen und ist für
+                die Berechnung von Spektren angepasst. CIS
                 berücksichtigt Anregungen, bei denen jeweils ein Elektron in ein
                 anderes Orbital wechselt. Ein Orbital beschreibt, wie ein
                 Elektron im Molekül räumlich verteilt sein kann.
@@ -276,10 +286,16 @@
                 gemessene Absorbanz einer Probe; auch die Lage der Banden kann
                 vom Experiment abweichen.
               </p>
+              <p>
+                Für eine kurze Rechenzeit wird die Auswahl der berücksichtigten
+                Elektronenanregungen begrenzt. Eine umfangreichere Rechnung kann
+                die Lage und Stärke der Banden verändern. Vergleichen Sie die
+                Ergebnisse daher als Vorhersagen dieses vereinfachten Modells.
+              </p>
               <dl class="method">
                 <div>
                   <dt>Methode</dt>
-                  <dd>INDO/CIS · MOPAC</dd>
+                  <dd>INDO/S–CIS · MOPAC</dd>
                 </div>
                 <div>
                   <dt>Lösungsmittel</dt>
@@ -291,7 +307,7 @@
                 <div>
                   <dt>Verbreiterung</dt>
                   <dd>
-                    Gauß · σ = 0,3 eV (Standardabweichung als Maß für die
+                    Gauß · σ = 0,15 eV (Standardabweichung als Maß für die
                     Breite)
                   </dd>
                 </div>

@@ -436,6 +436,13 @@ mit der Temperatur ändert. Sie ist nicht generell mit unserer elektronischen En
 $\Delta E^\ddagger$ identisch. In der Übergangszustandstheorie wird die Geschwindigkeit über eine freie
 Aktivierungsenergie $\Delta G^\ddagger$ beschrieben; darin gehen auch thermische Beiträge und Entropie ein.
 Diese Größen berechnet die Webapp nicht. Siehe die [IUPAC-Definition der Aktivierungsenergie](https://goldbook.iupac.org/terms/view/A00102).
+
+Die Rechnung verfolgt außerdem nur eine elektronische Energielandschaft. Bei Azobenzolen können
+Wechsel zwischen Zuständen mit unterschiedlicher Elektronenspin-Anordnung (Singulett und Triplett)
+zur thermischen Isomerisierung beitragen. Solche Zustandswechsel werden hier nicht berechnet.
+Auch eine numerisch bestätigte Übergangsstruktur belegt deshalb nicht den experimentell maßgeblichen
+Reaktionsweg oder die Lebensdauer der cis-Form. Ein Beispiel für die Untersuchung solcher Wege ist
+die [Arbeit von Axelrod und Kollegen](https://arxiv.org/abs/2207.11592).
 ::::
 
 ## Funktionsweise von Photoschaltern

@@ -21,7 +21,7 @@ class DefaultASECalculator(tblite.ase.TBLite):
         self,
         method="GFN1-xTB",
         solvation=("alpb", SOLVENT_NAME),
-        accuracy=1.0,
+        accuracy=OPTIMIZATION_ACCURACY,
         verbosity=0,
     ):
         super().__init__(

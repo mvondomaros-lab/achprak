@@ -402,7 +402,10 @@ function renderSpectrum() {
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
   $("spectrum-caption").textContent =
-    `Maximum im berechneten Bereich: ${fmt(e, 3)} eV · ${fmt(HC / e, 1)} nm.`;
+    `Maximum im berechneten Bereich: ${fmt(e, 3)} eV · ${fmt(HC / e, 1)} nm.` +
+    (spec.coverage_complete === false
+      ? " Die berechneten Übergänge decken den oberen Energiebereich einschließlich der Bandenränder nicht vollständig ab. Dort kann Absorption fehlen."
+      : "");
   $("transitions").replaceChildren();
   spec.excitations_ev.forEach((e, i) => {
     const tr = document.createElement("tr");

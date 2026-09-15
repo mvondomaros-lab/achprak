@@ -5,7 +5,11 @@ from . import common
 
 EMIN = 1.5
 EMAX = 5.5
-SIGMA = 0.3
+SIGMA = 0.15
+MAXCI = 800
+PRINTED_STATES = 100
+# At four standard deviations, an individual Gaussian is below 0.04% of its peak.
+COVERAGE_MARGIN = 4 * SIGMA
 
 
 def parse_mopac_excitations(fname):
@@ -35,24 +39,44 @@ class UVVis:
     Compute a UV-Vis spectrum.
     """
 
-    def __init__(self, atoms):
+    def __init__(self, atoms, maxci=MAXCI):
         self.atoms = atoms
-        xyz = common.atoms_to_xyz(atoms)
-        self.mopac = pymopac.MopacInput(
-            xyz,
-            model=f"INDO CIS MAXCI=800 WRTCI=30 WRTCONF=0.2 EPS={common.SOLVENT_EPS}",
+        self.maxci = maxci
+        self.mopac = self._input(min(PRINTED_STATES, maxci))
+        self.excitations = None
+        self.oscillator_strengths = None
+        self.coverage_complete = False
+
+    def _input(self, printed_states):
+        return pymopac.MopacInput(
+            common.atoms_to_xyz(self.atoms),
+            model=f"INDO CIS MAXCI={self.maxci} WRTCI={printed_states} WRTCONF=0.2 EPS={common.SOLVENT_EPS}",
             addHs=False,
             preopt=False,
             aux=False,
             stream=True,
         )
-        self.excitations = None
-        self.oscillator_strengths = None
 
     def calculate(self):
         self.mopac.run()
         self.excitations, self.oscillator_strengths = parse_mopac_excitations(
             self.mopac.outpath
+        )
+        # WRTCI only controls output. Request all available states if the first
+        # output block does not cover the plot plus the broadening margin.
+        if (
+            self.maxci > PRINTED_STATES
+            # MOPAC counts the ground state in WRTCI: 100 gives 99 transitions.
+            and len(self.excitations) >= PRINTED_STATES - 1
+            and self.excitations.max() < EMAX + COVERAGE_MARGIN
+        ):
+            self.mopac = self._input(self.maxci)
+            self.mopac.run()
+            self.excitations, self.oscillator_strengths = parse_mopac_excitations(
+                self.mopac.outpath
+            )
+        self.coverage_complete = bool(
+            len(self.excitations) and self.excitations.max() >= EMAX + COVERAGE_MARGIN
         )
 
     def spectrum(self):

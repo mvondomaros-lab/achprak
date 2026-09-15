@@ -195,42 +195,60 @@ def calculate(data):
             raise RuntimeError("MOPAC hat keine elektronischen Übergänge ausgegeben.")
         energies, absorption = spec.spectrum()
         import matplotlib.pyplot as plt
-        from matplotlib.ticker import FuncFormatter
+        from matplotlib.ticker import FuncFormatter, MaxNLocator
 
         with plt.rc_context(
             {
-                "font.size": 11,
+                "font.family": "sans-serif",
+                "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
+                "font.size": 9,
+                "axes.labelsize": 9,
                 "axes.facecolor": "white",
                 "figure.facecolor": "white",
-                "axes.edgecolor": "#cbd7e4",
-                "axes.labelcolor": "#37526e",
+                "axes.edgecolor": "#dce4ed",
+                "axes.linewidth": 0.75,
+                "axes.labelcolor": "#586b80",
+                "axes.labelpad": 9,
                 "text.color": "#192d43",
                 "xtick.color": "#586b80",
                 "ytick.color": "#586b80",
                 "grid.color": "#e7edf5",
+                "grid.linewidth": 0.75,
+                "xtick.major.size": 0,
+                "ytick.major.size": 0,
+                "xtick.major.pad": 7,
+                "ytick.major.pad": 7,
                 "svg.fonttype": "none",
             }
         ):
-            fig, ax = plt.subplots(figsize=(9, 5), layout="constrained")
-            ax.plot(energies, absorption, color="#165de1", linewidth=2)
-            ax.fill_between(energies, absorption, color="#165de1", alpha=0.06)
+            fig, ax = plt.subplots(figsize=(9, 3), layout="constrained")
+            ax.set_axisbelow(True)
+            ax.yaxis.grid(True)
+            ax.spines[["top", "right"]].set_visible(False)
+            ax.xaxis.set_major_locator(MaxNLocator(nbins=7))
+            ax.yaxis.set_major_locator(MaxNLocator(nbins=4))
+            ax.plot(energies, absorption, color="#165de1", linewidth=1.5)
             ax.vlines(
                 spec.excitations,
                 0,
                 spec.oscillator_strengths,
-                color="#d88638",
+                color="#c77825",
                 linewidth=1.2,
                 alpha=0.9,
             )
+            visible = (spec.excitations >= uvvis.EMIN) & (
+                spec.excitations <= uvvis.EMAX
+            )
+            peak_height = max(
+                float(absorption.max()),
+                float(spec.oscillator_strengths[visible].max(initial=0)),
+                1e-12,
+            )
             ax.set(
                 xlim=(uvvis.EMIN, uvvis.EMAX),
-                ylim=(
-                    0,
-                    max(float(absorption.max()), float(spec.oscillator_strengths.max()))
-                    * 1.15,
-                ),
+                ylim=(-0.03 * peak_height, 1.15 * peak_height),
                 xlabel="Energie / eV",
-                ylabel="Relative Absorption / a.u.",
+                ylabel="Relative Absorption / willk. Einheiten",
             )
             for axis in (ax.xaxis, ax.yaxis):
                 axis.set_major_formatter(
@@ -241,6 +259,7 @@ def calculate(data):
             wavelengths = np.array([800, 600, 500, 400, 300, 250])
             top.set_xticks(1239.8419843320026 / wavelengths, wavelengths)
             top.set_xlabel("Wellenlänge / nm")
+            top.spines[["left", "right", "bottom"]].set_visible(False)
             top.grid(False)
             image = io.StringIO()
             fig.savefig(image, format="svg")
@@ -254,6 +273,10 @@ def calculate(data):
                 "excitations_ev": spec.excitations.tolist(),
                 "oscillator_strengths": spec.oscillator_strengths.tolist(),
                 "sigma_ev": uvvis.SIGMA,
+                "method": "INDO/S-CIS",
+                "maxci": spec.maxci,
+                "coverage_complete": spec.coverage_complete,
+                "coverage_target_ev": uvvis.EMAX + uvvis.COVERAGE_MARGIN,
             },
         }
     raise ValueError("Unbekannte Berechnung.")
