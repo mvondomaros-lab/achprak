@@ -1,4 +1,4 @@
-"""Course-menu consistency and chemical connectivity of the new acceptors."""
+"""Course-menu consistency and chemical connectivity of CN and NO2."""
 
 import re
 from pathlib import Path
@@ -29,10 +29,13 @@ def test_course_menu_is_consistent():
 
 
 @pytest.mark.parametrize("configuration", ["cis", "trans"])
-@pytest.mark.parametrize("group,formula,pattern", [
-    ("CN", "C13H9N3", "c-C#N"),
-    ("NO2", "C12H9N3O2", "c-[N+](=O)[O-]"),
-])
+@pytest.mark.parametrize(
+    "group,formula,pattern",
+    [
+        ("CN", "C13H9N3", "c-C#N"),
+        ("NO2", "C12H9N3O2", "c-[N+](=O)[O-]"),
+    ],
+)
 def test_acceptor_structure(configuration, group, formula, pattern):
     template = Template(configuration=configuration, r1c3=group)
     assert rdMolDescriptors.CalcMolFormula(template.mol) == formula
@@ -41,7 +44,12 @@ def test_acceptor_structure(configuration, group, formula, pattern):
     perceived = common.atoms_to_mol(template.atoms)
     assert rdMolDescriptors.CalcMolFormula(perceived) == formula
     assert perceived.HasSubstructMatch(Chem.MolFromSmarts(pattern))
-    azo = [b for b in template.mol.GetBonds()
-           if b.GetBeginAtom().GetSymbol() == b.GetEndAtom().GetSymbol() == "N"]
+    azo = [
+        b
+        for b in template.mol.GetBonds()
+        if b.GetBeginAtom().GetSymbol() == b.GetEndAtom().GetSymbol() == "N"
+    ]
     assert len(azo) == 1
-    assert azo[0].GetStereo() == (Chem.BondStereo.STEREOE if configuration == "trans" else Chem.BondStereo.STEREOZ)
+    assert azo[0].GetStereo() == (
+        Chem.BondStereo.STEREOE if configuration == "trans" else Chem.BondStereo.STEREOZ
+    )

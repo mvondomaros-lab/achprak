@@ -54,7 +54,6 @@ def test_api_blocks_only_ts_and_uses_stored_provenance(monkeypatch, values):
         client.get("/api/session")
         manager = app.state.manager
         session = next(iter(manager.sessions.values()))
-        # An old minimum may have settings only on its parent structure.
         session.molecules.update(
             {
                 "initial": {"id": "initial", "kind": "initial", "settings": values},
@@ -63,6 +62,7 @@ def test_api_blocks_only_ts_and_uses_stored_provenance(monkeypatch, values):
                     "kind": "minimum",
                     "converged": True,
                     "parent_id": "initial",
+                    "settings": values,
                 },
             }
         )

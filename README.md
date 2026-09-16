@@ -1,15 +1,10 @@
-# Practical Exercise: Introducing Theoretical Chemistry to First-Year Chemistry Students
+# AChPrak: theoretical chemistry practical
 
-> [!NOTE]
-> This exercise is currently available in German only.
+A German-language web application for first-year chemistry students.
+[Student documentation](https://mvondomaros-lab.github.io/achprak/)
+introduces the calculations and exercises.
 
-## Overview
-
-The materials are available on GitHub Pages:
-
-[![Docs](https://img.shields.io/badge/docs-github%20pages-blue)](https://mvondomaros-lab.github.io/achprak/)
-
-## Web app
+## Run locally
 
 Install [Pixi](https://pixi.sh), clone this repository, then run:
 
@@ -18,240 +13,96 @@ pixi install -e web
 pixi run -e web web
 ```
 
-Open **http://127.0.0.1:8000/**. Python, RDKit, tblite, Sella and MOPAC are managed
-by Pixi. The NGL browser viewer is bundled locally; no Node build or CDN is needed.
+Open **http://127.0.0.1:8000/**. Pixi manages Python and the chemistry tools.
+Browser libraries are bundled locally; no Node build or CDN is needed.
 
 ## Student workflow
 
-The German-language interface has three steps:
+1. Generate a cis or trans starting structure with H, Me, OMe, NMe2, CF3,
+   CN or NO2 at each ring site. Inspect its 2D formula or 3D geometry.
+2. Optimize a local minimum, then optionally search for a transition state
+   (TS). TS searches require a converged minimum with at most two non-H
+   substituents across both rings.
+3. Calculate an INDO/S–CIS UV/Vis spectrum for an optimized minimum.
+   The solution-color preview uses a relative optical-density control;
+   it is not calibrated to concentration or measured solution colors.
 
-1. **Create a starting structure.** Choose cis or trans and the substituents.
-   View the structure as a 2D formula or a rotatable 3D model. The view selector
-   defaults to 2D and remembers the choice when switching structures or steps.
-   The 2D and 3D starts share a fixed ring scaffold: position selectors also
-   preserve the intended starting ring orientation. ETKDG embedding is followed
-   by bounded MMFF preparation (ring torsions within ±45°, azo torsion within
-   ±20° of the drawing). These construction restraints do not enter the xTB
-   optimization. Equivalent ortho positions can therefore construct different
-   starting conformers of the same compound. Existing saved structures are unchanged.
-2. **Optimize a structure.** Search for a local minimum or, from an optimized
-   minimum, a transition state. Inspect the geometry, energy, CNNC dihedral angle
-   and distance between the ring centres.
-3. **Calculate a UV/Vis spectrum.** Use an optimized minimum to predict electronic
-   excitation energies and relative absorption strengths. Explore an approximate
-   solution-color preview under standard daylight with a relative optical density
-   control. This is not calibrated to concentration or measured solution colors;
-   see [the color model and validation plan](docs/solution-color.md).
+Starting structures use deterministic ETKDG embedding and bounded MMFF
+preparation. These construction restraints do not enter the xTB optimization.
+Equivalent ring positions can produce different starting conformers.
+A converged minimum is local; it need not be the global minimum.
 
-The course menu is H, Me, OMe, NMe2, CF3, CN, and NO2. H leaves the site
-unsubstituted. CN attaches through carbon; NO2 attaches through nitrogen.
-F and SO2CF3 are not available in the course menu or eligible for TS searches.
+The structure picker groups related results. Step 1 shows starting structures;
+step 2 shows their calculation results. Calculation status is displayed
+separately from configuration and substitution labels. Students can export
+structure images and spectra as PNG. Each step includes an expandable
+explanation of its method and limitations.
 
-The web application permits transition-state searches only for structures with
-at most two substituents in total from the current course menu.
-The interface explains exclusions before submission; the API and worker enforce
-the same policy using retained template settings. Structure generation, minimum
-optimization, and UV/Vis calculations retain their existing prerequisites.
-Student TS jobs allow the original search and at most one automatic retry,
-chosen from reversed rotation or a more open seed according to the first failure.
-Each attempt retains its 1,500-step budget and full-path validation.
-The same two-attempt limit applies to the standalone optimizer.
+Calculations run in isolated, cancellable worker processes. Accepted geometries
+and energies are retained for optimization playback; TS results include a
+clickable reaction path. Neither playback represents molecular dynamics.
+Completed calculations load their result directly; playback starts on request.
 
-Each step offers an expandable **Was passiert im Hintergrund?** explanation:
-what the method does, how to read the result, and what its limits are.
-The exercise tasks and unit converter are available throughout the app.
+Results belong to a browser session and expire after 24 hours of inactivity
+or a server restart. Reloading the page reconnects to a running calculation.
+**Alle Strukturen löschen** clears the session's structures and spectra after
+confirmation and is unavailable during calculations.
 
-Step 1 lists only starting structures. Returning there from a result selects its
-source starting structure; returning to step 2 restores the result. Explicitly
-choosing or creating a different starting structure carries that selection into
-step 2. The structure picker groups related molecules and searches their names
-and formulas. **Alle Strukturen löschen** clears all structures and spectra in
-that browser session after confirmation, including entries hidden by a search
-or step filter. Clearing is unavailable while a calculation is active.
+## Scientific settings
 
-Structures are generated from predefined configurations and substituents.
-Names are assigned automatically; custom names and XYZ imports are not supported.
-Students can save structure images and spectra as PNG for their lab reports.
+Geometry optimization and energies use GFN1-xTB with ALPB ethanol, numerical
+accuracy 0.1, and a minimum force threshold of 0.002 eV/Å. TS searches allow
+at most two attempts of 1,500 steps each, subject to the server's wall-time
+limit. Confirmation requires a converged saddle, one imaginary internal
+frequency above the numerical magnitude threshold, and downhill connectivity
+to cis and trans minima. The electronic energy barrier ΔE‡ excludes zero-point,
+thermal and entropic corrections; it is not a Gibbs energy of activation.
 
-### Calculation progress and playback
+Spectra use INDO/S–CIS with COSMO ethanol, MAXCI=800 and Gaussian standard
+deviation 0.15 eV. The width is illustrative. Output coverage is checked beyond
+the plotted window, but this does not establish configuration convergence.
 
-Calculations run in isolated worker processes and can be cancelled. During
-optimization, the viewer shows accepted geometries as the browser polls for
-progress. All recorded geometries and energies remain stored, including those
-calculated between polls.
+- [Transition-state method and validation](docs/transition-state.md)
+- [Scientific defaults and limitations](docs/science-decisions.md)
+- [Sensitivity benchmark](docs/science-benchmark.md)
+- [Solution-color model](docs/solution-color.md)
+- [TS screening and regression coverage](docs/ts-screening.md)
 
-The energy chart shows optimization steps during and after minimum searches,
-and the reaction path for transition-state results. No view toggle is needed.
-On either energy chart, clicking a point selects its geometry.
-Arrow keys, Home and End select frames
-when the chart has focus. **Abspielen / Pause** is at the top right of the
-structure heading and repeated beside the chart. Playback resumes at the
-selected frame and stops at the end. Starting playback at the last frame
-restarts it. Manual playback is available for minimum searches and reaction paths. Unstable-mode animations are
-not exposed, including for older results.
+Student-facing text uses German and addresses students as **Sie**.
+See [AGENTS.md](AGENTS.md) for scientific terminology and audience conventions.
 
-Short calculations may finish before students see any live progress. These runs
-replay for up to three seconds, with a clear playback label and a skip button.
-Reduced-motion preferences disable this automatic replay. Neither optimization
-playback nor reaction-path playback represents molecular dynamics.
+## Development and deployment
 
-## Terminology and scientific scope
-
-Use **transition state** (German **Übergangszustand**, abbreviation **TS**) as the
-main teaching term. Use **transition structure** (**Übergangsstruktur**) when
-specifically distinguishing the calculated saddle-point geometry from the wider
-transition-state concept. The student theory page explains this distinction,
-following IUPAC's definitions of [transition state](https://goldbook.iupac.org/terms/view/T06468)
-and [transition structure](https://goldbook.iupac.org/terms/view/T06471).
-
-Call the calculated difference **electronic energy barrier**, $\Delta E^\ddagger$.
-It is not generally the Arrhenius activation energy or a Gibbs energy of activation.
-Student-facing text uses German, addresses students as **Sie**, and explains
-technical terms on first use. Developer documentation and code identifiers use
-English. See [AGENTS.md](AGENTS.md) for the audience and language conventions.
-
-### Transition-state search
-
-TS searches require a converged minimum. A relaxed CNNC torsion scan seeds a
-13-image path toward the opposite cis/trans isomer, preserving atom identity and
-rotating the complete fragment. CNN angles are guided to 120° only during seed
-preparation. The opposite endpoint is then freely minimized. Regular minimum
-searches, opposite endpoints, and connectivity checks all use a final maximum
-atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
-ASE FIRE (L-BFGS on retry attempts) relaxes two unconstrained NEB halves against a provisionally refined central saddle seed.
-This prevents early corner cutting from removing the barrier. The full band is
-then released for climbing-image NEB. Both stages use 0.1 eV/Å² springs;
-stronger springs stalled the trans-2-Me half-path relaxation. Free Sella saddle
-refinement follows, using a full Cartesian Hessian and a 0.005 eV/Å force threshold.
-Candidates with additional imaginary modes are refined to 0.001 eV/Å within the
-shared iteration budget, then their Hessian is recalculated. This resolves soft
-torsions without weakening mode validation. The central seed is approached in internal coordinates and finished in Cartesian coordinates;
-final saddle refinement also uses Cartesian coordinates to handle nearly linear
-CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
-Each attempt shares a 1500-iteration budget across its stages. Student searches
-allow at most two attempts (3,000 steps total) and remain subject to the server's
-wall-time limit. The standalone API uses the same two-attempt limit.
-
-The live chart shows the evolving band's energy against normalized Cartesian
-path length, not optimization time. The live 3D preview follows a moving image
-of the active half-band, then the climbing image during CI-NEB. The plot highlights
-the displayed image. On completion, clickable energy points and the
-single-pass Play controls can show the reaction path or optimization history.
-Both endpoint geometries and their energies are retained
-in the result; the other endpoint is available as the final path image.
-
-A full all-atom finite-difference Hessian (0.01 Å displacement) checks the saddle.
-Rigid translations and rotations are projected out; exactly one imaginary
-internal frequency with magnitude above 20 cm⁻¹ is required. Smaller negative frequencies are tolerated by this numerical criterion;
-they are not proof of additional physical instabilities. Displacement by ±0.15 Å maximum atom motion along the unstable
-mode, followed by unconstrained minimization, must reach one cis and one trans
-minimum with the original atom-mapped bond graph preserved. For this comparison,
-copies of both band endpoints and the downhill minima are optimized to 0.002 eV/Å
-to resolve soft torsions. Polishing takes place after the TS search and preserves
-the original band and its energy reference. These actual downhill
-minima (XYZ, energy, isomer) are retained separately. Matching to the polished
-endpoint references additionally uses aligned RMSD <0.35 Å and energy difference <0.05 eV.
-A different endpoint conformer is explicitly reported; isomer connectivity does
-not establish an exact conformer match. This is a numerical downhill connectivity
-check, **not an IRC** or a proof of the globally lowest barrier. Failed band, saddle,
-mode or cis/trans connectivity checks leave an unconfirmed search state.
-Only a force-converged saddle passing both mode and connectivity checks is labeled
-a TS. Playback is not a dynamics simulation. Barriers are electronic energy differences, not free-energy
-barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
-
-## Development and session lifetime
-
-For development, use `pixi run -e dev web`.
-New jobs load changes to the chemistry workers automatically. Reload the browser
-after HTML/CSS/JS changes; restart the process for changes to the server itself
-(this clears in-memory sessions). Optional command-line settings:
+Use `pixi run -e dev web` for development. New jobs load worker changes;
+reload the browser for frontend changes and restart for server changes.
 
 ```sh
 pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
 ```
 
-Results are held per browser session until server restart or 24 hours of
-inactivity. Download PNG images of structures and spectra for your
-lab report. A page reload reconnects to any running calculation.
+[Deployment instructions](deploy/README.md) cover JupyterHub with Unix accounts,
+authenticated proxying and one app instance per user in the `web-hub` environment.
 
-## Multiple users / self-hosted server
-
-See [deploy/README.md](deploy/README.md) for the included JupyterHub configuration:
-standard Unix accounts via PAM, one app instance per Unix user, authenticated
-proxying, and a private Unix socket for each app. The optional `web-hub` Pixi
-environment contains the server dependencies. Local development needs no Hub.
-
-## Teaching materials
-
-The theory pages remain in `site/`. Regenerate their figures without Jupyter:
-
-```sh
-pixi run -e dev python figures/scripts/figures.py
-```
-
-The web app replaces the notebook interface. Notebook widgets, clipboard helpers,
-and the `local`, `hub`, and `lserver` environments have been removed. Use `web`
-for local operation, `dev` for development, or `web-hub` for shared deployment.
+Teaching materials live in `site/`. Preview with `pixi run -e dev site`.
+Regenerate figures with `pixi run -e dev python figures/scripts/figures.py`.
 
 ## Verification
 
 ```sh
 pixi run -e dev test-web
-# Dedicated real TS regression set (run whenever investigating a TS failure):
+node --test tests/*.cjs
+# Opt-in real chemistry regressions:
 pixi run -e dev test-ts
-# One case while debugging; rerun the full set before finishing:
-pixi run -e dev test-ts -k trans-2-Me
-# Also run real minimum, UV/Vis and transition-state calculations:
+pixi run -e dev test-science
 ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web
-# Frontend polling and short-run replay regressions (Node is test-only):
-node --test tests/test_web_progress.cjs
 ```
 
-The TS regression set is skipped by default. It starts from deterministic template
-geometries and exercises the real web worker, minimum optimization, path search,
-saddle modes and downhill connectivity. Cases cover cis/trans azobenzene,
-cis/trans 2-Me, trans 2-NMe2, trans 4-NMe2-4′-CF3, trans 2-CN and cis 2-NO2. Each case retains its input,
-optimized minimum and TS result in `ts-result.json` under pytest's temporary
-directory, including the search history and failure reason. Add new failing
-molecules to this set and run the full `test-ts` set when investigating or fixing
-a TS search failure; normal `test-web` runs do not enable it. The broader
-`ACHPRAK_CHEMISTRY_TESTS=1` run includes this set as well.
+Expensive chemistry tests are disabled by default. Run the complete `test-ts`
+set whenever investigating a TS search failure; add a deterministic fixture
+for each newly failing molecule. A focused run such as
+`pixi run -e dev test-ts -k trans-2-Me` is useful during debugging.
+Tests retain geometry and search diagnostics in pytest's temporary directory.
+Node is needed only for frontend tests.
 
-The [symmetry-reduced screen](docs/ts-screening.md) covers 750 distinct
-mono- and disubstituted cis/trans starting cases using the six historical groups
-(Me, NMe2, CF3, OMe, F, SO2CF3),
-with two substituents in total allowed anywhere across the two rings.
-Ten failures involving only current substituents remain as exact-geometry
-fixtures in `tests/data/ts_failures/`, alongside a new exact-geometry trans-2-CN
-regression, and are included in `test-ts`. Obsolete
-fixtures using F or SO2CF3 have been removed. The search retains its original
-seed first, then tries at most one failure-directed alternative on failure. Each attempt has a 1500-step
-limit; reported total iterations include all attempts.
-
-Local validation on macOS included the complete chemistry workflow (including
-60 transition-state vibration frames), API session isolation, cancellation and
-timeouts, and the standalone proxy with a `/user/test/` prefix and private Unix
-socket. NGL rendering, optimization playback, 2D structures and spectra were also
-checked in Safari. Linux PAM login and actual switching between Unix accounts
-still need a deployment test on the target server. The optional WebMCP interface
-is feature-detected and needs separate verification in a supporting browser.
-
-### Scientific settings and offline benchmarks
-
-Final property energies and optimization energies both use xTB numerical accuracy
-0.1. Spectra use INDO/S–CIS (MOPAC's `INDO` keyword), COSMO ethanol, and Gaussian
-standard deviation 0.15 eV. The band width is illustrative and is not fitted to
-experiment. Output starts with `WRTCI=100`; if those transitions do not reach
-5.5 eV plus four standard deviations, the calculation requests all states within
-the chosen configuration limit. Insufficient coverage is reported in the UI.
-Coverage of the energy window does not establish convergence with respect to
-the configuration limit. Off-screen transitions do not set the plot's vertical scale.
-
-Run `pixi run -e dev test-science` for the opt-in parent-azobenzene planarity and
-cis/trans ordering guardrail. It is excluded from default tests, like the TS set.
-The reproducible sensitivity study and numerical results are described in
-[the scientific benchmark](docs/science-benchmark.md). It compares GFN1/GFN2,
-force thresholds, spectral configuration limits, and alternative conformations.
-These comparisons measure sensitivity; they are not experimental validation.
-See [the resulting default choices](docs/science-decisions.md) for why GFN1-xTB,
-the 0.002 eV/Å force threshold, and MAXCI=800 are retained.
+See [repository contents and local files](docs/repository-layout.md) for Git
+tracking decisions, generated assets and PyCharm exclusions.

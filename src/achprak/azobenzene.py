@@ -20,11 +20,6 @@ class Template:
         "CN": "(C#N)",
         "NO2": "([N+](=O)[O-])",
     }
-    # Preserve historical benchmarks and regression fixtures outside the course menu.
-    legacy_substituent_smiles = {
-        "F": "(F)",
-        "SO2CF3": "(S(=O)(=O)C(F)(F)F)",
-    }
 
     def __init__(
         self,
@@ -59,17 +54,16 @@ class Template:
         self.atoms = self._init_atoms()
 
     def _init_smiles(self) -> str:
-        fragments = {**self.legacy_substituent_smiles, **self.substituent_smiles}
         smiles = ["c1"]
         for carbon in range(5):
             sub = self.substituents[carbon]
-            smiles.append(fragments[sub])
+            smiles.append(self.substituent_smiles[sub])
             smiles.append("c")
         smiles.append("1N=Nc2")
         for carbon in range(5):
             smiles.append("c")
             sub = self.substituents[carbon + 5]
-            smiles.append(fragments[sub])
+            smiles.append(self.substituent_smiles[sub])
         smiles.append("2")
         smiles = "".join(smiles)
 

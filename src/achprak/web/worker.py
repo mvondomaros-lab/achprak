@@ -66,8 +66,8 @@ def read_atoms(xyz):
     atoms = common.xyz_to_atoms(xyz)
     if not np.isfinite(atoms.positions).all() or np.abs(atoms.positions).max() > 10000:
         raise ValueError("Ungültige Atomkoordinaten.")
-    if set(atoms.get_chemical_symbols()) - {"H", "C", "N", "O", "F", "S"}:
-        raise ValueError("Unterstützte Elemente: H, C, N, O, F und S.")
+    if set(atoms.get_chemical_symbols()) - {"H", "C", "N", "O", "F"}:
+        raise ValueError("Unterstützte Elemente: H, C, N, O und F.")
     return atoms
 
 
@@ -75,6 +75,7 @@ def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     mol = mol if mol is not None else common.atoms_to_mol(atoms)
     flat = Chem.RemoveHs(Chem.Mol(mol))
     from achprak.conformation import draw_coordinates
+
     draw_coordinates(flat)
     drawer = rdMolDraw2D.MolDraw2DSVG(700, 340)
     drawer.drawOptions().clearBackground = False
@@ -184,9 +185,6 @@ def calculate(data):
         m["frames"] = [
             a.positions[a.numbers != 0].reshape(-1).tolist() for a in (opt.traj or [])
         ]
-        m["trajectory_kind"] = (
-            "vibration" if kind == "ts" and converged else "optimization"
-        )
         if kind == "ts":
             m["ts_search"] = {
                 "method": "ci_neb_then_sella",

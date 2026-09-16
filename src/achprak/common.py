@@ -65,11 +65,7 @@ def atoms_to_mol(atoms, charge=0):
     """
     Construct an RDKit Mol object from an ASE Atoms object.
     """
-    with io.StringIO() as f:
-        ase.io.write(f, atoms, format="xyz")
-        f.seek(0)
-        xyz = f.read()
-
+    xyz = atoms_to_xyz(atoms)
     mol = rdkit.Chem.rdmolfiles.MolFromXYZBlock(xyz)
     # Distance-only perception can turn a short nonbonded S...N contact into
     # a charged covalent ring in crowded sulfonyl-substituted azobenzenes.
@@ -87,24 +83,42 @@ def atoms_to_mol(atoms, charge=0):
         )
         repaired = False
         for atom in mol.GetAtoms():
-            if atom.GetSymbol() != "N" or atom.GetDegree() != 3 or atom.GetFormalCharge() != 0:
+            if (
+                atom.GetSymbol() != "N"
+                or atom.GetDegree() != 3
+                or atom.GetFormalCharge() != 0
+            ):
                 continue
-            oxygens = [a for a in atom.GetNeighbors() if a.GetSymbol() == "O"
-                       and a.GetDegree() == 1 and a.GetNumRadicalElectrons() == 1]
-            if len(oxygens) != 2 or not any(a.GetSymbol() == "C" for a in atom.GetNeighbors()):
+            oxygens = [
+                a
+                for a in atom.GetNeighbors()
+                if a.GetSymbol() == "O"
+                and a.GetDegree() == 1
+                and a.GetNumRadicalElectrons() == 1
+            ]
+            if len(oxygens) != 2 or not any(
+                a.GetSymbol() == "C" for a in atom.GetNeighbors()
+            ):
                 continue
-            if any(mol.GetBondBetweenAtoms(atom.GetIdx(), o.GetIdx()).GetBondType()
-                   != rdkit.Chem.BondType.SINGLE for o in oxygens):
+            if any(
+                mol.GetBondBetweenAtoms(atom.GetIdx(), o.GetIdx()).GetBondType()
+                != rdkit.Chem.BondType.SINGLE
+                for o in oxygens
+            ):
                 continue
             atom.SetFormalCharge(1)
             oxygens[0].SetFormalCharge(-1)
             for oxygen in oxygens:
                 oxygen.SetNumRadicalElectrons(0)
-            mol.GetBondBetweenAtoms(atom.GetIdx(), oxygens[1].GetIdx()).SetBondType(rdkit.Chem.BondType.DOUBLE)
+            mol.GetBondBetweenAtoms(atom.GetIdx(), oxygens[1].GetIdx()).SetBondType(
+                rdkit.Chem.BondType.DOUBLE
+            )
             repaired = True
         rdkit.Chem.SanitizeMol(mol)
-        if not repaired or rdkit.Chem.GetFormalCharge(mol) != charge or any(
-            atom.GetNumRadicalElectrons() for atom in mol.GetAtoms()
+        if (
+            not repaired
+            or rdkit.Chem.GetFormalCharge(mol) != charge
+            or any(atom.GetNumRadicalElectrons() for atom in mol.GetAtoms())
         ):
             raise error
     return mol

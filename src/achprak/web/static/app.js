@@ -2,8 +2,8 @@
 const $ = (id) => document.getElementById(id);
 const SUBS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"];
 function substituentLabel(text) {
-  return text.replace(/\b(?:SO2CF3|NMe2|CF3|NO2)\b/g, (sub) =>
-    ({ SO2CF3: "SO₂CF₃", NMe2: "NMe₂", CF3: "CF₃", NO2: "NO₂" })[sub],
+  return text.replace(/\b(?:NMe2|CF3|NO2)\b/g, (sub) =>
+    ({ NMe2: "NMe₂", CF3: "CF₃", NO2: "NO₂" })[sub],
   );
 }
 for (let r = 0; r < 2; r++) {
@@ -44,7 +44,6 @@ const state = {
   job: null,
   live: null,
   tracking: null,
-  playbackMode: "optimization",
   playbackMolecule: null,
   previewIndex: null,
 };
@@ -424,7 +423,6 @@ function renderState() {
   if (state.playbackMolecule !== m?.id) {
     stopAnimation();
     state.playbackMolecule = m?.id;
-    state.playbackMode = m?.ts_search?.path?.length ? "path" : "optimization";
     state.previewIndex = null;
   }
   if (state.live && state.live.source_id !== m?.id) state.live = null;
@@ -583,7 +581,6 @@ function selectEnergyPoint(event, _elements, chart) {
   const point = points.reduce((a, b) =>
     Math.abs(a.x - x) <= Math.abs(b.x - x) ? a : b,
   );
-  state.playbackMode = point.phase === "path" ? "path" : "optimization";
   const data = playbackData();
   const index = data.records.findIndex((p) =>
     point.phase === "path" ? p.image === point.image : p.step === point.x,

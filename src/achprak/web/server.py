@@ -254,7 +254,9 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             if fresh:
                 if request.url.path != "/api/session" or request.method != "GET":
                     return JSONResponse(
-                        {"detail": "Die Sitzung ist abgelaufen. Laden Sie die Seite neu, um eine neue Sitzung zu starten."},
+                        {
+                            "detail": "Die Sitzung ist abgelaufen. Laden Sie die Seite neu, um eine neue Sitzung zu starten."
+                        },
                         status_code=401,
                     )
                 if len(manager.sessions) >= 100:
@@ -298,7 +300,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def state(request: Request):
         s = request.state.session
         return {
-            "molecules": [with_ts_policy(m, s.molecules) for m in s.molecules.values()],
+            "molecules": [with_ts_policy(m) for m in s.molecules.values()],
             "jobs": list(s.jobs.values()),
             "user": os.environ.get("JUPYTERHUB_USER"),
             "timeout": timeout,
@@ -312,7 +314,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             m = session.molecules.get(body.molecule_id)
             if m is None:
                 raise HTTPException(404, "Struktur nicht gefunden.")
-            m = with_ts_policy(m, session.molecules)
+            m = with_ts_policy(m)
             if body.kind == "minimum" and m["kind"] == "minimum":
                 raise HTTPException(
                     422,
@@ -365,7 +367,10 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def clear_molecules(request: Request):
         session = request.state.session
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
-            raise HTTPException(409, "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.")
+            raise HTTPException(
+                409,
+                "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.",
+            )
         session.molecules.clear()
         return {"status": "deleted"}
 
@@ -373,7 +378,10 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def delete_molecule(molecule_id: str, request: Request):
         session = request.state.session
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
-            raise HTTPException(409, "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.")
+            raise HTTPException(
+                409,
+                "Warten Sie auf den Abschluss der laufenden Berechnung oder brechen Sie diese ab.",
+            )
         if session.molecules.pop(molecule_id, None) is None:
             raise HTTPException(404, "Struktur nicht gefunden.")
         return {"status": "deleted"}

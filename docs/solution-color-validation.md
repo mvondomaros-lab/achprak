@@ -1,4 +1,4 @@
-# Initial solution-color validation
+# Solution-color validation
 
 The transmission-to-sRGB implementation passes independent numerical checks.
 The INDO/S–CIS spectrum does **not** reproduce the measured spectral shape of
@@ -27,9 +27,9 @@ wavelength shift or width is applied. For illustrative color integration only,
 assume zero corrected absorption from 750 to 780 nm. These baseline and endpoint
 treatments are approximations, not additional measurements.
 
-## Fresh calculation and results
+## Calculation and results
 
-A fresh production `Template(configuration="trans")`, `OptMin.run()` and
+A production `Template(configuration="trans")`, `OptMin.run()` and
 `UVVis.calculate()` run converged and passed transition-output coverage. It used
 seed 42, GFN1-xTB/ALPB ethanol, force threshold 0.002 eV/Å, INDO/S–CIS/MAXCI=800,
 EPS=24.3, and Gaussian sigma 0.15 eV, with one BLAS/OpenMP thread. It reproduced
@@ -61,8 +61,7 @@ This is sensitivity to an assumed width, not an uncertainty bound.
 Independent NumPy integration using the original checksum-verified CIE CSVs,
 rather than the bundled browser table, agrees with production JavaScript at five
 density factors (0, 0.1, 1, 5, 10): identical rounded sRGB and luminance differences
-below 1e-12. All 33 JavaScript numerical/UI logic tests pass. No browser was
-available, so visual-layout verification is not claimed.
+below 1e-12. These numerical checks do not verify browser layout.
 
 The offline script takes the published CIE CSVs (see [provenance](solution-color.md)),
 the experimental file, and a production JSON containing `energy_ev`, `absorption`,

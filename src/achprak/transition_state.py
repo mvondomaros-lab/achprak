@@ -71,7 +71,7 @@ class OptTS:
     def run(self, steps=1500, observer=None, *, max_attempts=2):
         """Try up to ``max_attempts`` deterministic seeds (at most two).
 
-        Retain the original route first. A crowded endpoint can relax back to
+        Start with a 120° seed and FIRE. A crowded endpoint can relax back to
         the source isomer, while substituent conformations can stall one sense
         of rotation. Alternative seeds still require the full unconstrained
         saddle, frequency, and connectivity validation. Alternative attempts
@@ -135,8 +135,7 @@ class OptTS:
             index += 1
         self.iterations_used = sum(a["iterations"] for a in self.attempts)
         self.search_traj = frames
-        if not ok:
-            self.traj = list(frames)
+        self.traj = list(frames)
         return ok
 
     def _run_path(
@@ -539,10 +538,6 @@ class OptTS:
             )
         images[peak_index] = atoms
         self.path = self.path_records(images)
-        for phase in np.linspace(0, 2 * np.pi, 60):
-            frame = atoms.copy()
-            frame.positions += np.sin(phase) * 0.15 * mode
-            self.traj.append(frame)
         return True
 
     @staticmethod

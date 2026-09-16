@@ -16,6 +16,9 @@ spec.loader.exec_module(screen)
 
 def test_symmetry_orbits_match_canonical_stereochemical_graphs(tmp_path):
     raw = list(screen.cases("both-rings"))
+    assert {s for case in raw for s in case["substituents"]} == set(
+        Template.substituent_smiles
+    )
     by_key, by_smiles = {}, {}
     for case in raw:
         # Only construct the molecular graph, avoiding embedding/optimization.

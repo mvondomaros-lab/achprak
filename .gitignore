@@ -1,13 +1,33 @@
-# Results
-results
+# Calculation and benchmark output (keep curated fixtures in tests/data).
+/results/
 
-# Cache
-.ipynb_checkpoints
-.virtual_documents
-__pycache__
+# Local Python environments, packaging and tool caches.
+/.pixi/
+/.venv/
+/build/
+/dist/
 *.egg-info/
+__pycache__/
+*.py[cod]
 .pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+.coverage.*
+/htmlcov/
 
-# System
+# Editor state and notebook caches.
+/.idea/
+.ipynb_checkpoints/
+.virtual_documents/
+
+# Generated figure previews. Published teaching figures stay versioned.
+/figures/outputs/*
+!/figures/outputs/jablonski.png
+!/figures/outputs/line-spectrum.png
+!/figures/outputs/uvvis-spectrum.png
+!/figures/outputs/profile.png
+!/figures/outputs/photoswitch-mechanism.png
+
+# System files.
 .DS_Store
-.idea

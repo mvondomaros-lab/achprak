@@ -89,38 +89,14 @@ test("short optimizations load the result directly without automatic playback", 
   }
 });
 
-test("playback uses search frames and never exposes legacy TS vibration frames", () => {
+test("playback uses recorded steps and falls back to stored optimization frames", () => {
   const records = [record(0), record(1)];
-  const molecule = {
-    trajectory_kind: "vibration",
-    frames: [
-      [5, 0, 0],
-      [6, 0, 0],
-    ],
-  };
+  const molecule = { frames: [[5, 0, 0], [6, 0, 0]] };
   const search = progress.playback(molecule, records, "optimization");
-  assert.deepEqual(
-    search.frames,
-    records.map((r) => r.positions),
-  );
+  assert.deepEqual(search.frames, records.map((r) => r.positions));
   assert.equal(search.kind, "optimization");
-  assert.deepEqual(
-    progress.playback(molecule, records, "vibration").frames,
-    records.map((r) => r.positions),
-  );
-  assert.equal(
-    progress.playback(molecule, [], "optimization").kind,
-    "optimization",
-  );
-  assert.deepEqual(progress.playback(molecule, [], "vibration").frames, []);
-  assert.deepEqual(
-    progress.playback(
-      { trajectory_kind: "optimization", frames: [[1, 2, 3]] },
-      [],
-      "optimization",
-    ).frames,
-    [[1, 2, 3]],
-  );
+  assert.deepEqual(progress.playback(molecule, [], "optimization").frames, molecule.frames);
+  assert.deepEqual(progress.playback(null, [], "optimization").frames, []);
 });
 
 test("Play resumes paused and selected steps, synchronizes geometry and energy, and never loops", () => {
@@ -137,7 +113,6 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
       step: "optimize",
       busy: false,
       mode: "3d",
-      playbackMode: "optimization",
       previewIndex: null,
     },
     component: {},
@@ -284,7 +259,6 @@ test("NEB snapshots survive polling and reaction-path playback remains separate 
   assert.deepEqual(parsed, [r]);
   const molecule = {
     id: "m",
-    trajectory_kind: "vibration",
     frames: [[0, 0, 0]],
     ts_search: { path },
   };
@@ -301,10 +275,6 @@ test("NEB snapshots survive polling and reaction-path playback remains separate 
   assert.equal(
     progress.playback(molecule, parsed, "optimization").records[0].step,
     12,
-  );
-  assert.equal(
-    progress.playback(molecule, parsed, "vibration").kind,
-    "optimization",
   );
 });
 
@@ -329,7 +299,6 @@ test("energy chart shows only reaction coordinates and describes the path", () =
       step: "optimize",
       selected: "m",
       busy: false,
-      playbackMode: "path",
       live: null,
     },
     current: () => m,
@@ -364,7 +333,6 @@ test("energy chart shows only reaction coordinates and describes the path", () =
   context.renderEnergyHistory(1);
   assert.equal(chart.data.datasets[1].data[0].x, 0.5);
   context.state.live = null;
-  context.state.playbackMode = "optimization";
   context.renderEnergyHistory(8);
   assert.deepEqual(
     Array.from(chart.data.datasets[0].data, (p) => p.x),
@@ -393,7 +361,6 @@ test("energy chart shows only reaction coordinates and describes the path", () =
     [0, 0.5, 1],
   );
   context.state.busy = false;
-  context.state.playbackMode = "path";
   context.state.live = null;
   context.renderEnergyHistory();
   assert.equal(chart.data.datasets[1].data.length, 1);
@@ -609,7 +576,6 @@ test("minimum energy history appears live and remains available after completion
       step: "optimize",
       selected: "m",
       busy: false,
-      playbackMode: "optimization",
     },
     current: () => m,
     fmt: String,
@@ -675,17 +641,17 @@ test("minimum energy history appears live and remains available after completion
 test("plot clicks select the matching structure, including reaction paths, and ignore unavailable interactions", () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
   const selected = [];
+  let pathSelected = false;
   const context = vm.createContext({
     state: {
       busy: false,
       mode: "3d",
       step: "optimize",
-      playbackMode: "optimization",
     },
     component: {},
     playbackData: () => ({
       records:
-        context.state.playbackMode === "path"
+        pathSelected
           ? [{ image: 2 }, { image: 5 }, { image: 9 }]
           : [{ step: 0 }, { step: 4 }, { step: 10 }],
     }),
@@ -716,14 +682,13 @@ test("plot clicks select the matching structure, including reaction paths, and i
   context.selectEnergyPoint({ x: 3, y: 50 }, [], chart);
   context.selectEnergyPoint({ x: 10, y: 50 }, [], chart);
   assert.deepEqual(selected, [1, 2]);
-  context.state.playbackMode = "vibration";
+  pathSelected = true;
   chart.data.datasets[0].data = [
     { x: 0, y: 0, image: 2, phase: "path" },
     { x: 0.5, y: 1, image: 5, phase: "path" },
     { x: 1, y: 0, image: 9, phase: "path" },
   ];
   context.selectEnergyPoint({ x: 0.6, y: 50 }, [], chart);
-  assert.equal(context.state.playbackMode, "path");
   assert.deepEqual(selected, [1, 2, 1]);
   context.state.busy = true;
   context.selectEnergyPoint({ x: 1, y: 50 }, [], chart);
@@ -1279,7 +1244,7 @@ test("minimum playback uses its optimization history without a mode toggle", () 
   const data = context.playbackData();
   assert.equal(data.kind, "optimization");
   assert.deepEqual(Array.from(data.frames), records.map((p) => p.positions));
-  molecule = { id: "ts", ts_search: {}, trajectory_kind: "vibration", frames: [[0, 0, 0]] };
+  molecule = { id: "ts", ts_search: {}, frames: [[0, 0, 0]] };
   assert.equal(context.playbackData().frames.length, 0);
 });
 

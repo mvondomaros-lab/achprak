@@ -207,7 +207,10 @@ def test_minimum_spectrum_and_transition_state(client):
     assert progress and progress[-1]["phase"] == "complete"
     # Earlier phases may have left the bounded live log; check the full history below.
     assert progress[-1]["source_id"] == minimum["id"]
-    assert len(ts["frames"]) == 60
+    assert len(ts["frames"]) == len(ts["optimization_history"])
+    np.testing.assert_allclose(
+        ts["frames"], [p["positions"] for p in ts["optimization_history"]], atol=1e-6
+    )
     assert ts["ts_search"]["validation"]["verified"]
     assert ts["ts_search"]["validation"]["imaginary_count"] == 1
     assert (
@@ -215,7 +218,6 @@ def test_minimum_spectrum_and_transition_state(client):
         == 3 * ts["atom_count"] - 6
     )
     assert ts["ts_search"]["barrier_ev"] > 0
-    np.testing.assert_allclose(ts["frames"][0], ts["frames"][-1], atol=1e-10)
     history = ts["optimization_history"]
     assert history[0]["step"] == 0
     assert history[0]["phase"] == "endpoint"
@@ -399,7 +401,10 @@ def test_ts_paths_from_cis_and_substituted_minima(
             p["neb_path"][p["neb_image"]]["energy_ev"]
         )
     assert history[-1]["fmax_ev_angstrom"] <= 0.005
-    assert len(ts["frames"]) == 60
+    assert len(ts["frames"]) == len(ts["optimization_history"])
+    np.testing.assert_allclose(
+        ts["frames"], [p["positions"] for p in ts["optimization_history"]], atol=1e-6
+    )
 
 
 @pytest.mark.parametrize("kind", ["minimum", "ts"])

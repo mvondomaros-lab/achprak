@@ -67,7 +67,7 @@ def main():
         "",
         "Shifts are 800 minus 2000 configurations at the same tight geometry. "
         "Both runs request WRTCI=200 (199 transitions in this MOPAC build). "
-        "The previous WRTCI=30 output contains 29 transitions. "
+        "WRTCI=30 output contains 29 transitions. "
         "The plotted upper limit plus four Gaussian standard deviations is 6.1 eV.",
         "",
         "| Molecule | Geometry method | First excitation shift / eV | Peak shift / eV | 800 / 2000 time / s | Last transition with WRTCI=30 / eV |",
@@ -108,7 +108,7 @@ def main():
         "",
         "The largest absolute energy change from evaluating the tight geometry with "
         f"xTB accuracy 1.0 instead of 0.1 is {max(abs(r['accuracy1_energy_ev'] - r['tight_energy_ev']) for r in records):.3g} eV. "
-        "The app now uses 0.1 for both geometry optimization and final energy reporting.",
+        "The app uses 0.1 for both geometry optimization and final energy reporting.",
     ]
     text += [
         "",

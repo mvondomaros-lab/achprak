@@ -39,7 +39,7 @@ Energy change is E(loose) − E(tight). All rows retain the same molecular compo
 
 ## Configuration cutoff and output coverage
 
-Shifts are 800 minus 2000 configurations at the same tight geometry. Both runs request WRTCI=200 (199 transitions in this MOPAC build). The previous WRTCI=30 output contains 29 transitions. The plotted upper limit plus four Gaussian standard deviations is 6.1 eV.
+Shifts are 800 minus 2000 configurations at the same tight geometry. Both runs request WRTCI=200 (199 transitions in this MOPAC build). WRTCI=30 output contains 29 transitions. The plotted upper limit plus four Gaussian standard deviations is 6.1 eV.
 
 | Molecule | Geometry method | First excitation shift / eV | Peak shift / eV | 800 / 2000 time / s | Last transition with WRTCI=30 / eV |
 |---|---|---:|---:|---:|---:|
@@ -81,7 +81,7 @@ Absolute total energies from different xTB methods must not be compared. Spectra
 | cis-2-OMe-seed7 | 5.5000 | 3.8263 |
 | trans-sulfonyl | 2.8614 | 3.0816 |
 
-The largest absolute energy change from evaluating the tight geometry with xTB accuracy 1.0 instead of 0.1 is 1.57e-07 eV. The app now uses 0.1 for both geometry optimization and final energy reporting.
+The largest absolute energy change from evaluating the tight geometry with xTB accuracy 1.0 instead of 0.1 is 1.57e-07 eV. The app uses 0.1 for both geometry optimization and final energy reporting.
 
 ## Parent-isomer energy ordering
 

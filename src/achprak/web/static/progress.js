@@ -65,9 +65,7 @@ globalThis.OptimizationProgress = {
       kind: "optimization",
       frames: records.length
         ? records.map((p) => p.positions)
-        : molecule?.trajectory_kind === "vibration"
-          ? []
-          : molecule?.frames || [],
+        : molecule?.frames || [],
       records,
     };
   },

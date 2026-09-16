@@ -13,12 +13,20 @@ import platform
 import time
 from pathlib import Path
 
-import numpy as np
 import pymopac
 import sella
 from rdkit.Chem import AllChem
 
 from achprak import azobenzene, common, uvvis
+
+
+class BenchmarkTemplate(azobenzene.Template):
+    """Include the sulfonyl comparison used by this offline sensitivity study."""
+
+    substituent_smiles = {
+        **azobenzene.Template.substituent_smiles,
+        "SO2CF3": "(S(=O)(=O)C(F)(F)F)",
+    }
 
 
 CASES = [
@@ -74,7 +82,7 @@ def main():
     (root / "environment.json").write_text(json.dumps(metadata, indent=2))
     report = []
     for name, configuration, substitutions, seed in CASES:
-        template = azobenzene.Template(configuration=configuration, **substitutions)
+        template = BenchmarkTemplate(configuration=configuration, **substitutions)
         if seed != 42:
             params = AllChem.ETKDGv3()
             params.randomSeed = seed

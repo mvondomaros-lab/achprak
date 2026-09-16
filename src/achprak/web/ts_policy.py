@@ -26,20 +26,5 @@ def ts_restriction(settings):
     return None
 
 
-def molecule_settings(molecule, molecules):
-    """Resolve provenance for existing sessions whose minima predate settings."""
-    seen = set()
-    while molecule is not None:
-        if isinstance(molecule.get("settings"), dict):
-            return molecule["settings"]
-        parent = molecule.get("parent_id")
-        if not parent or parent in seen:
-            break
-        seen.add(parent)
-        molecule = molecules.get(parent)
-    return None
-
-
-def with_ts_policy(molecule, molecules):
-    settings = molecule_settings(molecule, molecules)
-    return dict(molecule, settings=settings, ts_restriction=ts_restriction(settings))
+def with_ts_policy(molecule):
+    return dict(molecule, ts_restriction=ts_restriction(molecule.get("settings")))
