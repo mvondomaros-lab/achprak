@@ -1410,10 +1410,11 @@ test("Logout uses the public Hub URL and disappears in local mode", async () => 
   await context.refresh();
   assert.equal(elements.get("hub-logout").href, "/jhub/hub/logout");
   assert.equal(elements.get("hub-logout").hidden, false);
-  assert.equal(elements.get("user-label").textContent, "Angemeldet als student");
+  assert.equal(elements.get("hub-logout").title, "Angemeldet als student");
+  assert.equal(elements.get("hub-logout").ariaLabel, "Abmelden (student)");
   session = { molecules: [], user: null, hub: null };
   await context.refresh();
   assert.equal(elements.get("hub-logout").hidden, true);
   assert.equal(elements.get("hub-logout").href, "");
-  assert.equal(elements.get("user-label").textContent, "");
+  assert.equal(elements.get("hub-logout").title, "");
 });

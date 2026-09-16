@@ -523,10 +523,10 @@ async function refresh(selected, finishCalculation = false) {
         : state.molecules.at(-1)?.id),
     !!selected || state.step !== "build" || !state.resultSelection,
   );
-  $("user-label").textContent = data.user ? `Angemeldet als ${data.user}` : "";
-  $("user-label").hidden = !data.user;
   $("hub-logout").hidden = !data.hub?.logout;
   $("hub-logout").href = data.hub?.logout || "";
+  $("hub-logout").title = data.user ? `Angemeldet als ${data.user}` : "";
+  $("hub-logout").ariaLabel = data.user ? `Abmelden (${data.user})` : "Abmelden";
   renderState();
   return data;
 }
