@@ -267,6 +267,10 @@ def calculate(data):
             visible = (spec.excitations >= uvvis.EMIN) & (
                 spec.excitations <= uvvis.EMAX
             )
+            ax.scatter(
+                spec.excitations[visible], spec.oscillator_strengths[visible],
+                color="#c77825", s=16, zorder=3,
+            )
             peak_height = max(
                 float(absorption.max()),
                 float(spec.oscillator_strengths[visible].max(initial=0)),
@@ -282,6 +286,9 @@ def calculate(data):
                 axis.set_major_formatter(
                     FuncFormatter(lambda value, _: f"{value:g}".replace(".", ","))
                 )
+            ax.xaxis.set_major_formatter(
+                FuncFormatter(lambda value, _: f"{value:.4f}".replace(".", ","))
+            )
             top = ax.twiny()
             top.set_xlim(ax.get_xlim())
             wavelengths = np.array([800, 600, 500, 400, 300, 250])

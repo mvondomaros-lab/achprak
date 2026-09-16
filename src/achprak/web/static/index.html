@@ -140,15 +140,11 @@
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        Die Startstruktur wurde noch nicht mit dem elektronischen
-                        Strukturmodell zu einem Minimum optimiert.
-                        Bei gleicher cis/trans-Konfiguration sind unterschiedliche
-                        räumliche Anordnungen der Ringe und Substituenten möglich.
-                        Über die Positionen in der Zeichnung wählen Sie eine Startanordnung.
-                        In Schritt 2 wird ausgehend davon ein lokales Energieminimum gesucht.
-                        Dabei sind die Ringdrehungen nicht mehr eingeschränkt.
-                        Unterschiedliche Startanordnungen können zum selben oder zu
-                        verschiedenen lokalen Minima führen.
+                        Die erzeugten Startstrukturen sind noch nicht mit dem
+                        elektronischen Strukturmodell optimiert. Ihre Atomabstände
+                        und Bindungswinkel können sich bei der Geometrieoptimierung
+                        in Schritt 2 ändern; auch die Ringe können sich drehen.
+                        Erst in diesem Schritt wird ein lokales Energieminimum gesucht.
                     </p>
                     <dl class="method">
                         <div>
@@ -317,6 +313,30 @@
                         Kleinere Anregungsenergien entsprechen längeren Wellenlängen.
                         Eine Verschiebung dorthin heißt bathochrome Verschiebung.
                     </p>
+                    <h3>Wie wird die Farbe geschätzt?</h3>
+                    <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
+                        aus der blauen Kurve abgelesen. Mit dem gewählten Faktor s setzen wir die
+                        dimensionslose optische Dichte A = s · I an. Der durchgelassene Lichtanteil ist
+                        T = 10<sup>−A</sup>. Bei Faktor 0 wird das gesamte Licht durchgelassen.</p>
+                    <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
+                        CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
+                        Die CIE ist die Internationale Beleuchtungskommission. Die Darstellung nimmt
+                        eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz fehlen.</p>
+                    <p>Die Vorschau gilt nur für die ausgewählte Struktur, ohne cis/trans-Gemisch und
+                        ohne Mittelung über weitere räumliche Anordnungen. Ethanol ist im Spektrenmodell
+                        als kontinuierliches Medium beschrieben. Die Bandenbreite ist illustrativ;
+                        ein Vergleich mit einem gemessenen Spektrum von trans-Azobenzol in Ethanol zeigt
+                        Abweichungen der Bandenlagen um etwa 44 und 58 nm sowie eine zu schwache sichtbare Bande.
+                        Daraus lässt sich keine zuverlässige Vorhersage der tatsächlichen Lösungsfarbe ableiten.
+                        Die Konzentration bei 1 cm Schichtdicke lässt sich aus dem Faktor nicht bestimmen.
+                        Bildschirm und Umgebungslicht beeinflussen den Farbeindruck.</p>
+                    <p>Daten: CIE (2019),
+                        <a href="https://doi.org/10.25039/CIE.DS.xvudnb9b" target="_blank" rel="noopener">Standardbeobachter</a>
+                        und <a href="https://doi.org/10.25039/CIE.DS.hjfjmt59" target="_blank"
+                               rel="noopener">Tageslicht D65</a>,
+                        Ausschnitt 380–780 nm;
+                        <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"
+                           rel="noopener">CC BY-SA 4.0</a>.</p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         Das Spektrum ist eine Modellvorhersage für eine einzelne
@@ -348,7 +368,7 @@
                         <div>
                             <dt>Verbreiterung</dt>
                             <dd>
-                                Gauß · σ = 0,15 eV (Standardabweichung als Maß für die
+                                Gauß · σ = 0,1500 eV (Standardabweichung als Maß für die
                                 Breite)
                             </dd>
                         </div>
@@ -551,50 +571,8 @@
                                 Verändern Sie den Faktor, um den Einfluss stärkerer Absorption zu untersuchen.
                                 Er entspricht keiner bekannten Konzentration. Beim Vergleich mit Messdaten für trans-Azobenzol
                                 wird die sichtbare Bande stark unterschätzt. Die tatsächliche Lösungsfarbe kann deutlich abweichen.</p>
-                            <details>
-                                <summary>Wie wird die Farbe geschätzt?</summary>
-                                <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
-                                    aus der blauen Kurve abgelesen. Mit dem gewählten Faktor s setzen wir die
-                                    dimensionslose optische Dichte A = s · I an. Der durchgelassene Lichtanteil ist
-                                    T = 10<sup>−A</sup>. Bei Faktor 0 wird das gesamte Licht durchgelassen.</p>
-                                <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
-                                    CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
-                                    Die CIE ist die Internationale Beleuchtungskommission. Die Darstellung nimmt
-                                    eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz fehlen.</p>
-                                <p>Die Vorschau gilt nur für die ausgewählte Struktur, ohne cis/trans-Gemisch und
-                                    ohne Mittelung über weitere räumliche Anordnungen. Ethanol ist im Spektrenmodell
-                                    als kontinuierliches Medium beschrieben. Die Bandenbreite ist illustrativ;
-                                    ein Vergleich mit einem gemessenen Spektrum von trans-Azobenzol in Ethanol zeigt
-                                    Abweichungen der Bandenlagen um etwa 44 und 58 nm sowie eine zu schwache sichtbare Bande.
-                                    Daraus lässt sich keine zuverlässige Vorhersage der tatsächlichen Lösungsfarbe ableiten.
-                                    Die Konzentration bei 1 cm Schichtdicke lässt sich aus dem Faktor nicht bestimmen.
-                                    Bildschirm und Umgebungslicht beeinflussen den Farbeindruck.</p>
-                                <p>Daten: CIE (2019),
-                                    <a href="https://doi.org/10.25039/CIE.DS.xvudnb9b" target="_blank" rel="noopener">Standardbeobachter</a>
-                                    und <a href="https://doi.org/10.25039/CIE.DS.hjfjmt59" target="_blank"
-                                           rel="noopener">Tageslicht D65</a>,
-                                    Ausschnitt 380–780 nm;
-                                    <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"
-                                       rel="noopener">CC BY-SA 4.0</a>.</p>
-                            </details>
                         </div>
                     </section>
-                    <details>
-                        <summary>Elektronische Übergänge</summary>
-                        <div class="table-wrap">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Angeregter Zustand</th>
-                                    <th>Anregungsenergie / eV</th>
-                                    <th>Wellenlänge / nm</th>
-                                    <th>Oszillatorstärke</th>
-                                </tr>
-                                </thead>
-                                <tbody id="transitions"></tbody>
-                            </table>
-                        </div>
-                    </details>
                 </div>
             </div>
         </section>
@@ -652,7 +630,7 @@
         Die Energie E eines Photons und seine Wellenlänge λ hängen über E = hc / λ
         zusammen. Dabei ist h die Planck-Konstante und c die Lichtgeschwindigkeit
         im Vakuum. eV steht für Elektronenvolt, kJ/mol für Kilojoule pro Mol
-        und nm für Nanometer. 1 eV pro Molekül entspricht etwa 96,49 kJ/mol.
+        und nm für Nanometer. 1,0000 eV pro Molekül entspricht etwa 96,49 kJ/mol.
     </p>
     <div class="conversion-fields">
         <label
@@ -660,7 +638,7 @@
                 id="convert-ev"
                 type="number"
                 step="any"
-                value="3"/></label
+                value="3.0000"/></label
         ><label
     >Energie / kJ mol⁻¹<input
             id="convert-kj"

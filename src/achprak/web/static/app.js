@@ -382,25 +382,11 @@ function renderSpectrum() {
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
   $("spectrum-caption").textContent =
-    `Absorptionsmaximum im dargestellten Energiebereich: ${fmt(e, 3)} eV · ${fmt(HC / e, 1)} nm.` +
+    `Absorptionsmaximum im dargestellten Energiebereich: ${fmt(e, 4)} eV.` +
     (spec.coverage_complete === false
       ? " Die berechneten Übergänge decken den oberen Energiebereich einschließlich der Bandenränder nicht vollständig ab. Die Absorption in diesem Bereich kann dadurch unterschätzt werden."
       : "");
-  $("transitions").replaceChildren();
-  spec.excitations_ev.forEach((e, i) => {
-    const tr = document.createElement("tr");
-    [
-      i + 1,
-      fmt(e, 4),
-      fmt(HC / e, 1),
-      fmt(spec.oscillator_strengths[i], 4),
-    ].forEach((value) => {
-      const td = document.createElement("td");
-      td.textContent = value;
-      tr.append(td);
-    });
-    $("transitions").append(tr);
-  });
+
 }
 function renderSolutionColor() {
   const density = Number($("solution-color-density").value);
@@ -463,7 +449,7 @@ function renderState() {
   $("ts-summary").textContent = !ts
     ? ""
     : m.converged
-      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev * EV_KJ, 1)} kJ/mol`
+      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV`
       : "Übergangszustand noch nicht bestätigt.";
   $("ts-details").hidden = state.step !== "optimize" || !ts;
   $("ts-check-result").textContent = !ts
@@ -663,7 +649,7 @@ function renderEnergyHistory(activeStep) {
                   ? `Struktur auf dem Reaktionspfad ${items[0].raw.image + 1}`
                   : `${{ endpoint: "Anderes Minimum", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Geometrie des Übergangszustands verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
               label: (item) =>
-                `E = ${fmt(item.raw.energy, 6)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
+                `E = ${fmt(item.raw.energy, 4)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
             },
           },
         },
@@ -687,7 +673,7 @@ function renderEnergyHistory(activeStep) {
               font: plotStyle.titleFont, padding: { top: 0, bottom: 10 },
             },
             ticks: {
-              maxTicksLimit: 5, color: plotStyle.text,
+              maxTicksLimit: 5, color: plotStyle.text, callback: (value) => fmt(value, 4),
               font: plotStyle.font, padding: 8,
             },
             grid: { color: plotStyle.grid, lineWidth: 1, drawTicks: false },
@@ -748,11 +734,14 @@ function renderSpectrumChart(spec) {
     spectrumChart = new Chart($("spectrum-chart"), {
       type: "line",
       data: { datasets: [
-        { label: "Verbreiterte Banden", data: [], borderColor: "#165de1",
+        { label: "Verbreiterte Banden", order: 1, data: [], borderColor: "#165de1",
           borderWidth: 2, pointRadius: 0, tension: 0 },
         { label: "Diskrete Übergänge", data: [], borderColor: "#c77825",
-          borderWidth: 1.5, pointRadius: 0, spanGaps: false },
-        { label: "Ausgewählter Übergang", data: [], borderColor: "#995511",
+          borderWidth: 1.5, backgroundColor: "#c77825",
+          pointRadius: (context) => context.dataIndex % 3 === 1 ? 3 : 0,
+          pointHoverRadius: (context) => context.dataIndex % 3 === 1 ? 5 : 0,
+          spanGaps: false },
+        { label: "Ausgewählter Übergang", order: -1, data: [], borderColor: "#995511",
           backgroundColor: "#995511", borderWidth: 3, pointRadius: [0, 4] },
       ] },
       options: {
@@ -761,7 +750,7 @@ function renderSpectrumChart(spec) {
         onClick: selectSpectrumTransition,
         plugins: { legend: { display: false }, tooltip: { enabled: false } },
         scales: {
-          x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks },
+          x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks, callback: (value) => fmt(value, 4) },
             grid: { display: false, drawTicks: false }, border: { color: plotStyle.border } },
           wavelength: { type: "linear", position: "top", title: title("Wellenlänge / nm"),
             afterBuildTicks: (axis) => { axis.ticks = [800, 600, 500, 400, 300, 250]
@@ -1381,7 +1370,7 @@ function convert(source) {
   for (const key in values)
     if (key !== source)
       $("convert-" + key).value = Number.isFinite(values[key])
-        ? Number(values[key].toPrecision(9))
+        ? key === "ev" ? values[key].toFixed(4) : Number(values[key].toPrecision(9))
         : "";
 }
 for (const key of ["ev", "kj", "nm"])
