@@ -20,14 +20,16 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
+from .ts_policy import with_ts_policy
+
 STATIC = Path(__file__).parent / "static"
-SUBSTITUENTS = ["H", "Me", "NMe2", "CF3", "OMe", "F", "SO2CF3"]
+SUBSTITUENTS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]
 ACTIVE = {"queued", "running"}
 
 
 class Settings(BaseModel):
     configuration: Literal["trans", "cis"] = "trans"
-    substituents: list[Literal["H", "Me", "NMe2", "CF3", "OMe", "F", "SO2CF3"]] = Field(
+    substituents: list[Literal["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]] = Field(
         default_factory=lambda: ["H"] * 10, min_length=10, max_length=10
     )
 
@@ -296,7 +298,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     async def state(request: Request):
         s = request.state.session
         return {
-            "molecules": list(s.molecules.values()),
+            "molecules": [with_ts_policy(m, s.molecules) for m in s.molecules.values()],
             "jobs": list(s.jobs.values()),
             "user": os.environ.get("JUPYTERHUB_USER"),
             "timeout": timeout,
@@ -310,6 +312,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             m = session.molecules.get(body.molecule_id)
             if m is None:
                 raise HTTPException(404, "Struktur nicht gefunden.")
+            m = with_ts_policy(m, session.molecules)
             if body.kind == "minimum" and m["kind"] == "minimum":
                 raise HTTPException(
                     422,
@@ -320,6 +323,8 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
                     422,
                     "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch.",
                 )
+            if body.kind == "ts" and m["ts_restriction"]:
+                raise HTTPException(422, m["ts_restriction"])
             if body.kind == "uvvis" and m["kind"] != "minimum":
                 raise HTTPException(
                     422,

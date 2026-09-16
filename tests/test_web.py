@@ -169,10 +169,10 @@ def test_template_names_follow_configuration_and_substituents(client):
         "template",
         settings={
             "configuration": "cis",
-            "substituents": ["F", "H", "Me"] + ["H"] * 6 + ["OMe"],
+            "substituents": ["NO2", "H", "Me"] + ["H"] * 6 + ["OMe"],
         },
     )["molecule"]
-    assert m["name"] == "cis-2-F, 4-Me, 6′-OMe-Azobenzol"
+    assert m["name"] == "cis-2-NO2, 4-Me, 6′-OMe-Azobenzol"
     assert m["base_name"] == m["name"]
     assert m["kind"] == "initial"
 
@@ -257,6 +257,7 @@ def test_live_optimization_records(client):
     )
     job_id = response.json()["id"]
     minimum = finish(client, job_id)["molecule"]
+    assert minimum["settings"] == initial["settings"]
     rejected = client.post(
         "/api/jobs",
         headers=HEADERS,
@@ -342,6 +343,8 @@ def test_ts_paths_from_cis_and_substituted_minima(
         f"{ts.get('ts_search', {}).get('failure_reason')}; diagnostics: {report}"
     )
     search = ts["ts_search"]
+    assert search["max_attempts"] == 2
+    assert len(search["attempts"]) <= 2
     assert search["source_minimum_id"] == minimum["id"]
     assert search["validation"]["verified"]
     assert search["validation"]["imaginary_count"] == 1

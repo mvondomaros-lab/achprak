@@ -73,11 +73,13 @@ In diesem Versuch treten die folgenden Substituenten auf:
 | Gruppenformel | Abkürzung | Name des Substituenten   |
 |--------------|-----------|--------------------------|
 | CH₃          | Me        | Methyl                   |
+| OCH₃         | OMe       | Methoxy                  |
 | N(CH₃)₂      | NMe₂      | (Dimethylamino)          |
 | CF₃          | CF₃       | (Trifluormethyl)         |
-| OCH₃         | OMe       | Methoxy                  |
-| F            | F         | Fluor                    |
-| SO₂CF₃       | SO₂CF₃    | (Trifluormethansulfonyl) |
+| C≡N          | CN        | Cyano                    |
+| NO₂          | NO₂       | Nitro                    |
+
+H steht in der Auswahl für ein Wasserstoffatom; an dieser Position wird kein Substituent eingeführt.
 
 Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* oder *tetra-* angezeigt. Wird z. B. beim
 2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht

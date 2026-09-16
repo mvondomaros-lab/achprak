@@ -1374,6 +1374,31 @@ select {
 }
 
 #spectrum-chart { cursor: pointer; }
+.solution-color {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 20px 24px;
+  padding: 20px;
+  border: 1px solid var(--line, #dce4ed);
+  border-radius: 12px;
+  background: white;
+}
+.solution-color-swatch {
+  flex: 0 0 100px;
+  height: 120px;
+  border: 1px solid #b8c4d1;
+  border-radius: 6px;
+}
+.solution-color-controls { min-width: 0; flex: 1; }
+.solution-color-controls h3 { margin: 0 0 8px; }
+.solution-color-controls label { display: block; margin-top: 14px; font-size: 13px; }
+.solution-color-controls input { width: 100%; accent-color: #165de1; }
+.solution-color-controls details { margin-top: 12px; font-size: 13px; line-height: 1.6; }
+@media (max-width: 600px) {
+  .solution-color { flex-direction: column; margin: 16px 12px; padding: 16px; }
+  .solution-color-swatch { flex: none; width: 100%; height: 72px; }
+}
 .spectrum-selection {
   margin: 0 24px 12px;
   color: var(--muted);

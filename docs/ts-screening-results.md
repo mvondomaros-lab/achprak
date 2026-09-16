@@ -2,8 +2,9 @@
 
 ## Coverage and outcome
 
-The exhaustive screen covers the six supported substituents (Me, NMe2, CF3,
+The exhaustive screen covers the six historical substituents (Me, NMe2, CF3,
 OMe, F, SO2CF3), with one or two substituents in total across either ring.
+It does not establish coverage for CN and NO2 in the revised course menu.
 Independent ring reflections and exchange of the two rings reduce 3,300
 labeled cis/trans cases to **750 distinct starting cases** (375 substitution
 patterns). Enumeration was independently checked against canonical RDKit

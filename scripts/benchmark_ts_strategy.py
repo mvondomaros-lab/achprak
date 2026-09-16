@@ -1,10 +1,11 @@
-"""Sequential, opt-in comparison of TS strategies on identical saved minima.
+"""Paired, opt-in comparison of TS strategies on identical saved minima.
 
 Uses all baseline failures plus a deterministic sample of successful cases.
 No production search settings or acceptance thresholds are changed.
 """
 
 import argparse
+import concurrent.futures
 import contextlib
 from functools import partial
 import hashlib
@@ -12,6 +13,7 @@ import importlib.metadata
 import importlib.util
 import json
 import math
+import multiprocessing
 import os
 from pathlib import Path
 import time
@@ -65,9 +67,33 @@ def run(record, strategy, source):
         common.xyz_to_atoms(record["minimum_xyz"]), calc=CountingCalculator()
     )
     started = time.perf_counter()
+    cpu_started = time.process_time()
     result = {"id": record["id"], "strategy": strategy, "converged": False}
     try:
-        result["converged"] = bool(search.run(steps=1500, observer=observe))
+        if strategy == "open150_lbfgs":
+            # Exactly the production final fallback, attempted directly once.
+            # All path, saddle, frequency and connectivity stages still run.
+            ok = search._run_path(
+                1500,
+                observe,
+                reverse=False,
+                seed_angle=150.0,
+                downhill_steps=50,
+                use_lbfgs=True,
+            )
+            search.attempts = [
+                {
+                    "reverse_rotation": False,
+                    "seed_angle_deg": 150.0,
+                    "band_optimizer": "LBFGS",
+                    "iterations": search.iterations_used,
+                    "converged": bool(ok),
+                    "failure_reason": search.failure_reason,
+                }
+            ]
+        else:
+            ok = search.run(steps=1500, observer=observe)
+        result["converged"] = bool(ok)
         if result["converged"]:
             frequencies = search.validation["frequencies_cm1"]
             assert len(frequencies) == 3 * len(search.atoms) - 6
@@ -93,8 +119,82 @@ def run(record, strategy, source):
     except Exception:
         result["converged"] = False
         result["error"] = traceback.format_exc()
-    result.update(counts, seconds=time.perf_counter() - started)
+    result.update(
+        counts,
+        seconds=time.perf_counter() - started,
+        cpu_seconds=time.process_time() - cpu_started,
+    )
     return result
+
+
+def select_controls(records, count):
+    """Balance cis/trans and mono/same-ring/cross-ring substitution patterns."""
+    buckets = {}
+    for record in records:
+        values = record["substituents"]
+        pattern = (
+            "mono"
+            if values.count("H") == 9
+            else "cross_ring"
+            if any(v != "H" for v in values[:5]) and any(v != "H" for v in values[5:])
+            else "same_ring"
+        )
+        buckets.setdefault((record["configuration"], pattern), []).append(record)
+    for bucket in buckets.values():
+        bucket.sort(key=lambda r: hashlib.sha256(r["id"].encode()).hexdigest())
+    selected = []
+    while len(selected) < count:
+        added = False
+        for key in sorted(buckets):
+            if buckets[key] and len(selected) < count:
+                selected.append(buckets[key].pop(0))
+                added = True
+        if not added:
+            break
+    return selected
+
+
+def run_pair(record, strategies, output, source, hashes):
+    """Run both methods consecutively in one single-threaded process."""
+    for name, digest in hashes.items():
+        if hashlib.sha256(Path(name).read_bytes()).hexdigest() != digest:
+            raise RuntimeError(f"Benchmark source changed: {name}")
+    root = Path(output)
+    results = []
+    for strategy in strategies:
+        path = root / (record["id"] + "-" + strategy + ".json")
+        if path.exists():
+            results.append(json.loads(path.read_text()))
+            continue
+        with (
+            path.with_suffix(".log").open("w") as log,
+            contextlib.redirect_stdout(log),
+            contextlib.redirect_stderr(log),
+        ):
+            result = run(record, strategy, Path(source))
+        result["cohort"] = record["cohort"]
+        result["strategy_order"] = strategies
+        temporary = path.with_suffix(".json.tmp")
+        temporary.write_text(json.dumps(result, indent=2, allow_nan=False))
+        temporary.replace(path)
+        results.append(result)
+        print(
+            json.dumps(
+                {
+                    key: result[key]
+                    for key in (
+                        "id",
+                        "strategy",
+                        "cohort",
+                        "converged",
+                        "seconds",
+                        "calculator_calls",
+                    )
+                }
+            ),
+            flush=True,
+        )
+    return [r["id"] for r in results]
 
 
 def main():
@@ -102,6 +202,7 @@ def main():
     parser.add_argument("--screen", type=Path, default=Path("results/ts-screen"))
     parser.add_argument("--output", type=Path, default=Path("results/ts-strategy"))
     parser.add_argument("--controls", type=int, default=12)
+    parser.add_argument("--workers", type=int, choices=range(1, 5), default=1)
     parser.add_argument(
         "--failures",
         type=Path,
@@ -111,7 +212,7 @@ def main():
     parser.add_argument("--case", action="append", help="Restrict to explicit case IDs")
     parser.add_argument(
         "--strategy",
-        choices=("current", "dynamic_neb", "lbfgs_neb"),
+        choices=("current", "dynamic_neb", "lbfgs_neb", "open150_lbfgs"),
         action="append",
     )
     args = parser.parse_args()
@@ -122,24 +223,28 @@ def main():
     ]
     records = [r for r in records if "minimum_xyz" in r]
     by_id = {r["id"]: r for r in records}
+    failure_ids = set()
     for path in args.failures.glob("*.json"):
         record = json.loads(path.read_text())
         if "minimum_xyz" in record:
-            by_id.setdefault(record["id"], dict(record, converged=False))
+            # The saved failing conformer takes precedence over later results.
+            by_id[record["id"]] = dict(record, converged=False)
+            failure_ids.add(record["id"])
     records = list(by_id.values())
     if args.case:
         records = [r for r in records if r["id"] in args.case]
         if {r["id"] for r in records} != set(args.case):
             parser.error("Some requested cases have no saved minimum")
     else:
-        controls = sorted(
-            (r for r in records if r["converged"]),
-            key=lambda r: hashlib.sha256(r["id"].encode()).hexdigest(),
-        )[: args.controls]
+        controls = select_controls(
+            [r for r in records if r["converged"]], args.controls
+        )
         records = [r for r in records if not r["converged"]] + controls
     records.sort(key=lambda r: r["id"])
+    for record in records:
+        record["cohort"] = "saved_failure" if record["id"] in failure_ids else "control"
     source = Path("src/achprak/transition_state.py")
-    strategies = args.strategy or ["current", "lbfgs_neb"]
+    strategies = args.strategy or ["current", "open150_lbfgs"]
     manifest = {
         "source_sha256": {
             str(p): hashlib.sha256(p.read_bytes()).hexdigest()
@@ -159,42 +264,37 @@ def main():
             for r in records
         },
         "strategies": strategies,
-        "workers": 1,
+        "workers": args.workers,
+        "cohorts": {r["id"]: r["cohort"] for r in records},
+        "order": {
+            r["id"]: strategies[:: (-1 if i % 2 else 1)] for i, r in enumerate(records)
+        },
+        "control_selection": "stable hash within six configuration/substitution strata",
     }
     args.output.mkdir(parents=True, exist_ok=True)
     manifest_path = args.output / "manifest.json"
     if manifest_path.exists() and json.loads(manifest_path.read_text()) != manifest:
         parser.error("Benchmark inputs changed; use a new output directory")
     manifest_path.write_text(json.dumps(manifest, indent=2))
-    for record in records:
-        for strategy in strategies:
-            path = args.output / (record["id"] + "-" + strategy + ".json")
-            if path.exists():
-                continue
-            with (
-                path.with_suffix(".log").open("w") as log,
-                contextlib.redirect_stdout(log),
-                contextlib.redirect_stderr(log),
-            ):
-                result = run(record, strategy, source)
-            temporary = path.with_suffix(".json.tmp")
-            temporary.write_text(json.dumps(result, indent=2, allow_nan=False))
-            temporary.replace(path)
-            print(
-                json.dumps(
-                    {
-                        key: result[key]
-                        for key in (
-                            "id",
-                            "strategy",
-                            "converged",
-                            "seconds",
-                            "calculator_calls",
-                        )
-                    }
-                ),
-                flush=True,
+    archived = args.output / "transition_state.py"
+    archived.write_bytes(source.read_bytes())
+    with concurrent.futures.ProcessPoolExecutor(
+        max_workers=args.workers,
+        mp_context=multiprocessing.get_context("spawn"),
+    ) as pool:
+        pending = [
+            pool.submit(
+                run_pair,
+                r,
+                manifest["order"][r["id"]],
+                args.output,
+                archived,
+                manifest["source_sha256"],
             )
+            for r in records
+        ]
+        for future in concurrent.futures.as_completed(pending):
+            future.result()
 
 
 if __name__ == "__main__":

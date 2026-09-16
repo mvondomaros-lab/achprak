@@ -9,7 +9,7 @@ Run the symmetry-reduced screen with up to four workers:
 MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-screen-unique
 ```
 
-The six non-hydrogen groups in `Template.substituent_smiles` are combined at
+The six historical non-hydrogen groups fixed in `scripts/screen_ts.py` are combined at
 all available ring positions, with one or two substituents in total. Mixed
 and repeated substituents are included. Independent reflection of each ring
 and exchange of the two rings identify equivalent substitution patterns;
@@ -34,11 +34,12 @@ that different embeddings lead to the same minimum or transition structure.
 The earlier first-ring enumeration contained 780 labeled cis/trans cases before
 symmetry reduction. Completed results are retained under `results/ts-screen/`; the expanded
 screen uses `results/ts-screen-unique/`, with reused-record hashes in
-`reuse-provenance.json`. This enumeration covers the six supported groups,
+`reuse-provenance.json`. This enumeration covers the six historical groups
+(Me, NMe2, CF3, OMe, F, SO2CF3), not the revised course menu with CN and NO2,
 not all possible chemical substituents.
 
 Each case uses deterministic seed 42 and follows the application's XYZ
-serialization and 500-step minimum optimization. The TS search tries up to
+serialization and 500-step minimum optimization. The standalone research TS search tries up to
 four deterministic seeds, with 1500 optimization steps per attempt. The
 original 120-degree CNN seed runs first. On failure, the search tries reversed
 rotation and a more open 135-degree seed. A final 150-degree seed is tried
@@ -99,14 +100,14 @@ failure, since no valid TS search can start in that case.
 ## Comparing reliability and cost
 
 The optional `scripts/benchmark_ts_strategy.py` compares the current bounded
-four-seed policy with L-BFGS band relaxation, using identical
+four-seed policy with a direct 150°/L-BFGS attempt, using identical
 saved source minima. Every candidate must produce a fully optimized path. It
-includes every saved failure and 12 passing controls selected by a stable
-hash of the case ID. It records calculator calls and wall time, including
-frequency and connectivity validation. Comparisons run sequentially with one
-numerical thread to avoid competition between benchmark workers.
+includes every saved failure and 12 passing controls balanced by configuration
+and substitution pattern, using a stable hash of the case ID. It records calculator calls and wall time, including
+frequency and connectivity validation. Comparisons default to one worker;
+`--workers` allows up to four, with one numerical thread per worker.
 
-The L-BFGS candidate changes only the optimizer used to relax the band, keeping
+The optional `lbfgs_neb` candidate changes only the optimizer used to relax the band, keeping
 the maximum step size and all convergence criteria. It uses no line search.
 
 The optional dynamic candidate (`--strategy dynamic_neb`) uses a uniform
@@ -119,3 +120,34 @@ does not change the production optimizer. See the
 ```sh
 MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-screen-unique
 ```
+
+### Direct 150°/L-BFGS comparison
+
+Use `--strategy current --strategy open150_lbfgs` to compare the production
+fallback policy with its final 150°/L-BFGS seed attempted directly once. The
+candidate retains the 1,500-step budget, full path optimization, and all
+frequency/connectivity checks. It has no further fallback.
+
+The benchmark includes every saved failure and 12 passing controls, balanced
+across cis/trans and mono-, same-ring di-, and cross-ring disubstitution.
+Selection within each stratum uses a stable case-ID hash. Each worker runs
+both methods consecutively for one molecule, alternating their order across
+molecules. Elapsed time, process CPU time, and calculator calls are recorded;
+calculator calls provide a comparison less sensitive to worker contention.
+Failures must be reported separately from speed ratios for successful pairs.
+
+```sh
+MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-screen-unique --output results/ts-open150-comparison --workers 4 --strategy current --strategy open150_lbfgs
+```
+
+## Student retry limit
+
+Web TS searches are limited to the original attempt and one failure-directed
+retry (`max_attempts=2`). All 14 saved failures meeting the classroom eligibility
+rules succeeded on their second attempt in the recorded full regression run.
+Seven needed reversed 120° rotation and seven needed the open 135° seed.
+The third attempt and 150° fallback are therefore disabled for student jobs.
+The unrestricted research default remains four attempts. The complete real
+chemistry suite exercises eligible saved failures with the two-attempt limit
+and excluded cases with the research limit; frequency, path-force, and
+connectivity checks are unchanged.

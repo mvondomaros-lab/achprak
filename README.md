@@ -28,11 +28,36 @@ The German-language interface has three steps:
 1. **Create a starting structure.** Choose cis or trans and the substituents.
    View the structure as a 2D formula or a rotatable 3D model. The view selector
    defaults to 2D and remembers the choice when switching structures or steps.
+   The 2D and 3D starts share a fixed ring scaffold: position selectors also
+   preserve the intended starting ring orientation. ETKDG embedding is followed
+   by bounded MMFF preparation (ring torsions within ±45°, azo torsion within
+   ±20° of the drawing). These construction restraints do not enter the xTB
+   optimization. Equivalent ortho positions can therefore construct different
+   starting conformers of the same compound. Existing saved structures are unchanged.
 2. **Optimize a structure.** Search for a local minimum or, from an optimized
    minimum, a transition state. Inspect the geometry, energy, CNNC dihedral angle
    and distance between the ring centres.
 3. **Calculate a UV/Vis spectrum.** Use an optimized minimum to predict electronic
-   excitation energies and relative absorption strengths.
+   excitation energies and relative absorption strengths. Explore an approximate
+   solution-color preview under standard daylight with a relative optical density
+   control. This is not calibrated to concentration or measured solution colors;
+   see [the color model and validation plan](docs/solution-color.md).
+
+The course menu is H, Me, OMe, NMe2, CF3, CN, and NO2. H leaves the site
+unsubstituted. CN attaches through carbon; NO2 attaches through nitrogen.
+F and SO2CF3 remain supported internally for historical regression fixtures and
+existing sessions, but cannot be selected for new web structures.
+
+The web application permits transition-state searches only for structures with
+at most two substituents in total. Existing SO2CF3 structures retain their exclusion
+at positions 2, 6, 2′, or 6′.
+The interface explains exclusions before submission; the API and worker enforce
+the same policy using retained template settings. Structure generation, minimum
+optimization, and UV/Vis calculations retain their existing prerequisites.
+Student TS jobs allow the original search and at most one automatic retry,
+chosen from reversed rotation or a more open seed according to the first failure.
+Each attempt retains its 1,500-step budget and full-path validation.
+The standalone research optimizer and screening scripts retain up to four attempts.
 
 Each step offers an expandable **Was passiert im Hintergrund?** explanation:
 what the method does, how to read the result, and what its limits are.
@@ -105,8 +130,9 @@ shared iteration budget, then their Hessian is recalculated. This resolves soft
 torsions without weakening mode validation. The central seed is approached in internal coordinates and finished in Cartesian coordinates;
 final saddle refinement also uses Cartesian coordinates to handle nearly linear
 CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
-Each attempt shares a 1500-iteration budget across its stages; the complete search
-allows at most four attempts and remains subject to the server's wall-time limit.
+Each attempt shares a 1500-iteration budget across its stages. Student searches
+allow at most two attempts (3,000 steps total) and remain subject to the server's
+wall-time limit. The unrestricted research API defaults to four attempts.
 
 The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
@@ -194,7 +220,8 @@ a TS search failure; normal `test-web` runs do not enable it. The broader
 `ACHPRAK_CHEMISTRY_TESTS=1` run includes this set as well.
 
 The [symmetry-reduced screen](docs/ts-screening.md) covers 750 distinct
-mono- and disubstituted cis/trans starting cases using the six supported groups,
+mono- and disubstituted cis/trans starting cases using the six historical groups
+(Me, NMe2, CF3, OMe, F, SO2CF3),
 with two substituents in total allowed anywhere across the two rings.
 Failures are preserved as exact-geometry fixtures in `tests/data/ts_failures/`
 and included in `test-ts`. The search retains its original seed first, then

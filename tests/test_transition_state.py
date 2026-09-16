@@ -94,8 +94,9 @@ def test_close_sulfur_nitrogen_contact_preserves_template_connectivity():
 
 @pytest.mark.parametrize("failure_kind", ["endpoint", "path", "connectivity"])
 @pytest.mark.parametrize("succeed_on", [1, 2, 4, None])
+@pytest.mark.parametrize("max_attempts", [1, 2, 4])
 def test_seed_retries_restore_source_and_account_for_all_work(
-    monkeypatch, failure_kind, succeed_on
+    monkeypatch, failure_kind, succeed_on, max_attempts
 ):
     from achprak.transition_state import OptTS
 
@@ -125,9 +126,12 @@ def test_seed_retries_restore_source_and_account_for_all_work(
 
     monkeypatch.setattr(OptTS, "_run_path", attempt)
     assert search.run(
-        steps=7, observer=lambda a, i, p: observed.append((i, a.info["ts_attempt"]))
-    ) == (succeed_on is not None)
-    count = succeed_on or 4
+        steps=7,
+        observer=lambda a, i, p: observed.append((i, a.info["ts_attempt"])),
+        max_attempts=max_attempts,
+    ) == (succeed_on is not None and succeed_on <= max_attempts)
+    count = min(succeed_on or 4, max_attempts)
+    assert search.max_attempts == max_attempts
     assert len(search.attempts) == count
     assert search.iterations_used == sum(range(1, count + 1))
     assert observed == list(enumerate(range(1, count + 1)))
@@ -143,5 +147,5 @@ def test_seed_retries_restore_source_and_account_for_all_work(
     if count == 4:
         assert seeds[-1]["seed_angle"] == 150
         assert seeds[-1]["reverse"] is False
-    if succeed_on is None:
+    if succeed_on is None or succeed_on > max_attempts:
         assert len(search.traj) == count

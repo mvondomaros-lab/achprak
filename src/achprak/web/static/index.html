@@ -6,11 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-34"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-35"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-33" defer></script>
-    <script src="static/app.js?v=ui-39" defer></script>
+    <script src="static/vendor/cie-color.js?v=1" defer></script>
+    <script src="static/solution-color.js?v=1" defer></script>
+    <script src="static/app.js?v=ui-41" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -115,8 +117,12 @@
                         Das Programm RDKit erzeugt daraus mit dem Verfahren ETKDG eine
                         dreidimensionale Startstruktur. Dabei verwendet es typische
                         Atomabstände, Bindungswinkel und bevorzugte Verdrehungen um
-                        Bindungen. Diese Struktur dient als Ausgangspunkt für die
-                        anschließende Geometrieoptimierung.
+                        Bindungen. Anschließend werden die Ringe entsprechend der
+                        2D-Formel ausgerichtet. Eine kurze Vorbereitung mit dem
+                        molekularmechanischen Modell MMFF verringert enge Atomkontakte;
+                        dabei bleibt die gewählte Ringanordnung erhalten.
+                        Diese Struktur dient als Ausgangspunkt für die anschließende
+                        Geometrieoptimierung mit dem elektronischen Strukturmodell.
                     </p>
                     <h3>Darstellung der Ergebnisse</h3>
                     <p>
@@ -124,15 +130,25 @@
                         Bindungen und Substituenten, aber keine maßstabsgetreuen
                         Abstände. Mit „3D“ wechseln Sie zur räumlichen
                         Ansicht und können das Molekül drehen und vergrößern. Beide
-                        Darstellungen gehören zum selben Molekül.
+                        Darstellungen zeigen dieselbe gewählte Startanordnung.
+                        Die Ringe dürfen in 3D aus der Zeichenebene herausgedreht sein,
+                        behalten aber die in der Formel gewählte Orientierung.
+                        „cis“ und „trans“
+                        beziehen sich auf die Anordnung der beiden Ringe an der
+                        N=N-Doppelbindung, nicht auf die Seiten der Substituenten
+                        in der Zeichnung.
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        Die Startstruktur wurde noch nicht energetisch optimiert.
+                        Die Startstruktur wurde noch nicht mit dem elektronischen
+                        Strukturmodell zu einem Minimum optimiert.
                         Bei gleicher cis/trans-Konfiguration sind unterschiedliche
                         räumliche Anordnungen der Ringe und Substituenten möglich.
-                        Die Strukturerstellung liefert eine dieser Anordnungen.
+                        Über die Positionen in der Zeichnung wählen Sie eine Startanordnung.
                         In Schritt 2 wird ausgehend davon ein lokales Energieminimum gesucht.
+                        Dabei sind die Ringdrehungen nicht mehr eingeschränkt.
+                        Unterschiedliche Startanordnungen können zum selben oder zu
+                        verschiedenen lokalen Minima führen.
                     </p>
                     <dl class="method">
                         <div>
@@ -201,6 +217,14 @@
                         auf Abstand. Die Struktur am Energiemaximum des Pfads wird
                         anschließend mit Sella verfeinert und als möglicher
                         Übergangszustand geprüft.
+                    </p>
+                    <p>
+                        Die Übergangszustandssuche ist im Praktikum auf höchstens zwei
+                        Substituenten insgesamt beschränkt. Diese Grenze
+                        verringert das Risiko langer Suchläufe. Sie gilt nicht für
+                        Minimumsuche und Spektrenrechnung.
+                        Falls der erste Suchlauf scheitert, folgt höchstens ein
+                        weiterer Versuch mit einem anders vorbereiteten Reaktionspfad.
                     </p>
                     <h3>Bedeutung der Ergebnisse</h3>
                     <p>
@@ -305,7 +329,8 @@
                     <p>
                         Für eine kurze Rechenzeit wird die Auswahl der berücksichtigten
                         Elektronenanregungen begrenzt. Eine umfangreichere Rechnung kann
-                        die Lage und Stärke der Banden verändern. Berichten Sie deshalb die berechneten Maxima und Verschiebungen
+                        die Lage und Stärke der Banden verändern. Berichten Sie deshalb die berechneten Maxima und
+                        Verschiebungen
                         als Modellvorhersagen, nicht als Messwerte.
                     </p>
                     <dl class="method">
@@ -495,7 +520,8 @@
                                 <span>Relative Absorption in willkürlichen Einheiten</span>
                             </div>
                             <button id="spectrum-png" class="text-button" type="button"
-                                    title="UV/Vis-Spektrum als PNG speichern">Bild speichern</button>
+                                    title="UV/Vis-Spektrum als PNG speichern">Bild speichern
+                            </button>
                         </div>
                         <div class="spectrum-canvas">
                             <canvas id="spectrum-chart" role="img"
@@ -503,9 +529,56 @@
                         </div>
                     </section>
                     <p id="spectrum-selection" class="spectrum-selection" aria-live="polite">
-                        Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs abzulesen.
+                        Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs
+                        abzulesen.
                     </p>
                     <p class="ts-summary" id="spectrum-caption"></p>
+                    <section class="solution-color" aria-labelledby="solution-color-title">
+                        <div id="solution-color-swatch" class="solution-color-swatch" role="img"
+                             aria-label="Geschätzte Lösungsfarbe"></div>
+                        <div class="solution-color-controls">
+                            <h3 id="solution-color-title">Geschätzte Lösungsfarbe</h3>
+                            <p id="solution-color-sample" class="note"></p>
+                            <p class="note">Standard-Tageslicht (D65) · Durchsicht · angenommene Schichtdicke 1 cm</p>
+                            <label for="solution-color-density">Relative optische Dichte · Faktor
+                                <output id="solution-color-density-value" for="solution-color-density">1,0</output>
+                            </label>
+                            <input id="solution-color-density" type="range" min="0" max="10" step="0.1" value="1"
+                                   aria-describedby="solution-color-limitation"/>
+                            <p id="solution-color-status" class="note" role="status"></p>
+                            <p id="solution-color-limitation" class="note">Illustrative Schätzung aus dem berechneten
+                                Spektrum.
+                                Verändern Sie den Faktor, um den Einfluss stärkerer Absorption zu untersuchen.
+                                Er entspricht keiner bekannten Konzentration. Beim Vergleich mit Messdaten für trans-Azobenzol
+                                wird die sichtbare Bande stark unterschätzt. Die tatsächliche Lösungsfarbe kann deutlich abweichen.</p>
+                            <details>
+                                <summary>Wie wird die Farbe geschätzt?</summary>
+                                <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
+                                    aus der blauen Kurve abgelesen. Mit dem gewählten Faktor s setzen wir die
+                                    dimensionslose optische Dichte A = s · I an. Der durchgelassene Lichtanteil ist
+                                    T = 10<sup>−A</sup>. Bei Faktor 0 wird das gesamte Licht durchgelassen.</p>
+                                <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
+                                    CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
+                                    Die CIE ist die Internationale Beleuchtungskommission. Die Darstellung nimmt
+                                    eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz fehlen.</p>
+                                <p>Die Vorschau gilt nur für die ausgewählte Struktur, ohne cis/trans-Gemisch und
+                                    ohne Mittelung über weitere räumliche Anordnungen. Ethanol ist im Spektrenmodell
+                                    als kontinuierliches Medium beschrieben. Die Bandenbreite ist illustrativ;
+                                    ein Vergleich mit einem gemessenen Spektrum von trans-Azobenzol in Ethanol zeigt
+                                    Abweichungen der Bandenlagen um etwa 44 und 58 nm sowie eine zu schwache sichtbare Bande.
+                                    Daraus lässt sich keine zuverlässige Vorhersage der tatsächlichen Lösungsfarbe ableiten.
+                                    Die Konzentration bei 1 cm Schichtdicke lässt sich aus dem Faktor nicht bestimmen.
+                                    Bildschirm und Umgebungslicht beeinflussen den Farbeindruck.</p>
+                                <p>Daten: CIE (2019),
+                                    <a href="https://doi.org/10.25039/CIE.DS.xvudnb9b" target="_blank" rel="noopener">Standardbeobachter</a>
+                                    und <a href="https://doi.org/10.25039/CIE.DS.hjfjmt59" target="_blank"
+                                           rel="noopener">Tageslicht D65</a>,
+                                    Ausschnitt 380–780 nm;
+                                    <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank"
+                                       rel="noopener">CC BY-SA 4.0</a>.</p>
+                            </details>
+                        </div>
+                    </section>
                     <details>
                         <summary>Elektronische Übergänge</summary>
                         <div class="table-wrap">

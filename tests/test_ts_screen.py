@@ -9,6 +9,7 @@ import pytest
 
 from achprak import azobenzene, common, optimization
 from achprak.transition_state import OptTS
+from achprak.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
 FAILURES = sorted((Path(__file__).parent / "data/ts_failures").glob("*.json"))
 
@@ -45,7 +46,11 @@ def test_screen_failure(fixture, tmp_path):
         assert minimum.run(steps=500), "Source minimum did not converge"
         atoms = common.xyz_to_atoms(common.atoms_to_xyz(minimum.atoms))
     search = OptTS(atoms)
-    ok = search.run(steps=1500)
+    # Exercise the student limit on eligible cases while retaining research
+    # coverage for the excluded molecules that motivated the wider fallback.
+    eligible = ts_restriction({"substituents": case["substituents"]}) is None
+    max_attempts = MAX_TS_ATTEMPTS if eligible else 4
+    ok = search.run(steps=1500, max_attempts=max_attempts)
     diagnostics = tmp_path / "ts-result.json"
     diagnostics.write_text(
         json.dumps(
@@ -54,6 +59,8 @@ def test_screen_failure(fixture, tmp_path):
                 "converged": bool(ok),
                 "final_xyz": common.atoms_to_xyz(search.atoms),
                 "attempts": search.attempts,
+                "max_attempts": max_attempts,
+                "student_eligible": eligible,
                 **{
                     key: getattr(search, key)
                     for key in (
@@ -70,7 +77,7 @@ def test_screen_failure(fixture, tmp_path):
     )
     assert ok, f"{search.failure_reason}; diagnostics: {diagnostics}"
     assert search.band_converged
-    assert 1 <= len(search.attempts) <= 4
+    assert 1 <= len(search.attempts) <= max_attempts
     assert all(a["iterations"] <= 1500 for a in search.attempts)
     assert search.iterations_used == sum(a["iterations"] for a in search.attempts)
     assert search.validation["verified"]

@@ -1,9 +1,9 @@
 "use strict";
 const $ = (id) => document.getElementById(id);
-const SUBS = ["H", "Me", "NMe2", "CF3", "OMe", "F", "SO2CF3"];
+const SUBS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"];
 function substituentLabel(text) {
-  return text.replace(/\b(?:SO2CF3|NMe2|CF3)\b/g, (sub) =>
-    ({ SO2CF3: "SO₂CF₃", NMe2: "NMe₂", CF3: "CF₃" })[sub],
+  return text.replace(/\b(?:SO2CF3|NMe2|CF3|NO2)\b/g, (sub) =>
+    ({ SO2CF3: "SO₂CF₃", NMe2: "NMe₂", CF3: "CF₃", NO2: "NO₂" })[sub],
   );
 }
 for (let r = 0; r < 2; r++) {
@@ -343,11 +343,13 @@ function updateControls() {
   $("optimization-method").textContent = tsSelected
     ? "GFN1-xTB · CI-NEB · Sella"
     : "GFN1-xTB · Sella";
-  $("ts-requirement").hidden = !m || !tsSelected || m.kind === "minimum";
+  const tsRestriction = m?.ts_restriction;
+  $("ts-requirement").textContent = tsRestriction || "Suchen Sie zuerst ein Minimum.";
+  $("ts-requirement").hidden = !m || !tsSelected || (m.kind === "minimum" && !tsRestriction);
   $("optimize").disabled =
     state.busy ||
     !m ||
-    (tsSelected && m.kind !== "minimum") ||
+    (tsSelected && (m.kind !== "minimum" || !!tsRestriction)) ||
     (!tsSelected && m.kind === "minimum");
   $("optimize").textContent =
     !tsSelected && m?.kind === "minimum"
@@ -376,6 +378,7 @@ function renderSpectrum() {
   $("spectrum-empty").hidden = !!spec;
   $("spectrum-result").hidden = !spec;
   if (!spec) return;
+  renderSolutionColor();
   if (state.step === "spectrum") renderSpectrumChart(spec);
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
@@ -400,6 +403,22 @@ function renderSpectrum() {
     $("transitions").append(tr);
   });
 }
+function renderSolutionColor() {
+  const density = Number($("solution-color-density").value);
+  const result = SolutionColor.estimate(current()?.spectrum, density);
+  $("solution-color-density-value").textContent = fmt(density, 1);
+  $("solution-color-density").setAttribute("aria-valuetext", `Faktor ${fmt(density, 1)}`);
+  $("solution-color-sample").textContent = `${structureLabel(current())} · nur ausgewählte Struktur`;
+  const swatch = $("solution-color-swatch");
+  swatch.hidden = !result;
+  swatch.style.backgroundColor = result?.css || "";
+  swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}, Faktor ${fmt(density, 1)}`);
+  $("solution-color-status").textContent = result
+    ? `Lichtdurchlässigkeit, nach Helligkeitsempfindlichkeit gewichtet: ${fmt(100 * result.luminance, 1)} %`
+    : "Keine Farbschätzung verfügbar: Das Spektrum ist unvollständig oder enthält keine auswertbaren Absorptionsdaten.";
+}
+$("solution-color-density").addEventListener("input", renderSolutionColor);
+
 function renderState() {
   const m = current();
   if (state.playbackMolecule !== m?.id) {

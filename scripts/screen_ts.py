@@ -34,7 +34,9 @@ from achprak.transition_state import OptTS
 
 
 def cases(scope):
-    groups = [s for s in azobenzene.Template.substituent_smiles if s != "H"]
+    # Historical screen: preserve its case IDs and cached-result provenance.
+    # CN/NO2 in the revised course menu have not undergone this exhaustive screen.
+    groups = ["Me", "NMe2", "CF3", "OMe", "F", "SO2CF3"]
     for count in (1, 2):
         positions = range(5 if count == 1 or scope == "first-ring" else 10)
         for sites in itertools.combinations(positions, count):

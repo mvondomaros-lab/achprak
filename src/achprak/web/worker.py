@@ -10,11 +10,12 @@ from pathlib import Path
 
 import numpy as np
 from rdkit import Chem
-from rdkit.Chem import rdDepictor, rdMolDescriptors
+from rdkit.Chem import rdMolDescriptors
 from rdkit.Chem.Draw import rdMolDraw2D
 
 from achprak import azobenzene, common, optimization, uvvis
 from achprak.transition_state import OptTS
+from achprak.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
 PROGRESS_PREFIX = "ACHPRAK_PROGRESS "
 
@@ -73,12 +74,13 @@ def read_atoms(xyz):
 def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     mol = mol if mol is not None else common.atoms_to_mol(atoms)
     flat = Chem.RemoveHs(Chem.Mol(mol))
-    rdDepictor.Compute2DCoords(flat)
+    from achprak.conformation import draw_coordinates
+    draw_coordinates(flat)
     drawer = rdMolDraw2D.MolDraw2DSVG(700, 340)
     drawer.drawOptions().clearBackground = False
     drawer.DrawMolecule(flat)
     drawer.FinishDrawing()
-    geometry = azobenzene.Properties(atoms.copy())
+    geometry = azobenzene.Properties(atoms.copy(), mol=mol)
     return {
         "geometry_definition": {
             "dihedral_indices": geometry.cnnc_dihedral_indices(),
@@ -100,8 +102,8 @@ def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     }
 
 
-def properties(atoms):
-    p = azobenzene.Properties(atoms)
+def properties(atoms, mol=None):
+    p = azobenzene.Properties(atoms, mol=mol)
     # Use the same single-point method for all structures.
     return {
         "energy_ev": float(p.energy()),
@@ -131,7 +133,7 @@ def calculate(data):
         name = f"{settings['configuration']}-{substitutions + '-' if labels else ''}Azobenzol"
         m = molecule(t.atoms, name, mol=t.molh)
         m["settings"] = settings
-        m["properties"] = properties(t.atoms)
+        m["properties"] = properties(t.atoms, mol=t.molh)
         return {"molecule": m}
     source = data["molecule"]
     if kind == "minimum" and source["kind"] == "minimum":
@@ -142,6 +144,10 @@ def calculate(data):
         raise ValueError(
             "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch."
         )
+    if kind == "ts":
+        reason = ts_restriction(source.get("settings"))
+        if reason:
+            raise ValueError(reason)
     atoms = read_atoms(source["xyz"])
     if kind in ("minimum", "ts"):
         opt = optimization.OptMin(atoms) if kind == "minimum" else OptTS(atoms)
@@ -150,6 +156,7 @@ def calculate(data):
             opt.run(
                 steps=500 if kind == "minimum" else 1500,
                 observer=progress_observer(source["id"], history),
+                **({"max_attempts": MAX_TS_ATTEMPTS} if kind == "ts" else {}),
             )
         )
         suffix = "Minimum" if kind == "minimum" else "Übergangszustand"
@@ -166,6 +173,7 @@ def calculate(data):
             parent_id=source["id"],
         )
         m["base_name"] = source["base_name"]
+        m["settings"] = source.get("settings")
         m["converged"] = converged
         # Preserve every accepted step even when a short run finishes between
         # browser polls, or the bounded job log has dropped its earliest lines.
@@ -193,6 +201,7 @@ def calculate(data):
                 ),
                 "iterations": opt.iterations_used,
                 "attempts": opt.attempts,
+                "max_attempts": opt.max_attempts,
                 "step_limit_per_attempt": opt.step_limit_per_attempt,
                 "validation": opt.validation,
                 "barrier_ev": opt.barrier_ev,

@@ -68,8 +68,8 @@ class OptTS:
         self.barrier_ev = None
         self.iterations_used = 0
 
-    def run(self, steps=1500, observer=None):
-        """Try at most four deterministic seeds, with ``steps`` per attempt.
+    def run(self, steps=1500, observer=None, *, max_attempts=4):
+        """Try up to ``max_attempts`` deterministic seeds (at most four).
 
         Retain the original route first. A crowded endpoint can relax back to
         the source isomer, while substituent conformations can stall one sense
@@ -77,13 +77,16 @@ class OptTS:
         saddle, frequency, and connectivity validation. Alternative attempts
         relax the band with L-BFGS to avoid repeating FIRE's stalled path.
         """
+        if not isinstance(max_attempts, int) or not 1 <= max_attempts <= 4:
+            raise ValueError("max_attempts must be an integer between 1 and 4")
+        self.max_attempts = max_attempts
         source = self.atoms.copy()
         self.attempts = []
         self.step_limit_per_attempt = steps
         frames = []
         seeds = [(False, 120.0, 250)]
         index = 0
-        while index < len(seeds):
+        while index < min(len(seeds), max_attempts):
             reverse, angle, downhill_steps = seeds[index]
             self.atoms = source.copy()
             offset = len(frames)

@@ -5,7 +5,7 @@ import numpy as np
 import rdkit.Chem
 import rdkit.Chem.AllChem
 
-from . import common
+from . import common, conformation
 
 
 class Template:
@@ -14,9 +14,14 @@ class Template:
     substituent_smiles = {
         "H": "",
         "Me": "(C)",
+        "OMe": "(O(C))",
         "NMe2": "(N(C)C)",
         "CF3": "(C(F)(F)F)",
-        "OMe": "(O(C))",
+        "CN": "(C#N)",
+        "NO2": "([N+](=O)[O-])",
+    }
+    # Preserve historical benchmarks and regression fixtures outside the course menu.
+    legacy_substituent_smiles = {
         "F": "(F)",
         "SO2CF3": "(S(=O)(=O)C(F)(F)F)",
     }
@@ -54,16 +59,17 @@ class Template:
         self.atoms = self._init_atoms()
 
     def _init_smiles(self) -> str:
+        fragments = {**self.legacy_substituent_smiles, **self.substituent_smiles}
         smiles = ["c1"]
         for carbon in range(5):
             sub = self.substituents[carbon]
-            smiles.append(self.substituent_smiles[sub])
+            smiles.append(fragments[sub])
             smiles.append("c")
         smiles.append("1N=Nc2")
         for carbon in range(5):
             smiles.append("c")
             sub = self.substituents[carbon + 5]
-            smiles.append(self.substituent_smiles[sub])
+            smiles.append(fragments[sub])
         smiles.append("2")
         smiles = "".join(smiles)
 
@@ -95,16 +101,17 @@ class Template:
                 "RDKit konnte keine 3D-Startstruktur für dieses Molekül erzeugen."
             )
 
+        conformation.align_start(mol)
         return common.mol_to_atoms(mol)
 
 
 class Properties:
     """Compute selected properties of an azobenzene derivative."""
 
-    def __init__(self, atoms):
+    def __init__(self, atoms, mol=None):
         self.atoms = atoms
         self.atoms.calc = common.DefaultASECalculator()
-        self.mol = common.atoms_to_mol(atoms)
+        self.mol = mol if mol is not None else common.atoms_to_mol(atoms)
 
     def _find_azo_bond(self):
         for bond in self.mol.GetBonds():

@@ -75,7 +75,38 @@ def atoms_to_mol(atoms, charge=0):
     # a charged covalent ring in crowded sulfonyl-substituted azobenzenes.
     # Extended Hueckel overlap distinguishes that contact from the bonds
     # used for fragment rotation and endpoint-connectivity validation.
-    rdkit.Chem.rdDetermineBonds.DetermineBonds(mol, charge=charge, useHueckel=True)
+    try:
+        rdkit.Chem.rdDetermineBonds.DetermineBonds(mol, charge=charge, useHueckel=True)
+    except ValueError as error:
+        # RDKit can miss the charge-separated nitro resonance form and instead
+        # assign two terminal oxygen radicals. Keep Hueckel connectivity, then
+        # normalize ONLY that motif to [N+](=O)[O-]. Reject other radical results.
+        mol = rdkit.Chem.rdmolfiles.MolFromXYZBlock(xyz)
+        rdkit.Chem.rdDetermineBonds.DetermineBonds(
+            mol, charge=charge, useHueckel=True, allowChargedFragments=False
+        )
+        repaired = False
+        for atom in mol.GetAtoms():
+            if atom.GetSymbol() != "N" or atom.GetDegree() != 3 or atom.GetFormalCharge() != 0:
+                continue
+            oxygens = [a for a in atom.GetNeighbors() if a.GetSymbol() == "O"
+                       and a.GetDegree() == 1 and a.GetNumRadicalElectrons() == 1]
+            if len(oxygens) != 2 or not any(a.GetSymbol() == "C" for a in atom.GetNeighbors()):
+                continue
+            if any(mol.GetBondBetweenAtoms(atom.GetIdx(), o.GetIdx()).GetBondType()
+                   != rdkit.Chem.BondType.SINGLE for o in oxygens):
+                continue
+            atom.SetFormalCharge(1)
+            oxygens[0].SetFormalCharge(-1)
+            for oxygen in oxygens:
+                oxygen.SetNumRadicalElectrons(0)
+            mol.GetBondBetweenAtoms(atom.GetIdx(), oxygens[1].GetIdx()).SetBondType(rdkit.Chem.BondType.DOUBLE)
+            repaired = True
+        rdkit.Chem.SanitizeMol(mol)
+        if not repaired or rdkit.Chem.GetFormalCharge(mol) != charge or any(
+            atom.GetNumRadicalElectrons() for atom in mol.GetAtoms()
+        ):
+            raise error
     return mol
 
 
