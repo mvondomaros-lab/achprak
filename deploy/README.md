@@ -84,6 +84,12 @@ allowed groups, administrator accounts, spawner class, resource limits, Hub bind
 URL, database, cookie secret or central proxy configuration. Review existing
 spawn hooks or profiles that could override the application command.
 
+The fragment sets `PYTHONNOUSERSITE=1` for the proxy, application and its workers.
+This prevents packages in a participant's personal Python site directory (such
+as `~/.local/lib/python3.12/site-packages`) from overriding the locked environment.
+If an import error points into that directory, update the copied fragment and
+restart the user server; do not repair it by changing the participant's packages.
+
 By default it uses `/opt/achprak/.pixi/envs/web-hub`. For another install location,
 set `ACHPRAK_ENV` to the absolute environment path in the **central Hub service's**
 environment, or edit the default in your copied fragment. The proxy and Python
