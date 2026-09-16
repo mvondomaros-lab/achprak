@@ -27,6 +27,38 @@ SUBSTITUENTS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]
 ACTIVE = {"queued", "running"}
 
 
+def job_output(folder, kind):
+    """Read only the log tail and the latest atomically published stage."""
+    output = ""
+    try:
+        with (folder / "output.log").open("rb") as handle:
+            handle.seek(0, os.SEEK_END)
+            handle.seek(max(0, handle.tell() - 24000))
+            output = handle.read(24000).decode("utf-8", errors="replace")
+    except FileNotFoundError:
+        pass
+    progress = None
+    if kind == "uvvis":
+        try:
+            progress = json.loads((folder / "spectrum-progress.json").read_text())
+        except (FileNotFoundError, ValueError):
+            pass
+    return {"log": output, "spectrum_progress": progress}
+
+
+def hub_navigation():
+    """Public Hub links, including base URLs and deployments on user subdomains."""
+    if not os.environ.get("JUPYTERHUB_USER"):
+        return None
+    hub_url = os.environ.get("JUPYTERHUB_PUBLIC_HUB_URL")
+    if not hub_url:
+        host = os.environ.get("JUPYTERHUB_HOST", "").rstrip("/")
+        base = os.environ.get("JUPYTERHUB_BASE_URL", "/").strip("/")
+        hub_url = host + (f"/{base}" if base else "") + "/hub/"
+    hub_url = hub_url.rstrip("/") + "/"
+    return {"home": hub_url + "home", "logout": hub_url + "logout"}
+
+
 class Settings(BaseModel):
     configuration: Literal["trans", "cis"] = "trans"
     substituents: list[Literal["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]] = Field(
@@ -69,7 +101,8 @@ class JobManager:
     def __init__(self, max_jobs=2, timeout=600, session_ttl=86400):
         self.sessions = {}
         self.max_jobs, self.timeout, self.session_ttl = max_jobs, timeout, session_ttl
-        self.root = Path(tempfile.mkdtemp(prefix="achprak-web-"))
+        self._temporary = tempfile.TemporaryDirectory(prefix="achprak-web-")
+        self.root = Path(self._temporary.name)
         self.tasks = {}
 
     def submit(self, session, payload):
@@ -99,7 +132,11 @@ class JobManager:
         job_id = secrets.token_hex(16)
         folder = self.root / job_id
         folder.mkdir(mode=0o700)
-        (folder / "input.json").write_text(json.dumps(payload))
+        try:
+            (folder / "input.json").write_text(json.dumps(payload))
+        except Exception:
+            shutil.rmtree(folder)
+            raise
         job = {
             "id": job_id,
             "kind": payload["kind"],
@@ -113,11 +150,18 @@ class JobManager:
         self.tasks[job_id] = (session, job, folder, None)
         return job
 
+    def cleanup(self, job, folder):
+        """Preserve diagnostics in memory before deleting a stopped job's files."""
+        try:
+            job.update(job_output(folder, job["kind"]))
+        finally:
+            shutil.rmtree(folder)
+
     def stop(self, job_id, status="cancelled"):
         task = self.tasks.pop(job_id, None)
         if not task:
             return
-        _, job, _, proc = task
+        _, job, folder, proc = task
         if proc is not None:
             # Workers own a process group, including any MOPAC child processes.
             try:
@@ -126,6 +170,7 @@ class JobManager:
                 pass
             proc.wait()
         job["status"] = status
+        self.cleanup(job, folder)
         if status == "timeout":
             job["error"] = (
                 "Die Berechnung wurde nach Erreichen des Zeitlimits beendet. Wählen Sie eine Struktur mit weniger Substituenten oder besprechen Sie die Berechnung mit Ihrer Betreuung."
@@ -168,6 +213,8 @@ class JobManager:
                         if (folder / "result.json").exists()
                         else f"Die Berechnung wurde unerwartet beendet (Fehlercode {proc.returncode}). Wenden Sie sich mit dieser Meldung an Ihre Betreuung.",
                     )
+                finally:
+                    self.cleanup(job, folder)
         running = sum(task[3] is not None for task in self.tasks.values())
         for job_id, (session, job, folder, proc) in list(self.tasks.items()):
             if proc is not None or running >= self.max_jobs:
@@ -175,6 +222,9 @@ class JobManager:
             try:
                 env = os.environ.copy()
                 env.update(MPLBACKEND="Agg", PYTHONUNBUFFERED="1")
+                # Parent-owned scratch survives SIGKILL only until cleanup().
+                # Set this before Python imports initialize tempfile's cache.
+                env.update(TMPDIR=str(folder), TMP=str(folder), TEMP=str(folder))
                 for key in (
                     "OMP_NUM_THREADS",
                     "OPENBLAS_NUM_THREADS",
@@ -200,6 +250,7 @@ class JobManager:
             except OSError as exc:
                 job.update(status="failed", error=str(exc))
                 self.tasks.pop(job_id)
+                self.cleanup(job, folder)
         for sid, session in list(self.sessions.items()):
             if time.monotonic() - session.touched > self.session_ttl:
                 for job_id in session.jobs:
@@ -210,7 +261,7 @@ class JobManager:
     def close(self):
         for job_id in list(self.tasks):
             self.stop(job_id)
-        shutil.rmtree(self.root, ignore_errors=True)
+        self._temporary.cleanup()
 
 
 def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
@@ -234,7 +285,8 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
                 await task
             except asyncio.CancelledError:
                 pass
-            manager.close()
+            finally:
+                manager.close()
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.manager = manager
@@ -303,6 +355,7 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             "molecules": [with_ts_policy(m) for m in s.molecules.values()],
             "jobs": list(s.jobs.values()),
             "user": os.environ.get("JUPYTERHUB_USER"),
+            "hub": hub_navigation(),
             "timeout": timeout,
         }
 
@@ -349,17 +402,12 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
         job = request.state.session.jobs.get(job_id)
         if job is None:
             raise HTTPException(404, "Berechnung nicht gefunden.")
-        log = manager.root / job_id / "output.log"
-        output = ""
-        if log.exists():
-            with log.open("rb") as handle:
-                handle.seek(max(0, log.stat().st_size - 24000))
-                output = handle.read().decode("utf-8", errors="replace")
-        spectrum_progress = None
-        progress_path = manager.root / job_id / "spectrum-progress.json"
-        if job["kind"] == "uvvis" and progress_path.exists():
-            spectrum_progress = json.loads(progress_path.read_text())
-        return {**job, "log": output, "spectrum_progress": spectrum_progress}
+        output = (
+            {"log": job["log"], "spectrum_progress": job["spectrum_progress"]}
+            if "log" in job
+            else job_output(manager.root / job_id, job["kind"])
+        )
+        return {**job, **output}
 
     @app.delete("/api/jobs/{job_id}")
     async def cancel_job(job_id: str, request: Request):

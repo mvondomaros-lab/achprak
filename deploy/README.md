@@ -1,9 +1,8 @@
-# Integrating with an existing JupyterHub
+# Deploying with JupyterHub
 
 Run the central JupyterHub in its own administrator-managed environment, separate
 from the AChPrak checkout. The Hub owns authentication, accounts, its database and
 cookie secret, HTTPS routing, the central HTTP proxy and spawner resource limits.
-Updating AChPrak must not replace that environment or the Hub service command.
 For a new Hub, follow the [JupyterHub installation guide](https://jupyterhub.readthedocs.io/en/stable/tutorial/quickstart.html)
 and establish working login and user spawning before integrating AChPrak.
 
@@ -16,17 +15,22 @@ AChPrak provides two deployment environments:
 
 `web-hub` includes `jupyterhub-base`, the Python package required by the standalone
 proxy. It does not include `configurable-http-proxy` or a central Hub service.
-Do not start the central Hub with `pixi run -e web-hub jupyterhub`.
 The standalone proxy starts AChPrak directly, without a notebook interface. It
 checks Hub authorization before forwarding requests to a private Unix socket.
 The application has no unprotected TCP port that another Unix user can access.
 
-## Install the application
+## Requirements
 
 These instructions target x86-64 Linux and an existing local-process or systemd
 spawner that launches each user under a separate Unix identity. Accounts need
 writable home directories. Container or Kubernetes spawners need the application
 installed inside their user image and paths adapted there.
+
+Use HTTPS for the public Hub endpoint and a Pixi version that supports the
+repository's lockfile. The paths `/opt/achprak` and `/etc/jupyterhub` below are
+examples; adapt them to your installation.
+
+## Install the application
 
 1. Put the checkout at its final location, for example `/opt/achprak`. Keep the
    source and shared environment administrator-owned. Participants need read and
@@ -51,18 +55,11 @@ installed inside their user image and paths adapted there.
    `pixi lock`, then install and verify before switching. Do not upgrade the
    central Hub implicitly as part of an application update.
 
-   When upgrading an existing Hub from 5 to 6, the database schema must also be
-   upgraded. Stop the Hub, back up its database, and run `jupyterhub upgrade-db`
-   with the actual site configuration in the independent Hub environment before
-   restarting. Follow the [JupyterHub 6 migration guide](https://jupyterhub.readthedocs.io/en/stable/howto/upgrading-v6.html).
-   Rolling back a schema upgrade requires the matching database backup as well
-   as the old Hub environment; retaining the old checkout alone is insufficient.
+## Configure the Hub
 
-## Configure the existing Hub
-
-The file `jupyterhub_integration.py` is an application-launch fragment, not a
-complete Hub configuration. Review it, then copy it to an administrator-controlled
-configuration directory:
+The [integration fragment](jupyterhub_integration.py) configures the per-user
+application launch. Copy it to an administrator-controlled configuration directory
+and load it from your Hub configuration:
 
 ```sh
 sudo install -m 644 /opt/achprak/deploy/jupyterhub_integration.py /etc/jupyterhub/achprak.py
@@ -79,54 +76,40 @@ load_subconfig("/etc/jupyterhub/achprak.py")
 The fragment sets the application command, launch arguments, default URL,
 startup timeouts and compute environment variables. Other existing spawner
 environment variables are retained; PATH is set to the application environment
-followed by standard system directories. It does not change authentication,
-allowed groups, administrator accounts, spawner class, resource limits, Hub bind
-URL, database, cookie secret or central proxy configuration. Review existing
-spawn hooks or profiles that could override the application command.
+followed by standard system directories. Authentication, user permissions,
+spawner selection, resource limits and central Hub settings remain controlled by
+your site configuration. Check any spawn hooks or profiles that also set the
+application command.
 
 The fragment sets `PYTHONNOUSERSITE=1` for the proxy, application and its workers.
 This prevents packages in a participant's personal Python site directory (such
 as `~/.local/lib/python3.12/site-packages`) from overriding the locked environment.
-If an import error points into that directory, update the copied fragment and
-restart the user server; do not repair it by changing the participant's packages.
 
 By default it uses `/opt/achprak/.pixi/envs/web-hub`. For another install location,
 set `ACHPRAK_ENV` to the absolute environment path in the **central Hub service's**
 environment, or edit the default in your copied fragment. The proxy and Python
-paths must point into AChPrak's environment, not the central Hub's environment.
-The copy in `/etc` keeps application updates from silently changing the Hub's
-launch configuration; review and copy future fragment updates deliberately.
+paths must point into AChPrak's environment. Review and copy fragment updates
+explicitly when updating the application.
 
-Keep the existing HTTPS reverse proxy. The fragment enables Secure cookies and
-requires HTTPS. Application URLs and cookies follow the Hub's full user prefix,
-including a Hub prefix such as `/jhub/`: `/jhub/user/<username>/` works without
-changing application URLs. Each user's process also separates browser sessions.
+The fragment enables Secure cookies. Configure your HTTPS reverse proxy to
+forward the Host and X-Forwarded-Proto headers and support WebSocket upgrades.
+Application URLs and cookies follow the Hub's full user prefix, including any
+configured Hub base URL. Each user's process also separates browser sessions.
 
-During a maintenance window, stop existing user servers through the Hub and
-restart the central Hub using its existing service. This changes the default
-user launch from notebooks to AChPrak. Test login with two accounts, structure
-generation, minimum optimization, spectra, cancellation and downloads. Confirm
-that the accounts see separate results. Local proxy verification below checks
-paths and sockets only; it does not replace authenticated Linux deployment tests.
+## Start and verify
 
-## Migrating from the old AChPrak installation
+During a maintenance window, stop running user servers through the Hub and
+restart the Hub using your service manager. New user servers will launch AChPrak.
 
-Older installations may run the central Hub through a symlink into
-`achprak/.pixi/envs/lserver`. Keep that checkout and environment intact until the
-migration is complete. The new project no longer defines `lserver`.
+Verify the deployment through its public HTTPS endpoint:
 
-First install the central Hub independently, initially at the existing Hub
-version. Preserve the site configuration, database, cookie secret, authentication
-and spawner dependencies. Back up the database and configuration before changing
-the service. Switch the Hub runtime and verify the existing login and notebook
-launch before installing this integration. Never run two Hubs against the same
-database at once.
+- Log in with two different accounts and start both application instances.
+- Generate structures, optimize a minimum and calculate a spectrum.
+- Check cancellation, page reloads and result downloads.
+- Confirm that the accounts see separate results.
 
-Then install AChPrak in a separate checkout and apply the launch fragment above.
-Keep the old launch configuration and environment for rollback. If the new app
-fails, stop its user servers, restore the old launch configuration and restart
-the Hub. Once the integration works, the central Hub and new application no
-longer need the old checkout; inspect remaining references before removing it.
+The local proxy check below verifies paths and sockets only; it does not replace
+these authenticated deployment checks.
 
 ## Capacity and lifecycle
 
@@ -136,44 +119,46 @@ compute thread. Additional browser sessions queue within the instance. Set class
 size and per-user limits according to available memory; MOPAC calculations can
 use considerably more memory than geometry generation. LocalProcessSpawner
 provides UID isolation, not cgroup memory/CPU limits.
-An existing SystemdSpawner can retain its resource limits; size them for the
-chemistry workloads. The integration does not select or replace your spawner.
+Use your spawner's resource controls, such as SystemdSpawner limits, when you
+need enforced CPU and memory limits.
 
 Cancellation and timeouts kill the calculation's process group, including its
 MOPAC subprocess. Results survive a page reload in the same browser session, but
 are held in memory and are cleared after 24 hours without activity or when the
 instance stops. Students should download the results needed for their lab reports.
-The app retains up to 100 structures and the last 12 calculation logs per session.
-Temporary calculation directories are removed on session expiry and clean shutdown.
+The app retains up to 100 structures and the last 12 calculation records per
+session, with the last 24,000 bytes of each log held in memory. Worker scratch
+files (including MOPAC output and Python temporary files) stay inside the private
+job directory. The server removes that directory after completion, failure,
+cancellation or timeout; session expiry and clean shutdown also remove pending
+jobs. MOPAC files are additionally removed immediately after spectrum parsing,
+including when parsing or calculation fails.
 
-Start multiple local instances manually with different ports:
-
-```sh
-pixi run -e web web --port 8000
-pixi run -e web web --port 8001
-```
-
-Ports do not implement authentication. The local mode is for development on a
-trusted machine; use authenticated Hub integration on the shared server.
+An uncatchable server termination (SIGKILL, a host crash or power loss) cannot run
+cleanup and may leave an `achprak-web-*` directory in the system temporary
+directory. Use the host's temporary-directory cleanup policy for those remnants;
+do not remove directories belonging to a running instance. Older versions may
+also have left `/tmp/pymopac_*` directories outside the app's job directories.
 
 ## Local proxy verification
 
-The standalone proxy can be tested without PAM or root, on loopback only:
+From the application checkout, test the standalone proxy on loopback without
+Hub authentication or root privileges:
 
 ```sh
 pixi run -e web-hub jupyter-standaloneproxy \
   --no-authentication --address=127.0.0.1 --port=8001 \
-  --base-url=/jhub/user/test/ --unix-socket=True --timeout=60 -- \
+  --base-url=/user/test/ --unix-socket=True --timeout=60 -- \
   python -m achprak.web --unix-socket='{unix_socket}' \
   --cookie-path='{base_url}' --max-jobs=1
 ```
 
-Open `http://127.0.0.1:8001/jhub/user/test/`. This checks URL prefixes, private sockets,
-assets and cookies. It does **not** test PAM login or UID switching. Never use
-`--no-authentication` on an externally accessible server.
+Open `http://127.0.0.1:8001/user/test/`. This checks URL prefixes, private sockets,
+assets and cookies. It does **not** test Hub authentication or UID switching.
+Never use `--no-authentication` on an externally accessible server.
 
 References:
 
-- [JupyterHub PAM authentication](https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html)
+- [JupyterHub authentication](https://jupyterhub.readthedocs.io/en/stable/reference/authenticators.html)
 - [Standalone app proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html)
 - [Private Unix sockets](https://jupyter-server-proxy.readthedocs.io/en/latest/server-process.html)

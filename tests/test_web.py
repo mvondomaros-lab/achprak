@@ -552,3 +552,54 @@ def test_minimization_of_transition_state_is_rejected(client, app):
     assert session.molecules[ts["id"]] == ts
     with pytest.raises(ValueError, match="Wählen Sie eine Startstruktur"):
         calculate({"kind": "minimum", "molecule": ts})
+
+
+@pytest.mark.parametrize(
+    "hub_env, expected",
+    [
+        ({}, None),
+        (
+            {"JUPYTERHUB_USER": "student", "JUPYTERHUB_BASE_URL": "/"},
+            {"home": "/hub/home", "logout": "/hub/logout"},
+        ),
+        (
+            {"JUPYTERHUB_USER": "student", "JUPYTERHUB_BASE_URL": "/jhub/"},
+            {"home": "/jhub/hub/home", "logout": "/jhub/hub/logout"},
+        ),
+        (
+            {
+                "JUPYTERHUB_USER": "student",
+                "JUPYTERHUB_BASE_URL": "/course/",
+                "JUPYTERHUB_HOST": "https://hub.example.org",
+            },
+            {
+                "home": "https://hub.example.org/course/hub/home",
+                "logout": "https://hub.example.org/course/hub/logout",
+            },
+        ),
+        (
+            {
+                "JUPYTERHUB_USER": "student",
+                "JUPYTERHUB_PUBLIC_HUB_URL": "https://hub.example.org/course/hub/",
+                "JUPYTERHUB_BASE_URL": "/ignored/",
+                "JUPYTERHUB_API_URL": "http://private-hub:8081/hub/api",
+            },
+            {
+                "home": "https://hub.example.org/course/hub/home",
+                "logout": "https://hub.example.org/course/hub/logout",
+            },
+        ),
+    ],
+)
+def test_session_hub_navigation(client, monkeypatch, hub_env, expected):
+    for key in (
+        "JUPYTERHUB_USER",
+        "JUPYTERHUB_BASE_URL",
+        "JUPYTERHUB_HOST",
+        "JUPYTERHUB_PUBLIC_HUB_URL",
+        "JUPYTERHUB_API_URL",
+    ):
+        monkeypatch.delenv(key, raising=False)
+    for key, value in hub_env.items():
+        monkeypatch.setenv(key, value)
+    assert client.get("/api/session").json()["hub"] == expected

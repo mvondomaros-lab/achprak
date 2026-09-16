@@ -103,6 +103,8 @@ a {
 }
 .header-actions {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 16px;
   align-items: center;
 }
@@ -113,6 +115,7 @@ a {
   padding: 10px 15px;
   border-radius: 7px;
   font-size: 14px;
+  text-decoration: none;
 }
 .steps {
   display: flex;

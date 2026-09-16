@@ -523,7 +523,11 @@ async function refresh(selected, finishCalculation = false) {
         : state.molecules.at(-1)?.id),
     !!selected || state.step !== "build" || !state.resultSelection,
   );
-  $("user-label").textContent = data.user || "";
+  $("user-label").textContent = data.user ? `Angemeldet als ${data.user}` : "";
+  for (const [id, destination] of [["hub-home", "home"], ["hub-logout", "logout"]]) {
+    $(id).hidden = !data.hub;
+    $(id).href = data.hub?.[destination] || "";
+  }
   renderState();
   return data;
 }

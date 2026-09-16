@@ -1,4 +1,6 @@
 import sys
+import tempfile
+from pathlib import Path
 from contextlib import redirect_stdout
 
 import numpy as np
@@ -41,7 +43,13 @@ class MopacProgressStream:
                 stage = 4
             if stage > self.stage:
                 self.stage = stage
-                phases = ("", "electrons", "configurations", "excited_states", "transitions")
+                phases = (
+                    "",
+                    "electrons",
+                    "configurations",
+                    "excited_states",
+                    "transitions",
+                )
                 self.observer(phases[stage])
         return len(text)
 
@@ -79,7 +87,7 @@ class UVVis:
     def __init__(self, atoms, maxci=MAXCI):
         self.atoms = atoms
         self.maxci = maxci
-        self.mopac = self._input(min(PRINTED_STATES, maxci))
+        self.mopac = None
         self.excitations = None
         self.oscillator_strengths = None
         self.coverage_complete = False
@@ -92,6 +100,7 @@ class UVVis:
             preopt=False,
             aux=False,
             stream=True,
+            path=str(Path(self._workdir) / str(printed_states)),
         )
 
     def _run(self, observer):
@@ -102,6 +111,14 @@ class UVVis:
                 self.mopac.run()
 
     def calculate(self, observer=None):
+        # pymopac otherwise creates persistent /tmp/pymopac_* directories.
+        # Keep both output passes until parsing finishes, then remove all files.
+        with tempfile.TemporaryDirectory(prefix="achprak-mopac-") as folder:
+            self._workdir = folder
+            self.mopac = self._input(min(PRINTED_STATES, self.maxci))
+            self._calculate(observer)
+
+    def _calculate(self, observer):
         self._run(observer)
         if observer:
             observer("read_transitions")
