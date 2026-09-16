@@ -317,6 +317,8 @@ def test_live_optimization_records(client):
         pytest.param("cis", ["H"] * 10, id="cis-H"),
         pytest.param("trans", ["Me"] + ["H"] * 9, id="trans-2-Me"),
         pytest.param("cis", ["Me"] + ["H"] * 9, id="cis-2-Me"),
+        pytest.param("trans", ["CN"] + ["H"] * 9, id="trans-2-CN"),
+        pytest.param("cis", ["NO2"] + ["H"] * 9, id="cis-2-NO2"),
         pytest.param("trans", ["NMe2"] + ["H"] * 9, id="trans-2-NMe2"),
         pytest.param(
             "trans",
@@ -353,7 +355,8 @@ def test_ts_paths_from_cis_and_substituted_minima(
     assert np.isfinite(frequencies).all()
     assert np.count_nonzero(frequencies < -20.0) == 1
     assert search["barrier_ev"] > 0
-    assert search["iterations"] <= 1500
+    assert all(a["iterations"] <= 1500 for a in search["attempts"])
+    assert search["iterations"] == sum(a["iterations"] for a in search["attempts"])
     assert search["method"] == "ci_neb_then_sella"
     assert search["band_converged"]
     if configuration == "cis" and set(substituents) == {"H"}:
@@ -475,7 +478,9 @@ def test_clear_structures_is_session_scoped_and_blocked_during_jobs(client, app)
     assert client.delete("/api/molecules", headers=HEADERS).status_code == 200
 
 
-def test_spectrum_progress_survives_log_truncation_and_is_session_scoped(client, app, monkeypatch):
+def test_spectrum_progress_survives_log_truncation_and_is_session_scoped(
+    client, app, monkeypatch
+):
     from achprak.web.worker import spectrum_progress
 
     session = next(iter(app.state.manager.sessions.values()))
@@ -490,14 +495,18 @@ def test_spectrum_progress_survives_log_truncation_and_is_session_scoped(client,
     assert result["spectrum_progress"] == {"phase": "excited_states"}
     assert len(result["log"]) == 24000
     spectrum_progress("plot")
-    assert client.get("/api/jobs/spectrum").json()["spectrum_progress"] == {"phase": "plot"}
+    assert client.get("/api/jobs/spectrum").json()["spectrum_progress"] == {
+        "phase": "plot"
+    }
     assert not (folder / "spectrum-progress.tmp").exists()
     client.cookies.clear()
     client.get("/api/session")
     assert client.get("/api/jobs/spectrum").status_code == 404
 
 
-def test_existing_spectrum_is_preserved_and_missing_spectrum_can_be_requested(client, app, monkeypatch):
+def test_existing_spectrum_is_preserved_and_missing_spectrum_can_be_requested(
+    client, app, monkeypatch
+):
     manager = app.state.manager
     session = next(iter(manager.sessions.values()))
     spectrum = {"energy_ev": [2.0], "absorption": [1.0]}

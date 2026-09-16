@@ -179,7 +179,11 @@ def calculate(data):
         # browser polls, or the bounded job log has dropped its earliest lines.
         m["optimization_history"] = history
         m["properties"] = properties(opt.atoms)
-        m["frames"] = [a.positions.reshape(-1).tolist() for a in (opt.traj or [])]
+        # Sella can append dummy atoms for linear internal coordinates. They
+        # are optimizer helpers and must not appear in molecular playback.
+        m["frames"] = [
+            a.positions[a.numbers != 0].reshape(-1).tolist() for a in (opt.traj or [])
+        ]
         m["trajectory_kind"] = (
             "vibration" if kind == "ts" and converged else "optimization"
         )

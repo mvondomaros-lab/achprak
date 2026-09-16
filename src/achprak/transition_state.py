@@ -68,8 +68,8 @@ class OptTS:
         self.barrier_ev = None
         self.iterations_used = 0
 
-    def run(self, steps=1500, observer=None, *, max_attempts=4):
-        """Try up to ``max_attempts`` deterministic seeds (at most four).
+    def run(self, steps=1500, observer=None, *, max_attempts=2):
+        """Try up to ``max_attempts`` deterministic seeds (at most two).
 
         Retain the original route first. A crowded endpoint can relax back to
         the source isomer, while substituent conformations can stall one sense
@@ -77,8 +77,8 @@ class OptTS:
         saddle, frequency, and connectivity validation. Alternative attempts
         relax the band with L-BFGS to avoid repeating FIRE's stalled path.
         """
-        if not isinstance(max_attempts, int) or not 1 <= max_attempts <= 4:
-            raise ValueError("max_attempts must be an integer between 1 and 4")
+        if not isinstance(max_attempts, int) or not 1 <= max_attempts <= 2:
+            raise ValueError("max_attempts must be an integer between 1 and 2")
         self.max_attempts = max_attempts
         source = self.atoms.copy()
         self.attempts = []
@@ -127,14 +127,11 @@ class OptTS:
                     not branch["bonds_preserved"]
                     for branch in self.connectivity["branches"]
                 )
-                seeds.extend(
-                    [open_seed, reversed_seed]
+                seeds.append(
+                    open_seed
                     if self.endpoint is None or changed_bonds
-                    else [reversed_seed, open_seed]
+                    else reversed_seed
                 )
-                # A wider seed can avoid the substituent rearrangement that
-                # stalls both band optimizers for crowded cross-ring pairs.
-                seeds.append((False, 150.0, 50))
             index += 1
         self.iterations_used = sum(a["iterations"] for a in self.attempts)
         self.search_traj = frames
@@ -194,6 +191,22 @@ class OptTS:
                 ok = bool(opt.run(fmax=fmax, steps=budget))
                 self.iterations_used += opt.nsteps
             return ok
+
+        def optimize_minimum(frame, limit, callback):
+            # Internal coordinates efficiently relax soft torsions; a Cartesian
+            # finish resolves residual forces near linear groups such as CN.
+            optimize(
+                sella.Sella(frame, order=0, internal=True),
+                common.MINIMUM_FMAX,
+                limit,
+                callback,
+            )
+            return optimize(
+                BFGS(frame, logfile="-", maxstep=0.08),
+                common.MINIMUM_FMAX,
+                25,
+                callback,
+            )
 
         hessian_cache = None
 
@@ -261,9 +274,8 @@ class OptTS:
                 )
             images.append(frame)
         endpoint = images[-1]
-        if not optimize(
-            sella.Sella(endpoint, order=0, internal=True),
-            common.MINIMUM_FMAX,
+        if not optimize_minimum(
+            endpoint,
             200,
             lambda: publish(endpoint, "endpoint"),
         ):
@@ -421,9 +433,8 @@ class OptTS:
         references = [initial.copy(), endpoint.copy()]
         for reference in references:
             reference.calc = self.calculator_factory()
-            if not optimize(
-                sella.Sella(reference, order=0, internal=True),
-                common.MINIMUM_FMAX,
+            if not optimize_minimum(
+                reference,
                 100,
                 lambda: publish(reference, "connectivity"),
             ):
@@ -436,17 +447,16 @@ class OptTS:
             downhill = atoms.copy()
             downhill.calc = self.calculator_factory()
             downhill.positions += sign * 0.15 * mode
-            # First descend safely from the unstable mode, then use the
-            # same minimum optimizer and final tolerance as the normal job.
+            # Descend from the unstable mode, then tighten to the same final
+            # force tolerance as a normal minimum job, in Cartesian coordinates.
             optimize(
                 BFGS(downhill, logfile="-", maxstep=0.08),
                 0.02,
                 downhill_steps,
                 lambda: publish(downhill, "connectivity"),
             )
-            ok = optimize(
-                sella.Sella(downhill, order=0, internal=True),
-                common.MINIMUM_FMAX,
+            ok = optimize_minimum(
+                downhill,
                 150,
                 lambda: publish(downhill, "connectivity"),
             )

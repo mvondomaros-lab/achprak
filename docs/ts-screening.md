@@ -39,7 +39,7 @@ screen uses `results/ts-screen-unique/`, with reused-record hashes in
 not all possible chemical substituents.
 
 Each case uses deterministic seed 42 and follows the application's XYZ
-serialization and 500-step minimum optimization. The standalone research TS search tries up to
+serialization and 500-step minimum optimization. The historical screen used up to
 four deterministic seeds, with 1500 optimization steps per attempt. The
 original 120-degree CNN seed runs first. On failure, the search tries reversed
 rotation and a more open 135-degree seed. A final 150-degree seed is tried
@@ -85,7 +85,7 @@ pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --output
 # Preserve every observed failure in the opt-in regression suite.
 pixi run -e dev python scripts/screen_ts.py --output results/ts-screen-unique --collect-failures
 # Recheck a single deterministic template in a separate output directory.
-pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-SO2CF3 --output results/ts-recheck
+pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-NMe2_r1-6-CF3 --output results/ts-recheck
 # Run all saved failures and the existing web-workflow regressions.
 pixi run -e dev test-ts
 ```
@@ -100,7 +100,7 @@ failure, since no valid TS search can start in that case.
 ## Comparing reliability and cost
 
 The optional `scripts/benchmark_ts_strategy.py` compares the current bounded
-four-seed policy with a direct 150°/L-BFGS attempt, using identical
+current policy with a direct 150°/L-BFGS attempt, using identical
 saved source minima. Every candidate must produce a fully optimized path. It
 includes every saved failure and 12 passing controls balanced by configuration
 and substitution pattern, using a stable hash of the case ID. It records calculator calls and wall time, including
@@ -124,7 +124,8 @@ MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/benchmark_ts_strate
 ### Direct 150°/L-BFGS comparison
 
 Use `--strategy current --strategy open150_lbfgs` to compare the production
-fallback policy with its final 150°/L-BFGS seed attempted directly once. The
+policy with a 150°/L-BFGS seed attempted directly once. The recorded comparison
+used the former four-attempt policy; rerunning now uses the two-attempt policy. The
 candidate retains the 1,500-step budget, full path optimization, and all
 frequency/connectivity checks. It has no further fallback.
 
@@ -140,14 +141,31 @@ Failures must be reported separately from speed ratios for successful pairs.
 MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-screen-unique --output results/ts-open150-comparison --workers 4 --strategy current --strategy open150_lbfgs
 ```
 
-## Student retry limit
+## Current retry limit
 
-Web TS searches are limited to the original attempt and one failure-directed
-retry (`max_attempts=2`). All 14 saved failures meeting the classroom eligibility
-rules succeeded on their second attempt in the recorded full regression run.
-Seven needed reversed 120° rotation and seven needed the open 135° seed.
-The third attempt and 150° fallback are therefore disabled for student jobs.
-The unrestricted research default remains four attempts. The complete real
-chemistry suite exercises eligible saved failures with the two-attempt limit
-and excluded cases with the research limit; frequency, path-force, and
-connectivity checks are unchanged.
+All TS searches now use at most two attempts: the original 120°/FIRE path,
+then a failure-directed reversed 120° or open 135° path with L-BFGS.
+The third attempt and 150° fallback have been removed. Full optimized paths,
+frequency validation, and cis/trans connectivity checks remain required.
+
+The web menu is H, Me, OMe, NMe2, CF3, CN, and NO2, with at most two non-H
+substituents across both rings for TS searches. Saved regression fixtures using
+removed groups have been deleted. CN and NO2 have opt-in web workflow cases;
+the historical exhaustive screen above does not cover these groups.
+
+Minimum refinement within a TS attempt uses internal-coordinate Sella followed
+by at most 25 Cartesian BFGS steps at the same 0.002 eV/Å force tolerance.
+This finishing stage addresses residual forces observed for trans-2-CN without
+adding another seed or increasing the 1500-step total per attempt. The exact
+failing CN minimum is retained as a regression fixture. Replacing minimum
+refinement entirely with Cartesian BFGS or Cartesian Sella regressed retained
+crowded cases and was discarded.
+
+Validation after simplification: the complete 19-case chemistry run passed 18
+cases and exposed a CN playback defect (Sella dummy atom in trajectory frames).
+After filtering helper atoms from playback, the focused CN web rerun passed.
+All 19 chemistry cases therefore have passing checks across the complete run
+and focused rerun; the full suite was not repeated after this playback-only fix.
+The fast suite passed 141 tests with 21 opt-in cases skipped. Logs and diagnostics
+are retained in `results/ts-simplified-menu/`. This is regression coverage, not
+an exhaustive screen of the revised menu.

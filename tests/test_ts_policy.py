@@ -18,9 +18,9 @@ def settings(*pairs):
 
 
 @pytest.mark.parametrize("site", range(10))
-def test_only_ortho_so2cf3_is_excluded(site):
-    reason = ts_restriction(settings((site, "SO2CF3")))
-    assert bool(reason) == (site in {0, 4, 5, 9})
+@pytest.mark.parametrize("group", ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"])
+def test_current_menu_is_allowed_at_every_site(site, group):
+    assert ts_restriction(settings((site, group))) is None
 
 
 @pytest.mark.parametrize(
@@ -29,21 +29,24 @@ def test_only_ortho_so2cf3_is_excluded(site):
         (),
         ((0, "CF3"), (5, "CF3")),
         ((2, "NMe2"), (7, "NMe2")),
-        ((1, "SO2CF3"), (8, "SO2CF3")),
+        ((1, "CN"), (8, "NO2")),
     ],
 )
 def test_no_additional_size_or_ortho_limits(groups):
     assert ts_restriction(settings(*groups)) is None
 
 
-def test_substituent_count_includes_both_rings_and_reports_both_restrictions():
-    reason = ts_restriction(settings((0, "SO2CF3"), (2, "Me"), (8, "F")))
+def test_substituent_count_includes_both_rings():
+    reason = ts_restriction(settings((0, "CN"), (2, "Me"), (8, "NO2")))
     assert "höchstens zwei" in reason
-    assert "ortho" in reason
 
 
 @pytest.mark.parametrize(
-    "values", [settings((0, "SO2CF3")), settings((1, "Me"), (2, "F"), (8, "OMe"))]
+    "values",
+    [
+        settings((0, "CN"), (1, "NO2"), (2, "Me")),
+        settings((1, "Me"), (2, "CN"), (8, "OMe")),
+    ],
 )
 def test_api_blocks_only_ts_and_uses_stored_provenance(monkeypatch, values):
     app = create_app()
@@ -92,20 +95,17 @@ def test_api_blocks_only_ts_and_uses_stored_provenance(monkeypatch, values):
             )
             assert response.status_code == 202
             assert submitted[-1]["molecule"]["settings"] == values
-        assert (
-            client.post(
-                "/api/jobs",
-                headers=HEADERS,
-                json={"kind": "template", "settings": values},
-            ).status_code
-            == (422 if any(v in {"F", "SO2CF3"} for v in values["substituents"]) else 202)
-        )
+        assert client.post(
+            "/api/jobs",
+            headers=HEADERS,
+            json={"kind": "template", "settings": values},
+        ).status_code == (202)
         # Direct worker calls cannot bypass the restriction, even without XYZ.
         with pytest.raises(ValueError, match="Praktikum"):
             calculate({"kind": "ts", "molecule": minimum})
 
 
-def test_api_accepts_two_nonortho_so2cf3_without_atom_limit(monkeypatch):
+def test_api_accepts_two_current_groups_without_atom_limit(monkeypatch):
     app = create_app()
     with TestClient(app) as client:
         client.get("/api/session")
@@ -115,7 +115,7 @@ def test_api_accepts_two_nonortho_so2cf3_without_atom_limit(monkeypatch):
             "id": "minimum",
             "kind": "minimum",
             "converged": True,
-            "settings": settings((1, "SO2CF3"), (8, "SO2CF3")),
+            "settings": settings((1, "CN"), (8, "NO2")),
             "atom_count": 100,
         }
         monkeypatch.setattr(

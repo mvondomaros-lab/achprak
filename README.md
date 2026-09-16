@@ -45,19 +45,17 @@ The German-language interface has three steps:
 
 The course menu is H, Me, OMe, NMe2, CF3, CN, and NO2. H leaves the site
 unsubstituted. CN attaches through carbon; NO2 attaches through nitrogen.
-F and SO2CF3 remain supported internally for historical regression fixtures and
-existing sessions, but cannot be selected for new web structures.
+F and SO2CF3 are not available in the course menu or eligible for TS searches.
 
 The web application permits transition-state searches only for structures with
-at most two substituents in total. Existing SO2CF3 structures retain their exclusion
-at positions 2, 6, 2′, or 6′.
+at most two substituents in total from the current course menu.
 The interface explains exclusions before submission; the API and worker enforce
 the same policy using retained template settings. Structure generation, minimum
 optimization, and UV/Vis calculations retain their existing prerequisites.
 Student TS jobs allow the original search and at most one automatic retry,
 chosen from reversed rotation or a more open seed according to the first failure.
 Each attempt retains its 1,500-step budget and full-path validation.
-The standalone research optimizer and screening scripts retain up to four attempts.
+The same two-attempt limit applies to the standalone optimizer.
 
 Each step offers an expandable **Was passiert im Hintergrund?** explanation:
 what the method does, how to read the result, and what its limits are.
@@ -132,7 +130,7 @@ final saddle refinement also uses Cartesian coordinates to handle nearly linear
 CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
 Each attempt shares a 1500-iteration budget across its stages. Student searches
 allow at most two attempts (3,000 steps total) and remain subject to the server's
-wall-time limit. The unrestricted research API defaults to four attempts.
+wall-time limit. The standalone API uses the same two-attempt limit.
 
 The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
@@ -212,7 +210,7 @@ node --test tests/test_web_progress.cjs
 The TS regression set is skipped by default. It starts from deterministic template
 geometries and exercises the real web worker, minimum optimization, path search,
 saddle modes and downhill connectivity. Cases cover cis/trans azobenzene,
-cis/trans 2-Me, trans 2-NMe2 and trans 4-NMe2-4′-CF3. Each case retains its input,
+cis/trans 2-Me, trans 2-NMe2, trans 4-NMe2-4′-CF3, trans 2-CN and cis 2-NO2. Each case retains its input,
 optimized minimum and TS result in `ts-result.json` under pytest's temporary
 directory, including the search history and failure reason. Add new failing
 molecules to this set and run the full `test-ts` set when investigating or fixing
@@ -223,9 +221,11 @@ The [symmetry-reduced screen](docs/ts-screening.md) covers 750 distinct
 mono- and disubstituted cis/trans starting cases using the six historical groups
 (Me, NMe2, CF3, OMe, F, SO2CF3),
 with two substituents in total allowed anywhere across the two rings.
-Failures are preserved as exact-geometry fixtures in `tests/data/ts_failures/`
-and included in `test-ts`. The search retains its original seed first, then
-tries at most three alternative seeds on failure. Each attempt has a 1500-step
+Ten failures involving only current substituents remain as exact-geometry
+fixtures in `tests/data/ts_failures/`, alongside a new exact-geometry trans-2-CN
+regression, and are included in `test-ts`. Obsolete
+fixtures using F or SO2CF3 have been removed. The search retains its original
+seed first, then tries at most one failure-directed alternative on failure. Each attempt has a 1500-step
 limit; reported total iterations include all attempts.
 
 Local validation on macOS included the complete chemistry workflow (including

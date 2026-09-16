@@ -1,8 +1,5 @@
 """Physical mode classification and minimum-to-saddle workflow regressions."""
 
-import json
-from pathlib import Path
-
 import numpy as np
 import pytest
 from ase import Atoms
@@ -72,29 +69,9 @@ def test_bond_graph_does_not_replace_the_energy_calculator():
     assert atoms.get_potential_energy() == -1.0
 
 
-def test_close_sulfur_nitrogen_contact_preserves_template_connectivity():
-    from achprak import common
-    from achprak.transition_state import OptTS
-
-    case = json.loads(
-        (
-            Path(__file__).parent / "data/ts_failures/trans-r1-2-SO2CF3_r1-6-NMe2.json"
-        ).read_text()
-    )
-    initial = common.xyz_to_atoms(case["initial_xyz"])
-    minimum = common.xyz_to_atoms(case["minimum_xyz"])
-    assert minimum.get_distance(1, 17) < 2.14
-    assert OptTS.bond_graph(minimum) == OptTS.bond_graph(initial)
-    # Fragment rotation must not cross the nonbonded S...N contact and pick
-    # up atoms from the substituted ring on the other side of N=N.
-    search = OptTS(minimum)
-    assert search.indices[0] not in search.rotating_indices
-    assert search.indices[3] in search.rotating_indices
-
-
 @pytest.mark.parametrize("failure_kind", ["endpoint", "path", "connectivity"])
-@pytest.mark.parametrize("succeed_on", [1, 2, 4, None])
-@pytest.mark.parametrize("max_attempts", [1, 2, 4])
+@pytest.mark.parametrize("succeed_on", [1, 2, None])
+@pytest.mark.parametrize("max_attempts", [1, 2])
 def test_seed_retries_restore_source_and_account_for_all_work(
     monkeypatch, failure_kind, succeed_on, max_attempts
 ):
@@ -130,7 +107,7 @@ def test_seed_retries_restore_source_and_account_for_all_work(
         observer=lambda a, i, p: observed.append((i, a.info["ts_attempt"])),
         max_attempts=max_attempts,
     ) == (succeed_on is not None and succeed_on <= max_attempts)
-    count = min(succeed_on or 4, max_attempts)
+    count = min(succeed_on or 2, max_attempts)
     assert search.max_attempts == max_attempts
     assert len(search.attempts) == count
     assert search.iterations_used == sum(range(1, count + 1))
@@ -144,8 +121,5 @@ def test_seed_retries_restore_source_and_account_for_all_work(
     if count > 1:
         assert seeds[1]["reverse"] == (failure_kind == "path")
         assert seeds[1]["seed_angle"] == (120 if failure_kind == "path" else 135)
-    if count == 4:
-        assert seeds[-1]["seed_angle"] == 150
-        assert seeds[-1]["reverse"] is False
     if succeed_on is None or succeed_on > max_attempts:
         assert len(search.traj) == count

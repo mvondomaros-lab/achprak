@@ -1,8 +1,6 @@
-"""Course eligibility for web TS jobs; the research optimizer stays unrestricted."""
+"""Course eligibility for web TS jobs."""
 
-# Include historical groups so existing sessions retain their original TS limits.
-SUBSTITUENTS = {"H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2", "F", "SO2CF3"}
-ORTHO_SITES = (0, 4, 5, 9)  # 2, 6, 2', 6'
+SUBSTITUENTS = {"H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"}
 MAX_TS_ATTEMPTS = 2
 
 
@@ -19,16 +17,11 @@ def ts_restriction(settings):
             "Erstellen Sie die Startstruktur erneut und optimieren Sie ein Minimum, "
             "bevor Sie einen Übergangszustand suchen."
         )
-    reasons = []
     if sum(v != "H" for v in values) > 2:
-        reasons.append("höchstens zwei Substituenten insgesamt")
-    if any(values[i] == "SO2CF3" for i in ORTHO_SITES):
-        reasons.append("kein SO₂CF₃ an den Positionen 2, 6, 2′ oder 6′ (ortho)")
-    if reasons:
         return (
-            "Für die Übergangszustandssuche im Praktikum gilt: "
-            + "; ".join(reasons)
-            + ". Minimumsuche und Spektrenrechnung bleiben verfügbar."
+            "Für die Übergangszustandssuche im Praktikum sind höchstens zwei "
+            "Substituenten insgesamt erlaubt. "
+            "Minimumsuche und Spektrenrechnung bleiben verfügbar."
         )
     return None
 

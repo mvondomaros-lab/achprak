@@ -46,10 +46,8 @@ def test_screen_failure(fixture, tmp_path):
         assert minimum.run(steps=500), "Source minimum did not converge"
         atoms = common.xyz_to_atoms(common.atoms_to_xyz(minimum.atoms))
     search = OptTS(atoms)
-    # Exercise the student limit on eligible cases while retaining research
-    # coverage for the excluded molecules that motivated the wider fallback.
-    eligible = ts_restriction({"substituents": case["substituents"]}) is None
-    max_attempts = MAX_TS_ATTEMPTS if eligible else 4
+    assert ts_restriction({"substituents": case["substituents"]}) is None
+    max_attempts = MAX_TS_ATTEMPTS
     ok = search.run(steps=1500, max_attempts=max_attempts)
     diagnostics = tmp_path / "ts-result.json"
     diagnostics.write_text(
@@ -60,7 +58,7 @@ def test_screen_failure(fixture, tmp_path):
                 "final_xyz": common.atoms_to_xyz(search.atoms),
                 "attempts": search.attempts,
                 "max_attempts": max_attempts,
-                "student_eligible": eligible,
+                "student_eligible": True,
                 **{
                     key: getattr(search, key)
                     for key in (
