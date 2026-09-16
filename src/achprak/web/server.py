@@ -320,6 +320,11 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
                     422,
                     "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
                 )
+            if body.kind == "minimum" and m["kind"] == "ts":
+                raise HTTPException(
+                    422,
+                    "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur.",
+                )
             if body.kind == "ts" and (m["kind"] != "minimum" or not m.get("converged")):
                 raise HTTPException(
                     422,

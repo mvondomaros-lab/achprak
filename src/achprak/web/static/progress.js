@@ -132,7 +132,7 @@ globalThis.SpectrumProgress = {
     ]],
     electrons: ["Elektronischen Grundzustand berechnen", [
       "MOPAC bestimmt die Elektronenverteilung im Grundzustand. Sie dient als Grundlage für die Berechnung elektronischer Anregungen.",
-      "Die Elektronenverteilung wird iterativ angepasst, da die Wechselwirkungen zwischen den Elektronen von dieser Verteilung abhängen.",
+      "Die Elektronenverteilung wird schrittweise angepasst. Die Wechselwirkungen zwischen den Elektronen hängen selbst von dieser Verteilung ab.",
     ]],
     configurations: ["Elektronische Anregungen vorbereiten", [
       "Die Molekülorbitale liegen vor. Daraus werden mögliche Anregungen von besetzten in unbesetzte Orbitale zusammengestellt.",
@@ -148,7 +148,7 @@ globalThis.SpectrumProgress = {
       "Die Oszillatorstärke ist ein dimensionsloses Maß für die Stärke eines elektronischen Übergangs. Sie bestimmt dessen Beitrag zur berechneten Absorption.",
     ]],
     read_transitions: ["Übergangsenergien und Stärken einlesen", [
-      "Die Ergebnisse werden aus der MOPAC-Ausgabe übernommen und auf die Abdeckung des dargestellten Energiebereichs geprüft.",
+      "Die berechneten Übergänge werden eingelesen. Geprüft wird, ob sie über den dargestellten Energiebereich hinausreichen, damit auch die Ausläufer höher liegender Banden berücksichtigt werden.",
     ]],
     expanded_output: ["Ausgabe der Übergänge erweitern", [
       "Die erste Ausgabeliste reicht nicht bis über den dargestellten Energiebereich. MOPAC läuft erneut, um mehr der berechneten Zustände auszugeben.",
@@ -156,7 +156,7 @@ globalThis.SpectrumProgress = {
     ]],
     broaden: ["Spektrenbanden berechnen", [
       "Jeder berechnete Übergang erhält eine gaußförmige Bande. Ihre Summe ergibt die dargestellte Spektrenkurve.",
-      "Die Bandbreite ist vorgegeben. Sie wird hier nicht aus Molekülbewegungen oder Lebensdauern berechnet.",
+      "Die Bandenbreite ist vorgegeben. Sie wird hier nicht aus Molekülbewegungen oder Lebensdauern berechnet.",
     ]],
     plot: ["Spektrum für die Darstellung aufbereiten", [
       "Die Kurve, die einzelnen Übergänge und die Achsen werden für die Anzeige und den Export zusammengestellt.",

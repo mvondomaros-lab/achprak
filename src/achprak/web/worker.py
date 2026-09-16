@@ -141,6 +141,10 @@ def calculate(data):
         raise ValueError(
             "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten."
         )
+    if kind == "minimum" and source["kind"] == "ts":
+        raise ValueError(
+            "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur."
+        )
     if kind == "ts" and (source["kind"] != "minimum" or not source.get("converged")):
         raise ValueError(
             "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch."

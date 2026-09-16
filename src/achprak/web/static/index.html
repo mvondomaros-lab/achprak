@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="static/app.css?v=ui-35"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
-    <script src="static/progress.js?v=ui-33" defer></script>
+    <script src="static/progress.js?v=ui-34" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-41" defer></script>
+    <script src="static/app.js?v=ui-42" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -98,9 +98,10 @@
                             Substituenten <span id="substituent-count">keine</span>
                         </summary>
                         <p class="field-hint">
-                            H bedeutet, dass an dieser Position ein Wasserstoffatom
-                            gebunden ist. Wählen Sie eine andere Gruppe, um dieses
-                            Wasserstoffatom zu ersetzen.
+                            Substituenten ersetzen Wasserstoffatome an den Ringen.
+                            H lässt das Wasserstoffatom an dieser Position unverändert.
+                            Me steht für Methyl (CH₃), OMe für Methoxy (OCH₃) und
+                            NMe₂ für Dimethylamino (N(CH₃)₂).
                         </p>
                         <div class="rings" id="rings"></div>
                     </details>
@@ -112,27 +113,28 @@
                     <summary>Was passiert im Hintergrund?</summary>
                     <h3>Rechenverfahren</h3>
                     <p>
-                        Die gewählte Konfiguration und die Substituenten legen fest,
-                        welche Atome das Molekül enthält und wie sie verbunden sind.
+                        Die Substituenten bestimmen, welche Atome das Molekül enthält
+                        und wie sie verbunden sind. Die Konfiguration legt die
+                        cis- oder trans-Anordnung an der N=N-Doppelbindung fest.
                         Das Programm RDKit erzeugt daraus mit dem Verfahren ETKDG eine
                         dreidimensionale Startstruktur. Dabei verwendet es typische
                         Atomabstände, Bindungswinkel und bevorzugte Verdrehungen um
                         Bindungen. Anschließend werden die Ringe entsprechend der
                         2D-Formel ausgerichtet. Eine kurze Vorbereitung mit dem
-                        molekularmechanischen Modell MMFF verringert enge Atomkontakte;
+                        Kraftfeld MMFF, einem Modell für die Kräfte zwischen den Atomen,
+                        vergrößert zu kurze Atomabstände;
                         dabei bleibt die gewählte Ringanordnung erhalten.
                         Diese Struktur dient als Ausgangspunkt für die anschließende
                         Geometrieoptimierung mit dem elektronischen Strukturmodell.
                     </p>
                     <h3>Darstellung der Ergebnisse</h3>
                     <p>
-                        Standardmäßig sehen Sie die 2D-Strukturformel. Sie zeigt
+                        Standardmäßig sehen Sie die zweidimensionale (2D) Strukturformel. Sie zeigt
                         Bindungen und Substituenten, aber keine maßstabsgetreuen
                         Abstände. Mit „3D“ wechseln Sie zur räumlichen
-                        Ansicht und können das Molekül drehen und vergrößern. Beide
-                        Darstellungen zeigen dieselbe gewählte Startanordnung.
-                        Die Ringe dürfen in 3D aus der Zeichenebene herausgedreht sein,
-                        behalten aber die in der Formel gewählte Orientierung.
+                        Ansicht und können das Molekül drehen und vergrößern. Die 3D-Startstruktur übernimmt
+                        die gewählte Ringanordnung aus der Formel. Die Ringe können
+                        dabei aus der Zeichenebene herausgedreht sein.
                         „cis“ und „trans“
                         beziehen sich auf die Anordnung der beiden Ringe an der
                         N=N-Doppelbindung, nicht auf die Seiten der Substituenten
@@ -199,26 +201,28 @@
                     <p>
                         <strong>Minimum:</strong> Das Optimierungsverfahren Sella passt
                         die Atompositionen schrittweise an, um die elektronische Energie
-                        zu verringern. Die Suche endet, wenn die verbleibenden Kräfte
-                        unter dem festgelegten Grenzwert liegen. Damit ist das numerische
-                        Abbruchkriterium erfüllt; die Genauigkeit des Rechenmodells wird
-                        dadurch nicht geprüft.
+                        zu verringern. Die Suche gilt als abgeschlossen, wenn die verbleibenden Kräfte
+                        unter dem festgelegten Grenzwert liegen. Eine separate
+                        Schwingungsprüfung des Minimums findet hier nicht statt.
+                        Dieses Abbruchkriterium
+                        allein beweist weder, dass ein Minimum vorliegt, noch, dass
+                        das Rechenmodell die experimentelle Geometrie genau beschreibt.
                     </p>
                     <p>
                         <strong>Übergangszustand:</strong> Zwischen dem Ausgangsminimum
                         und einem Minimum der anderen cis/trans-Konfiguration wird ein
                         Reaktionspfad aus 13 Strukturen aufgebaut. Das Verfahren CI-NEB
-                        optimiert die Strukturen entlang dieses Pfads. Zusätzliche
+                        (Climbing-Image Nudged Elastic Band) optimiert diese Strukturen
+                        und sucht dabei das Energiemaximum entlang des Pfads. Zusätzliche
                         rechnerische Federkräfte halten die benachbarten Strukturen
                         auf Abstand. Die Struktur am Energiemaximum des Pfads wird
                         anschließend mit Sella verfeinert und als möglicher
                         Übergangszustand geprüft.
                     </p>
                     <p>
-                        Die Übergangszustandssuche ist im Praktikum auf höchstens zwei
-                        Substituenten insgesamt beschränkt. Diese Grenze
-                        verringert das Risiko langer Suchläufe. Sie gilt nicht für
-                        Minimumsuche und Spektrenrechnung.
+                        Im Praktikum ist die Übergangszustandssuche auf insgesamt zwei
+                        Substituenten begrenzt, um lange Suchläufe zu vermeiden.
+                        Für Minimumsuche und Spektrenrechnung gilt diese Grenze nicht.
                         Falls der erste Suchlauf scheitert, folgt höchstens ein
                         weiterer Versuch mit einem anders vorbereiteten Reaktionspfad.
                     </p>
@@ -228,7 +232,8 @@
                         sich durch kleine Änderungen der Atompositionen nicht weiter
                         verringern lässt. Vergleichen Sie die optimierten cis- und
                         trans-Formen desselben Moleküls: Die niedrigere Energie kennzeichnet
-                        die energetisch günstigere Form im verwendeten Modell.
+                        die Form mit der niedrigeren elektronischen Energie im verwendeten Modell.
+                        Daraus allein folgt noch kein Mengenverhältnis im thermischen Gleichgewicht.
                     </p>
                     <p>
                         <strong>Übergangszustand:</strong> Das Energieprofil zeigt den
@@ -237,6 +242,33 @@
                         die Energie des Ausgangsminimums. Die Ergebnisse der
                         Schwingungsprüfung und der Prüfung der Verbindung zwischen
                         cis und trans stehen unter dem Diagramm.
+                    </p>
+                    <h3>Wie wird der Übergangszustand geprüft?</h3>
+                    <p>
+                        Die berechnete Geometrie heißt genauer <em>Übergangsstruktur</em>.
+                        Sie ist ein Sattelpunkt: In einer Richtung sinkt die Energie
+                        bei kleinen Auslenkungen auf beiden Seiten; in den übrigen
+                        inneren Verformungsrichtungen steigt sie. „Übergangszustand“
+                        bezeichnet das theoretische Konzept für den Übergang zwischen
+                        Edukten und Produkten. In der Bedienoberfläche verwenden wir
+                        diesen Begriff auch für das berechnete Ergebnis.
+                    </p>
+                    <p>
+                        Eine Schwingungsrechnung prüft die Verformungsrichtungen.
+                        Eine imaginäre Frequenz kennzeichnet eine Richtung, in der
+                        die Energie abnimmt, statt eine stabile Schwingung zu beschreiben.
+                        Hier wird genau eine imaginäre Frequenz mit einem Betrag über
+                        20 cm⁻¹ verlangt. Die Angabe cm⁻¹ bedeutet inverse Zentimeter;
+                        sie ist die in der Spektroskopie übliche Wellenzahleinheit.
+                        Sehr kleine Beträge werden wegen numerischer Unsicherheiten
+                        bei dieser Prüfung nicht mitgezählt.
+                    </p>
+                    <p>
+                        Anschließend werden die Atome in beide Richtungen dieser
+                        Verformung ausgelenkt. Minimumsuchen müssen von dort ein
+                        cis- und ein trans-Minimum erreichen. Diese Prüfung bestätigt
+                        die Verbindung im verwendeten Modell; sie simuliert keinen
+                        zeitlichen Reaktionsablauf.
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
@@ -257,8 +289,12 @@
                     <p>
                         <strong>ΔE‡ beschreibt nur den elektronischen Energieunterschied.</strong>
                         Berechnet wird ΔE‡ im elektronischen Grundzustand. Beiträge
-                        von Kernschwingungen, Temperatur und Entropie sowie mögliche
-                        Wechsel in andere elektronische Zustände fehlen. Um die
+                        von Kernschwingungen, Temperatur und Entropie fehlen. ΔE‡ ist
+                        daher weder die Aktivierungsenergie aus der Arrhenius-Gleichung
+                        für die Temperaturabhängigkeit der Reaktionsgeschwindigkeit
+                        noch die freie Aktivierungsenthalpie ΔG‡, die auch
+                        Temperatur- und Entropiebeiträge enthält. Auch Wechsel in andere elektronische
+                        Zustände werden nicht untersucht. Um die
                         Geschwindigkeit der cis/trans-Umwandlung bei einer bestimmten
                         Temperatur vorherzusagen, wären zusätzliche Rechnungen nötig.
                     </p>
@@ -298,16 +334,20 @@
                         die Berechnung von Spektren angepasst. CIS
                         beschreibt angeregte Zustände als Überlagerung von Anregungen,
                         bei denen jeweils ein Elektron aus einem besetzten in ein
-                        unbesetztes Orbital übergeht. Ein Orbital beschreibt einen möglichen Zustand eines Elektrons;
-                        daraus lässt sich seine räumliche Aufenthaltswahrscheinlichkeit ableiten.
+                        unbesetztes Orbital übergeht. Ein Orbital beschreibt im Modell den räumlichen Zustand eines
+                        Elektrons. Daraus lässt sich ableiten, mit welcher Wahrscheinlichkeit
+                        das Elektron in einem bestimmten Raumbereich gefunden wird.
                     </p>
                     <h3>Darstellung der Ergebnisse</h3>
                     <p>
-                        Jede Linie steht für einen elektronischen Übergang. Ihre Höhe
+                        Jede orange Linie steht für einen elektronischen Übergang
+                        vom Grundzustand in einen angeregten Zustand. Ihre Höhe
                         zeigt die Oszillatorstärke: ein dimensionsloses Maß dafür, wie stark dieser
                         Übergang zur Lichtabsorption beiträgt. Für die blaue Kurve wird
                         jede Linie zu einer glockenförmigen Gaußkurve verbreitert;
-                        anschließend werden die Beiträge addiert.
+                        anschließend werden die Beiträge addiert. Die Markierungen
+                        am oberen Ende machen auch sehr schwache Übergänge sichtbar.
+                        Das Maximum der blauen Kurve kann zwischen einzelnen Übergängen liegen.
                     </p>
                     <p>
                         Kleinere Anregungsenergien entsprechen längeren Wellenlängen.
@@ -315,16 +355,18 @@
                     </p>
                     <h3>Wie wird die Farbe geschätzt?</h3>
                     <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
-                        aus der blauen Kurve abgelesen. Mit dem gewählten Faktor s setzen wir die
-                        dimensionslose optische Dichte A = s · I an. Der durchgelassene Lichtanteil ist
+                        aus der blauen Kurve bestimmt. Mit dem gewählten Faktor s wird die
+                        dimensionslose optische Dichte (Absorbanz) A = s · I angesetzt. Der durchgelassene Lichtanteil ist
                         T = 10<sup>−A</sup>. Bei Faktor 0 wird das gesamte Licht durchgelassen.</p>
                     <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
                         CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
-                        Die CIE ist die Internationale Beleuchtungskommission. Die Darstellung nimmt
+                        Diese Funktionen beschreiben die mittlere Farbwahrnehmung des menschlichen Auges.
+                        Die CIE ist die Internationale Beleuchtungskommission. D65 bezeichnet
+                        eine festgelegte spektrale Verteilung, die Tageslicht annähert. Die Darstellung nimmt
                         eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz fehlen.</p>
                     <p>Die Vorschau gilt nur für die ausgewählte Struktur, ohne cis/trans-Gemisch und
                         ohne Mittelung über weitere räumliche Anordnungen. Ethanol ist im Spektrenmodell
-                        als kontinuierliches Medium beschrieben. Die Bandenbreite ist illustrativ;
+                        als kontinuierliches Medium beschrieben. Die Bandenbreite ist vorgegeben;
                         ein Vergleich mit einem gemessenen Spektrum von trans-Azobenzol in Ethanol zeigt
                         Abweichungen der Bandenlagen um etwa 44 und 58 nm sowie eine zu schwache sichtbare Bande.
                         Daraus lässt sich keine zuverlässige Vorhersage der tatsächlichen Lösungsfarbe ableiten.
@@ -342,16 +384,15 @@
                         Das Spektrum ist eine Modellvorhersage für eine einzelne
                         Geometrie. Ethanol wird über seine elektrische Abschirmwirkung
                         berücksichtigt. Die Breite der Banden ist vorgegeben, nicht aus
-                        Molekülbewegungen berechnet. Die Kurvenhöhe ist daher keine
-                        gemessene Absorbanz einer Probe; auch die Lage der Banden kann
+                        Molekülbewegungen berechnet. Die Kurvenhöhe gibt eine relative Absorptionsstärke an,
+                        keine gemessene Absorbanz bei bekannter Konzentration und Schichtdicke; auch die Lage der Banden kann
                         vom Experiment abweichen.
                     </p>
                     <p>
                         Für eine kurze Rechenzeit wird die Auswahl der berücksichtigten
                         Elektronenanregungen begrenzt. Eine umfangreichere Rechnung kann
-                        die Lage und Stärke der Banden verändern. Berichten Sie deshalb die berechneten Maxima und
-                        Verschiebungen
-                        als Modellvorhersagen, nicht als Messwerte.
+                        die Lage und Stärke der Banden verändern. Geben Sie die berechneten
+                        Maxima und Verschiebungen im Protokoll als Modellvorhersagen an.
                     </p>
                     <dl class="method">
                         <div>
@@ -549,7 +590,7 @@
                         </div>
                     </section>
                     <p id="spectrum-selection" class="spectrum-selection" aria-live="polite">
-                        Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs
+                        Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und Oszillatorstärke
                         abzulesen.
                     </p>
                     <p class="ts-summary" id="spectrum-caption"></p>
@@ -560,17 +601,16 @@
                             <h3 id="solution-color-title">Geschätzte Lösungsfarbe</h3>
                             <p id="solution-color-sample" class="note"></p>
                             <p class="note">Standard-Tageslicht (D65) · Durchsicht · angenommene Schichtdicke 1 cm</p>
-                            <label for="solution-color-density">Relative optische Dichte · Faktor
+                            <label for="solution-color-density">Faktor für die optische Dichte
                                 <output id="solution-color-density-value" for="solution-color-density">1,0</output>
                             </label>
                             <input id="solution-color-density" type="range" min="0" max="10" step="0.1" value="1"
                                    aria-describedby="solution-color-limitation"/>
                             <p id="solution-color-status" class="note" role="status"></p>
-                            <p id="solution-color-limitation" class="note">Illustrative Schätzung aus dem berechneten
-                                Spektrum.
-                                Verändern Sie den Faktor, um den Einfluss stärkerer Absorption zu untersuchen.
-                                Er entspricht keiner bekannten Konzentration. Beim Vergleich mit Messdaten für trans-Azobenzol
-                                wird die sichtbare Bande stark unterschätzt. Die tatsächliche Lösungsfarbe kann deutlich abweichen.</p>
+                            <p id="solution-color-limitation" class="note">Schätzung aus dem berechneten Spektrum.
+                                Der Faktor verändert die Absorptionsstärke und entspricht keiner bekannten Konzentration.
+                                Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
+                                Die tatsächliche Lösungsfarbe kann deshalb deutlich abweichen.</p>
                         </div>
                     </section>
                 </div>

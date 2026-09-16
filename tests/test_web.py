@@ -533,3 +533,22 @@ def test_existing_spectrum_is_preserved_and_missing_spectrum_can_be_requested(
     del molecule["spectrum"]
     assert client.post("/api/jobs", headers=HEADERS, json=request).status_code == 202
     assert len(submissions) == 1
+
+
+def test_minimization_of_transition_state_is_rejected(client, app):
+    from achprak.web.worker import calculate
+
+    session = next(iter(app.state.manager.sessions.values()))
+    ts = {"id": "ts-result", "kind": "ts", "converged": True}
+    session.molecules[ts["id"]] = ts
+    response = client.post(
+        "/api/jobs",
+        headers=HEADERS,
+        json={"kind": "minimum", "molecule_id": ts["id"]},
+    )
+    assert response.status_code == 422
+    assert "Wählen Sie eine Startstruktur" in response.json()["detail"]
+    assert not session.jobs
+    assert session.molecules[ts["id"]] == ts
+    with pytest.raises(ValueError, match="Wählen Sie eine Startstruktur"):
+        calculate({"kind": "minimum", "molecule": ts})

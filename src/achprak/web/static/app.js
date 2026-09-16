@@ -343,13 +343,16 @@ function updateControls() {
     ? "GFN1-xTB · CI-NEB · Sella"
     : "GFN1-xTB · Sella";
   const tsRestriction = m?.ts_restriction;
-  $("ts-requirement").textContent = tsRestriction || "Suchen Sie zuerst ein Minimum.";
-  $("ts-requirement").hidden = !m || !tsSelected || (m.kind === "minimum" && !tsRestriction);
+  const minimumRestriction = !tsSelected && m?.kind === "ts";
+  $("ts-requirement").textContent = minimumRestriction
+    ? "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur."
+    : tsRestriction || "Suchen Sie zuerst ein Minimum.";
+  $("ts-requirement").hidden = !minimumRestriction && (!m || !tsSelected || (m.kind === "minimum" && !tsRestriction));
   $("optimize").disabled =
     state.busy ||
     !m ||
     (tsSelected && (m.kind !== "minimum" || !!tsRestriction)) ||
-    (!tsSelected && m.kind === "minimum");
+    (!tsSelected && ["minimum", "ts"].includes(m.kind));
   $("optimize").textContent =
     !tsSelected && m?.kind === "minimum"
       ? "Minimum bereits gefunden"
@@ -384,7 +387,7 @@ function renderSpectrum() {
   $("spectrum-caption").textContent =
     `Absorptionsmaximum im dargestellten Energiebereich: ${fmt(e, 4)} eV.` +
     (spec.coverage_complete === false
-      ? " Die berechneten Übergänge decken den oberen Energiebereich einschließlich der Bandenränder nicht vollständig ab. Die Absorption in diesem Bereich kann dadurch unterschätzt werden."
+      ? " Am oberen Rand des dargestellten Energiebereichs fehlen möglicherweise Beiträge weiterer Übergänge. Die Absorption in diesem Bereich kann dadurch unterschätzt werden."
       : "");
 
 }
@@ -399,7 +402,7 @@ function renderSolutionColor() {
   swatch.style.backgroundColor = result?.css || "";
   swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}, Faktor ${fmt(density, 1)}`);
   $("solution-color-status").textContent = result
-    ? `Lichtdurchlässigkeit, nach Helligkeitsempfindlichkeit gewichtet: ${fmt(100 * result.luminance, 1)} %`
+    ? `Lichtdurchlässigkeit, gewichtet nach der Helligkeitsempfindlichkeit des Auges: ${fmt(100 * result.luminance, 1)} %`
     : "Keine Farbschätzung verfügbar: Das Spektrum ist unvollständig oder enthält keine auswertbaren Absorptionsdaten.";
 }
 $("solution-color-density").addEventListener("input", renderSolutionColor);
@@ -705,7 +708,7 @@ function renderEnergyHistory(activeStep) {
       "ΔE relativ zum Ausgangsminimum · keine Zeitachse.";
     $("energy-chart").setAttribute(
       "aria-label",
-      `Energieprofil des Reaktionspfads mit ${path.length} Bildern`,
+      `Energieprofil des Reaktionspfads mit ${path.length} Strukturen`,
     );
   } else {
     const reference = searchRecords[0]?.energy_ev ?? 0;
@@ -768,7 +771,7 @@ function renderSpectrumChart(spec) {
   }
   if (spectrumChart.spectrumData !== spec) {
     spectrumChart.data.datasets[2].data = [];
-    $("spectrum-selection").textContent = "Wählen Sie eine orange Linie, um Energie, Wellenlänge und Oszillatorstärke des Übergangs abzulesen.";
+    $("spectrum-selection").textContent = "Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und Oszillatorstärke abzulesen.";
   }
   spectrumChart.spectrumData = spec;
   spectrumChart.data.datasets[0].data = spec.energy_ev.map((x, i) => ({ x, y: spec.absorption[i] }));
@@ -947,7 +950,7 @@ async function monitor(jobId) {
         if (job.result?.molecule?.converged === false)
           error(
             job.result.molecule.ts_search?.failure_reason ||
-              "Die Optimierung ist noch nicht abgeschlossen. Die zuletzt berechnete Struktur wurde gespeichert. Optimieren Sie diese erneut, bevor Sie ein Spektrum berechnen.",
+              "Die Optimierung ist noch nicht abgeschlossen. Die zuletzt berechnete Struktur wurde gespeichert. Suchen Sie ausgehend davon ein Minimum, bevor Sie ein Spektrum berechnen.",
           );
         return job;
       }
@@ -971,6 +974,8 @@ async function startJob(payload) {
     throw new Error(
       "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
     );
+  if (payload.kind === "minimum" && current()?.kind === "ts")
+    throw new Error("Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur.");
   if (state.busy)
     throw new Error("Warten Sie, bis die laufende Berechnung abgeschlossen ist.");
   error("");

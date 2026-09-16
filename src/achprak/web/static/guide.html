@@ -42,7 +42,8 @@
   <p>
     Die 3D-Startstruktur übernimmt die Ringanordnung aus der 2D-Formel.
     Vergleichen Sie beispielsweise trans · 2-NO₂, 2′-CN mit trans · 2-NO₂, 6′-CN.
-    Beide haben dieselbe Bindungsverknüpfung, aber unterschiedliche Startanordnungen.
+    In beiden Strukturen sind die Atome auf dieselbe Weise verbunden.
+    Die räumliche Startanordnung unterscheidet sich jedoch.
     Optimieren Sie beide und prüfen Sie, ob sie zum selben lokalen Minimum führen.
     Während der Optimierung dürfen sich die Ringe drehen.
   </p>
@@ -65,13 +66,14 @@
   </p>
   <p class="note">
     Startstrukturen werden aus typischen Bindungslängen, Winkeln und
-    Verdrehungen erzeugt. Ihre Energie wurde noch nicht minimiert. Bei der
+    Verdrehungen erzeugt. Sie sind noch nicht mit dem elektronischen Strukturmodell optimiert. Bei der
     Optimierung können sich deshalb auch die Ringstellung und die Anordnung
     der Substituenten ändern.
   </p>
   <h3>2.1 · Planarität</h3>
   <p>
-    Visualisieren Sie cis- und trans-Azobenzol. Sind die Moleküle planar, liegen also alle Atome in einer Ebene? Drehen
+    Betrachten Sie die Startstrukturen von cis- und trans-Azobenzol.
+    Sind sie planar, liegen also alle Atome in einer Ebene? Drehen
     Sie das Modell durch Ziehen mit der Maus und zoomen Sie mit dem Mausrad.
   </p>
   <h3>2.2 · Räumlicher Einfluss der Substituenten</h3>
@@ -82,7 +84,7 @@
   </p>
   <h3>2.3 · Energieunterschied der Startstrukturen</h3>
   <p>
-    Lesen Sie die automatisch berechneten Energien der cis- und
+    Lesen Sie die berechneten elektronischen Energien der cis- und
     trans-Startstrukturen ab. Bestimmen Sie ΔE = E<sub>trans</sub> − E<sub
       >cis</sub
     >
@@ -92,7 +94,8 @@
   <h3>2.4 · Diederwinkel</h3>
   <p>
     Der Diederwinkel A–B–C–D beschreibt den Winkel zwischen den Ebenen
-    A–B–C und B–C–D. Betrachten Sie das trans-Molekül entlang der N=N-Bindung,
+    A–B–C und B–C–D. Hier sind A und D die direkt an die N=N-Gruppe
+    gebundenen Kohlenstoffatome. Betrachten Sie die trans-Struktur entlang der N=N-Bindung,
     schätzen Sie den Winkel und vergleichen Sie mit dem berechneten Wert. Welche
     Winkel ergeben sich für die cis- und die trans-Form?
   </p>
@@ -132,8 +135,8 @@
   </p>
   <p class="note">
     Die Wiedergabe zeigt die berechneten Strukturen entlang des Reaktionspfads,
-    keinen tatsächlichen zeitlichen Ablauf. Die Rechnung prüft, ob auf beiden Seiten
-    eine cis- bzw. trans-Struktur erreicht wird. Die berechnete elektronische Energiebarriere
+    keinen tatsächlichen zeitlichen Ablauf. Die Rechnung prüft, ob Minimumsuchen auf beiden Seiten
+    des Übergangszustands ein cis- und ein trans-Minimum erreichen. Die berechnete elektronische Energiebarriere
     gilt für den untersuchten Weg; Temperatureffekte werden nicht
     berücksichtigt.
   </p>
@@ -141,8 +144,8 @@
   <p>
     Berechnen Sie ΔE<sup>‡</sup> = E<sub>TS</sub> − E<sub>trans</sub> in kJ/mol.
     Verwenden Sie dafür die Suche vom trans-Minimum aus. Diese elektronische
-    Energiebarriere ist nicht mit einer experimentellen Aktivierungsenergie
-    gleichzusetzen. Bei etwa 25 °C (298 K) gilt RT ≈ 2,5 kJ/mol; das entspricht
+    Energiebarriere ist nicht mit einer Arrhenius-Aktivierungsenergie oder einer freien
+    Aktivierungsenthalpie ΔG‡ gleichzusetzen. Bei etwa 25 °C (298 K) gilt RT ≈ 2,5 kJ/mol; das entspricht
     k<sub>B</sub>T ≈ 0,0257 eV pro Molekül. Dabei ist T die absolute Temperatur,
     R die Gaskonstante und k<sub>B</sub> die Boltzmann-Konstante. Wie groß ist die Barriere im
     Vergleich zu RT? Beachten Sie: RT ist keine Obergrenze für die Energie
@@ -171,13 +174,14 @@
   <h3>4.1 · cis und trans</h3>
   <p>
     Unter dem Spektrum finden Sie die geschätzte Lösungsfarbe bei Standard-Tageslicht.
-    Verändern Sie die relative optische Dichte und beobachten Sie Farbe und
+    Verändern Sie den Faktor für die optische Dichte und beobachten Sie Farbe und
     Lichtdurchlässigkeit. Vergleichen Sie Strukturen beim gleichen Faktor.
     Dieser Faktor entspricht keiner bekannten Konzentration. Die Vorschau gilt
     für die ausgewählte Struktur allein. Ein Vergleich mit einem gemessenen Spektrum
     von trans-Azobenzol in Ethanol zeigt eine stark unterschätzte sichtbare Bande.
     Die tatsächliche Lösungsfarbe kann daher deutlich abweichen.
-    Einzelheiten finden Sie unter „Wie wird die Farbe geschätzt?“.
+    Einzelheiten finden Sie in Schritt 3 unter „Was passiert im Hintergrund?“
+    im Abschnitt „Wie wird die Farbe geschätzt?“.
   </p>
   <p>
     Berechnen Sie die Spektren von cis- und trans-Azobenzol. Bei welchen
@@ -216,12 +220,13 @@
       und angeregte Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz
       zwischen zwei Zuständen kleiner, verschiebt sich der zugehörige Übergang
       zu längeren Wellenlängen (bathochrom). Eine größere Energiedifferenz entspricht
-      kürzere Wellenlängen (hypsochrom). Das Absorptionsmaximum hängt zusätzlich
+      kürzeren Wellenlängen (hypsochrom). Das Absorptionsmaximum hängt zusätzlich
       von den Stärken und der Überlagerung der Übergänge ab.
     </p>
     <p>
-      In einem ausgedehnten π-System können Elektronen über mehrere benachbarte
-      Atome verteilt sein; das nennt man Delokalisierung. Sie kann die
+      Ein π-System entsteht durch die seitliche Überlappung benachbarter
+      p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein;
+      das nennt man Delokalisierung. Sie kann die
       Anregungsenergie verringern. Substituenten können aber auch die Geometrie
       und damit die Wechselwirkung zwischen den Molekülteilen verändern. Das
       Schema zeigt in A die Energiedifferenz des Vergleichssystems, in B.1 und

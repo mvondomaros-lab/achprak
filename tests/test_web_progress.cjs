@@ -773,6 +773,13 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   assert.equal(elements.get("ts-requirement").hidden, false);
   assert.equal(elements.get("optimize").disabled, true);
 
+  molecule.kind = "ts";
+  target = "minimum";
+  context.updateControls();
+  assert.equal(elements.get("optimize").disabled, true);
+  assert.equal(elements.get("ts-requirement").hidden, false);
+  assert.match(elements.get("ts-requirement").textContent, /Wählen Sie eine Startstruktur/);
+
   molecule.kind = "minimum";
   target = "minimum";
   context.updateControls();
