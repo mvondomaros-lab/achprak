@@ -108,7 +108,8 @@ Ressourcenplanung. Der lokale Start allein stellt keine Anmeldung für einen
 
 ## Methoden und Weiterentwicklung
 
-Die folgenden technischen Dokumentationen sind auf Englisch:
+Die [Dokumentationsübersicht für Wissenschaft und Lehre](docs/README.md) hilft
+bei der Auswahl. Die folgenden technischen Dokumentationen sind auf Englisch:
 
 - [Rechenmethoden, Einstellungen und Grenzen](docs/science-decisions.md)
 - [Übergangszustände und Prüfung der Ergebnisse](docs/transition-state.md)

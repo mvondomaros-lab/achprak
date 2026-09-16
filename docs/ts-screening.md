@@ -1,10 +1,18 @@
-# Azobenzene TS screening
+# Transition-state screening and regression coverage
 
-The opt-in screen in `scripts/screen_ts.py` enumerates one or two substituents
-from the course menu (Me, OMe, NMe2, CF3, CN, NO2) across both rings.
+This page describes how to assess whether the transition-state (TS) search
+completes for a set of course molecules. A screen runs the same workflow over many
+structures. A regression test repeats a selected calculation to detect changes
+after modifying the software. Neither measures agreement with experiment.
+
+The optional [`screen_ts.py`](../scripts/screen_ts.py) screen enumerates one or
+two substituents from the course menu across both rings: methyl (Me), methoxy
+(OMe), dimethylamino (NMe2), trifluoromethyl (CF3), cyano (CN) and nitro (NO2).
 Independent ring reflections and ring exchange identify equivalent substitution
-patterns; cis and trans remain distinct. Canonical RDKit isomeric SMILES check
-the enumeration without generating 3D geometries.
+patterns; cis and trans remain distinct. RDKit checks the enumeration using
+canonical isomeric SMILES: standardized text representations of molecular
+connectivity and stereochemistry. This check does not require three-dimensional
+geometries.
 
 | Substitution pattern | Distinct patterns | Cis/trans starting cases |
 | --- | ---: | ---: |
@@ -13,13 +21,23 @@ the enumeration without generating 3D geometries.
 | One substituent on each ring | 171 | 342 |
 | Total | 375 | 750 |
 
-These are enumeration counts, not successful-calculation counts. The current
-menu and optimizer do not have a completed exhaustive validation recorded here.
-The regression suite covers selected templates and exact failing geometries.
-Symmetry reduction does not sample every conformer or establish that equivalent
-starting labels reach the same minimum or transition structure.
+These are enumeration counts, not successful-calculation counts. The current menu
+and optimizer do not have a completed exhaustive validation recorded here. The
+regression suite covers selected templates and exact failing geometries. Symmetry
+reduction does not sample every conformer or establish that equivalent starting
+labels reach the same minimum or transition structure.
 
 ## Run and resume
+
+Run commands from the repository root after installing the `dev` environment with
+`pixi install --locked -e dev`. Four workers means up to four concurrent
+calculations; reduce this number if memory is limited. The complete screen can be
+expensive, so begin with a single case when checking a new installation.
+
+Case identifiers encode the input rather than a molecule name. For example,
+`trans-r1-2-NMe2_r1-6-CF3` means a trans input with NMe2 at position 2 and CF3 at
+position 6 on ring 1. `r2` denotes ring 2. A seed such as 42 makes the initial
+geometry generation reproducible.
 
 ```sh
 MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-course-screen
@@ -31,22 +49,28 @@ pixi run -e dev python scripts/screen_ts.py --output results/ts-course-screen --
 pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-NMe2_r1-6-CF3 --output results/ts-recheck
 ```
 
-Each case uses seed 42, the application's XYZ serialization and a 500-step
-minimum optimization. The TS search uses the production two-attempt policy:
-120°/FIRE first, then reversed 120° or open 135°/L-BFGS according to the failure.
+Each case uses seed 42, the application's XYZ coordinate-file representation and a
+500-step minimum optimization. The TS search uses the production two-attempt
+policy: a 120° initial bond angle with FIRE optimization first, then reversed
+rotation or a wider 135° angle with L-BFGS optimization according to the failure.
+These are preparation and optimizer choices, described in the method page below.
 Each attempt has a shared 1,500-step budget. Full path, frequency and downhill
 connectivity checks are required. See [the method](transition-state.md).
 
 Results and logs are written per case under the git-ignored output directory.
-JSON records are written atomically. Repeating the command skips completed
-records, including failures. `--unique` prefers a completed representative and
-records equivalent labels without changing atom order or case IDs.
-Use a new output directory when code or packages change. Do not run overlapping
-selections into the same directory concurrently. Manifests record source hashes,
-package versions and the selected cases.
+Results use JSON, a structured text format. Each record is written as a complete
+file before replacing its destination, so an interrupted write does not leave a
+partially written record. Repeating the command skips completed records, including
+failures. `--unique` prefers a completed representative and records equivalent
+labels without changing atom order or case IDs. Use a new output directory when
+code or packages change. Do not run overlapping selections into the same directory
+concurrently. A manifest records checksums identifying the source files, package
+versions and the selected cases, so results can be traced to their calculation
+setup.
 
 `--implementation PATH` loads a separate `transition_state.py` for controlled
-optimizer comparisons; its source hash is included in the manifest.
+optimizer comparisons; a checksum identifying that source file is included in the
+manifest.
 
 ## Regression coverage
 
@@ -57,23 +81,23 @@ pixi run -e dev test-ts
 `tests/test_web.py` covers deterministic cis/trans parent templates and selected
 Me, NMe2, CF3, CN and NO2 derivatives through the web worker.
 `tests/test_ts_screen.py` runs the exact geometries in `tests/data/ts_failures/`.
-Source-minimum failures are distinguished from TS failures. Collected fixtures
-are never overwritten by later runs, even if another conformer succeeds.
-All real chemistry regressions remain disabled in default test runs.
+Source-minimum failures are distinguished from TS failures. Collected fixtures are
+never overwritten by later runs, even if another conformer succeeds. All real
+chemistry regressions remain disabled in default test runs.
 
-A successful calculation establishes numerical convergence and downhill
-cis/trans connectivity for the chosen model. It does not establish a globally
-lowest barrier, an IRC, or agreement with experiment. Barriers are electronic
-energy differences ΔE‡ relative to the source minimum, without zero-point,
-thermal or entropic corrections.
+A successful calculation establishes numerical convergence and downhill cis/trans
+connectivity for the chosen model. It does not establish a globally lowest
+electronic energy barrier, an intrinsic reaction coordinate (IRC), or agreement
+with experiment. Electronic energy barriers ΔE‡ are energy differences relative to
+the source minimum, without zero-point, thermal or entropic corrections.
 
 ## Compare reliability and cost
 
 `scripts/benchmark_ts_strategy.py` compares production searches with experimental
 band optimizers and seed choices using saved source minima. It includes saved
-failures and passing controls selected by a stable case-ID hash, balanced by
-configuration and substitution pattern. Each candidate must produce a full path
-and pass frequency and connectivity checks.
+failures and passing controls selected reproducibly from their case identifiers,
+balanced by configuration and substitution pattern. Each candidate must produce a
+full path and pass frequency and connectivity checks.
 
 ```sh
 pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-course-screen
@@ -82,10 +106,12 @@ pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-cour
 
 `open150_lbfgs` makes one direct 150°/L-BFGS attempt with a 1,500-step budget.
 `lbfgs_neb` changes the band optimizer. `dynamic_neb` skips updates to converged
-images with a uniform 0.05 eV/Å band-force threshold. These are offline
-comparisons, not additional production retries.
+images with a uniform 0.05 eV/Å band-force threshold. These comparisons run
+separately from the application and do not add retries to the student workflow.
 
 Workers run paired methods consecutively and alternate their order across
-molecules. Reports include wall time, CPU time and calculator calls. Compare
-failures separately from speed ratios for successful pairs; calculator calls
-are less sensitive to worker contention than elapsed time.
+molecules. Reports include elapsed wall-clock time, processor time (CPU time), and
+the number of energy/force evaluations (calculator calls). Compare failures
+separately from speed ratios for successful pairs; calculator calls are less
+sensitive to competition between simultaneous calculations for hardware resources
+than elapsed time.

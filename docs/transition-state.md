@@ -1,53 +1,124 @@
 # Transition-state calculation
 
-TS searches require a converged minimum. A relaxed CNNC torsion scan seeds a
-13-image path toward the opposite cis/trans isomer, preserving atom identity and
-rotating the complete fragment. CNN angles are guided to 120° only during seed
-preparation. The opposite endpoint is then freely minimized. Regular minimum
-searches, opposite endpoints, and connectivity checks all use a final maximum
-atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
-ASE FIRE (L-BFGS on retry attempts) relaxes two unconstrained NEB halves against a provisionally refined central saddle seed.
-This prevents early corner cutting from removing the barrier. The full band is
-then released for climbing-image NEB. Both stages use 0.1 eV/Å² springs. Free Sella saddle
-refinement follows, using a full Cartesian Hessian and a 0.005 eV/Å force threshold.
-Candidates with additional imaginary modes are refined to 0.001 eV/Å within the
-shared iteration budget, then their Hessian is recalculated. This resolves soft
-torsions before mode validation. The central seed is approached in internal coordinates and finished in Cartesian coordinates;
-final saddle refinement also uses Cartesian coordinates to handle nearly linear
-CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
-Minimum refinement uses internal-coordinate Sella followed by at most 25
-Cartesian BFGS steps at the same force threshold. Each attempt shares a
-1,500-iteration budget across its stages. Student searches
-allow at most two attempts (3,000 steps total) and remain subject to the server's
-wall-time limit. The retry uses reversed rotation at 120°, or an open 135°
-seed for endpoint-preparation or changed-bond failures. The standalone API
-uses the same two-attempt limit.
+The application searches for a transition state (TS) connecting cis and trans
+minima on the chosen electronic energy surface. It requires a converged source
+minimum and permits at most two non-H substituents across both rings. The
+[scientific defaults](science-decisions.md) describe the energy and solvent model.
 
-The live chart shows the evolving band's energy against normalized Cartesian
-path length, not optimization time. The live 3D preview follows a moving image
-of the active half-band, then the climbing image during CI-NEB. The plot highlights
-the displayed image. On completion, clickable energy points and the
-single-pass Play controls show the reaction path. Minimum results instead
-show their optimization history.
-Both endpoint geometries and their energies are retained
-in the result; the other endpoint is available as the final path image.
+The interface calls an accepted result a **transition state**. More precisely, the
+calculated saddle-point geometry is a **transition structure**: a geometry at
+which the energy decreases along one internal motion and increases along the other
+internal directions. This geometric criterion does not describe the full
+statistical concept of a transition state in rate theory.
 
-A full all-atom finite-difference Hessian (0.01 Å displacement) checks the saddle.
-Rigid translations and rotations are projected out; exactly one imaginary
-internal frequency with magnitude above 20 cm⁻¹ is required. Smaller negative frequencies are tolerated by this numerical criterion;
-they are not proof of additional physical instabilities. Displacement by ±0.15 Å maximum atom motion along the unstable
-mode, followed by unconstrained minimization, must reach one cis and one trans
-minimum with the original atom-mapped bond graph preserved. For this comparison,
-copies of both band endpoints and the downhill minima are optimized to 0.002 eV/Å
-to resolve soft torsions. Polishing takes place after the TS search and preserves
-the original band and its energy reference. These actual downhill
-minima (XYZ, energy, isomer) are retained separately. Matching to the polished
-endpoint references additionally uses aligned RMSD <0.35 Å and energy difference <0.05 eV.
-A different endpoint conformer is explicitly reported; isomer connectivity does
-not establish an exact conformer match. This is a numerical downhill connectivity
-check, **not an IRC** or a proof of the globally lowest barrier. Failed band, saddle,
-mode or cis/trans connectivity checks leave an unconfirmed search state.
-Only a force-converged saddle passing both mode and connectivity checks is labeled
-a TS. Playback is not a dynamics simulation. Barriers are electronic energy differences, not free-energy
-barriers. See [ASE's NEB documentation](https://docs.ase-lib.org/ase/neb.html).
+## What an accepted result establishes
 
+A result is labeled as a TS only when all three checks pass:
+
+1. The saddle-point geometry meets the force-convergence criterion.
+2. Its vibrational analysis has exactly one imaginary internal frequency with
+   magnitude above **20 cm⁻¹** (inverse centimetres). This identifies one
+   direction of negative energy curvature. Smaller imaginary frequencies are
+   tolerated by the numerical criterion; they are not classified as additional
+   physical instabilities by this check.
+3. Small displacements in the two directions of the unstable motion, followed
+   by minimization, reach one cis and one trans minimum without changing the
+   molecule's atom identities and bond connectivity.
+
+This is a numerical downhill connectivity check. It is not an **intrinsic reaction
+coordinate (IRC)** calculation, which follows a defined steepest-descent path in
+mass-weighted coordinates. Nor does it establish that the search found the
+globally lowest electronic energy barrier or the experimentally dominant reaction
+pathway. A failed check leaves the search unconfirmed.
+
+The reported **electronic energy barrier ΔE‡** is relative to the source minimum.
+It excludes zero-point, thermal and entropic corrections and is neither an
+Arrhenius activation energy nor a Gibbs energy of activation.
+
+## Search sequence
+
+The search first prepares an approximate path between the isomers. It then relaxes
+a sequence of molecular geometries along that path and refines a candidate saddle
+point. The geometries along the path are called **images**; they are not frames
+sampled from a dynamics simulation.
+
+The path method is the **nudged elastic band (NEB)** method. Artificial springs
+maintain the spacing between images while the geometries relax. A climbing-image
+stage drives the highest-energy image toward a saddle point. The [ASE
+documentation](https://docs.ase-lib.org/ase/neb.html) describes this method; ASE
+is the Atomic Simulation Environment used to organize these calculations. Sella
+then refines the transition structure without the path springs.
+
+Each attempt has a shared budget of 1,500 optimizer iterations. The application
+and standalone calculation API permit at most two attempts. The server's
+wall-clock time limit can end a search before that budget is exhausted.
+
+<details>
+<summary>Path preparation and optimizer settings</summary>
+
+A relaxed scan of the C–N=N–C torsion prepares a 13-image path toward the opposite
+isomer. Complete molecular fragments are rotated with atom identities preserved.
+The C–N=N bond angles are guided to 120° only during preparation; the opposite
+endpoint is then minimized without those constraints.
+
+Two NEB halves initially relax against a provisionally refined central saddle
+candidate. This staging reduces the risk that the initial path relaxes away from
+the barrier region. The full band is then released for climbing-image NEB. Both
+stages use a spring constant of 0.1 eV/Å². The first attempt uses FIRE, an
+optimization algorithm based on damped motion. Retry attempts use L-BFGS, an
+algorithm that estimates energy curvature from recent optimization steps.
+
+The central candidate is approached using internal coordinates (bond lengths,
+angles and torsions) and finished using Cartesian atomic coordinates. Final Sella
+saddle refinement also uses Cartesian coordinates to handle nearly linear C–N=N
+angles. It uses a full Cartesian Hessian, the matrix of second derivatives of the
+energy, and a force threshold of 0.005 eV/Å. If additional imaginary modes remain,
+refinement continues to 0.001 eV/Å within the shared iteration budget, then the
+Hessian is recalculated.
+
+Ordinary minima, opposite endpoints and downhill checks use a largest-force
+threshold of 0.002 eV/Å. Here eV denotes electronvolts and Å ångströms. Minimum
+refinement uses internal-coordinate Sella followed by at most 25 Cartesian BFGS
+steps at the same threshold. All use GFN1-xTB with ALPB ethanol and xTB numerical
+accuracy 0.1.
+
+The retry reverses the rotation with a 120° preparation angle, or uses a wider
+135° angle after endpoint-preparation or changed-bond failures. These are
+alternative initial guesses, not restraints on the accepted transition structure.
+
+</details>
+
+<details>
+<summary>Frequency and endpoint-matching settings</summary>
+
+A full all-atom Hessian is calculated by finite differences using displacements of
+0.01 Å. Overall translation and rotation are projected out before interpreting the
+internal frequencies.
+
+The unstable mode is scaled so that its largest atomic displacement is 0.15 Å.
+Minimization is started from both signs of that displacement. Copies of the band
+endpoints and the resulting downhill minima are refined to 0.002 eV/Å before
+comparison, to resolve soft torsions. This extra refinement preserves the original
+band and its energy reference.
+
+Matching an endpoint requires an aligned root-mean-square atomic displacement
+(RMSD) below 0.35 Å and an energy difference below 0.05 eV. A different endpoint
+conformer is reported explicitly: reaching the correct isomer does not establish
+an exact conformer match. Downhill geometries, energies and isomer assignments are
+retained separately from the original path endpoints.
+
+</details>
+
+## Reading the path and playback
+
+During the search, the chart plots image energies against normalized Cartesian
+path length: cumulative displacement along the sequence, rescaled to its total
+length. The horizontal axis is not elapsed time. The preview shows a moving image
+of the active half-band, then the climbing image, and highlights its point on the
+chart.
+
+After completion, selecting an energy point or playing the sequence displays the
+reaction path once. Both endpoint geometries and energies are retained; the
+opposite endpoint is the final path image. Minimum results instead show the
+history of geometry optimization. Neither playback is molecular dynamics or a
+prediction of how rapidly the molecule moves.
