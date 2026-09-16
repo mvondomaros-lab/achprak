@@ -45,8 +45,9 @@ uvicorn = ">=0.34,<1"
 web = "python -m achprak.web"
 
 [tool.pixi.feature.web-hub.dependencies]
-jupyterhub = ">=5.4.4,<6"
-configurable-http-proxy = ">=4.6,<6"
+# Python API required by the standalone proxy; the central Hub is external.
+# The full jupyterhub conda package also installs Node and the central HTTP proxy.
+jupyterhub-base = "==6.0.1"
 
 [tool.pixi.feature.web-hub.pypi-dependencies]
 jupyter-server-proxy = { version = ">=4.4,<5", extras = ["standalone"] }

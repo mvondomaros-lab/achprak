@@ -80,8 +80,9 @@ reload the browser for frontend changes and restart for server changes.
 pixi run -e web web --port 8001 --max-jobs 2 --job-timeout 600
 ```
 
-[Deployment instructions](deploy/README.md) cover JupyterHub with Unix accounts,
-authenticated proxying and one app instance per user in the `web-hub` environment.
+[Deployment instructions](deploy/README.md) cover integration with an independently
+managed JupyterHub. The optional `web-hub` environment provides authenticated
+proxying and one app instance per user; the central Hub has its own environment.
 
 Teaching materials live in `site/`. Preview with `pixi run -e dev site`.
 Regenerate figures with `pixi run -e dev python figures/scripts/figures.py`.
