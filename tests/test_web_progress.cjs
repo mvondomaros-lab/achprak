@@ -1389,12 +1389,12 @@ test("picker groups by starting configuration and substitution without redundant
   assert.equal(elements.get("structure-options").children[0].children.length, 3);
 });
 
-test("Hub links use public session URLs and disappear in local mode", async () => {
+test("Logout uses the public Hub URL and disappears in local mode", async () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
   const elements = new Map();
   let session = {
     molecules: [], user: "student",
-    hub: { home: "/jhub/hub/home", logout: "/jhub/hub/logout" },
+    hub: { logout: "/jhub/hub/logout" },
   };
   const context = vm.createContext({
     state: { molecules: [], step: "build" },
@@ -1408,16 +1408,12 @@ test("Hub links use public session URLs and disappear in local mode", async () =
   });
   vm.runInContext(app.slice(app.indexOf("async function refresh("), app.indexOf("let energyChart = null;")), context);
   await context.refresh();
-  assert.equal(elements.get("hub-home").href, "/jhub/hub/home");
   assert.equal(elements.get("hub-logout").href, "/jhub/hub/logout");
-  assert.equal(elements.get("hub-home").hidden, false);
   assert.equal(elements.get("hub-logout").hidden, false);
   assert.equal(elements.get("user-label").textContent, "Angemeldet als student");
   session = { molecules: [], user: null, hub: null };
   await context.refresh();
-  assert.equal(elements.get("hub-home").hidden, true);
   assert.equal(elements.get("hub-logout").hidden, true);
-  assert.equal(elements.get("hub-home").href, "");
   assert.equal(elements.get("hub-logout").href, "");
   assert.equal(elements.get("user-label").textContent, "");
 });

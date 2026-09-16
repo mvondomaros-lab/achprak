@@ -560,11 +560,11 @@ def test_minimization_of_transition_state_is_rejected(client, app):
         ({}, None),
         (
             {"JUPYTERHUB_USER": "student", "JUPYTERHUB_BASE_URL": "/"},
-            {"home": "/hub/home", "logout": "/hub/logout"},
+            {"logout": "/hub/logout"},
         ),
         (
             {"JUPYTERHUB_USER": "student", "JUPYTERHUB_BASE_URL": "/jhub/"},
-            {"home": "/jhub/hub/home", "logout": "/jhub/hub/logout"},
+            {"logout": "/jhub/hub/logout"},
         ),
         (
             {
@@ -573,7 +573,6 @@ def test_minimization_of_transition_state_is_rejected(client, app):
                 "JUPYTERHUB_HOST": "https://hub.example.org",
             },
             {
-                "home": "https://hub.example.org/course/hub/home",
                 "logout": "https://hub.example.org/course/hub/logout",
             },
         ),
@@ -585,7 +584,6 @@ def test_minimization_of_transition_state_is_rejected(client, app):
                 "JUPYTERHUB_API_URL": "http://private-hub:8081/hub/api",
             },
             {
-                "home": "https://hub.example.org/course/hub/home",
                 "logout": "https://hub.example.org/course/hub/logout",
             },
         ),

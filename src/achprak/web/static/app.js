@@ -524,10 +524,9 @@ async function refresh(selected, finishCalculation = false) {
     !!selected || state.step !== "build" || !state.resultSelection,
   );
   $("user-label").textContent = data.user ? `Angemeldet als ${data.user}` : "";
-  for (const [id, destination] of [["hub-home", "home"], ["hub-logout", "logout"]]) {
-    $(id).hidden = !data.hub;
-    $(id).href = data.hub?.[destination] || "";
-  }
+  $("user-label").hidden = !data.user;
+  $("hub-logout").hidden = !data.hub?.logout;
+  $("hub-logout").href = data.hub?.logout || "";
   renderState();
   return data;
 }

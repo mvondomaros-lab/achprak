@@ -47,7 +47,7 @@ def job_output(folder, kind):
 
 
 def hub_navigation():
-    """Public Hub links, including base URLs and deployments on user subdomains."""
+    """Public Hub logout link, including base URLs and user subdomains."""
     if not os.environ.get("JUPYTERHUB_USER"):
         return None
     hub_url = os.environ.get("JUPYTERHUB_PUBLIC_HUB_URL")
@@ -56,7 +56,7 @@ def hub_navigation():
         base = os.environ.get("JUPYTERHUB_BASE_URL", "/").strip("/")
         hub_url = host + (f"/{base}" if base else "") + "/hub/"
     hub_url = hub_url.rstrip("/") + "/"
-    return {"home": hub_url + "home", "logout": hub_url + "logout"}
+    return {"logout": hub_url + "logout"}
 
 
 class Settings(BaseModel):
