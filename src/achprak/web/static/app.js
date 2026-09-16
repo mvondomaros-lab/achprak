@@ -229,6 +229,11 @@ function ensureStage() {
     stage = new NGL.Stage("viewport", {
       backgroundColor: "#fafcff",
       quality: "medium",
+      // NGL's 10 Å camera clearance clips small molecules during close-up zoom.
+      clipDist: 0.1,
+      // Start fog beyond the visible scene, preserving colours at every depth.
+      fogNear: 100,
+      fogFar: 200,
     });
     new ResizeObserver(() => stage.handleResize()).observe($("viewport"));
   }
