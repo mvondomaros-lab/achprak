@@ -1,5 +1,8 @@
 # Exhaustive azobenzene TS screening
 
+See the [completed screening results](ts-screening-results.md) for coverage,
+regression outcomes, and measured runtime.
+
 Run the symmetry-reduced screen with up to four workers:
 
 ```sh
@@ -28,18 +31,27 @@ the same substitution pattern succeeds. Symmetry reduction identifies
 chemical substitution patterns; it does not sample every conformer or prove
 that different embeddings lead to the same minimum or transition structure.
 
-The earlier first-ring screen used 780 labeled cis/trans cases before symmetry
-reduction. Those results are retained under `results/ts-screen/`; the expanded
+The earlier first-ring enumeration contained 780 labeled cis/trans cases before
+symmetry reduction. Completed results are retained under `results/ts-screen/`; the expanded
 screen uses `results/ts-screen-unique/`, with reused-record hashes in
 `reuse-provenance.json`. This enumeration covers the six supported groups,
 not all possible chemical substituents.
 
 Each case uses deterministic seed 42 and follows the application's XYZ
 serialization and 500-step minimum optimization. The TS search tries up to
-three deterministic seeds, with 1500 optimization steps per attempt. The
+four deterministic seeds, with 1500 optimization steps per attempt. The
 original 120-degree CNN seed runs first. On failure, the search tries reversed
-rotation and a more open 135-degree seed. Endpoint-preparation failures and
+rotation and a more open 135-degree seed. A final 150-degree seed is tried
+only if those attempts fail. Endpoint-preparation failures and
 downhill branches that change the bond graph try the open seed first.
+The first attempt retains FIRE for band relaxation. Alternative attempts use
+L-BFGS, with the same maximum step size and force thresholds; this avoids
+repeating a stalled FIRE path without changing successful first attempts.
+Bond perception uses RDKit's extended Hueckel overlap method. Distance-only
+perception incorrectly added an S–N bond to a 2.135 Å intramolecular contact in
+the trans-2-SO2CF3-6-NMe2 source minimum, causing a false connectivity failure.
+The overlap method preserves its template connectivity without dropping the
+bond-preservation check. See the [RDKit API documentation](https://rdkit.org/docs/source/rdkit.Chem.rdDetermineBonds.html).
 All seed constraints are removed before validation.
 The reported iteration count includes failed attempts, and individual attempt
 outcomes are retained. Successful original searches do not run extra seeds. The
@@ -87,7 +99,7 @@ failure, since no valid TS search can start in that case.
 ## Comparing reliability and cost
 
 The optional `scripts/benchmark_ts_strategy.py` compares the current bounded
-three-seed policy with dynamic NEB and L-BFGS band relaxation, using identical
+four-seed policy with L-BFGS band relaxation, using identical
 saved source minima. Every candidate must produce a fully optimized path. It
 includes every saved failure and 12 passing controls selected by a stable
 hash of the case ID. It records calculator calls and wall time, including
@@ -97,7 +109,8 @@ numerical thread to avoid competition between benchmark workers.
 The L-BFGS candidate changes only the optimizer used to relax the band, keeping
 the maximum step size and all convergence criteria. It uses no line search.
 
-The dynamic candidate uses a uniform 0.05 eV/Å band-force threshold and no
+The optional dynamic candidate (`--strategy dynamic_neb`) uses a uniform
+0.05 eV/Å band-force threshold and no
 distance-dependent tolerance scaling. It skips updates to converged images
 and reactivates them if needed. It is an experimental cost comparison; it
 does not change the production optimizer. See the

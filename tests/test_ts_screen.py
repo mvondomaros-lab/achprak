@@ -70,7 +70,7 @@ def test_screen_failure(fixture, tmp_path):
     )
     assert ok, f"{search.failure_reason}; diagnostics: {diagnostics}"
     assert search.band_converged
-    assert 1 <= len(search.attempts) <= 3
+    assert 1 <= len(search.attempts) <= 4
     assert all(a["iterations"] <= 1500 for a in search.attempts)
     assert search.iterations_used == sum(a["iterations"] for a in search.attempts)
     assert search.validation["verified"]

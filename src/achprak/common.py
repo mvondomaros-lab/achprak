@@ -71,7 +71,11 @@ def atoms_to_mol(atoms, charge=0):
         xyz = f.read()
 
     mol = rdkit.Chem.rdmolfiles.MolFromXYZBlock(xyz)
-    rdkit.Chem.rdDetermineBonds.DetermineBonds(mol, charge=charge)
+    # Distance-only perception can turn a short nonbonded S...N contact into
+    # a charged covalent ring in crowded sulfonyl-substituted azobenzenes.
+    # Extended Hueckel overlap distinguishes that contact from the bonds
+    # used for fragment rotation and endpoint-connectivity validation.
+    rdkit.Chem.rdDetermineBonds.DetermineBonds(mol, charge=charge, useHueckel=True)
     return mol
 
 

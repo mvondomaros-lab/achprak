@@ -95,7 +95,7 @@ rotating the complete fragment. CNN angles are guided to 120° only during seed
 preparation. The opposite endpoint is then freely minimized. Regular minimum
 searches, opposite endpoints, and connectivity checks all use a final maximum
 atomic force of 0.002 eV/Å and the same xTB accuracy setting (0.1).
-ASE FIRE relaxes two unconstrained NEB halves against a provisionally refined central saddle seed.
+ASE FIRE (L-BFGS on retry attempts) relaxes two unconstrained NEB halves against a provisionally refined central saddle seed.
 This prevents early corner cutting from removing the barrier. The full band is
 then released for climbing-image NEB. Both stages use 0.1 eV/Å² springs;
 stronger springs stalled the trans-2-Me half-path relaxation. Free Sella saddle
@@ -105,7 +105,8 @@ shared iteration budget, then their Hessian is recalculated. This resolves soft
 torsions without weakening mode validation. The central seed is approached in internal coordinates and finished in Cartesian coordinates;
 final saddle refinement also uses Cartesian coordinates to handle nearly linear
 CNN angles. Both endpoints and the band use GFN1-xTB with ALPB ethanol.
-The full search shares a 1500-iteration budget and the server's wall-time limit.
+Each attempt shares a 1500-iteration budget across its stages; the complete search
+allows at most four attempts and remains subject to the server's wall-time limit.
 
 The live chart shows the evolving band's energy against normalized Cartesian
 path length, not optimization time. The live 3D preview follows a moving image
@@ -197,7 +198,7 @@ mono- and disubstituted cis/trans starting cases using the six supported groups,
 with two substituents in total allowed anywhere across the two rings.
 Failures are preserved as exact-geometry fixtures in `tests/data/ts_failures/`
 and included in `test-ts`. The search retains its original seed first, then
-tries at most two alternative seeds on failure. Each attempt has a 1500-step
+tries at most three alternative seeds on failure. Each attempt has a 1500-step
 limit; reported total iterations include all attempts.
 
 Local validation on macOS included the complete chemistry workflow (including

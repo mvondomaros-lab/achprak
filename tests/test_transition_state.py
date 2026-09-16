@@ -1,5 +1,8 @@
 """Physical mode classification and minimum-to-saddle workflow regressions."""
 
+import json
+from pathlib import Path
+
 import numpy as np
 import pytest
 from ase import Atoms
@@ -69,8 +72,28 @@ def test_bond_graph_does_not_replace_the_energy_calculator():
     assert atoms.get_potential_energy() == -1.0
 
 
+def test_close_sulfur_nitrogen_contact_preserves_template_connectivity():
+    from achprak import common
+    from achprak.transition_state import OptTS
+
+    case = json.loads(
+        (
+            Path(__file__).parent / "data/ts_failures/trans-r1-2-SO2CF3_r1-6-NMe2.json"
+        ).read_text()
+    )
+    initial = common.xyz_to_atoms(case["initial_xyz"])
+    minimum = common.xyz_to_atoms(case["minimum_xyz"])
+    assert minimum.get_distance(1, 17) < 2.14
+    assert OptTS.bond_graph(minimum) == OptTS.bond_graph(initial)
+    # Fragment rotation must not cross the nonbonded S...N contact and pick
+    # up atoms from the substituted ring on the other side of N=N.
+    search = OptTS(minimum)
+    assert search.indices[0] not in search.rotating_indices
+    assert search.indices[3] in search.rotating_indices
+
+
 @pytest.mark.parametrize("failure_kind", ["endpoint", "path", "connectivity"])
-@pytest.mark.parametrize("succeed_on", [1, 2, None])
+@pytest.mark.parametrize("succeed_on", [1, 2, 4, None])
 def test_seed_retries_restore_source_and_account_for_all_work(
     monkeypatch, failure_kind, succeed_on
 ):
@@ -104,13 +127,21 @@ def test_seed_retries_restore_source_and_account_for_all_work(
     assert search.run(
         steps=7, observer=lambda a, i, p: observed.append((i, a.info["ts_attempt"]))
     ) == (succeed_on is not None)
-    count = succeed_on or 3
+    count = succeed_on or 4
     assert len(search.attempts) == count
     assert search.iterations_used == sum(range(1, count + 1))
     assert observed == list(enumerate(range(1, count + 1)))
     assert len(search.search_traj) == count
+    assert seeds[0]["use_lbfgs"] is False
+    assert all(seed["use_lbfgs"] for seed in seeds[1:])
+    assert [a["band_optimizer"] for a in search.attempts] == ["FIRE"] + ["LBFGS"] * (
+        count - 1
+    )
     if count > 1:
         assert seeds[1]["reverse"] == (failure_kind == "path")
         assert seeds[1]["seed_angle"] == (120 if failure_kind == "path" else 135)
+    if count == 4:
+        assert seeds[-1]["seed_angle"] == 150
+        assert seeds[-1]["reverse"] is False
     if succeed_on is None:
         assert len(search.traj) == count

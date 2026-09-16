@@ -139,7 +139,7 @@ def main():
         records = [r for r in records if not r["converged"]] + controls
     records.sort(key=lambda r: r["id"])
     source = Path("src/achprak/transition_state.py")
-    strategies = args.strategy or ["current", "dynamic_neb", "lbfgs_neb"]
+    strategies = args.strategy or ["current", "lbfgs_neb"]
     manifest = {
         "source_sha256": {
             str(p): hashlib.sha256(p.read_bytes()).hexdigest()

@@ -8,7 +8,7 @@ from ase import units
 from ase.build import minimize_rotation_and_translation
 from ase.constraints import FixInternals
 from ase.mep import NEB
-from ase.optimize import BFGS, FIRE
+from ase.optimize import BFGS, FIRE, LBFGS
 from ase.vibrations import Vibrations
 
 from . import azobenzene, common
@@ -69,12 +69,13 @@ class OptTS:
         self.iterations_used = 0
 
     def run(self, steps=1500, observer=None):
-        """Try at most three deterministic seeds, with ``steps`` per attempt.
+        """Try at most four deterministic seeds, with ``steps`` per attempt.
 
         Retain the original route first. A crowded endpoint can relax back to
         the source isomer, while substituent conformations can stall one sense
         of rotation. Alternative seeds still require the full unconstrained
-        saddle, frequency, and connectivity validation.
+        saddle, frequency, and connectivity validation. Alternative attempts
+        relax the band with L-BFGS to avoid repeating FIRE's stalled path.
         """
         source = self.atoms.copy()
         self.attempts = []
@@ -98,11 +99,13 @@ class OptTS:
                 reverse=reverse,
                 seed_angle=angle,
                 downhill_steps=downhill_steps,
+                use_lbfgs=index > 0,
             )
             self.attempts.append(
                 {
                     "reverse_rotation": reverse,
                     "seed_angle_deg": angle,
+                    "band_optimizer": "LBFGS" if index > 0 else "FIRE",
                     "iterations": self.iterations_used,
                     "converged": bool(ok),
                     "failure_reason": self.failure_reason,
@@ -126,6 +129,9 @@ class OptTS:
                     if self.endpoint is None or changed_bonds
                     else [reversed_seed, open_seed]
                 )
+                # A wider seed can avoid the substituent rearrangement that
+                # stalls both band optimizers for crowded cross-ring pairs.
+                seeds.append((False, 150.0, 50))
             index += 1
         self.iterations_used = sum(a["iterations"] for a in self.attempts)
         self.search_traj = frames
@@ -141,6 +147,7 @@ class OptTS:
         reverse=False,
         seed_angle=120.0,
         downhill_steps=250,
+        use_lbfgs=False,
     ):
         self.traj, self.search_traj = [], []
         self.validation = self.failure_reason = self.barrier_ev = None
@@ -186,6 +193,11 @@ class OptTS:
             return ok
 
         hessian_cache = None
+
+        def band_optimizer(band):
+            if use_lbfgs:
+                return LBFGS(band, logfile="-", maxstep=0.05, use_line_search=False)
+            return FIRE(band, logfile="-", dt=0.05, maxstep=0.05)
 
         def hessian(frame):
             # Sella 2.4+ accepts a Cartesian Hessian callback. Reuse the final
@@ -325,7 +337,7 @@ class OptTS:
                 remove_rotation_and_translation=True,
             )
             if not optimize(
-                FIRE(approach, logfile="-", dt=0.05, maxstep=0.05),
+                band_optimizer(approach),
                 0.05,
                 400,
                 lambda index=preview_index: band_progress(index),
@@ -334,9 +346,7 @@ class OptTS:
                     "Ein Teil des Reaktionspfads zum Übergangszustand ist noch nicht ausreichend optimiert."
                 )
         band.climb = True
-        if not optimize(
-            FIRE(band, logfile="-", dt=0.05, maxstep=0.05), 0.05, 600, band_progress
-        ):
+        if not optimize(band_optimizer(band), 0.05, 600, band_progress):
             return failed(
                 "Die Kräfte am Reaktionspfad wurden innerhalb des Schrittlimits nicht ausreichend klein."
             )
