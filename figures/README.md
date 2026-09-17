@@ -8,6 +8,7 @@ Each generated illustration has its own executable source in `scripts/`:
 
 | Source | Published SVG |
 | --- | --- |
+| `dihedral.py` | `../src/achprak/web/static/dihedral.svg` |
 | `energy_levels.py` | `outputs/energy_levels.svg` |
 | `spectrum_lines.py` | `outputs/spectrum_lines.svg` |
 | `spectrum_bands.py` | `outputs/spectrum_bands.svg` |
@@ -29,7 +30,11 @@ pixi run -e dev python figures/scripts/generate.py
 
 Both commands accept `--format svg|png|both` (default: `svg`) and
 `--output-dir PATH`. PNG exports are optional previews, ignored in `outputs/`.
-The website uses the six committed SVG files and needs no plotting runtime.
+The website uses the six SVGs in `outputs/`; the web app bundles `dihedral.svg`
+in its static package data. Neither needs a plotting runtime to display figures.
+`dihedral.py` reproduces the arrangement in `drawings/dihedral.pptx` with C–N=N–C
+labels. Its default output directory is the app's static directory; an explicit
+`--output-dir` sends previews elsewhere, just as for the other scripts.
 Review rendered figures before committing regenerated artwork.
 
 `scripts/style.py` shares only appearance and export setup. It matches the web

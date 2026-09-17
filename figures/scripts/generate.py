@@ -4,6 +4,7 @@ from importlib import import_module
 from style import run
 
 FIGURES = (
+    "dihedral",
     "energy_levels",
     "spectrum_lines",
     "spectrum_bands",
