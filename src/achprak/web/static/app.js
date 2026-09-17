@@ -466,7 +466,7 @@ function renderState() {
   $("ts-summary").textContent = !ts
     ? ""
     : m.converged
-      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV · untersuchter Pfad, ohne thermische Beiträge und Entropie`
+      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV`
       : "Übergangsstruktur noch nicht bestätigt.";
   $("ts-details").hidden = state.step !== "optimize" || !ts;
   $("ts-check-result").textContent = !ts
