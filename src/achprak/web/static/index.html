@@ -128,13 +128,6 @@
                         Diese Struktur dient als Ausgangspunkt für die anschließende
                         Geometrieoptimierung mit dem elektronischen Strukturmodell.
                     </p>
-                    <h3>Darstellung der Ergebnisse</h3>
-                    <p>
-                        Die zweidimensionale (2D) Strukturformel zeigt die Verknüpfung der Atome,
-                        aber keine maßstabsgetreuen Abstände. Überlagerungen von Atomgruppen
-                        in der Zeichnung bedeuten daher keine räumliche Überlagerung.
-                        Die dreidimensionale (3D) Darstellung beruht auf den erzeugten Atomkoordinaten.
-                    </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         Die erzeugten Startstrukturen sind noch nicht mit dem
@@ -216,34 +209,21 @@
                         Falls der erste Suchlauf scheitert, folgt höchstens ein
                         weiterer Versuch mit einem anders vorbereiteten Reaktionspfad.
                     </p>
-                    <h3>Bedeutung der Ergebnisse</h3>
+                    <h3>Wie entsteht das Energieprofil?</h3>
                     <p>
-                        <strong>Minimumstruktur:</strong> Eine Anordnung der Atome, deren Energie
-                        sich durch kleine Änderungen der Atompositionen nicht weiter
-                        verringern lässt. Das Energieprofil zeigt die Energie entlang der
-                        numerischen Optimierungsschritte, keinen zeitlichen Reaktionsablauf.
-                    </p>
-                    <p>
-                        <strong>Übergangsstruktur:</strong> Eine Geometrie an einem Sattelpunkt erster Ordnung
-                        zwischen den beiden Minima.
-                        Entlang genau einer unabhängigen inneren Auslenkungsrichtung
-                        nimmt die Energie auf beiden Seiten des Sattelpunkts ab.
-                        Entlang der übrigen inneren Richtungen nimmt sie bei kleinen
-                        Auslenkungen zu. Verschiebungen und Drehungen des gesamten Moleküls
-                        bleiben dabei unberücksichtigt.
-                        Das Energieprofil zeigt den
-                        berechneten Weg zwischen den beiden Minimumstrukturen. Die elektronische
-                        Energiebarriere ΔE‡ ist die Energiedifferenz zwischen der Übergangsstruktur und der Ausgangsstruktur.
+                        Bei der Minimumsuche werden die Energien der gespeicherten
+                        Optimierungsschritte aufgetragen. Bei der Übergangsstruktursuche
+                        zeigt das Profil die Energien entlang des berechneten Pfads.
+                        Die Wiedergabe durchläuft diese Geometrien; ihre Geschwindigkeit
+                        entspricht keiner physikalischen Zeitentwicklung.
+                        Für ΔE‡ verwendet die App die ausgewählte Minimumstruktur als
+                        energetischen Bezugspunkt.
                     </p>
                     <h3>Wie wird die Übergangsstruktur geprüft?</h3>
                     <p>
-                        Eine Schwingungsrechnung untersucht die Energieänderung bei kleinen
-                        Auslenkungen der Atomkerne. Eine Schwingungsmode beschreibt dabei
-                        ein gemeinsames Auslenkungsmuster der Atome.
-                        Eine imaginäre Frequenz kennzeichnet eine instabile Schwingungsmode:
-                        Bei einer Auslenkung entlang dieser Mode nimmt die Energie ab.
-                        Für einen Sattelpunkt erster Ordnung muss genau eine solche
-                        unabhängige Mode vorliegen. Das Prüfkriterium der App ist genau eine
+                        Die App berechnet die Schwingungsmoden aus der Krümmung der
+                        Energiefläche und blendet Verschiebungen und Drehungen des
+                        gesamten Moleküls aus. Das Prüfkriterium ist genau eine
                         imaginäre Frequenz mit einem Betrag über 20 cm⁻¹ (reziproke Zentimeter, die Einheit der Wellenzahl). Beträge bis zu diesem Grenzwert werden
                         aufgrund numerischer Unsicherheiten bei dieser Prüfung nicht berücksichtigt.
                     </p>
@@ -270,20 +250,6 @@
                         fehlen. Die berechneten Geometrien und Energieunterschiede
                         können deshalb von experimentellen Ergebnissen abweichen.
                     </p>
-                    <p>
-                        <strong>ΔE‡ beschreibt nur den elektronischen Energieunterschied.</strong>
-                        Berechnet wird ΔE‡ im elektronischen Grundzustand. Beiträge
-                        von Kernschwingungen, Temperatur und Entropie fehlen. ΔE‡ ist
-                        daher nicht unmittelbar mit der Aktivierungsenergie aus der
-                        Arrhenius-Gleichung gleichzusetzen. Diese beschreibt die
-                        Temperaturabhängigkeit der Geschwindigkeitskonstante;
-                        die vorliegende Rechnung liefert einen elektronischen
-                        Energieunterschied zwischen zwei Geometrien.
-                        Auch die freie Aktivierungsenthalpie ΔG‡, die thermische
-                        Beiträge und Entropie berücksichtigt, wird hier nicht berechnet.
-                        Wechsel in andere elektronische Zustände werden ebenfalls
-                        nicht untersucht.
-                    </p>
                     <dl class="method">
                         <div>
                             <dt>Methode</dt>
@@ -307,13 +273,11 @@
                     <summary>Methoden und Interpretation</summary>
                     <h3>Rechenverfahren</h3>
                     <p>
-                        Das UV/Vis-Spektrum beschreibt die Absorption von ultraviolettem
-                        und sichtbarem Licht. Das Programm MOPAC berechnet mit dem
+                        Das Programm MOPAC berechnet mit dem
                         Näherungsverfahren INDO/S–CIS die Anregungsenergien und Oszillatorstärken
                         elektronischer Übergänge. Die Rechnung verwendet eine
                         optimierte Minimumstruktur und hält die Atomkerne an ihren Positionen
-                        fest. Diese Näherung beschreibt eine elektronische Anregung,
-                        während der sich die Kernpositionen kaum ändern.
+                        fest; eine weitere Geometrieoptimierung findet dabei nicht statt.
                     </p>
                     <p>
                         INDO/S vereinfacht die Beschreibung der Elektronen und ist für
@@ -321,40 +285,13 @@
                         beschreibt angeregte Zustände als Überlagerung von Anregungen,
                         bei denen jeweils ein Elektron aus einem besetzten in ein
                         unbesetztes Orbital übergeht. CIS steht für Configuration Interaction Singles,
-                        also die Überlagerung von Einfachanregungen. Ein Orbital beschreibt im Modell den räumlichen Zustand eines
-                        Elektrons. Daraus lässt sich ableiten, mit welcher Wahrscheinlichkeit
-                        das Elektron in einem bestimmten Raumbereich gefunden wird.
+                        also die Überlagerung von Einfachanregungen.
                     </p>
                     <h3>Darstellung der Ergebnisse</h3>
                     <p>
                         Für die Absorptionskurve wird jeder Übergang zu einer Gaußkurve
                         mit vorgegebener Breite verbreitert; anschließend werden die Beiträge addiert.
                     </p>
-                    <h3>Einfluss der Substituenten auf die Absorption</h3>
-                      <p>
-                        Substituenten verändern die Elektronenverteilung und können Grundzustand
-                        und angeregte Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz
-                        zwischen zwei Zuständen kleiner, verschiebt sich der zugehörige Übergang
-                        zu längeren Wellenlängen (bathochrom). Eine größere Energiedifferenz entspricht
-                        kürzeren Wellenlängen (hypsochrom). Das Absorptionsmaximum hängt zusätzlich
-                        von den Oszillatorstärken und der Überlagerung der verbreiterten Übergänge ab.
-                      </p>
-                      <p>
-                        Ein π-System entsteht durch die seitliche Überlappung benachbarter
-                        p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein;
-                        dies wird als Delokalisierung bezeichnet. Sie kann die
-                        Anregungsenergie verringern. Substituenten können aber auch die Geometrie
-                        und damit die Wechselwirkung zwischen den Molekülteilen verändern. Das
-                        Schema zeigt in A die Energiedifferenz des Vergleichssystems, in B.1 und
-                        B.2 kleinere und in C.1 und C.2 größere Energiedifferenzen. Die vertikalen Pfeile stehen für die
-                        Anregungsenergien. Die Höhen der Niveaus sind keine direkt vergleichbaren
-                        Gesamtenergien verschiedener Moleküle.
-                      </p>
-                      <img
-                        src="static/substituent-effects.png"
-                        alt="Einfluss von Substituenten auf die Energieniveaus: kleinere und größere Anregungsenergien im Vergleich zum unsubstituierten System"
-                        style="width: 100%; height: auto"
-                      />
                     <h3>Abschätzung der Lösungsfarbe</h3>
                     <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
                         aus der blauen Kurve bestimmt. Mit dem gewählten Faktor s wird die

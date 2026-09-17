@@ -13,9 +13,13 @@ is sufficient where the explanation is already available.
 Avoid duplicating explanations across UI elements. Tasks state exercises and
 required deliverables. Main panels provide essential UI actions and details of
 the selected compound or calculation, including brief caveats needed beside a
-result. “Methoden und Interpretation” explains the background calculations and
-how to interpret their results; keep general method explanations there rather
-than repeating them in tasks or main panels.
+result. The fundamentals under `site` teach the basics, theory, and concepts that
+students are expected to learn before the exercise. Do not teach them again in
+the app's collapsible sections. “Methoden und Interpretation” is optional reading
+for interested students: demystify how the programs turn inputs into results,
+including algorithms, numerical checks, display processing, and implementation-specific
+assumptions and limitations. Keep general conceptual explanations on the website;
+a short reminder is sufficient when needed to understand a computational detail.
 
 # Verification
 

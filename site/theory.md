@@ -1,5 +1,8 @@
 # Theoretische Grundlagen
 
+Erarbeiten Sie diese Grundlagen vor dem Versuch. Die aufklappbaren Methodenabschnitte
+in der Webapp bieten bei Interesse zusätzliche Einblicke in die Umsetzung der Rechnungen.
+
 (molecular-structures)=
 ## Azobenzol
 
@@ -139,6 +142,8 @@ Die lichtinduzierte Isomerisierung des Azobenzols.
 
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
 *cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
+Abstände in einer Strukturformel sind nicht maßstabsgetreu; überlagerte Atomgruppen in der
+Zeichnung müssen sich im Raum nicht überlagern.
 Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
 Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
 Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
@@ -254,6 +259,32 @@ Die Kurve in der Webapp zeigt daraus gebildete relative Absorptionsbanden. Für 
 zusätzlich unter anderem Konzentration und Schichtdicke nötig.
 ::::
 
+### Einfluss der Substituenten auf die Absorption
+
+Substituenten verändern die Elektronenverteilung und können Grundzustand und angeregte
+Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz zwischen zwei Zuständen
+kleiner, verschiebt sich der zugehörige Übergang zu längeren Wellenlängen (**bathochrom**).
+Eine größere Energiedifferenz entspricht kürzeren Wellenlängen (**hypsochrom**).
+Das Absorptionsmaximum hängt zusätzlich von den Oszillatorstärken und der Überlagerung
+der verbreiterten Übergänge ab.
+
+Ein **Orbital** beschreibt im Modell den räumlichen Zustand eines Elektrons. Daraus lässt
+sich ableiten, mit welcher Wahrscheinlichkeit das Elektron in einem bestimmten Raumbereich
+gefunden wird. Ein **π-System** entsteht durch die seitliche Überlappung benachbarter
+p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wird als
+**Delokalisierung** bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
+können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
+
+:::{figure} ../src/achprak/web/static/substituent-effects.png
+:width: 700px
+:alt: Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem.
+
+Einfluss von Substituenten auf die Anregungsenergie: A zeigt das Vergleichssystem,
+B.1 und B.2 kleinere, C.1 und C.2 größere Energiedifferenzen. Die vertikalen Pfeile
+stehen für die Anregungsenergien. Die Höhen der Niveaus sind keine direkt vergleichbaren
+Gesamtenergien verschiedener Moleküle.
+:::
+
 ::::{seealso} Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre
 :class: dropdown
 
@@ -298,8 +329,9 @@ Jede Rechnung verwendet definierte Eingaben, etwa die Molekülstruktur, und lief
 oder Spektren. Die folgende Abbildung stellt diesen Zusammenhang als *Blackbox* dar: Das Rechenverfahren
 zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt.
 Für diesen Versuch sollen Sie erklären können, welche Größen berechnet werden und welche Annahmen dabei gelten.
-Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. In jedem Schritt der Webapp finden Sie
-in den aufklappbaren Hintergrundinformationen Angaben zu Methode, Ergebnissen und Annahmen.
+Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. Die optionalen Methodenabschnitte
+in der Webapp erläutern, wie die Programme aus Ihren Eingaben Ergebnisse erzeugen, welche numerischen
+Prüfungen sie ausführen und wie sie die Ergebnisse darstellen.
 
 :::{figure} ../figures/commons/Blackbox3D.png
 :alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
@@ -421,6 +453,12 @@ Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab;
 steigt sie bei kleinen Auslenkungen an. Die Webapp prüft diese Eigenschaft näherungsweise mit einer Schwingungsrechnung
 und verfolgt anschließend beide Abwärtsrichtungen zu Minima. Reine Verschiebungen und Drehungen des ganzen Moleküls
 werden bei der Schwingungsprüfung ausgeblendet.
+
+Eine **Schwingungsmode** beschreibt ein gemeinsames Auslenkungsmuster der Atome.
+Eine imaginäre Frequenz kennzeichnet eine instabile Mode: Bei kleinen Auslenkungen
+entlang dieser Richtung nimmt die Energie am Sattelpunkt auf beiden Seiten ab.
+Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mode.
+
 
 ::::{seealso} Ergänzung: Übergangszustand oder Übergangsstruktur?
 :class: dropdown
