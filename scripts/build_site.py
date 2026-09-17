@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 OUTPUT = SITE / "_build"
 PAGES = (
-    ("index", "Photoschalter"),
+    ("index", "Molekulare Photoschalter"),
     ("theory", "Theoretische Grundlagen"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
     ("theory/light", "Licht und Absorption"),
@@ -75,6 +75,11 @@ def build(output: Path = OUTPUT) -> None:
             source = (SITE / f"{slug}.md").read_text()
             title, body = source.split("\n", 1)
             title = title.removeprefix("# ")
+            subtitle = ""
+            subtitle_match = re.search(r'<p class="subtitle">(.*?)</p>', body)
+            if subtitle_match:
+                subtitle = subtitle_match[0]
+                body = body.replace(subtitle, "", 1)
             content, outline = render(body)
             root = "./" if slug == "index" else "../" * len(Path(slug).parts)
 
@@ -122,7 +127,7 @@ def build(output: Path = OUTPUT) -> None:
                 eyebrow = f"Grundlagen · Kapitel {chapter_keys.index(slug) + 1} von {len(chapter_keys)}"
             else:
                 eyebrow = {
-                    "index": "Computerexperiment",
+                    "index": "ACh-Pr · TC Versuch",
                     "theory": "Vorbereitung",
                     "installation": "Durchführung",
                 }[slug]
@@ -135,6 +140,10 @@ def build(output: Path = OUTPUT) -> None:
                     )
             document = template.substitute(
                 title=html.escape(title),
+                subtitle=subtitle,
+                tab_title="Molekulare Photoschalter"
+                if slug == "index"
+                else html.escape(title) + " · ACh-Pr",
                 root=root,
                 slug=slug,
                 content=content,

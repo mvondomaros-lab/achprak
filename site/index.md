@@ -1,4 +1,6 @@
-# Molekulare Photoschalter – ein Computerexperiment
+# Molekulare Photoschalter
+
+<p class="subtitle">Wie Licht die Struktur von Molekülen verändert</p>
 
 ## Motivation
 

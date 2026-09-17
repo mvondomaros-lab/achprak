@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Grundlagen zum Computerexperiment mit AChPrak">
-  <title>$title · AChPrak</title>
+  <meta name="description" content="ACh-Pr · TC Versuch: Molekulare Photoschalter">
+  <title>$tab_title</title>
   <link rel="stylesheet" href="${root}assets/header.css">
   <link rel="stylesheet" href="${root}assets/teaching.css">
   <script src="${root}assets/site.js" defer></script>
@@ -12,7 +12,7 @@
 <body>
   <a class="skip-link" href="#inhalt">Zum Inhalt</a>
   <header class="header">
-    <a class="brand" href="$root">Photoschalter <span>· AChPrak</span></a>
+    <a class="brand" href="$root">Molekulare Photoschalter<small>ACh-Pr · TC Versuch</small></a>
     <div class="header-actions">
       <button type="button" id="search-toggle" hidden>Suche</button>
     </div>
@@ -21,7 +21,7 @@
     <nav class="sidebar" aria-label="Seiten"><details class="site-menu" open><summary>Inhalt</summary>$navigation</details></nav>
     <main id="inhalt" tabindex="-1">
       ${breadcrumbs}
-      <header class="page-title"><p class="eyebrow">$eyebrow</p><h1>$title</h1></header>
+      <header class="page-title"><p class="eyebrow">$eyebrow</p><h1>$title</h1>$subtitle</header>
       <article>$content</article>
       <nav class="page-navigation" aria-label="Weitere Seiten">$pagination</nav>
       <footer><a href="${root}sources/$slug.md" download>Seite als Markdown herunterladen</a></footer>

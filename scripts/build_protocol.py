@@ -20,10 +20,7 @@ OUTPUT = STATIC / "materials/protokollvorlage.docx"
 
 def build():
     source = html.fromstring((STATIC / "guide.html").read_text())
-    tasks = {
-        el.get("id"): el
-        for el in source.xpath('.//details[@class="task"]')
-    }
+    tasks = {el.get("id"): el for el in source.xpath('.//details[@class="task"]')}
     doc = Document()
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Cm(21), Cm(29.7)
@@ -40,16 +37,20 @@ def build():
         style.font.color.rgb = RGBColor(0, 0, 0)
         style.paragraph_format.space_before = Pt(12)
         style.paragraph_format.space_after = Pt(7)
+    subtitle = doc.styles["Subtitle"]
+    subtitle.font.name, subtitle.font.size = "Arial", Pt(14)
+    subtitle.font.color.rgb = RGBColor.from_string("586B80")
+    subtitle.paragraph_format.space_after = Pt(10)
     for border in doc.styles.element.xpath(".//w:pBdr"):
         border.getparent().remove(border)
-    doc.core_properties.title = "Photoschalter Praktikumsprotokoll"
-    doc.core_properties.subject = "AChPrak Aufgaben und Ergebnisse"
-    doc.core_properties.author = "AChPrak"
+    doc.core_properties.title = "Molekulare Photoschalter"
+    doc.core_properties.subject = "ACh-Pr · TC Versuch · Praktikumsprotokoll"
+    doc.core_properties.author = "ACh-Pr"
     lang = OxmlElement("w:lang")
     lang.set(qn("w:val"), "de-DE")
     normal.element.get_or_add_rPr().append(lang)
     footer = sec.footer.paragraphs[0]
-    footer.add_run("AChPrak · Photoschalter    |    ")
+    footer.add_run("ACh-Pr · TC Versuch    |    ")
     field = OxmlElement("w:fldSimple")
     field.set(qn("w:instr"), "PAGE")
     footer._p.append(field)
@@ -135,8 +136,10 @@ def build():
                             run.font.color.rgb = RGBColor(255, 255, 255)
         p("")
 
-    doc.add_heading("Photoschalter", 0)
-    p("Praktikumsprotokoll · AChPrak")
+    doc.add_heading("Molekulare Photoschalter", 0)
+    doc.add_paragraph("Wie Licht die Struktur von Molekülen verändert", "Subtitle")
+    p("ACh-Pr · TC Versuch")
+    p("Praktikumsprotokoll")
     p("Name: [Name]    Gruppe: [Gruppe]    Datum: [Datum]")
     p(
         "Dokumentieren Sie Ihre Berechnungen und deren Interpretation. Bearbeiten Sie die Aufgaben in der Webapp. Ersetzen Sie die Angaben in eckigen Klammern und fügen Sie gespeicherte Abbildungen mit Beschriftungen ein. Die Überschriften entsprechen den Aufgaben in der Webapp. Die Felder erweitern sich beim Schreiben."
@@ -159,24 +162,37 @@ def build():
     doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)
     task("task-examine-ring-geometry")
     table(
-        ["Struktur", "Elektronische Energie / eV", "Diederwinkel / °", "Ringabstand / pm"],
+        [
+            "Struktur",
+            "Elektronische Energie / eV",
+            "Diederwinkel / °",
+            "Ringabstand / pm",
+        ],
         [
             [label, "[Wert]", "[Wert]", "[Wert]"]
             for label in (
-                "cis-Startstruktur", "trans-Startstruktur",
-                "cis-Minimumstruktur", "trans-Minimumstruktur",
+                "cis-Startstruktur",
+                "trans-Startstruktur",
+                "cis-Minimumstruktur",
+                "trans-Minimumstruktur",
             )
         ],
         [5, 4, 4, 4],
     )
     answer("Anordnung der Ringe: [Text]")
     task("task-compare-optimized-geometries")
-    answer("[Erwartung und beobachtete Ringstellung für cis und trans; je zwei 3D-Ansichten]")
+    answer(
+        "[Erwartung und beobachtete Ringstellung für cis und trans; je zwei 3D-Ansichten]"
+    )
     answer("ΔE / (kJ/mol): [Wert]\nVorzeichen und energieärmere Konfiguration: [Text]")
     task("task-examine-substituent-geometry")
-    answer("[Name, Erwartung, Beobachtung und zwei 3D-Ansichten; Vergleich mit unsubstituiertem trans-Azobenzol]")
+    answer(
+        "[Name, Erwartung, Beobachtung und zwei 3D-Ansichten; Vergleich mit unsubstituiertem trans-Azobenzol]"
+    )
     task("task-analyze-reaction-path")
-    answer("[Energieprofil; Konfiguration der Enden; Anordnung und Diederwinkel am Anfang, am Energiemaximum und am Ende]")
+    answer(
+        "[Energieprofil; Konfiguration der Enden; Anordnung und Diederwinkel am Anfang, am Energiemaximum und am Ende]"
+    )
     answer("Verbindung zwischen cis und trans bestätigt: [Ergebnis der Prüfung]")
     task("task-compare-energy-barriers")
     table(
@@ -188,7 +204,9 @@ def build():
     task("task-examine-substituent-barrier")
     answer("Derivat, Vermutung und Ergebnis der Verbindungsprüfung: [Text]")
     answer("[Energieprofil und Ansicht der Übergangsstruktur]")
-    answer("Elektronische Energiebarrieren für trans → cis / (kJ/mol): [Derivat] / [unsubstituiert]\nVergleich der Übergangsstrukturen und Prüfung der Vermutung: [Text]")
+    answer(
+        "Elektronische Energiebarrieren für trans → cis / (kJ/mol): [Derivat] / [unsubstituiert]\nVergleich der Übergangsstrukturen und Prüfung der Vermutung: [Text]"
+    )
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
@@ -230,12 +248,16 @@ def build():
     )
     answer("[Spektren mit Beschriftungen einfügen]")
     p("\n\n")
-    answer("Derivat mit stärkster Verschiebung: [Name]\nVerschiebung gegenüber unsubstituiertem trans-Azobenzol / eV: [Wert]\nMaximum im ultravioletten oder sichtbaren Bereich: [Text]")
+    answer(
+        "Derivat mit stärkster Verschiebung: [Name]\nVerschiebung gegenüber unsubstituiertem trans-Azobenzol / eV: [Wert]\nMaximum im ultravioletten oder sichtbaren Bereich: [Text]"
+    )
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-plan-experiment-series")
-    answer("Mindestens zehn Varianten in der Gruppe; Auswahl, Referenz und Verteilung der Rechnungen: [Text]")
+    answer(
+        "Mindestens zehn Varianten in der Gruppe; Auswahl, Referenz und Verteilung der Rechnungen: [Text]"
+    )
     table(
         [
             "Variante und Konfiguration",
@@ -254,7 +276,9 @@ def build():
         ],
         [6, 5, 3, 3],
     )
-    answer("[Referenzspektrum und zwei ausgewählte Spektren mit Beschriftungen einfügen]")
+    answer(
+        "[Referenzspektrum und zwei ausgewählte Spektren mit Beschriftungen einfügen]"
+    )
     answer("Vergleich der Erwartungen mit den berechneten Ergebnissen: [Text]")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)
