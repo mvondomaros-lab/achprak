@@ -25,7 +25,6 @@ SITE = ROOT / "site"
 OUTPUT = SITE / "_build"
 PAGES = (
     ("index", "Molekulare Photoschalter"),
-    ("theory", "Theoretische Grundlagen"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
     ("theory/light", "Licht und Absorption"),
     ("theory/models", "Modelle und Atomkoordinaten"),
@@ -71,7 +70,9 @@ def build(output: Path = OUTPUT) -> None:
         )
         template = Template((SITE / "template.html").read_text())
         search = []
-        for index, (slug, label) in enumerate(PAGES):
+        for index, (slug, label) in enumerate(
+            (*PAGES, ("theory", "Theoretische Grundlagen"))
+        ):
             source = (SITE / f"{slug}.md").read_text()
             title, body = source.split("\n", 1)
             title = title.removeprefix("# ")
@@ -105,6 +106,18 @@ def build(output: Path = OUTPUT) -> None:
 
             content = re.sub(r'(href|src)="([^"]+)"', local_url, content)
 
+            if slug == "theory":
+                destination = stage / "theory/index.html"
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                destination.write_text(
+                    '<!doctype html><html lang="de"><meta charset="utf-8">'
+                    "<title>Grundlagen</title>"
+                    + content
+                    + "<script>const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));"
+                    'location.replace(target?.href || "structures/");</script></html>'
+                )
+                continue
+
             def nav_link(key, text):
                 return (
                     f'<a href="{root}{page_url(key)}"'
@@ -114,21 +127,20 @@ def build(output: Path = OUTPUT) -> None:
 
             navigation = nav_link("index", "Versuchsüberblick")
             navigation += '<section class="nav-group"><h2>Vorbereitung</h2>'
-            navigation += nav_link("theory", "Kapitelübersicht") + "<ol>"
+            navigation += "<ul>"
             for key, text in PAGES:
                 if key.startswith("theory/"):
                     navigation += "<li>" + nav_link(key, text) + "</li>"
             navigation += (
-                '</ol></section><section class="nav-group"><h2>Durchführung</h2>'
+                '</ul></section><section class="nav-group"><h2>Durchführung</h2>'
             )
             navigation += nav_link("installation", "Webapp starten") + "</section>"
             chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
             if slug in chapter_keys:
-                eyebrow = f"Grundlagen · Kapitel {chapter_keys.index(slug) + 1} von {len(chapter_keys)}"
+                eyebrow = "Grundlagen"
             else:
                 eyebrow = {
                     "index": "ACh-Pr · TC Versuch",
-                    "theory": "Vorbereitung",
                     "installation": "Durchführung",
                 }[slug]
             pagination = []
@@ -156,7 +168,7 @@ def build(output: Path = OUTPUT) -> None:
                 ),
                 eyebrow=eyebrow,
                 breadcrumbs=(
-                    f'<nav class="breadcrumbs" aria-label="Pfad"><a href="{root}theory/">Grundlagen</a><span aria-hidden="true"> / </span><span>{html.escape(label)}</span></nav>'
+                    f'<nav class="breadcrumbs" aria-label="Pfad"><span>Grundlagen</span><span aria-hidden="true"> / </span><span>{html.escape(label)}</span></nav>'
                     if slug in chapter_keys
                     else ""
                 ),

@@ -15,13 +15,13 @@ button, summary { cursor: pointer; }
 .skip-link { position: fixed; top: -6rem; left: 1rem; z-index: 10; background: var(--page); padding: .5rem 1rem; }
 .skip-link:focus { top: .5rem; }
 .header-actions { display: flex; gap: 8px; }
-.layout { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 760px) minmax(200px, 1fr); gap: 0 40px; }
+.layout { display: grid; grid-template-columns: fit-content(360px) minmax(0, 760px) minmax(200px, 1fr); gap: 0 40px; }
 .sidebar {
   position: sticky; top: 72px; height: calc(100dvh - 72px); overflow-y: auto;
   background: var(--panel); border-right: 1px solid var(--line);
   padding: 2rem calc(var(--page-inset) - .8rem);
 }
-.sidebar a { display: block; width: fit-content; max-width: 100%; padding: .45rem .8rem; margin-bottom: .3rem; border-radius: 6px; color: var(--muted); text-decoration: none; line-height: 1.5; }
+.sidebar a { display: block; padding: .45rem .8rem; margin-bottom: .3rem; border-radius: 6px; color: var(--muted); text-decoration: none; line-height: 1.5; }
 .sidebar a:hover { background: var(--tint); color: var(--text); }
 .sidebar a[aria-current] { color: var(--blue); background: var(--tint); box-shadow: inset 3px 0 var(--blue); font-weight: 650; }
 main { min-width: 0; padding: 2.7rem 0 2rem; }
@@ -104,25 +104,18 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
 /* Navigation follows preparation chapters rather than one long theory page. */
 .nav-group { margin-top: 1.6rem; }
 .nav-group h2 { margin: 0 0 .55rem .8rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.nav-group ol { list-style: none; counter-reset: chapter; padding: 0; margin: .4rem 0; }
-.nav-group li { counter-increment: chapter; margin: 0; }
+.nav-group ul { list-style: none; padding: 0; margin: .4rem 0; }
+.nav-group li { margin: 0; }
 .nav-group li a { display: flex; gap: .65rem; align-items: baseline; font-size: .9rem; }
-.nav-group li a::before { content: counter(chapter, decimal-leading-zero); font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 .breadcrumbs { font-size: .8rem; color: var(--muted); margin-bottom: 1.2rem; }
 .breadcrumbs a { color: var(--muted); }
-.chapter-list { list-style: none; counter-reset: chapter; padding: 0; margin: 2rem 0; }
-.chapter-list li { counter-increment: chapter; position: relative; padding: 1rem 1rem 1rem 3.5rem; margin: 0; border-top: 1px solid var(--line); }
-.chapter-list li:last-child { border-bottom: 1px solid var(--line); }
-.chapter-list li::before { content: counter(chapter, decimal-leading-zero); position: absolute; left: .5rem; top: 1.1rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.chapter-list p { margin: 0 0 .3rem; }
-.chapter-list p + p { color: var(--muted); font-size: .9rem; }
 .legacy-links { display: none; }
 .legacy-links:has(:target) { display: block; }
 .legacy-links a { display: block; padding: .4rem 0; }
 @media (max-width: 700px) {
   .sidebar { display: block; }
   .nav-group { margin-top: .8rem; }
-  .nav-group ol { display: flex; flex-wrap: wrap; gap: .2rem .5rem; }
+  .nav-group ul { display: flex; flex-wrap: wrap; gap: .2rem .5rem; }
   .nav-group li { flex: 1 1 15rem; }
   .nav-group h2 { margin-left: .55rem; }
 }
