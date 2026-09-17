@@ -6,13 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-51"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-52"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-35" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-88" defer></script>
+    <script src="static/app.js?v=ui-89" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -601,16 +601,21 @@
                         <div class="solution-color-controls">
                             <h3 id="solution-color-title">Geschätzte Lösungsfarbe</h3>
                             <p class="note">nur ausgewählte Struktur</p>
-                            <div class="solution-color-density-heading">
-                                <button type="button" class="property-help-trigger" id="density-help-trigger"
-                                    popovertarget="density-help" aria-haspopup="dialog">Faktor für die optische Dichte</button>
-                                <output id="solution-color-density-value" for="solution-color-density">1,0</output>
+                            <div class="solution-color-values">
+                                <div class="solution-color-value" role="status">
+                                    <button type="button" class="property-help-trigger"
+                                        id="transmission-help-trigger" popovertarget="transmission-help"
+                                        aria-haspopup="dialog">Lichtdurchlässigkeit:</button>
+                                    <span id="solution-color-status"></span>
+                                </div>
+                                <div class="solution-color-value">
+                                    <button type="button" class="property-help-trigger" id="density-help-trigger"
+                                        popovertarget="density-help" aria-haspopup="dialog">Faktor für die optische Dichte:</button>
+                                    <output id="solution-color-density-value" for="solution-color-density">1,0</output>
+                                </div>
                             </div>
                             <input id="solution-color-density" type="range" min="0" max="10" step="0.1" value="1"
                                    aria-labelledby="density-help-trigger" aria-describedby="solution-color-limitation"/>
-                            <p class="note" role="status"><button type="button" class="property-help-trigger"
-                                id="transmission-help-trigger" popovertarget="transmission-help"
-                                aria-haspopup="dialog">Lichtdurchlässigkeit</button><span id="solution-color-status"></span></p>
                             <p id="solution-color-limitation" class="note">Relative Skalierung ohne festgelegte Konzentration oder Schichtdicke.
                                 Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
                                 Die tatsächliche Lösungsfarbe kann deshalb deutlich abweichen.</p>

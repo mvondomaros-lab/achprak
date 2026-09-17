@@ -416,7 +416,7 @@ function renderSolutionColor() {
   swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}, Faktor ${fmt(density, 1)}`);
   $("transmission-help-trigger").hidden = !result;
   $("solution-color-status").textContent = result
-    ? `: ${fmt(100 * result.luminance, 1)} %`
+    ? `${fmt(100 * result.luminance, 1)} %`
     : "Keine Farbschätzung verfügbar: Das Spektrum ist unvollständig oder enthält keine auswertbaren Absorptionsdaten.";
 }
 $("solution-color-density").addEventListener("input", renderSolutionColor);
