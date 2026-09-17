@@ -56,11 +56,11 @@ let stage = null,
 const TITLES = {
   build: [
     "Struktur erstellen",
-    "Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf ergänzen.",
+    "Wählen Sie die cis/trans-Konfiguration sowie Art und Position der Substituenten.",
   ],
   optimize: [
     "Struktur optimieren",
-    "Wählen Sie eine Struktur und das Ziel der Optimierung.",
+    "Wählen Sie die Ausgangsstruktur und das Ziel der Optimierung.",
   ],
   spectrum: [
     "Spektrum berechnen",
@@ -439,7 +439,7 @@ function renderState() {
   $("active-name").textContent = m ? structureGroupLabel(m) : "Startstruktur";
   $("active-meta").textContent = m
     ? `${m.formula} · ${m.atom_count} Atome`
-    : "Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf ergänzen.";
+    : "Wählen Sie die cis/trans-Konfiguration sowie Art und Position der Substituenten.";
   $("geometry-badge").hidden = !m;
   $("geometry-badge").textContent = m ? KIND[m.kind] : "";
   $("geometry-badge").classList.remove("live", "playback");
@@ -457,7 +457,7 @@ function renderState() {
   $("properties-context").textContent = !m
     ? ""
     : m.kind === "initial"
-      ? "Werte der noch nicht optimierten Startstruktur"
+      ? "Werte der noch nicht quantenchemisch optimierten Startstruktur"
       : m.kind === "unconverged"
         ? "Werte des letzten Rechenschritts – Optimierung nicht abgeschlossen"
         : "Werte der berechneten Ergebnisstruktur";
@@ -472,7 +472,7 @@ function renderState() {
   $("ts-check-result").textContent = !ts
     ? ""
     : ts.connectivity?.verified
-      ? `Die Minimumsuche ausgehend von beiden Seiten der Übergangsstruktur erreicht eine cis- und eine trans-Minimumstruktur.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minimumstrukturen haben anders angeordnete Ringe oder Substituenten als die Minimumstrukturen am Anfang und Ende des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Temperatureffekte sind nicht berücksichtigt.`
+      ? `Minimumsuchen nach Auslenkung in beide Richtungen der instabilen Mode ergeben eine cis- und eine trans-Minimumstruktur.${ts.connectivity.endpoint_conformers_match ? "" : " Die erhaltenen Minimumstrukturen unterscheiden sich in der Orientierung der Ringe oder Substituenten von den Endstrukturen des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Beiträge von Kernschwingungen, Temperatur und Entropie sind nicht berücksichtigt.`
       : "Die Verbindung zwischen cis und trans wurde nicht bestätigt. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
   $("ts-check-technical").textContent = !ts
     ? ""
@@ -613,7 +613,7 @@ function renderEnergyHistory(activeStep) {
   if (!visible) return;
   const pathActive = state.live?.phase === "path" ? state.live : null;
   const live = state.busy;
-  $("energy-history-state").textContent = live ? "· Live" : "";
+  $("energy-history-state").textContent = live ? "· Laufende Berechnung" : "";
   const source = current()?.base_name?.match(/^(cis|trans)-/)?.[1];
   const direction = source ? ` · ${source} → ${source === "cis" ? "trans" : "cis"}` : "";
   $("energy-path-meta").textContent = path?.length
@@ -725,7 +725,7 @@ function renderEnergyHistory(activeStep) {
       path.reduce((a, b) => (a.energy_ev > b.energy_ev ? a : b));
     energyChart.data.datasets[1].data = selected ? [pathPoint(selected)] : [];
     $("energy-reference").textContent =
-      "ΔE relativ zum Ausgangsstruktur · keine Zeitachse.";
+      "ΔE bezogen auf die Ausgangsstruktur · Pfadkoordinate, keine Zeitachse.";
     $("energy-chart").setAttribute(
       "aria-label",
       `Energieprofil des Reaktionspfads mit ${path.length} Strukturen`,
@@ -740,8 +740,8 @@ function renderEnergyHistory(activeStep) {
     const selected = searchRecords.find((p) => p.step === activeStep) || searchRecords.at(-1);
     energyChart.data.datasets[1].data = selected ? [point(selected)] : [];
     $("energy-reference").textContent = exploringTS
-      ? "ΔE relativ zum ersten Suchschritt · noch kein Reaktionspfad."
-      : "ΔE relativ zum ersten Optimierungsschritt · keine Zeitachse.";
+      ? "ΔE bezogen auf den ersten Suchschritt · noch kein Reaktionspfad."
+      : "ΔE bezogen auf den ersten Optimierungsschritt · keine Zeitachse.";
     $("energy-chart").setAttribute("aria-label",
       `Energieverlauf der Suche mit ${searchRecords.length} Schritten`);
   }

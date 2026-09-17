@@ -127,16 +127,16 @@ globalThis.OptimizationProgress = {
 globalThis.SpectrumProgress = {
   stages: {
     setup: ["Spektrenrechnung vorbereiten", [
-      "Die optimierte Struktur wird an MOPAC übergeben. Die Atompositionen bleiben bei dieser Rechnung fest.",
-      "Berechnet werden die Energien und Stärken elektronischer Übergänge aus dem Grundzustand.",
+      "Die optimierte Minimumstruktur wird an MOPAC übergeben. Die Atompositionen bleiben während der Berechnung unverändert.",
+      "Berechnet werden Anregungsenergien und Oszillatorstärken elektronischer Übergänge aus dem Grundzustand.",
     ]],
     electrons: ["Elektronischen Grundzustand berechnen", [
       "MOPAC bestimmt die Elektronenverteilung im Grundzustand. Sie dient als Grundlage für die Berechnung elektronischer Anregungen.",
       "Die Elektronenverteilung wird schrittweise angepasst. Die Wechselwirkungen zwischen den Elektronen hängen selbst von dieser Verteilung ab.",
     ]],
     configurations: ["Elektronische Anregungen vorbereiten", [
-      "Die Molekülorbitale liegen vor. Daraus werden mögliche Anregungen von besetzten in unbesetzte Orbitale zusammengestellt.",
-      "Ein Orbital beschreibt einen möglichen Zustand eines Elektrons im Molekül. Für das Spektrum zählen auch die zunächst unbesetzten Orbitale.",
+      "Auf Grundlage der berechneten Molekülorbitale werden Anregungen von besetzten in unbesetzte Orbitale zusammengestellt.",
+      "Ein Orbital beschreibt einen möglichen Zustand eines Elektrons im Molekül. Auch im Grundzustand unbesetzte Orbitale werden zur Beschreibung elektronischer Anregungen benötigt.",
     ]],
     excited_states: ["Energien angeregter Zustände berechnen", [
       "Die angeregten Zustände werden als Überlagerung verschiedener Anregungen von besetzten in unbesetzte Orbitale beschrieben.",
@@ -144,18 +144,18 @@ globalThis.SpectrumProgress = {
       "Zu einem angeregten Zustand können mehrere Orbitalübergänge beitragen. Ihr jeweiliger Anteil wird in dieser Rechnung bestimmt.",
     ]],
     transitions: ["Lichtabsorption auswerten", [
-      "Die Übergangsenergien und ihre Stärken liegen vor. Sie bestimmen, wo Absorptionsbanden erscheinen und wie stark sie ausfallen.",
+      "Die Anregungsenergien und Oszillatorstärken bestimmen die Lage und die relativen Intensitäten der berechneten Absorptionsbanden.",
       "Die Oszillatorstärke ist ein dimensionsloses Maß für die Stärke eines elektronischen Übergangs. Sie bestimmt dessen Beitrag zur berechneten Absorption.",
     ]],
-    read_transitions: ["Übergangsenergien und Stärken einlesen", [
+    read_transitions: ["Anregungsenergien und Oszillatorstärken einlesen", [
       "Die berechneten Übergänge werden eingelesen. Geprüft wird, ob sie über den dargestellten Energiebereich hinausreichen, damit auch die Ausläufer höher liegender Banden berücksichtigt werden.",
     ]],
     expanded_output: ["Ausgabe der Übergänge erweitern", [
-      "Die erste Ausgabeliste reicht nicht bis über den dargestellten Energiebereich. MOPAC läuft erneut, um mehr der berechneten Zustände auszugeben.",
+      "Die bisher ausgegebenen Übergänge decken den benötigten Energiebereich nicht vollständig ab. Ein erneuter MOPAC-Rechenlauf erweitert die Ausgabe der berechneten Zustände.",
       "Die Rechenmethode bleibt unverändert. Im erneuten Rechenlauf wird eine größere Anzahl von Zuständen ausgegeben.",
     ]],
     broaden: ["Spektrenbanden berechnen", [
-      "Jeder berechnete Übergang erhält eine gaußförmige Bande. Ihre Summe ergibt die dargestellte Spektrenkurve.",
+      "Jeder berechnete Übergang wird durch eine Gaußbande mit vorgegebener Breite dargestellt. Die Summe dieser Banden ergibt die Spektrenkurve.",
       "Die Bandenbreite ist vorgegeben. Sie wird hier nicht aus Molekülbewegungen oder Lebensdauern berechnet.",
     ]],
     plot: ["Spektrum für die Darstellung aufbereiten", [

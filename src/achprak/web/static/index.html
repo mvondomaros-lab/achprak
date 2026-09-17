@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="static/app.css?v=ui-47"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
-    <script src="static/progress.js?v=ui-34" defer></script>
+    <script src="static/progress.js?v=ui-35" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-77" defer></script>
+    <script src="static/app.js?v=ui-78" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -48,8 +48,8 @@
         <div>
             <h1 id="step-title">Struktur erstellen</h1>
             <p id="step-description">
-                Wählen Sie die Konfiguration. Substituenten können Sie bei Bedarf
-                ergänzen.
+                Wählen Sie die cis/trans-Konfiguration sowie Art und Position der
+                Substituenten.
             </p>
         </div>
     </div>
@@ -105,7 +105,7 @@
                             Substituenten <span id="substituent-count">keine</span>
                         </summary>
                         <p class="field-hint">
-                            H lässt das Wasserstoffatom an dieser Position unverändert.
+                            H bezeichnet eine unsubstituierte Position mit einem Wasserstoffatom.
                         </p>
                         <div class="rings" id="rings"></div>
                     </details>
@@ -114,18 +114,19 @@
                     </button>
                 </form>
                 <details class="method-help" id="method-build">
-                    <summary>Was passiert im Hintergrund?</summary>
+                    <summary>Methoden und Interpretation</summary>
                     <h3>Rechenverfahren</h3>
                     <p>
-                        Die Substituenten bestimmen, welche Atome das Molekül enthält
-                        und wie sie verbunden sind. Die Konfiguration legt die
+                        Die Auswahl der Substituenten legt die Zusammensetzung und
+                        die Verknüpfung der Atome fest. Die Konfiguration legt die
                         cis- oder trans-Anordnung an der Azogruppe fest.
                         Das Programm RDKit erzeugt daraus mit dem Verfahren ETKDG eine
                         dreidimensionale Startstruktur. Dabei verwendet es typische
-                        Atomabstände, Bindungswinkel und Diederwinkel. Anschließend passt eine kurze Rechnung mit dem
-                        Kraftfeld MMFF Atomabstände, Bindungswinkel und
-                        Diederwinkel an, um die Energie im Kraftfeldmodell zu senken.
-                        Dabei wird die gwählte Konfiguration durch Zwangsbedingungen forciert.
+                        Atomabstände, Bindungswinkel und Diederwinkel. Anschließend erfolgt eine
+                        Voroptimierung mit dem molekülmechanischen Kraftfeld MMFF.
+                        Dieses Modell beschreibt die Energie als Funktion der Atompositionen.
+                        Die Geometrie wird angepasst, um diese Energie zu verringern;
+                        geometrische Zwangsbedingungen erhalten dabei die gewählte Konfiguration.
                         Diese Struktur dient als Ausgangspunkt für die anschließende
                         Geometrieoptimierung mit dem elektronischen Strukturmodell.
                     </p>
@@ -133,8 +134,9 @@
                     <p>
                         Standardmäßig sehen Sie die zweidimensionale (2D) Strukturformel. Sie zeigt
                         Bindungen und Substituenten, aber keine maßstabsgetreuen
-                        Abstände. Diese sehen sie besser in der dreidimensionalen (3D) Darstellung.
-                        In dieser Ansicht und können das Molekül auch drehen und vergrößern.
+                        Abstände. Die dreidimensionale (3D) Darstellung zeigt die räumliche
+                        Anordnung der Atome anhand der erzeugten Koordinaten. Sie können
+                        das Modell drehen und vergrößern, um die Geometrie zu untersuchen.
 
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
@@ -142,8 +144,8 @@
                         Die erzeugten Startstrukturen sind noch nicht mit dem
                         elektronischen Strukturmodell optimiert. Ihre Atomabstände
                         und Bindungswinkel können sich bei der Geometrieoptimierung
-                        in Schritt 02 ändern; auch die Ringe können sich drehen.
-                        Erst in diesem Schritt wird ein lokales Energieminimum gesucht.
+                        in Schritt 02 ändern; ebenso kann sich die Orientierung der Ringe ändern.
+                        Erst in diesem Schritt wird ein lokales Minimum der elektronischen Energie gesucht.
                     </p>
                     <dl class="method">
                         <div>
@@ -186,22 +188,22 @@
                     Optimierung starten
                 </button>
                 <details class="method-help" id="method-optimize">
-                    <summary>Was passiert im Hintergrund?</summary>
+                    <summary>Methoden und Interpretation</summary>
                     <h3>Rechenverfahren</h3>
                     <p>
-                        Für jede Anordnung der Atomkerne berechnet ein vereinfachtes
-                        quantenchemisches Modell die elektronische Energie und die
-                        Kräfte auf die Atome. Dieses Modell heißt GFN1-xTB; es
-                        beschreibt die Elektronen näherungsweise und ermöglicht dadurch
-                        schnelle Rechnungen.
+                        Für jede Anordnung der Atomkerne berechnet das quantenchemische
+                        Näherungsverfahren GFN1-xTB die elektronische Energie und die
+                        Kräfte auf die Atomkerne. Die vereinfachte Beschreibung der
+                        elektronischen Struktur begrenzt den Rechenaufwand und ermöglicht
+                        die Untersuchung mehrerer Molekülvarianten im Praktikum.
                     </p>
                     <p>
                         <strong>Minimumstruktur:</strong> Das Optimierungsverfahren Sella verändert
                         die Atompositionen anhand der berechneten Kräfte, um die
-                        elektronische Energie zu verringern. Die Suche endet, wenn
+                        elektronische Energie zu verringern. Die Optimierung gilt als numerisch konvergiert, wenn
                         die verbleibenden Kräfte unter einem festgelegten Grenzwert liegen. Eine separate
                         Prüfung der zweiten Ableitungen der Energie nach den Atomkoordinaten
-                        findet hier nicht statt. Kleine Kräfte allein bestätigen daher noch kein Minimum.
+                        findet hier nicht statt. Die Erfüllung des Kraftkriteriums allein weist daher kein lokales Minimum nach.
                     </p>
                     <p>
                         <strong>Übergangsstruktur:</strong> Zwischen der ausgewählten Minimumstruktur
@@ -209,15 +211,15 @@
                         Reaktionspfad aus 13 Strukturen aufgebaut. Das Verfahren CI-NEB
                         (Climbing-Image Nudged Elastic Band) optimiert diese Strukturen
                         und sucht dabei das Energiemaximum entlang des Pfads. Zusätzliche
-                        rechnerische Federkräfte halten die benachbarten Strukturen
-                        auf Abstand. Die Struktur am Energiemaximum des Pfads wird
+                        rechnerische Federkräfte regulieren die Abstände zwischen
+                        benachbarten Strukturen entlang des Pfads. Die Struktur am Energiemaximum des Pfads wird
                         anschließend mit Sella verfeinert und als mögliche
                         Übergangsstruktur geprüft.
                     </p>
                     <p>
                         Im Praktikum ist die Übergangsstruktursuche auf insgesamt zwei
                         Substituenten begrenzt, um lange Suchläufe zu vermeiden.
-                        Für Minimumsuche und Spektrenrechnung gilt diese Grenze nicht.
+                        Für Minimumsuche und Spektrenrechnung gilt diese Beschränkung nicht.
                         Falls der erste Suchlauf scheitert, folgt höchstens ein
                         weiterer Versuch mit einem anders vorbereiteten Reaktionspfad.
                     </p>
@@ -231,9 +233,10 @@
                     <p>
                         <strong>Übergangsstruktur:</strong> Eine Geometrie an einem Sattelpunkt erster Ordnung
                         zwischen den beiden Minima.
-                        Bei einer unabhängigen Änderung der Molekülgeometrie sinkt
-                        die Energie in beiden Auslenkungsrichtungen; bei den übrigen
-                        steigt sie. Verschiebungen und Drehungen des gesamten Moleküls
+                        Entlang genau einer unabhängigen inneren Auslenkungsrichtung
+                        nimmt die Energie auf beiden Seiten des Sattelpunkts ab.
+                        Entlang der übrigen inneren Richtungen nimmt sie bei kleinen
+                        Auslenkungen zu. Verschiebungen und Drehungen des gesamten Moleküls
                         bleiben dabei unberücksichtigt.
                         Das Energieprofil zeigt den
                         berechneten Weg zwischen den beiden Minimumstrukturen. Die elektronische
@@ -241,13 +244,15 @@
                     </p>
                     <h3>Wie wird die Übergangsstruktur geprüft?</h3>
                     <p>
-                        Eine Schwingungsrechnung untersucht kleine Auslenkungen der Atome.
+                        Eine Schwingungsrechnung untersucht die Energieänderung bei kleinen
+                        Auslenkungen der Atomkerne. Eine Schwingungsmode beschreibt dabei
+                        ein gemeinsames Auslenkungsmuster der Atome.
                         Eine imaginäre Frequenz kennzeichnet eine instabile Schwingungsmode:
                         Bei einer Auslenkung entlang dieser Mode nimmt die Energie ab.
                         Für einen Sattelpunkt erster Ordnung muss genau eine solche
-                        unabhängige Mode vorliegen. Die App verlangt genau eine
-                        imaginäre Frequenz mit einem Betrag über 20 cm⁻¹. Beträge bis zu diesem Grenzwert werden
-                        wegen numerischer Unsicherheiten nicht mitgezählt.
+                        unabhängige Mode vorliegen. Das Prüfkriterium der App ist genau eine
+                        imaginäre Frequenz mit einem Betrag über 20 cm⁻¹ (reziproke Zentimeter, die Einheit der Wellenzahl). Beträge bis zu diesem Grenzwert werden
+                        aufgrund numerischer Unsicherheiten bei dieser Prüfung nicht berücksichtigt.
                     </p>
                     <p>
                         Anschließend werden die Atome in beide Richtungen dieser
@@ -258,11 +263,11 @@
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        <strong>Die Suche untersucht einen begrenzten Bereich der möglichen Strukturen.</strong>
+                        <strong>Die Suche erfasst nur einen Teil der möglichen Molekülgeometrien.</strong>
                         Je nach Ausgangsstruktur kann sie unterschiedliche Minimumstrukturen finden,
-                        etwa mit anders verdrehten Ringen oder Substituenten. Auch eine
+                        beispielsweise mit unterschiedlichen Orientierungen der Ringe oder Substituenten. Auch eine
                         bestätigte Übergangsstruktur gehört nur zum untersuchten Weg;
-                        ein anderer Weg kann eine niedrigere Barriere haben.
+                        ein anderer Reaktionsweg kann eine niedrigere elektronische Energiebarriere aufweisen.
                     </p>
                     <p>
                         <strong>Die Energien sind Näherungswerte.</strong>
@@ -279,7 +284,7 @@
                         daher nicht unmittelbar mit der Aktivierungsenergie aus der
                         Arrhenius-Gleichung gleichzusetzen. Diese beschreibt die
                         Temperaturabhängigkeit der Geschwindigkeitskonstante;
-                        unsere Rechnung liefert dagegen einen elektronischen
+                        die vorliegende Rechnung liefert einen elektronischen
                         Energieunterschied zwischen zwei Geometrien.
                         Auch die freie Aktivierungsenthalpie ΔG‡, die thermische
                         Beiträge und Entropie berücksichtigt, wird hier nicht berechnet.
@@ -306,13 +311,13 @@
                     Spektrum berechnen
                 </button>
                 <details class="method-help" id="method-spectrum">
-                    <summary>Was passiert im Hintergrund?</summary>
+                    <summary>Methoden und Interpretation</summary>
                     <h3>Rechenverfahren</h3>
                     <p>
                         Das UV/Vis-Spektrum beschreibt die Absorption von ultraviolettem
                         und sichtbarem Licht. Das Programm MOPAC berechnet mit dem
-                        Näherungsverfahren INDO/S–CIS die Energien und Stärken
-                        elektronischer Anregungen. Die Rechnung verwendet eine
+                        Näherungsverfahren INDO/S–CIS die Anregungsenergien und Oszillatorstärken
+                        elektronischer Übergänge. Die Rechnung verwendet eine
                         optimierte Minimumstruktur und hält die Atomkerne an ihren Positionen
                         fest. Diese Näherung beschreibt eine elektronische Anregung,
                         während der sich die Kernpositionen kaum ändern.
@@ -322,7 +327,8 @@
                         die Berechnung von Spektren angepasst. CIS
                         beschreibt angeregte Zustände als Überlagerung von Anregungen,
                         bei denen jeweils ein Elektron aus einem besetzten in ein
-                        unbesetztes Orbital übergeht. Ein Orbital beschreibt im Modell den räumlichen Zustand eines
+                        unbesetztes Orbital übergeht. CIS steht für Configuration Interaction Singles,
+                        also die Überlagerung von Einfachanregungen. Ein Orbital beschreibt im Modell den räumlichen Zustand eines
                         Elektrons. Daraus lässt sich ableiten, mit welcher Wahrscheinlichkeit
                         das Elektron in einem bestimmten Raumbereich gefunden wird.
                     </p>
@@ -332,28 +338,29 @@
                         vom Grundzustand in einen angeregten Zustand. Ihre Höhe
                         zeigt die Oszillatorstärke: ein dimensionsloses Maß dafür, wie stark dieser
                         Übergang zur Lichtabsorption beiträgt. Für die blaue Kurve wird
-                        jede Linie zu einer glockenförmigen Gaußkurve verbreitert;
+                        jede Linie zu einer Gaußkurve mit vorgegebener Breite verbreitert;
                         anschließend werden die Beiträge addiert. Die Markierungen
                         am oberen Ende machen auch sehr schwache Übergänge sichtbar.
                         Das Maximum der blauen Kurve kann zwischen einzelnen Übergängen liegen.
                     </p>
                     <p>
                         Kleinere Anregungsenergien entsprechen längeren Wellenlängen.
-                        Eine Verschiebung dorthin heißt bathochrome Verschiebung.
+                        Eine Verschiebung zu längeren Wellenlängen wird als bathochrome Verschiebung bezeichnet.
                     </p>
-                    <h3>Wie wird die Farbe geschätzt?</h3>
+                    <h3>Abschätzung der Lösungsfarbe</h3>
                     <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
                         aus der blauen Kurve bestimmt. Mit dem gewählten Faktor s wird die
                         dimensionslose optische Dichte (Absorbanz) A = s · I angesetzt. Der durchgelassene Lichtanteil ist
-                        T = 10<sup>−A</sup>. Bei Faktor 0 wird das gesamte Licht durchgelassen.</p>
+                        T = 10<sup>−A</sup>. Dieser Anteil wird als Transmission bezeichnet.
+                        Bei Faktor 0 beträgt die Transmission im Modell 100 %.</p>
                     <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
                         CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
                         Diese Funktionen beschreiben die mittlere Farbwahrnehmung des menschlichen Auges.
                         Die CIE ist die Internationale Beleuchtungskommission. D65 bezeichnet
                         eine festgelegte spektrale Verteilung, die Tageslicht annähert. Die Darstellung nimmt
-                        eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz fehlen.</p>
+                        eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz werden nicht berücksichtigt.</p>
                     <p>Die Vorschau gilt nur für die ausgewählte Struktur, ohne cis/trans-Gemisch und
-                        ohne Mittelung über weitere räumliche Anordnungen. Ethanol ist im Spektrenmodell
+                        ohne Mittelung über weitere Molekülgeometrien. Ethanol ist im Spektrenmodell
                         als kontinuierliches Medium beschrieben. Die Bandenbreite ist vorgegeben;
                         ein Vergleich mit einem gemessenen Spektrum von trans-Azobenzol in Ethanol zeigt
                         Abweichungen der Bandenlagen um etwa 44 und 58 nm sowie eine zu schwache sichtbare Bande.
@@ -377,8 +384,8 @@
                         vom Experiment abweichen.
                     </p>
                     <p>
-                        Für eine kurze Rechenzeit wird die Auswahl der berücksichtigten
-                        Elektronenanregungen begrenzt. Eine umfangreichere Rechnung kann
+                        Zur Begrenzung des Rechenaufwands wird nur eine Auswahl der möglichen
+                        Elektronenanregungen berücksichtigt. Eine umfangreichere Rechnung kann
                         die Lage und Stärke der Banden verändern. Geben Sie die berechneten
                         Maxima und Verschiebungen im Protokoll als Modellvorhersagen an.
                     </p>
@@ -670,8 +677,8 @@
         Für Energiedifferenzen sind auch negative Werte möglich. Eine
         Wellenlänge wird nur für positive Energien angegeben. Eine Energiedifferenz
         zwischen cis und trans oder eine Energiebarriere ist keine elektronische
-        Anregungsenergie; die daraus umgerechnete Wellenlänge sagt daher nicht,
-        welches Licht das Molekül absorbiert.
+        Anregungsenergie; die daraus umgerechnete Wellenlänge lässt daher keine Aussage
+        über das Absorptionsspektrum des Moleküls zu.
     </p>
 </dialog>
 <div id="toast" role="status" hidden></div>
