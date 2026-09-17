@@ -58,6 +58,21 @@ body .myst-primary-sidebar-pointer {
   background: var(--ach-panel);
   border-right: 1px solid var(--ach-line);
 }
+@media (min-width: 1280px) {
+  /* Fill the outer grid gutter without shifting the navigation links.
+     Share the sidebar row so the background follows its full height. */
+  body .myst-primary-sidebar::before {
+    content: "";
+    grid-column: screen-start / body-start;
+    grid-row: 1;
+    background: var(--ach-panel);
+    pointer-events: none;
+  }
+  body .myst-primary-sidebar-pointer {
+    grid-row: 1;
+    position: relative;
+  }
+}
 body .myst-primary-sidebar-nav { padding: 1.5rem 0.75rem; }
 body .myst-toc-item {
   color: var(--ach-muted);
