@@ -53,13 +53,14 @@ are relative, so the same build works at a domain root or a GitHub project path.
 The GitHub Actions workflow tests and builds pull requests and deploys `main`
 to GitHub Pages. Pages must be configured to deploy through GitHub Actions.
 
-Regenerate teaching figures with:
+Regenerate the SVG teaching figures with:
 
 ```sh
 pixi run -e dev python figures/scripts/figures.py
 ```
 
-Review generated images before committing them. The [repository
+Each figure also has an independently runnable source; see [figure sources](../figures/README.md)
+for individual regeneration and optional PNG export. Review generated images before committing them. The [repository
 layout](repository-layout.md) explains which generated files belong in version
 control.
 
@@ -148,7 +149,7 @@ into the build automatically; missing files fail the build.
 Dollar-delimited equations are parsed by Arithmatex and converted to native
 MathML at build time by latex2mathml. Modern browsers render them without a CDN
 or client-side math library. Navigation, equations and disclosures work without
-JavaScript; the small local script adds theme selection and full-text search.
+JavaScript; the small local script adds full-text search.
 The build creates a local search index and Markdown source downloads. The live
 reload script is injected only by the preview server, never into published files.
 Developer dependencies are resolved in `pixi.lock`; CI uses that same environment.

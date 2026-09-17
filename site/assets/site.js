@@ -1,20 +1,5 @@
 /* Optional enhancements; navigation, disclosures and equations work without JS. */
 const root = new URL('../', document.currentScript.src);
-const themeButton = document.querySelector('#theme-toggle');
-function setTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  themeButton.textContent = theme === 'dark' ? 'Hell' : 'Dunkel';
-  themeButton.setAttribute('aria-label', theme === 'dark' ? 'Helle Darstellung einschalten' : 'Dunkle Darstellung einschalten');
-}
-let theme;
-try { theme = localStorage.getItem('teaching-theme'); } catch (_) {}
-setTheme(theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
-themeButton.hidden = false;
-themeButton.addEventListener('click', () => {
-  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-  setTheme(next);
-  try { localStorage.setItem('teaching-theme', next); } catch (_) {}
-});
 if (matchMedia('(max-width: 1150px)').matches) document.querySelector('.outline details').open = false;
 
 const dialog = document.querySelector('#search-dialog');
