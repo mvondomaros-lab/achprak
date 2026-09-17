@@ -1499,3 +1499,6 @@ select {
   font-size: 13px;
   font-weight: 600;
 }
+.solution-color-density-heading .property-help-trigger {
+  text-decoration: none;
+}
