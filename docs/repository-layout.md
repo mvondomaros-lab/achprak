@@ -27,16 +27,15 @@ downloads a fresh checkout.
   regression tests, which check whether behavior changes after a code edit. These are test inputs, not disposable run output.
 - `figures/drawings/` and `figures/commons/`: editable artwork and attributed
   source images, including the PowerPoint source for the dihedral illustration.
-- Published figures referenced by `site/theory.md`, and the app's bundled
-  `static/substituent-effects.png`. These rendered assets are intentional:
+- Published SVG figures referenced by `site/theory.md`. These rendered assets are intentional:
   a checkout can build the site and run the app without regenerating artwork.
 - Bundled browser libraries, color tables and their licenses under
   `src/achprak/web/static/vendor/`. Offline operation depends on these files.
 
 The root `.gitignore` lists which generated figures are deliberately kept in Git.
-Generate previews with `pixi run -e dev python figures/scripts/figures.py`. Review
-changed images before committing them. To update the app illustration, copy the
-generated `figures/outputs/substituent-effects.png` to its bundled static path.
+Regenerate SVGs with `pixi run -e dev python figures/scripts/figures.py`. Each figure
+has its own source; see [figure sources](../figures/README.md) for individual and PNG
+exports. Review changed images before committing them.
 
 ## Files to keep local
 
@@ -51,8 +50,7 @@ notebook caches and OS metadata. `site/.gitignore` excludes the static-site `_bu
 directory.
 
 Unpublished figure exports under `figures/outputs/` are ignored. This includes
-`dihedral.png`, `profile-no-labels.png` and the duplicate generated
-`substituent-effects.png`; they may remain locally but are not Git inputs. Do not
+`dihedral.png`, `profile-no-labels.png` and optional PNG exports; they may remain locally but are not Git inputs. Do not
 ignore all PNG, JSON, XYZ or lock files: those formats also hold required assets
 and reproducible inputs.
 

@@ -23,11 +23,12 @@ __pycache__/
 
 # Generated figure previews. Published teaching figures stay versioned.
 /figures/outputs/*
-!/figures/outputs/jablonski.png
-!/figures/outputs/line-spectrum.png
-!/figures/outputs/uvvis-spectrum.png
-!/figures/outputs/profile.png
-!/figures/outputs/photoswitch-mechanism.png
+!/figures/outputs/jablonski.svg
+!/figures/outputs/line-spectrum.svg
+!/figures/outputs/uvvis-spectrum.svg
+!/figures/outputs/profile.svg
+!/figures/outputs/photoswitch-mechanism.svg
+!/figures/outputs/substituent-effects.svg
 
 # System files.
 .DS_Store
