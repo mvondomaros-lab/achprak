@@ -66,7 +66,8 @@ any failures. Keep these expensive tests disabled in default test runs.
   motions from real-time molecular dynamics. Describe an imaginary frequency by
   its magnitude when comparing it with a numerical threshold.
 - Use decimal commas in German prose and figure labels, but preserve machine-readable
-  formats (XYZ, CSV, JSON, code). Explain units and abbreviations at first use.
+  formats (XYZ, CSV, JSON, code). Assume units are known in the webapp; use unit
+  symbols without introducing or defining them. Explain other abbreviations at first use.
 
 # Version control
 
