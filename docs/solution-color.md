@@ -34,8 +34,10 @@ and T is the fraction of incident light transmitted.
   density that must be redistributed between bins.
 - Set dimensionless absorbance A(lambda) = s I(lambda), with slider s in [0, 10].
   Keep the original relative intensities; do not normalize individual spectra.
-  A path length of 1 cm is assumed for interpretation, but neither path length
-  nor concentration is independently calibrated by s.
+  The single relative scale combines the effects of concentration and optical
+  path length for a fixed spectral shape. No path length is assumed; neither
+  concentration nor path length can be inferred from s without calibrated
+  molar absorption coefficients and knowledge of the other quantity.
 - Apply T(lambda) = 10^(-A(lambda)). Integrate T times D65 times the CIE 1931
   2-degree color-matching functions by the trapezoidal rule at 1 nm intervals,
   over 380–780 nm. The very small observer tails outside this range are omitted.

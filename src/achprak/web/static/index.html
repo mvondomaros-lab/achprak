@@ -12,7 +12,7 @@
     <script src="static/progress.js?v=ui-35" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-86" defer></script>
+    <script src="static/app.js?v=ui-87" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -601,7 +601,7 @@
                         <div class="solution-color-controls">
                             <h3 id="solution-color-title">Geschätzte Lösungsfarbe</h3>
                             <p id="solution-color-sample" class="note"></p>
-                            <p class="note">Standard-Tageslicht (D65) · Durchsicht · angenommene Schichtdicke 1 cm</p>
+                            <p class="note">Standard-Tageslicht (D65)</p>
                             <div class="solution-color-density-heading">
                                 <button type="button" class="property-help-trigger" id="density-help-trigger"
                                     popovertarget="density-help" aria-haspopup="dialog">Faktor für die optische Dichte</button>
@@ -612,7 +612,7 @@
                             <p class="note" role="status"><button type="button" class="property-help-trigger"
                                 id="transmission-help-trigger" popovertarget="transmission-help"
                                 aria-haspopup="dialog">Lichtdurchlässigkeit</button><span id="solution-color-status"></span></p>
-                            <p id="solution-color-limitation" class="note">Konzentration unbekannt.
+                            <p id="solution-color-limitation" class="note">Relative Skalierung ohne festgelegte Konzentration oder Schichtdicke.
                                 Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
                                 Die tatsächliche Lösungsfarbe kann deshalb deutlich abweichen.</p>
                         </div>
@@ -767,9 +767,11 @@
     <p>Der Faktor skaliert die relative Absorption des berechneten Spektrums.
         Ein größerer Faktor bedeutet stärkere Absorption und weniger durchgelassenes Licht
         in den absorbierten Wellenlängenbereichen. Bei Faktor 0 wird im Modell das gesamte Licht durchgelassen.</p>
-    <p>Der Faktor entspricht keiner bekannten Konzentration. Ohne einen absoluten
-        molaren Absorptionskoeffizienten lässt sich auch bei der angenommenen
-        Schichtdicke von 1 cm keine Konzentration daraus bestimmen.</p>
+    <p>Bei unveränderter Form des Absorptionsspektrums beeinflussen Konzentration und
+        durchstrahlte Schichtdicke die optische Dichte über ihr Produkt.
+        Der Faktor fasst diese Einflüsse in einer relativen Skalierung zusammen.
+        Da absolute molare Absorptionskoeffizienten fehlen, lassen sich daraus
+        weder eine Konzentration noch eine Schichtdicke bestimmen.</p>
 </div>
 <div id="transmission-help" class="property-help" popover role="dialog"
      aria-labelledby="transmission-help-title">
