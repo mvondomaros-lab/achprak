@@ -37,18 +37,13 @@ Nach Abschluss dieses Versuches können Sie:
 
 </aside>
 
-## Einstieg
-
-Zur Vorbereitung auf den Versuch lesen Sie bitte die theoretischen Grundlagen.
-
-[Zu den Grundlagen](theory/structures.md){.button}
-
-Der Versuch findet im Computerraum der Theoretischen Chemie statt. Öffnen Sie dort die bereitgestellte Webapp.
-Sie können auch Ihren eigenen Laptop verwenden. Bei Fragen zur Einrichtung wenden Sie sich an Ihre Betreuung.
-
-[Webapp starten](installation.md){.button}
+Zur Vorbereitung auf den Versuch lesen Sie bitte die [theoretischen Grundlagen](theory/structures.md).
 
 ## Aufgaben und Protokoll
+
+Der Versuch findet im Computerraum der Theoretischen Chemie statt. Öffnen Sie dort die bereitgestellte Webapp.
+Sie können auch Ihren eigenen Laptop verwenden; Hinweise dazu finden Sie unter [Webapp starten](installation.md).
+Bei Fragen zur Einrichtung wenden Sie sich an Ihre Betreuung.
 
 Die Aufgaben finden Sie direkt in der Webapp unter **Aufgaben**. Dort sehen Sie die Aufgaben zum aktuellen Versuchsschritt. Am Ende finden Sie
 einen Hinweis auf die nächste Seite.
