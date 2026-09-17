@@ -439,12 +439,15 @@ Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt nie
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
+Ein **Reaktionspfad** beschreibt eine Folge von Molekülgeometrien, die Ausgangs- und Produktstruktur
+miteinander verbindet. Die **Reaktionskoordinate** gibt die Position entlang dieses Pfads an,
+nicht die verstrichene Zeit.
+
 :::{figure} ../figures/outputs/profile.png
 :align: left
 :width: 600px
 
-Das schematische Energieprofil zeigt die Energie entlang eines Reaktionswegs. Die Reaktionskoordinate
-beschreibt den Fortschritt auf diesem Weg, nicht die Zeit. *cis* und *trans* liegen in lokalen Minima.
+Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. *cis* und *trans* liegen in lokalen Minima.
 Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, englisch *transition structure*).
 :::
 
