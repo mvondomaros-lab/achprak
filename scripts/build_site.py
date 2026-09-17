@@ -176,8 +176,6 @@ def build(output: Path = OUTPUT) -> None:
             destination = stage / page_url(slug) / "index.html"
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(document)
-            (stage / "sources" / f"{slug}.md").parent.mkdir(parents=True, exist_ok=True)
-            (stage / "sources" / f"{slug}.md").write_text(source)
             # Section-sized search results include optional explanations and captions.
             search_content = re.sub(
                 r'<details class="legacy-links".*?</details>', "", content, flags=re.S

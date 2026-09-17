@@ -63,8 +63,6 @@ math { font-size: 1.1em; }
 .page-navigation { display: flex; gap: 1rem; margin-top: 3rem; }
 .page-navigation a { flex: 1; padding: 1rem; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); text-decoration: none; }
 .page-navigation span { display: block; color: var(--muted); font-size: .8rem; }
-footer { font-size: .8rem; margin-top: 2rem; }
-footer a { color: var(--muted); }
 dialog { width: min(680px, calc(100% - 2rem)); max-height: 80dvh; border: 1px solid var(--line); border-radius: 12px; padding: 1.5rem; color: var(--text); background: var(--page); }
 dialog::backdrop { background: #102238a6; }
 dialog h2 { margin-top: 0; }
@@ -94,7 +92,7 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
 }
 @media print {
   :root { --text: #000; --muted: #444; --page: #fff; --panel: #fff; --blue: #164a92; color-scheme: light; }
-  .header, .sidebar, .outline, .page-navigation, footer, dialog { display: none; }
+  .header, .sidebar, .outline, .page-navigation, dialog { display: none; }
   .layout { display: block; } main { padding: 0; }
   article details { break-inside: avoid; }
 }
