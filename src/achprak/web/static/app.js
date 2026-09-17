@@ -301,7 +301,6 @@ async function renderMolecule() {
     if (previous) viewer.removeComponent(previous);
     if (!preserveCamera) {
       component.autoView(0);
-      viewer.viewerControls.zoom(0.35);
     }
     viewer.handleResize();
     if (state.live && state.step === "optimize") applyLiveGeometry();
@@ -661,6 +660,8 @@ function renderEnergyHistory(activeStep) {
         plugins: {
           legend: { display: false },
           tooltip: {
+            // The selection marker repeats a point already on the energy curve.
+            filter: (item) => item.datasetIndex === 0,
             titleFont: plotStyle.titleFont,
             bodyFont: plotStyle.font,
             backgroundColor: "#192d43",
@@ -1250,7 +1251,6 @@ document
 $("center").onclick = () => {
   if (component) {
     component.autoView(0);
-    stage.viewerControls.zoom(0.35);
   }
 };
 function selectPlaybackFrame(index) {
