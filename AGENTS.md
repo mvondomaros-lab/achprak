@@ -10,6 +10,13 @@ Put derivations, methodological details, and further explanations in optional,
 expandable sections or the student documentation. A short reminder or a reference
 is sufficient where the explanation is already available.
 
+Avoid duplicating explanations across UI elements. Tasks state exercises and
+required deliverables. Main panels provide essential UI actions and details of
+the selected compound or calculation, including brief caveats needed beside a
+result. “Methoden und Interpretation” explains the background calculations and
+how to interpret their results; keep general method explanations there rather
+than repeating them in tasks or main panels.
+
 # Verification
 
 When investigating or fixing a transition-structure search failure, run

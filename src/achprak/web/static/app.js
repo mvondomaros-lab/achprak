@@ -64,7 +64,7 @@ const TITLES = {
   ],
   spectrum: [
     "Spektrum berechnen",
-    "Berechnen Sie die elektronischen Anregungsenergien und das UV/Vis-Spektrum einer optimierten Minimumstruktur.",
+    "Wählen Sie eine Minimumstruktur aus der Strukturliste und starten Sie die Spektrenrechnung.",
   ],
 };
 const JOBS = {
@@ -466,13 +466,13 @@ function renderState() {
   $("ts-summary").textContent = !ts
     ? ""
     : m.converged
-      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV`
+      ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV · untersuchter Pfad, ohne thermische Beiträge und Entropie`
       : "Übergangsstruktur noch nicht bestätigt.";
   $("ts-details").hidden = state.step !== "optimize" || !ts;
   $("ts-check-result").textContent = !ts
     ? ""
     : ts.connectivity?.verified
-      ? `Minimumsuchen nach Auslenkung in beide Richtungen der instabilen Mode ergeben eine cis- und eine trans-Minimumstruktur.${ts.connectivity.endpoint_conformers_match ? "" : " Die erhaltenen Minimumstrukturen unterscheiden sich in der Orientierung der Ringe oder Substituenten von den Endstrukturen des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Beiträge von Kernschwingungen, Temperatur und Entropie sind nicht berücksichtigt.`
+      ? `Verbindung zwischen cis und trans bestätigt.${ts.connectivity.endpoint_conformers_match ? "" : " Die erhaltenen Minimumstrukturen unterscheiden sich in der Orientierung der Ringe oder Substituenten von den Endstrukturen des dargestellten Reaktionspfads."}`
       : "Die Verbindung zwischen cis und trans wurde nicht bestätigt. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
   $("ts-check-technical").textContent = !ts
     ? ""
@@ -1419,7 +1419,7 @@ function updateGuide(step) {
 }
 async function guide(step, focus = true) {
   if (!$("guide-content").children.length) {
-    const response = await fetch("static/guide.html?v=ui-67");
+    const response = await fetch("static/guide.html?v=ui-68");
     if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden. Öffnen Sie die Aufgaben erneut.");
     $("guide-content").innerHTML = await response.text(); // Trusted, bundled teaching material.
   }
