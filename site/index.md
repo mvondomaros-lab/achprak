@@ -30,5 +30,3 @@ Nach Abschluss dieses Versuches können Sie:
 - den Zusammenhang zwischen Photonenenergie $E$ und Wellenlänge $\lambda$ nutzen und Energien sowie Wellenlängen umrechnen (kJ/mol, eV, nm).
 - mit der Webapp Startstrukturen erzeugen, Molekülgeometrien untersuchen, Minimumstrukturen und Übergangsstrukturen suchen sowie berechnete UV/Vis-Spektren interpretieren.
 - berechnete Verschiebungen im UV/Vis-Spektrum vergleichen und den Einfluss von Substituenten diskutieren.
-
-Zur Vorbereitung auf den Versuch lesen Sie bitte die [theoretischen Grundlagen](theory/structures.md).
