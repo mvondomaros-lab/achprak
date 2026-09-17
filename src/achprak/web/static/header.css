@@ -1,4 +1,8 @@
 /* Shared by the calculation app and the static teaching website. */
+:root { --page-inset: 1.8rem; }
+@media (max-width: 700px) {
+  :root { --page-inset: 1.3rem; }
+}
 .header {
   position: sticky;
   top: 0;
@@ -8,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 12px var(--header-inset, 1.8rem);
+  padding: 12px var(--page-inset);
   background: #102238;
   color: #fff;
   border-bottom: 3px solid #2673f2;

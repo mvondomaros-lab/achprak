@@ -64,7 +64,6 @@ a {
 [hidden] {
   display: none !important;
 }
-.header { --header-inset: 4%; }
 .header-actions {
   width: 560px;
   min-width: 0;
@@ -93,7 +92,7 @@ a {
 }
 .steps {
   display: flex;
-  padding: 0 4%;
+  padding: 0 var(--page-inset);
   background: white;
   border-bottom: 1px solid var(--line);
   gap: 30px;
@@ -121,9 +120,8 @@ a {
   color: var(--blue);
 }
 main {
-  max-width: 1580px;
-  margin: auto;
-  padding: 24px 4% 18px;
+  margin: 0;
+  padding: 24px var(--page-inset) 18px;
 }
 .workspace-heading {
   display: flex;
@@ -860,11 +858,8 @@ dialog textarea {
   }
 }
 @media (max-width: 1000px) {
-  .header {
-    --header-inset: 24px;
-  }
   .steps {
-    padding: 0 24px;
+    padding: 0 var(--page-inset);
     gap: 12px;
   }
   .step {
@@ -889,7 +884,7 @@ dialog textarea {
     height: 380px;
   }
   main {
-    padding: 25px 24px;
+    padding: 25px var(--page-inset);
   }
   .workspace-heading {
     align-items: start;
@@ -907,7 +902,6 @@ dialog textarea {
   }
 }
 @media (max-width: 720px) {
-  .header { --header-inset: 16px; }
   .header-actions {
     width: 100%;
   }
@@ -916,7 +910,7 @@ dialog textarea {
     padding: 8px 11px;
   }
   .steps {
-    padding: 0 12px;
+    padding: 0 var(--page-inset);
     gap: 0;
     justify-content: space-between;
     overflow: auto;
@@ -931,7 +925,7 @@ dialog textarea {
     margin: 0 0 5px;
   }
   main {
-    padding: 23px 14px;
+    padding: 23px var(--page-inset);
   }
   .workspace-heading {
     display: block;
@@ -1396,7 +1390,6 @@ select {
 .task-panel .next-steps { margin: 8px 0; }
 .header-actions { flex-wrap: wrap; }
 @media (min-width: 1380px) {
-  main:has(.task-panel:not([hidden])) { max-width: 1960px; }
   .learning-layout:has(.task-panel:not([hidden])) {
     display: grid; grid-template-columns: minmax(0, 1fr) 360px;
     align-items: start; gap: 24px;
