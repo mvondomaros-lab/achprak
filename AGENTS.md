@@ -58,3 +58,8 @@ any failures. Keep these expensive tests disabled in default test runs.
   its magnitude when comparing it with a numerical threshold.
 - Use decimal commas in German prose and figure labels, but preserve machine-readable
   formats (XYZ, CSV, JSON, code). Explain units and abbreviations at first use.
+
+# Version control
+
+Commit completed changes after each editing task. Do not push unless the user
+explicitly requests it. Keep unrelated user changes out of the commit.
