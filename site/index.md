@@ -2,6 +2,8 @@
 
 <p class="subtitle">Wie Licht die Struktur von Molekülen verändert</p>
 
+## Motivation
+
 Molekulare Photoschalter sind Verbindungen, deren räumliche Struktur sich durch Lichtbestrahlung verändern lässt.
 Die beteiligten Formen unterscheiden sich in ihren chemischen und physikalischen Eigenschaften.
 Bei Azobenzol ermöglicht die Lichtabsorption eine Umwandlung zwischen der cis- und der trans-Form.
@@ -9,22 +11,18 @@ Bei Azobenzol ermöglicht die Lichtabsorption eine Umwandlung zwischen der cis- 
 Solche Systeme werden zum Beispiel für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren Eigenschaften
 sich durch Bestrahlung verändern lassen.
 
+## Computerexperiment
+
 In diesem Computerexperiment vergleichen Sie die cis- und trans-Formen von Azobenzol und substituierten Azobenzolen.
 Sie berechnen ihre Strukturen, elektronische Energieunterschiede und Absorptionsspektren im ultravioletten
 und sichtbaren Bereich (UV/Vis). Dabei untersuchen Sie, wie Substituenten die Geometrie und die Absorption verändern.
-
-<aside class="callout" markdown="1">
-<p class="callout-title" markdown="span">Computerexperiment</p>
 
 Dieser Versuch wird ausschließlich am Computer durchgeführt.
 
 Sie erzeugen und untersuchen Molekülmodelle. Dabei arbeiten Sie nicht mit Laborchemikalien.
 Für den Computerraum gelten die Regeln vor Ort.
 
-</aside>
-
-<aside class="callout" markdown="1">
-<p class="callout-title" markdown="span">Lernziele</p>
+## Lernziele
 
 Nach Abschluss dieses Versuches können Sie:
 
@@ -32,7 +30,5 @@ Nach Abschluss dieses Versuches können Sie:
 - den Zusammenhang zwischen Photonenenergie $E$ und Wellenlänge $\lambda$ nutzen und Energien sowie Wellenlängen umrechnen (kJ/mol, eV, nm).
 - mit der Webapp Startstrukturen erzeugen, Molekülgeometrien untersuchen, Minimumstrukturen und Übergangsstrukturen suchen sowie berechnete UV/Vis-Spektren interpretieren.
 - berechnete Verschiebungen im UV/Vis-Spektrum vergleichen und den Einfluss von Substituenten diskutieren.
-
-</aside>
 
 Zur Vorbereitung auf den Versuch lesen Sie bitte die [theoretischen Grundlagen](theory/structures.md).
