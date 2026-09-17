@@ -13,32 +13,38 @@ In diesem Computerexperiment vergleichen Sie die cis- und trans-Formen von Azobe
 Sie berechnen ihre Strukturen, elektronische Energieunterschiede und Absorptionsspektren im ultravioletten
 und sichtbaren Bereich (UV/Vis). Dabei untersuchen Sie, wie Substituenten die Geometrie und die Absorption verändern.
 
-:::{important} Computerexperiment
+<aside class="callout" markdown="1">
+<p class="callout-title" markdown="span">Computerexperiment</p>
+
 Dieser Versuch wird ausschließlich am Computer durchgeführt.
 
 Sie erzeugen und untersuchen Molekülmodelle. Dabei arbeiten Sie nicht mit Laborchemikalien.
 Für den Computerraum gelten die Regeln vor Ort.
-:::
 
-:::{important} Lernziele
+</aside>
+
+<aside class="callout" markdown="1">
+<p class="callout-title" markdown="span">Lernziele</p>
+
 Nach Abschluss dieses Versuches können Sie:
 
 - erklären, wie ein Photoschalter (am Beispiel Azobenzol) zwischen Isomeren wechselt und welche Rolle Licht dabei spielt.
 - den Zusammenhang zwischen Photonenenergie $E$ und Wellenlänge $\lambda$ nutzen und Energien sowie Wellenlängen umrechnen (kJ/mol, eV, nm).
 - mit der Webapp Startstrukturen erzeugen, Molekülgeometrien untersuchen, Minimumstrukturen und Übergangsstrukturen suchen sowie berechnete UV/Vis-Spektren interpretieren.
 - berechnete Verschiebungen im UV/Vis-Spektrum vergleichen und den Einfluss von Substituenten diskutieren.
-:::
+
+</aside>
 
 ## Einstieg
 
 Zur Vorbereitung auf den Versuch lesen Sie bitte die theoretischen Grundlagen.
 
-{button}`Zu den Grundlagen<theory.md>`
+[Zu den Grundlagen](theory.md){.button}
 
 Der Versuch findet im Computerraum der Theoretischen Chemie statt. Öffnen Sie dort die bereitgestellte Webapp.
 Sie können auch Ihren eigenen Laptop verwenden. Bei Fragen zur Einrichtung wenden Sie sich an Ihre Betreuung.
 
-{button}`Webapp starten<installation.md>`
+[Webapp starten](installation.md){.button}
 
 ## Aufgaben und Protokoll
 

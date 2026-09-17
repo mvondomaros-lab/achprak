@@ -47,7 +47,7 @@ benchmark reports. Commit selected summaries in `docs/` and regression inputs in
 The `.gitignore` rules exclude installed environments (`.pixi/`, `.venv/`), Python
 bytecode (cached compiled code), package metadata, generated build output,
 test-coverage reports and caches used by code-checking tools. Ignore `.idea/`,
-notebook caches and OS metadata. `site/.gitignore` excludes the MyST `_build/`
+notebook caches and OS metadata. `site/.gitignore` excludes the static-site `_build/`
 directory.
 
 Unpublished figure exports under `figures/outputs/` are ignored. This includes

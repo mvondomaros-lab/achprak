@@ -34,6 +34,25 @@ The German student documentation lives in `site/`. Preview it locally with:
 pixi run -e dev site
 ```
 
+The preview runs at `http://127.0.0.1:3000/`. Changes to Markdown, templates,
+CSS, JavaScript and figures trigger a rebuild and browser reload. Use
+`pixi run -e dev site --port 3002` if that port is occupied. A failed rebuild
+prints its error and keeps the last successful preview available. Restart the
+preview after editing the Python builder itself.
+
+For website-only work, `pixi run -e site site` uses a lightweight environment
+without the chemistry dependencies. Build and verify production output with:
+
+```sh
+pixi run --locked -e site test-site
+pixi run --locked -e site build-site
+```
+
+The output in `site/_build/` is a self-contained static site. All internal URLs
+are relative, so the same build works at a domain root or a GitHub project path.
+The GitHub Actions workflow tests and builds pull requests and deploys `main`
+to GitHub Pages. Pages must be configured to deploy through GitHub Actions.
+
 Regenerate teaching figures with:
 
 ```sh
@@ -116,11 +135,24 @@ replaces the DOCX, so make maintained changes in the script and task HTML.
 Render the resulting Word document and inspect every page before release.
 Document-authoring dependencies are not required to run the app.
 
-`site/teaching.css` uses the app's navy, blue, neutral colours and typography,
-with the same palette in the protocol's tables. MyST includes it through
-[`site.options.style`](https://mystmd.org/guide/website-style).
-Preview with the existing `site` task; verify the Pages build using
-`cd site` followed by `BASE_URL=/achprak pixi run -e dev myst build --html`.
+`site/assets/teaching.css` uses the app's navy, blue, neutral colours and typography.
+`scripts/build_site.py` renders the three Markdown pages through `site/template.html`.
+The page order and navigation labels are defined in the builder's `PAGES` constant.
+Python-Markdown handles tables, fenced code, explicit heading IDs and Markdown
+inside HTML elements marked `markdown="1"`. Use native `<details>`/`<summary>`
+for optional reading, `<aside class="callout">` for essential caveats, and
+`<figure>`/`<figcaption>` for attributed illustrations. Preserve the stable
+heading IDs referenced by the app. Assets referenced in the content are copied
+into the build automatically; missing files fail the build.
+
+Dollar-delimited equations are parsed by Arithmatex and converted to native
+MathML at build time by latex2mathml. Modern browsers render them without a CDN
+or client-side math library. Navigation, equations and disclosures work without
+JavaScript; the small local script adds theme selection and full-text search.
+The build creates a local search index and Markdown source downloads. The live
+reload script is injected only by the preview server, never into published files.
+Developer dependencies are resolved in `pixi.lock`; CI uses that same environment.
+
 Keep task titles, units, terminology and the protocol's answer fields aligned.
 
 ## Substituent display labels

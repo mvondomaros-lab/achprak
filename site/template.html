@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Grundlagen zum Computerexperiment mit AChPrak">
+  <title>$title · AChPrak</title>
+  <link rel="stylesheet" href="${root}assets/teaching.css">
+  <script src="${root}assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+  <header class="header">
+    <a class="brand" href="$root">Photoschalter <span>· AChPrak</span></a>
+    <div class="header-actions">
+      <button type="button" id="search-toggle" hidden>Suche</button>
+      <button type="button" id="theme-toggle" hidden aria-label="Dunkle Darstellung einschalten">Darstellung</button>
+    </div>
+  </header>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Seiten">$navigation</nav>
+    <main id="inhalt" tabindex="-1">
+      <header class="page-title"><p class="eyebrow">Computerexperiment · Grundlagen</p><h1>$title</h1></header>
+      <article>$content</article>
+      <nav class="page-navigation" aria-label="Weitere Seiten">$pagination</nav>
+      <footer><a href="${root}sources/$slug.md" download>Seite als Markdown herunterladen</a></footer>
+    </main>
+    <nav class="outline" aria-label="Auf dieser Seite"><details open><summary>Auf dieser Seite</summary>$outline</details></nav>
+  </div>
+  <dialog id="search-dialog" aria-labelledby="search-title">
+    <form method="dialog"><button class="close" aria-label="Suche schließen">Schließen</button></form>
+    <h2 id="search-title">Seiten durchsuchen</h2>
+    <label for="search-input">Suchbegriff</label>
+    <input id="search-input" type="search" autocomplete="off">
+    <p id="search-status" role="status"></p>
+    <ul id="search-results"></ul>
+  </dialog>
+</body>
+</html>

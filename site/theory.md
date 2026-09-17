@@ -3,20 +3,22 @@
 Erarbeiten Sie diese Grundlagen vor dem Versuch. Die aufklappbaren Methodenabschnitte
 in der Webapp bieten bei Interesse zusätzliche Einblicke in die Umsetzung der Rechnungen.
 
-(molecular-structures)=
-## Azobenzol
+## Azobenzol {#molecular-structures}
 
 In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
 Es besteht aus zwei Phenylgruppen, die über eine Azogruppe (–N=N–) miteinander verbunden sind.
 
-:::{figure} ../figures/drawings/azobenzene.svg
-:width: 350px
-:align: left
-Azobenzol, dargestellt als Skelettformel.
-:::
+<figure markdown="1">
+<img src="../figures/drawings/azobenzene.svg" alt="Azobenzol, dargestellt als Skelettformel." width="350" loading="lazy">
 
-::::{seealso} Ergänzung: Summen-, Struktur- und Skelettformeln
-:class: dropdown
+<figcaption markdown="1">
+Azobenzol, dargestellt als Skelettformel.
+</figcaption>
+</figure>
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Summen-, Struktur- und Skelettformeln</summary>
+
 
 Azobenzol besteht aus 12 Kohlenstoff-, 10 Wasserstoff- und 2 Stickstoffatomen und besitzt somit die Summenformel
 C₁₂H₁₀N₂.
@@ -26,17 +28,20 @@ Kohlenstoffatom pro Ring bindet die Azogruppe. Die übrigen Kohlenstoffatome tra
 
 Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstellen:
 
-:::{figure} ../figures/drawings/azobenzene-explicit.svg
-:width: 380px
-:align: left
+<figure markdown="1">
+<img src="../figures/drawings/azobenzene-explicit.svg" alt="Die Strukturformel des Azobenzols." width="380" loading="lazy">
+
+<figcaption markdown="1">
 Die Strukturformel des Azobenzols.
-:::
+</figcaption>
+</figure>
 
 Organische Moleküle besitzen häufig ein Grundgerüst aus Kohlenstoffatomen. In der Skelettformel werden die
 Elementsymbole der Kohlenstoffatome und die daran gebundenen Wasserstoffatome zur besseren Übersicht weggelassen. Kohlenstoffatome liegen dann an den unbeschrifteten Ecken und Enden
 der gezeichneten Bindungen; die gebundenen Wasserstoffatome werden so ergänzt,
 dass Kohlenstoff insgesamt vier Bindungen eingeht.
-::::
+
+</details>
 
 Azobenzol ist selbst farbig; als Feststoff bildet es typischerweise orange bis orange-rote Kristalle
 ([Stoffdaten in PubChem](https://pubchem.ncbi.nlm.nih.gov/compound/Azobenzene)).
@@ -45,14 +50,17 @@ Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich die Absorpti
 Ein Beispiel ist 4-Methoxyazobenzol: Hier ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
 Die beobachtete Farbe hängt auch vom Lösungsmittel, der Konzentration und der Zusammensetzung der Probe ab.
 
-:::{figure} ../figures/drawings/4-methoxy-azobenzene.svg
-:width: 400px
-:align: left
-Strukturformel von 4-Methoxyazobenzol.
-:::
+<figure markdown="1">
+<img src="../figures/drawings/4-methoxy-azobenzene.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
 
-::::{seealso} Ergänzung: Nomenklatur
-:class: dropdown
+<figcaption markdown="1">
+Strukturformel von 4-Methoxyazobenzol.
+</figcaption>
+</figure>
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Nomenklatur</summary>
+
 
 Systematische Namen beschreiben den Aufbau einer Verbindung. Die IUPAC (International Union of Pure and
 Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können mehrere zulässige Namen gebräuchlich sein.
@@ -63,11 +71,13 @@ nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, d
 In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeigersinn) hängt normalerweise von den
 vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
 
-:::{figure} ../figures/drawings/azobenzene-numbering.svg
-:width: 350px
-:align: left
+<figure markdown="1">
+<img src="../figures/drawings/azobenzene-numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="350" loading="lazy">
+
+<figcaption markdown="1">
 Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
-:::
+</figcaption>
+</figure>
 
 Wird beispielsweise am Kohlenstoffatom 2 ein Wasserstoffatom durch ein Chloratom ersetzt, erhält man die Verbindung
 2-Chlorazobenzol.
@@ -95,32 +105,37 @@ Mit der gezeigten Nummerierung können Sie angeben, an welchen Positionen die Su
 sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
 handelt:
 
-:::{figure} ../figures/drawings/azobenzene-derivative.svg
-:width: 500px
-:align: left
-:::
-::::
+<figure markdown="1">
+<img src="../figures/drawings/azobenzene-derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="500" loading="lazy">
+
+</figure>
+
+</details>
 
 Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
 Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
 Seiten der Azogruppe stehen.
 Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 
-::::{seealso} Ergänzung: *E*,*Z*-Nomenklatur
-:class: dropdown
+<details markdown="1">
+<summary markdown="span">Ergänzung: *E*,*Z*-Nomenklatur</summary>
+
 Eine andere, systematischere Bezeichnungsweise für die Anordnung von Substituenten an Doppelbindungen verwendet die
 Symbole *E* (für entgegen) und *Z* (für zusammen). In diesem Versuch werden für die beiden Konfigurationen von Azobenzol die Bezeichnungen *trans* und *cis* verwendet.
 
-::::
+
+</details>
 
 Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der räumlichen Anordnung oder Verknüpfung der
 Atome unterscheiden, bezeichnet man als Isomere.
 
-:::{figure} ../figures/drawings/cis-azobenzene.svg
-:width: 230px
-:align: left
+<figure markdown="1">
+<img src="../figures/drawings/cis-azobenzene.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
+
+<figcaption markdown="1">
 *Cis*-Azobenzol.
-:::
+</figcaption>
+</figure>
 
 Bei unsubstituiertem Azobenzol liegt die *trans*-Form energetisch tiefer als die *cis*-Form.
 Ohne Bestrahlung überwiegt sie im thermischen Gleichgewicht bei Raumtemperatur.
@@ -131,14 +146,17 @@ Auch substituierte Azobenzole können durch Licht zwischen *cis* und *trans* umg
 Beide Formen besitzen unterschiedliche Absorptionsspektren. Welche Mischung unter Bestrahlung entsteht,
 hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
 
-:::{figure} ../figures/drawings/azobenzene-isomerism.svg
-:width: 800px
-:align: left
-Die lichtinduzierte Isomerisierung des Azobenzols.
-:::
+<figure markdown="1">
+<img src="../figures/drawings/azobenzene-isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
 
-::::{seealso} Ergänzung: Dreidimensionale Visualisierung
-:class: dropdown
+<figcaption markdown="1">
+Die lichtinduzierte Isomerisierung des Azobenzols.
+</figcaption>
+</figure>
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Dreidimensionale Visualisierung</summary>
+
 
 Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
 *cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
@@ -148,15 +166,16 @@ Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D
 Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
 Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
 
-:::{figure} ../figures/commons/Azobenzene-trans-3D-balls.png
-:width: 512px
-:align: left
-:alt: Kugel-Stab-Modell von trans-Azobenzol.
+<figure markdown="1">
+<img src="../figures/commons/Azobenzene-trans-3D-balls.png" alt="Kugel-Stab-Modell von trans-Azobenzol." width="512" loading="lazy">
 
+<figcaption markdown="1">
 Kugel-Stab-Modell von trans-Azobenzol. Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
-:::
+</figcaption>
+</figure>
 
-::::
+
+</details>
 
 ## Das elektromagnetische Spektrum
 
@@ -176,26 +195,25 @@ wobei $h$ die Planck-Konstante und $c$ die Lichtgeschwindigkeit im Vakuum ist.
 Das Produkt der beiden Konstanten beträgt
 
 $$
-hc \approx 1{,}9864 \times 10^{-25}\;\text{J\ m} \;\;\approx\;\; 1239{,}8\;\text{eV\ nm}.
+hc \approx 1{,}9864 \times 10^{-25}\;\text{J m} \;\;\approx\;\; 1239{,}8\;\text{eV nm}.
 $$
 
 Ein Elektronenvolt (eV) ist eine Energieeinheit: 1 eV ≈ 1,602 × 10⁻¹⁹ J.
 Ein Nanometer (nm) ist ein Milliardstel Meter: 1 nm = 10⁻⁹ m. Mit diesen Einheiten
 lassen sich die hier betrachteten Photonenenergien und Wellenlängen ohne sehr kleine Dezimalzahlen angeben.
 
-:::{figure} ../figures/commons/Spectre.svg
-:width: 800px
-:align: left
-:alt: Übersicht über das elektromagnetische Spektrum mit markiertem sichtbarem Bereich.
+<figure markdown="1">
+<img src="../figures/commons/Spectre.svg" alt="Übersicht über das elektromagnetische Spektrum mit markiertem sichtbarem Bereich." width="800" loading="lazy">
 
+<figcaption markdown="1">
 Das elektromagnetische Spektrum. Die obere Reihe zeigt (von links nach rechts) stilisierte Darstellungen von
 Gammastrahlen, Röntgenstrahlen, UV-Strahlung, sichtbarem Licht, Infrarotstrahlung, Mikrowellen und Radiowellen.
 Die untere Reihe vergrößert den sichtbaren Teil des Spektrums.
 Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Spectre.svg).
-:::
+</figcaption>
+</figure>
 
-(light-absorption)=
-## Absorption elektromagnetischer Strahlung
+## Absorption elektromagnetischer Strahlung {#light-absorption}
 
 Moleküle können mit Licht wechselwirken, indem sie dieses absorbieren. Wie diese Wechselwirkung abläuft, wird durch die
 Gesetze der Quantenmechanik beschrieben.
@@ -204,26 +222,28 @@ höheren Zustand über. Die Energie des Photons entspricht dabei der Energiediff
 Nicht jeder energetisch passende Übergang ist gleich wahrscheinlich: Manche tragen stark, andere kaum zur Absorption bei.
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
 
-:::{figure} ../figures/outputs/jablonski.png
-:width: 600px
-:align: left
+<figure markdown="1">
+<img src="../figures/outputs/jablonski.svg" alt="Vereinfachtes Energieniveauschema eines Absorptionsprozesses." width="600" loading="lazy">
 
+<figcaption markdown="1">
 Vereinfachtes Energieniveauschema eines Absorptionsprozesses.
 Das (fiktive) Molekül kann entweder Licht mit 3,0 eV oder 4,0 eV absorbieren, um in den ersten bzw. zweiten angeregten
 Zustand versetzt zu werden.
-:::
+</figcaption>
+</figure>
 
 Für eine festgehaltene Molekülgeometrie liefert die hier verwendete Rechnung einzelne elektronische Übergänge.
 Trägt man ihre Energien und Stärken auf, erhält man das folgende Linienspektrum.
 
-:::{figure} ../figures/outputs/line-spectrum.png
-:width: 600px
-:align: left
+<figure markdown="1">
+<img src="../figures/outputs/line-spectrum.svg" alt="Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
 
+<figcaption markdown="1">
 Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert.
 Die Linienhöhen sind schematische relative Übergangsstärken. *a.u.* bedeutet hier „arbitrary units“, also
 beliebige Einheiten; gemeint sind keine atomaren Einheiten und keine gemessenen Absorbanzwerte.
-:::
+</figcaption>
+</figure>
 
 UV/Vis-Spektren von Molekülen in Lösung zeigen meist breite Absorptionsbanden. Dazu tragen viele nahe beieinanderliegende
 Übergänge mit unterschiedlichen Schwingungszuständen sowie Wechselwirkungen mit der Umgebung bei.
@@ -235,16 +255,18 @@ Es entsteht ein Bandenspektrum.
 Die Bandenlagen zeigen, welche Anregungsenergien zur Absorption beitragen.
 Ihre relativen Höhen hängen von den Übergangsstärken und der Überlagerung benachbarter Banden ab.
 
-:::{figure} ../figures/outputs/uvvis-spectrum.png
-:width: 600px
-:align: left
+<figure markdown="1">
+<img src="../figures/outputs/uvvis-spectrum.svg" alt="Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
 
+<figcaption markdown="1">
 Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert.
 Zur besseren Orientierung wurde das zugrunde liegende Linienspektrum im Hintergrund dargestellt.
-:::
+</figcaption>
+</figure>
 
-::::{seealso} Ergänzung: Absorption, Transmission und Oszillatorstärke
-:class: dropdown
+<details markdown="1">
+<summary markdown="span">Ergänzung: Absorption, Transmission und Oszillatorstärke</summary>
+
 
 **Absorption** ist die Aufnahme von Strahlungsenergie. Die **Transmission** $T = I/I_0$ gibt an,
 welcher Anteil der einfallenden Lichtintensität $I_0$ als Intensität $I$ durch eine Probe hindurchtritt.
@@ -257,7 +279,8 @@ Die Rechnung liefert **Oszillatorstärken**: dimensionslose Maße für die Stär
 Sie sind keine Absorptionswahrscheinlichkeiten zwischen 0 und 1 und keine Absorbanzwerte einer konkreten Probe.
 Die Kurve in der Webapp zeigt daraus gebildete relative Absorptionsbanden. Für eine gemessene Absorbanz wären
 zusätzlich unter anderem Konzentration und Schichtdicke nötig.
-::::
+
+</details>
 
 ### Einfluss der Substituenten auf die Absorption
 
@@ -275,18 +298,20 @@ p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wir
 **Delokalisierung** bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
 können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
 
-:::{figure} ../src/achprak/web/static/substituent-effects.png
-:width: 700px
-:alt: Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem.
+<figure markdown="1">
+<img src="../figures/outputs/substituent-effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
 
+<figcaption markdown="1">
 Einfluss von Substituenten auf die Anregungsenergie: A zeigt das Vergleichssystem,
 B.1 und B.2 kleinere, C.1 und C.2 größere Energiedifferenzen. Die vertikalen Pfeile
 stehen für die Anregungsenergien. Die Höhen der Niveaus sind keine direkt vergleichbaren
 Gesamtenergien verschiedener Moleküle.
-:::
+</figcaption>
+</figure>
 
-::::{seealso} Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre
-:class: dropdown
+<details markdown="1">
+<summary markdown="span">Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre</summary>
+
 
 Absorptionsspektren spielen nicht nur bei der Charakterisierung einzelner Moleküle eine Rolle, sondern sind auch
 entscheidend für das Verständnis des Energiehaushalts unserer Erde – und damit des Klimawandels.
@@ -295,19 +320,21 @@ Eines der wichtigsten Beispiele ist das Absorptionsspektrum unserer Atmosphäre.
 relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
 Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Sonnenlicht und die Wärmestrahlung der Erde liegen dabei in unterschiedlichen Wellenlängenbereichen.
 
-:::{figure} ../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg
-:width: 1024px
-:alt: Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster.
+<figure markdown="1">
+<img src="../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg" alt="Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster." width="1024" loading="lazy">
 
+<figcaption markdown="1">
 Atmosphärische Durchlässigkeit. PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden. Quelle/Lizenz: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg).
-:::
+</figcaption>
+</figure>
 
 Ein großer Teil des sichtbaren Sonnenlichts kann die Atmosphäre durchdringen. Die deutlich kühlere Erde gibt
 Energie dagegen vor allem als langwellige Infrarotstrahlung ab. Ein anderes, infrarotes Fenster lässt einen Teil
 dieser Wärmestrahlung ins Weltall entweichen. Treibhausgase absorbieren in Teilen des Infrarotbereichs und verändern
 so den Energieaustausch. Sichtbares Licht und terrestrische Wärmestrahlung passieren also unterschiedliche
 Spektralbereiche. Eine Einführung bietet die [NASA zum Strahlungshaushalt der Erde](https://science.nasa.gov/ems/13_radiationbudget/).
-::::
+
+</details>
 
 ## Theoretische Chemie
 
@@ -333,14 +360,17 @@ Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. Die optiona
 in der Webapp erläutern, wie die Programme aus Ihren Eingaben Ergebnisse erzeugen, welche numerischen
 Prüfungen sie ausführen und wie sie die Ergebnisse darstellen.
 
-:::{figure} ../figures/commons/Blackbox3D.png
-:alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
-:align: left
+<figure markdown="1">
+<img src="../figures/commons/Blackbox3D.png" alt="Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe." loading="lazy">
 
+<figcaption markdown="1">
 Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
-:::
+</figcaption>
+</figure>
 
-::::{important} Modell und Genauigkeit
+<aside class="callout" markdown="1">
+<p class="callout-title" markdown="span">Modell und Genauigkeit</p>
+
 
 Eine Rechnung beschreibt ein Molekül mit einem Modell. Die Genauigkeit hängt von der Methode,
 der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können zusätzliche Wechselwirkungen berücksichtigen,
@@ -351,7 +381,8 @@ merklich vom Experiment abweichen. Vergleichen Sie beispielsweise die Absorption
 Substituenten. Formulieren Sie die berechneten Verschiebungen als **Vorhersagen des verwendeten Modells**.
 Ob die berechneten Trends das Verhalten der untersuchten Moleküle wiedergeben, muss durch einen Vergleich
 mit Experimenten oder geeigneten Referenzrechnungen geprüft werden.
-::::
+
+</aside>
 
 ## Atomkoordinaten
 
@@ -424,8 +455,7 @@ $$
 Der negative Wert bedeutet, dass die *trans*-Struktur im verwendeten Modell eine niedrigere elektronische
 Energie besitzt. Daraus allein lässt sich weder die Reaktionsgeschwindigkeit noch die freie Reaktionsenergie bestimmen.
 
-(structure-optimization)=
-## Strukturoptimierung
+## Strukturoptimierung {#structure-optimization}
 
 Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in ihren Atompositionen – und damit auch in
 ihrer Energie – unterscheiden.
@@ -443,13 +473,14 @@ Ein **Reaktionspfad** beschreibt eine Folge von Molekülgeometrien, die Ausgangs
 miteinander verbindet. Die **Reaktionskoordinate** gibt die Position entlang dieses Pfads an,
 nicht die verstrichene Zeit.
 
-:::{figure} ../figures/outputs/profile.png
-:align: left
-:width: 600px
+<figure markdown="1">
+<img src="../figures/outputs/profile.svg" alt="Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. cis und trans liegen in lokalen Minima." width="600" loading="lazy">
 
+<figcaption markdown="1">
 Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. *cis* und *trans* liegen in lokalen Minima.
 Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, englisch *transition structure*).
-:::
+</figcaption>
+</figure>
 
 Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem **Sattelpunkt erster Ordnung**:
 Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab; in den übrigen inneren Richtungen
@@ -463,8 +494,9 @@ entlang dieser Richtung nimmt die Energie am Sattelpunkt auf beiden Seiten ab.
 Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mode.
 
 
-::::{seealso} Ergänzung: Übergangszustand oder Übergangsstruktur?
-:class: dropdown
+<details markdown="1">
+<summary markdown="span">Ergänzung: Übergangszustand oder Übergangsstruktur?</summary>
+
 
 Die **Übergangsstruktur** ist die berechnete Geometrie am Sattelpunkt der
 Potentialenergiefläche. Diesen Begriff verwenden wir in der Webapp für das
@@ -475,7 +507,8 @@ Der **Übergangszustand** (englisch *transition state*) ist ein Begriff der
 zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
 Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/view/T06468)
 und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
-::::
+
+</details>
 
 Die **elektronische Energiebarriere** gegenüber einem Ausgangsminimum ist
 
@@ -486,8 +519,9 @@ $$
 Sie charakterisiert den untersuchten Weg. Ein anderes Minimum oder ein anderer Weg kann eine andere Barriere
 liefern. Die Barriere beeinflusst die Reaktionsgeschwindigkeit, bestimmt sie aber nicht allein.
 
-::::{seealso} Ergänzung: Energiebarriere und Aktivierungsenergie
-:class: dropdown
+<details markdown="1">
+<summary markdown="span">Ergänzung: Energiebarriere und Aktivierungsenergie</summary>
+
 
 Die **Aktivierungsenergie** $E_\mathrm{a}$ beschreibt, wie sich die Geschwindigkeitskonstante einer Reaktion
 mit der Temperatur ändert. Sie ist nicht generell mit unserer elektronischen Energiebarriere
@@ -501,7 +535,8 @@ zur thermischen Isomerisierung beitragen. Solche Zustandswechsel werden hier nic
 Auch eine numerisch bestätigte Übergangsstruktur belegt deshalb nicht den experimentell maßgeblichen
 Reaktionsweg oder die Lebensdauer der cis-Form. Ein Beispiel für die Untersuchung solcher Wege ist
 die [Arbeit von Axelrod und Kollegen](https://arxiv.org/abs/2207.11592).
-::::
+
+</details>
 
 ## Funktionsweise von Photoschaltern
 
@@ -524,14 +559,15 @@ pro Mol; $R$ ist die Gaskonstante und $T$ die absolute Temperatur in Kelvin. Sie
 keine Obergrenze für die Energie einzelner Moleküle: Eine Barriere oberhalb von $RT$ schließt eine Reaktion nicht aus.
 Die Möglichkeit einer thermischen Rückreaktion gehört auch zur [IUPAC-Beschreibung der Photochromie](https://www.old.goldbook.iupac.org/html/P/P04589.html).
 
-:::{figure} ../figures/outputs/photoswitch-mechanism.png
-:align: left
-:width: 600px
+<figure markdown="1">
+<img src="../figures/outputs/photoswitch-mechanism.svg" alt="Vereinfachtes Schema der lichtinduzierten Isomerisierung mit angedeutetem angeregtem Zustand." width="600" loading="lazy">
 
+<figcaption markdown="1">
 Stark vereinfachtes Schema der lichtinduzierten Isomerisierung. Die gestrichelte Linie deutet einen
 angeregten Zustand an; sie ist keine berechnete Potentialenergiekurve. Die thermische Rückreaktion
 im Grundzustand ist hier nicht eingezeichnet.
-:::
+</figcaption>
+</figure>
 
 **Umfang der Rechnungen in diesem Versuch:** Die Minimum- und Übergangsstruktursuche untersucht die
 Abhängigkeit der elektronischen Grundzustandsenergie von der Molekülgeometrie. Die UV/Vis-Rechnung liefert
