@@ -26,7 +26,8 @@ downloads a fresh checkout.
 - `tests/data/ts_failures/`: selected, exact geometries for reproducible
   regression tests, which check whether behavior changes after a code edit. These are test inputs, not disposable run output.
 - `figures/drawings/` and `figures/commons/`: editable artwork and attributed
-  source images, including the PowerPoint source for the dihedral illustration.
+  source images. The dihedral illustration's editable source is
+  `figures/scripts/dihedral.py`.
 - Published SVG figures referenced by the chapters under `site/theory/`. These rendered assets are intentional:
   a checkout can build the site and run the app without regenerating artwork.
 - Bundled browser libraries, color tables and their licenses under

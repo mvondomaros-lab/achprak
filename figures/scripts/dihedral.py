@@ -1,4 +1,4 @@
-"""Recreate drawings/dihedral.pptx for the web app's dihedral-angle popover."""
+"""Draw the C–N=N–C illustration for the web app's dihedral-angle popover."""
 
 from pathlib import Path
 
@@ -47,7 +47,7 @@ def draw():
             zorder=4,
         )
 
-    # Preserve the four-atom chain and viewing arrow in the PowerPoint source.
+    # Four-atom chain with the viewing direction along the central N=N bond.
     carbon1, nitrogen1 = (1.9, -0.8), (2.7, 0)
     nitrogen2, carbon2 = (3.8, 0), (4.6, 0.8)
     bond(carbon1, nitrogen1)

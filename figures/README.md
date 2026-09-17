@@ -32,8 +32,8 @@ Both commands accept `--format svg|png|both` (default: `svg`) and
 `--output-dir PATH`. PNG exports are optional previews, ignored in `outputs/`.
 The website uses the six SVGs in `outputs/`; the web app bundles `dihedral.svg`
 in its static package data. Neither needs a plotting runtime to display figures.
-`dihedral.py` reproduces the arrangement in `drawings/dihedral.pptx` with C–N=N–C
-labels. Its default output directory is the app's static directory; an explicit
+`dihedral.py` is the editable source for the C–N=N–C dihedral illustration.
+Its default output directory is the app's static directory; an explicit
 `--output-dir` sends previews elsewhere, just as for the other scripts.
 Review rendered figures before committing regenerated artwork.
 
