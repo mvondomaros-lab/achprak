@@ -152,7 +152,7 @@ def build():
         answer(li.text_content() + ": [Strukturformel einfügen]")
     answer("Positionsangabe 4,4′: [Erklärung]")
     task("task-interpret-structure-formulas")
-    answer("[Name der Verbindung]")
+    answer("[Namen beider Moleküle einschließlich cis/trans]")
     answer("Überlagerungen in der Zeichnung und räumliche Anordnung: [Text]")
 
     doc.add_page_break()
@@ -171,12 +171,12 @@ def build():
     )
     answer("Anordnung der Ringe: [Text]")
     task("task-compare-optimized-geometries")
-    answer("[Geometrieänderung und Ansichten vor und nach der Optimierung]")
+    answer("[Erwartung und beobachtete Ringstellung für cis und trans; je zwei 3D-Ansichten]")
     answer("ΔE / (kJ/mol): [Wert]\nVorzeichen und energieärmere Konfiguration: [Text]")
     task("task-examine-substituent-geometry")
-    answer("[Erwartung, Beobachtung und zwei 3D-Ansichten]")
+    answer("[Name, Erwartung, Beobachtung und zwei 3D-Ansichten; Vergleich mit unsubstituiertem trans-Azobenzol]")
     task("task-analyze-reaction-path")
-    answer("[Energieprofil und Beschreibung des Reaktionspfads]")
+    answer("[Energieprofil; Konfiguration der Enden; Anordnung und Diederwinkel am Anfang, am Energiemaximum und am Ende]")
     answer("Verbindung zwischen cis und trans bestätigt: [Ergebnis der Prüfung]")
     task("task-compare-energy-barriers")
     table(
@@ -184,11 +184,11 @@ def build():
         [["trans → cis", "[Wert]", "[Wert]"], ["cis → trans", "[Wert]", "[Wert]"]],
         [5, 6, 6],
     )
-    answer("Unterschied der Barrieren und thermische Überwindung: [Text]")
+    answer("Rechenweg, Unterschied der Barrieren und Vergleich mit RT: [Text]")
     task("task-examine-substituent-barrier")
-    answer("Derivat und Vermutung: [Text]")
+    answer("Derivat, Vermutung und Ergebnis der Verbindungsprüfung: [Text]")
     answer("[Energieprofil und Ansicht der Übergangsstruktur]")
-    answer("Vergleich der elektronischen Energiebarrieren und Geometrien: [Text]")
+    answer("Elektronische Energiebarrieren für trans → cis / (kJ/mol): [Derivat] / [unsubstituiert]\nVergleich der Übergangsstrukturen und Prüfung der Vermutung: [Text]")
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
@@ -206,16 +206,16 @@ def build():
     answer("trans-Azobenzol: [Spektrum einfügen]")
     p("\n\n")
     answer(
-        "Verwendeter Faktor für die optische Dichte: [Wert]\nVergleich der Farbvorhersagen und Grenzen des Modells: [Text]"
+        "Verwendeter Faktor für die optische Dichte: [Wert]\nVergleich der Farbvorhersagen und zwei Gründe für Abweichungen: [Text]"
     )
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-compare-substituent-spectra")
     table(
-        ["Substitution der trans-Form", "Maximum / eV", "Wellenlänge / nm"],
+        ["Name und Substitution der trans-Form", "Maximum / eV", "Wellenlänge / nm"],
         [
-            [label, "[Wert]", "[Wert]"]
+            [label + " [Name]", "[Wert]", "[Wert]"]
             for label in [
                 "unsubstituiert",
                 "4-Me",
@@ -230,16 +230,16 @@ def build():
     )
     answer("[Spektren mit Beschriftungen einfügen]")
     p("\n\n")
-    answer("Stärkste Verschiebung und Einordnung des Maximums: [Text]")
+    answer("Derivat mit stärkster Verschiebung: [Name]\nVerschiebung gegenüber unsubstituiertem trans-Azobenzol / eV: [Wert]\nMaximum im ultravioletten oder sichtbaren Bereich: [Text]")
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-plan-experiment-series")
-    answer("Planung und Verteilung der Rechnungen in der Gruppe: [Text]")
+    answer("Mindestens zehn Varianten in der Gruppe; Auswahl, Referenz und Verteilung der Rechnungen: [Text]")
     table(
         [
             "Variante und Konfiguration",
-            "Erwartete Verschiebung",
+            "Erwartete Verschiebung zur Referenz",
             "Maximum / eV",
             "Wellenlänge / nm",
         ],
@@ -254,7 +254,7 @@ def build():
         ],
         [6, 5, 3, 3],
     )
-    answer("[Ausgewählte Spektren mit Beschriftungen einfügen]")
+    answer("[Referenzspektrum und zwei ausgewählte Spektren mit Beschriftungen einfügen]")
     answer("Vergleich der Erwartungen mit den berechneten Ergebnissen: [Text]")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)
