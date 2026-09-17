@@ -1492,27 +1492,18 @@ select {
 }
 
 .solution-color-values {
-  display: grid;
-  grid-template-columns: minmax(0, max-content) auto;
-  gap: 12px 10px;
   margin-top: 14px;
   font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
   color: var(--muted);
 }
-.solution-color-value {
-  display: contents;
-}
-.solution-color-value .property-help-trigger {
-  justify-self: start;
+.solution-color-value + .solution-color-value {
+  margin-top: 12px;
 }
 .solution-color-value output,
 .solution-color-value > span {
   font-variant-numeric: tabular-nums;
-}
-.solution-color-value:has(.property-help-trigger[hidden]) > span {
-  grid-column: 1 / -1;
 }
 #solution-color-density {
   display: block;
