@@ -29,7 +29,7 @@ button, summary { cursor: pointer; }
 .sidebar {
   position: sticky; top: 72px; height: calc(100dvh - 72px); overflow-y: auto;
   background: var(--panel); border-right: 1px solid var(--line);
-  padding: 2rem 1rem 2rem max(1rem, calc((100vw - 1440px) / 2));
+  padding: 2rem 1rem;
 }
 .sidebar a { display: block; padding: .7rem .8rem; margin-bottom: .3rem; border-radius: 6px; color: var(--muted); text-decoration: none; line-height: 1.5; }
 .sidebar a:hover { background: var(--tint); color: var(--text); }
