@@ -30,7 +30,7 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         # The Word template is synchronized after the task editorial review.
         assert titles
         assert len(titles) == len(set(titles))
-        for step, count in (("build", 3), ("optimize", 5)):
+        for step, count in (("build", 3), ("optimize", 6)):
             page = re.search(
                 rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
             )
