@@ -399,7 +399,7 @@ function renderSpectrum() {
   const peak = spec.absorption.indexOf(Math.max(...spec.absorption)),
     e = spec.energy_ev[peak];
   $("spectrum-caption").textContent =
-    `Absorptionsmaximum im dargestellten Energiebereich: ${fmt(e, 4)} eV.` +
+    `im dargestellten Energiebereich: ${fmt(e, 4)} eV.` +
     (spec.coverage_complete === false
       ? " Am oberen Rand des dargestellten Energiebereichs fehlen möglicherweise Beiträge weiterer Übergänge. Die Absorption in diesem Bereich kann dadurch unterschätzt werden."
       : "");
@@ -415,8 +415,9 @@ function renderSolutionColor() {
   swatch.hidden = !result;
   swatch.style.backgroundColor = result?.css || "";
   swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}, Faktor ${fmt(density, 1)}`);
+  $("transmission-help-trigger").hidden = !result;
   $("solution-color-status").textContent = result
-    ? `Lichtdurchlässigkeit, gewichtet nach der Helligkeitsempfindlichkeit des Auges: ${fmt(100 * result.luminance, 1)} %`
+    ? `: ${fmt(100 * result.luminance, 1)} %`
     : "Keine Farbschätzung verfügbar: Das Spektrum ist unvollständig oder enthält keine auswertbaren Absorptionsdaten.";
 }
 $("solution-color-density").addEventListener("input", renderSolutionColor);
@@ -791,7 +792,8 @@ function renderSpectrumChart(spec) {
   }
   if (spectrumChart.spectrumData !== spec) {
     spectrumChart.data.datasets[2].data = [];
-    $("spectrum-selection").textContent = "Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und Oszillatorstärke abzulesen.";
+    $("spectrum-selection-values").textContent = "Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und ";
+    $("spectrum-selection-strength").textContent = " abzulesen.";
   }
   spectrumChart.spectrumData = spec;
   spectrumChart.data.datasets[0].data = spec.energy_ev.map((x, i) => ({ x, y: spec.absorption[i] }));
@@ -816,7 +818,8 @@ function selectSpectrumTransition(event, _elements, chart) {
   const { energy, index } = candidates[0];
   const strength = spec.oscillator_strengths[index];
   chart.data.datasets[2].data = [{ x: energy, y: 0 }, { x: energy, y: strength }];
-  $("spectrum-selection").textContent = `Übergang ${index + 1} · ${fmt(energy, 4)} eV · ${fmt(HC / energy, 1)} nm · Oszillatorstärke: ${fmt(strength, 4)}`;
+  $("spectrum-selection-values").textContent = `Übergang ${index + 1} · ${fmt(energy, 4)} eV · ${fmt(HC / energy, 1)} nm · `;
+  $("spectrum-selection-strength").textContent = `: ${fmt(strength, 4)}`;
   chart.update("none");
 }
 function collectProgress(job) {

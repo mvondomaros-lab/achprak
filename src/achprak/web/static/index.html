@@ -6,13 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-48"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-49"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-35" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-85" defer></script>
+    <script src="static/app.js?v=ui-86" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -327,12 +327,8 @@
                     </p>
                     <h3>Darstellung der Ergebnisse</h3>
                     <p>
-                        Die Oszillatorstärke ist ein dimensionsloses Maß dafür, wie stark
-                        ein elektronischer Übergang vom Grundzustand in einen angeregten Zustand
-                        zur Lichtabsorption beiträgt. Sie bestimmt die Höhe seiner Linie.
                         Für die Absorptionskurve wird jeder Übergang zu einer Gaußkurve
                         mit vorgegebener Breite verbreitert; anschließend werden die Beiträge addiert.
-                        Das Maximum der Absorptionskurve kann daher zwischen einzelnen Übergängen liegen.
                     </p>
                     <h3>Einfluss der Substituenten auf die Absorption</h3>
                       <p>
@@ -363,18 +359,14 @@
                     <p>Für jede Wellenlänge von 380 bis 780 nm (Nanometer) wird die relative Absorption I
                         aus der blauen Kurve bestimmt. Mit dem gewählten Faktor s wird die
                         dimensionslose optische Dichte (Absorbanz) A = s · I angesetzt. Der durchgelassene Lichtanteil ist
-                        T = 10<sup>−A</sup>. Dieser Anteil wird als Transmission bezeichnet.
-                        Bei Faktor 0 beträgt die Transmission im Modell 100 %.</p>
+                        T = 10<sup>−A</sup>.</p>
                     <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
                         CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
                         Diese Funktionen beschreiben die mittlere Farbwahrnehmung des menschlichen Auges.
                         Die CIE ist die Internationale Beleuchtungskommission. D65 bezeichnet
                         eine festgelegte spektrale Verteilung, die Tageslicht annähert. Die Darstellung nimmt
                         eine klare Lösung vor weißem Hintergrund an; Streuung und Fluoreszenz werden nicht berücksichtigt.</p>
-                    <p>Der Faktor skaliert eine relative Absorptionskurve. Ohne einen absoluten
-                        molaren Absorptionskoeffizienten lässt er sich auch bei vorgegebener
-                        Schichtdicke nicht in eine Konzentration umrechnen.
-                        Die Farbschätzung berücksichtigt kein cis/trans-Gemisch.
+                    <p>Die Farbschätzung berücksichtigt kein cis/trans-Gemisch.
                         Bildschirm und Umgebungslicht beeinflussen den Farbeindruck.</p>
                     <p>Daten: CIE (2019),
                         <a href="https://doi.org/10.25039/CIE.DS.xvudnb9b" target="_blank" rel="noopener">Standardbeobachter</a>
@@ -596,10 +588,13 @@
                         </div>
                     </section>
                     <p id="spectrum-selection" class="spectrum-selection" aria-live="polite">
-                        Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und Oszillatorstärke
-                        abzulesen.
+                        <span id="spectrum-selection-values">Wählen Sie eine orange Linie oder ihre Markierung, um Anregungsenergie, Wellenlänge und </span><button
+                            type="button" class="property-help-trigger" popovertarget="oscillator-help"
+                            aria-haspopup="dialog">Oszillatorstärke</button><span id="spectrum-selection-strength"> abzulesen.</span>
                     </p>
-                    <p class="ts-summary" id="spectrum-caption"></p>
+                    <p class="ts-summary"><button type="button" class="property-help-trigger"
+                        popovertarget="absorption-maximum-help" aria-haspopup="dialog">Absorptionsmaximum</button>
+                        <span id="spectrum-caption"></span></p>
                     <section class="solution-color" aria-labelledby="solution-color-title">
                         <div id="solution-color-swatch" class="solution-color-swatch" role="img"
                              aria-label="Geschätzte Lösungsfarbe"></div>
@@ -607,14 +602,17 @@
                             <h3 id="solution-color-title">Geschätzte Lösungsfarbe</h3>
                             <p id="solution-color-sample" class="note"></p>
                             <p class="note">Standard-Tageslicht (D65) · Durchsicht · angenommene Schichtdicke 1 cm</p>
-                            <label for="solution-color-density">Faktor für die optische Dichte
+                            <div class="solution-color-density-heading">
+                                <button type="button" class="property-help-trigger" id="density-help-trigger"
+                                    popovertarget="density-help" aria-haspopup="dialog">Faktor für die optische Dichte</button>
                                 <output id="solution-color-density-value" for="solution-color-density">1,0</output>
-                            </label>
+                            </div>
                             <input id="solution-color-density" type="range" min="0" max="10" step="0.1" value="1"
-                                   aria-describedby="solution-color-limitation"/>
-                            <p id="solution-color-status" class="note" role="status"></p>
-                            <p id="solution-color-limitation" class="note">Der Faktor verändert die Absorptionsstärke;
-                                die Konzentration ist unbekannt.
+                                   aria-labelledby="density-help-trigger" aria-describedby="solution-color-limitation"/>
+                            <p class="note" role="status"><button type="button" class="property-help-trigger"
+                                id="transmission-help-trigger" popovertarget="transmission-help"
+                                aria-haspopup="dialog">Lichtdurchlässigkeit</button><span id="solution-color-status"></span></p>
+                            <p id="solution-color-limitation" class="note">Konzentration unbekannt.
                                 Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
                                 Die tatsächliche Lösungsfarbe kann deshalb deutlich abweichen.</p>
                         </div>
@@ -734,6 +732,59 @@
         der beiden Sechsringe, also ihren nach der Atommasse gewichteten Mittelpunkten.
         Die Atome der Substituenten werden dabei nicht berücksichtigt.
         pm steht für Pikometer; 1 pm = 10⁻¹² m.</p>
+</div>
+<div id="oscillator-help" class="property-help" popover role="dialog"
+     aria-labelledby="oscillator-help-title">
+    <div class="dialog-heading">
+        <h2 id="oscillator-help-title">Oszillatorstärke</h2>
+        <button type="button" class="close" popovertarget="oscillator-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Die Oszillatorstärke ist ein dimensionsloses Maß dafür, wie stark ein
+        elektronischer Übergang zur Lichtabsorption beiträgt. Je größer der Wert,
+        desto stärker der Übergang. Im Diagramm bestimmt sie die Höhe der orangefarbenen Linie.</p>
+</div>
+<div id="absorption-maximum-help" class="property-help" popover role="dialog"
+     aria-labelledby="absorption-maximum-help-title">
+    <div class="dialog-heading">
+        <h2 id="absorption-maximum-help-title">Absorptionsmaximum</h2>
+        <button type="button" class="close" popovertarget="absorption-maximum-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Der angezeigte Wert bezeichnet die Energie am höchsten Punkt der blauen
+        Absorptionskurve im dargestellten Energiebereich. Da sich die verbreiterten
+        Beiträge mehrerer Übergänge überlagern, kann dieses Maximum zwischen
+        einzelnen Übergängen liegen. Es ist daher nicht zwangsläufig die
+        Anregungsenergie eines einzelnen Übergangs.</p>
+</div>
+<div id="density-help" class="property-help" popover role="dialog"
+     aria-labelledby="density-help-title">
+    <div class="dialog-heading">
+        <h2 id="density-help-title">Faktor für die optische Dichte</h2>
+        <button type="button" class="close" popovertarget="density-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Der Faktor skaliert die relative Absorption des berechneten Spektrums.
+        Ein größerer Faktor bedeutet stärkere Absorption und weniger durchgelassenes Licht
+        in den absorbierten Wellenlängenbereichen. Bei Faktor 0 wird im Modell das gesamte Licht durchgelassen.</p>
+    <p>Der Faktor entspricht keiner bekannten Konzentration. Ohne einen absoluten
+        molaren Absorptionskoeffizienten lässt sich auch bei der angenommenen
+        Schichtdicke von 1 cm keine Konzentration daraus bestimmen.</p>
+</div>
+<div id="transmission-help" class="property-help" popover role="dialog"
+     aria-labelledby="transmission-help-title">
+    <div class="dialog-heading">
+        <h2 id="transmission-help-title">Lichtdurchlässigkeit</h2>
+        <button type="button" class="close" popovertarget="transmission-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Die Lichtdurchlässigkeit (Transmission) beschreibt den durchgelassenen
+        Anteil des einfallenden Lichts. Der angezeigte Prozentwert fasst den Bereich
+        von 380 bis 780 nm zusammen, gewichtet mit Standard-Tageslicht (D65) und der
+        Helligkeitsempfindlichkeit des menschlichen Auges.</p>
+    <p>100 % bedeutet unveränderte Helligkeit gegenüber dem einfallenden Licht,
+        0 % keine Durchlässigkeit in diesem Bereich. Der Wert allein beschreibt
+        nicht die Farbe: Dafür ist entscheidend, welche Wellenlängen durchgelassen werden.</p>
 </div>
 <div id="toast" role="status" hidden></div>
 </body>

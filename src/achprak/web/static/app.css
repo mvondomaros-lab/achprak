@@ -1398,7 +1398,6 @@ select {
 }
 .solution-color-controls { min-width: 0; flex: 1; }
 .solution-color-controls h3 { margin: 0 0 8px; }
-.solution-color-controls label { display: block; margin-top: 14px; font-size: 13px; }
 .solution-color-controls input { width: 100%; accent-color: #165de1; }
 .solution-color-controls details { margin-top: 12px; font-size: 13px; line-height: 1.6; }
 @media (max-width: 600px) {
@@ -1490,4 +1489,13 @@ select {
   margin: 14px 0 0;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.solution-color-density-heading {
+  margin-top: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
 }
