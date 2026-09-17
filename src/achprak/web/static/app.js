@@ -410,7 +410,6 @@ function renderSolutionColor() {
   const result = SolutionColor.estimate(current()?.spectrum, density);
   $("solution-color-density-value").textContent = fmt(density, 1);
   $("solution-color-density").setAttribute("aria-valuetext", `Faktor ${fmt(density, 1)}`);
-  $("solution-color-sample").textContent = structureLabel(current());
   const swatch = $("solution-color-swatch");
   swatch.hidden = !result;
   swatch.style.backgroundColor = result?.css || "";

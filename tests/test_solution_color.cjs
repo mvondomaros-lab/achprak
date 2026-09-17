@@ -59,7 +59,7 @@ test("slider and structure changes refresh the swatch and clear unavailable resu
   get("solution-color-density").value = "2";
   get("solution-color-density").input();
   assert.equal(get("solution-color-density-value").textContent, "2,0");
-  assert.match(get("solution-color-sample").textContent, /cis · 4-OMe/);
+  assert.match(get("solution-color-swatch")["aria-label"], /cis · 4-OMe/);
   assert.match(get("solution-color-status").textContent, /1,0 %/);
   molecule.spectrum.coverage_complete = false;
   context.renderSolutionColor();
