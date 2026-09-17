@@ -1457,3 +1457,37 @@ select {
 @media (max-width: 1379px) {
   .task-panel { max-height: 45dvh; overflow-y: auto; }
 }
+
+.property-help-trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+.property-help {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: min(420px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+  color: #192d43;
+  box-shadow: 0 12px 40px #10223830;
+}
+.property-help h2 {
+  margin: 4px 0 0;
+  font-size: 17px;
+}
+.property-help p {
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+}

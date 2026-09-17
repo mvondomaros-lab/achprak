@@ -6,13 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-47"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-48"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-35" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-84" defer></script>
+    <script src="static/app.js?v=ui-85" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -235,16 +235,6 @@
                         berechneten Weg zwischen den beiden Minimumstrukturen. Die elektronische
                         Energiebarriere ΔE‡ ist die Energiedifferenz zwischen der Übergangsstruktur und der Ausgangsstruktur.
                     </p>
-                    <h3>Diederwinkel und Ringabstand</h3>
-                      <p>Blicken Sie entlang der Bindung zwischen den beiden Stickstoffatomen
-                      der Azogruppe. Die Stickstoffatome liegen dann hintereinander.
-                      Betrachten Sie die beiden Bindungen zu den unmittelbar benachbarten
-                      Kohlenstoffatomen: Der Winkel zwischen ihren sichtbaren Richtungen ist
-                      der C–N=N–C-Diederwinkel. Zeigen sie in dieselbe Richtung, beträgt er 0°;
-                      zeigen sie in entgegengesetzte Richtungen, beträgt er 180°.</p>
-                      <p>Der Ringabstand ist der Abstand zwischen den Massenschwerpunkten
-                      der beiden Sechsringe, also ihren nach der Atommasse gewichteten Mittelpunkten.
-                      Die Atome der Substituenten werden dabei nicht berücksichtigt.</p>
                     <h3>Wie wird die Übergangsstruktur geprüft?</h3>
                     <p>
                         Eine Schwingungsrechnung untersucht die Energieänderung bei kleinen
@@ -517,15 +507,18 @@
                 <p id="properties-context" class="note"></p>
                 <div class="properties-grid" id="properties-grid" hidden>
                     <div>
-                        <span>Elektronische Energie</span><strong id="energy">—</strong
+                        <span><button type="button" class="property-help-trigger" id="energy-help-trigger"
+                            popovertarget="energy-help" aria-haspopup="dialog">Elektronische Energie</button></span><strong id="energy">—</strong
                     ><small title="Elektronenvolt, eine Energieeinheit">eV</small>
                     </div>
                     <div>
-                        <span>Diederwinkel C–N=N–C</span><strong id="dihedral">—</strong
+                        <span><button type="button" class="property-help-trigger" id="dihedral-help-trigger"
+                            popovertarget="dihedral-help" aria-haspopup="dialog">Diederwinkel C–N=N–C</button></span><strong id="dihedral">—</strong
                     ><small>°</small>
                     </div>
                     <div>
-                        <span>Ringabstand</span><strong id="distance">—</strong
+                        <span><button type="button" class="property-help-trigger" id="distance-help-trigger"
+                            popovertarget="distance-help" aria-haspopup="dialog">Ringabstand</button></span><strong id="distance">—</strong
                     ><small title="Pikometer; 1 pm = 10⁻¹² m">pm</small>
                     </div>
                 </div>
@@ -699,6 +692,49 @@
         über das Absorptionsspektrum des Moleküls zu.
     </p>
 </dialog>
+<div id="energy-help" class="property-help" popover role="dialog"
+     aria-labelledby="energy-help-title">
+    <div class="dialog-heading">
+        <h2 id="energy-help-title">Elektronische Energie</h2>
+        <button type="button" class="close" popovertarget="energy-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Die elektronische Energie wird für die angezeigte Anordnung der Atomkerne
+        mit GFN1-xTB im Ethanol-Kontinuumsmodell berechnet. Sie umfasst auch die
+        Abstoßung zwischen den Atomkernen. Beiträge von Kernschwingungen,
+        Temperatur und Entropie sind nicht enthalten.</p>
+    <p>Vergleichen Sie Energiedifferenzen zwischen Strukturen gleicher Zusammensetzung
+        und Ladung, die mit demselben Rechenverfahren berechnet wurden.
+        Die Struktur mit der niedrigeren Energie ist im verwendeten Modell
+        elektronisch günstiger. Ein negativer Energiewert allein belegt keine Stabilität.
+        eV steht für Elektronenvolt, eine Energieeinheit.</p>
+</div>
+<div id="dihedral-help" class="property-help" popover role="dialog"
+     aria-labelledby="dihedral-help-title">
+    <div class="dialog-heading">
+        <h2 id="dihedral-help-title">Diederwinkel C–N=N–C</h2>
+        <button type="button" class="close" popovertarget="dihedral-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Blicken Sie entlang der Bindung zwischen den beiden Stickstoffatomen
+        der Azogruppe. Die Stickstoffatome liegen dann hintereinander.
+        Betrachten Sie die beiden Bindungen zu den unmittelbar benachbarten
+        Kohlenstoffatomen: Der Winkel zwischen ihren sichtbaren Richtungen ist
+        der C–N=N–C-Diederwinkel. Zeigen sie in dieselbe Richtung, beträgt er 0°;
+        zeigen sie in entgegengesetzte Richtungen, beträgt er 180°.</p>
+</div>
+<div id="distance-help" class="property-help" popover role="dialog"
+     aria-labelledby="distance-help-title">
+    <div class="dialog-heading">
+        <h2 id="distance-help-title">Ringabstand</h2>
+        <button type="button" class="close" popovertarget="distance-help"
+                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
+    </div>
+    <p>Der Ringabstand ist der Abstand zwischen den Massenschwerpunkten
+        der beiden Sechsringe, also ihren nach der Atommasse gewichteten Mittelpunkten.
+        Die Atome der Substituenten werden dabei nicht berücksichtigt.
+        pm steht für Pikometer; 1 pm = 10⁻¹² m.</p>
+</div>
 <div id="toast" role="status" hidden></div>
 </body>
 </html>

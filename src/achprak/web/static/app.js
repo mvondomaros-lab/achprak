@@ -1533,3 +1533,33 @@ if (document.modelContext?.registerTool) {
 
 // Task loading must not delay restoration of calculations.
 handle(() => guide(state.step, false))();
+
+function positionPropertyHelp(popup) {
+  const trigger = document.querySelector(`[popovertarget="${popup.id}"].property-help-trigger`);
+  const rect = trigger.getBoundingClientRect();
+  const margin = 12;
+  const width = popup.offsetWidth;
+  const height = popup.offsetHeight;
+  const left = Math.max(margin, Math.min(rect.left, window.innerWidth - width - margin));
+  const above = rect.top - height - 8;
+  const top = above >= margin ? above : Math.max(margin,
+    Math.min(rect.bottom + 8, window.innerHeight - height - margin));
+  popup.style.left = `${left}px`;
+  popup.style.top = `${top}px`;
+}
+for (const popup of document.querySelectorAll(".property-help")) {
+  popup.addEventListener("toggle", () => {
+    if (popup.matches(":popover-open")) positionPropertyHelp(popup);
+  });
+}
+window.addEventListener("resize", () => {
+  for (const popup of document.querySelectorAll(".property-help:popover-open")) {
+    positionPropertyHelp(popup);
+  }
+});
+// Close explanations when their quantity labels move out of view.
+window.addEventListener("scroll", (event) => {
+  for (const popup of document.querySelectorAll(".property-help:popover-open")) {
+    if (!popup.contains(event.target)) popup.hidePopover();
+  }
+}, true);
