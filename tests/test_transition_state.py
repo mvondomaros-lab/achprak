@@ -38,7 +38,7 @@ def test_rigid_motion_projection_and_coordinate_invariance():
 def test_ts_worker_rejects_start_structures_before_search():
     from achprak.web.worker import calculate
 
-    with pytest.raises(ValueError, match="Minimum"):
+    with pytest.raises(ValueError, match="Minimumstruktur"):
         calculate({"kind": "ts", "molecule": {"kind": "initial", "converged": False}})
 
 

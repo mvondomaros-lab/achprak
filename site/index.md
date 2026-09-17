@@ -25,7 +25,7 @@ Nach Abschluss dieses Versuches können Sie:
 
 - erklären, wie ein Photoschalter (am Beispiel Azobenzol) zwischen Isomeren wechselt und welche Rolle Licht dabei spielt.
 - den Zusammenhang zwischen Photonenenergie $E$ und Wellenlänge $\lambda$ nutzen und Energien sowie Wellenlängen umrechnen (kJ/mol, eV, nm).
-- mit der Webapp Startstrukturen erzeugen, Molekülgeometrien untersuchen, lokale Minima und Übergangszustände suchen sowie berechnete UV/Vis-Spektren interpretieren.
+- mit der Webapp Startstrukturen erzeugen, Molekülgeometrien untersuchen, Minimumstrukturen und Übergangsstrukturen suchen sowie berechnete UV/Vis-Spektren interpretieren.
 - berechnete Verschiebungen im UV/Vis-Spektrum vergleichen und den Einfluss von Substituenten diskutieren.
 :::
 

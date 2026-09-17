@@ -299,7 +299,7 @@ oder Spektren. Die folgende Abbildung stellt diesen Zusammenhang als *Blackbox* 
 zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt.
 Für diesen Versuch sollen Sie erklären können, welche Größen berechnet werden und welche Annahmen dabei gelten.
 Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. In jedem Schritt der Webapp finden Sie
-unter „Was passiert im Hintergrund?“ Angaben zu Methode, Ergebnissen und Annahmen.
+in den aufklappbaren Hintergrundinformationen Angaben zu Methode, Ergebnissen und Annahmen.
 
 :::{figure} ../figures/commons/Blackbox3D.png
 :alt: Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe.
@@ -399,10 +399,12 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
+Eine **Minimumstruktur** ist eine Atomgeometrie, die einem lokalen Minimum der Energiefläche entspricht.
+
 Bei Azobenzol und seinen Derivaten gibt es Minima sowohl in der *cis*- als auch in der *trans*-Konfiguration.
 Innerhalb einer Konfiguration können weitere Minima auftreten, etwa mit anders verdrehten Substituenten.
 Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt niedrigsten Energie.
-Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumsstrukturen zu finden und zu
+Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
 :::{figure} ../figures/outputs/profile.png
@@ -411,7 +413,7 @@ charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
 Das schematische Energieprofil zeigt die Energie entlang eines Reaktionswegs. Die Reaktionskoordinate
 beschreibt den Fortschritt auf diesem Weg, nicht die Zeit. *cis* und *trans* liegen in lokalen Minima.
-Dazwischen liegt ein Maximum entlang des Wegs: der Übergangszustand (TS, englisch *transition state*).
+Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, englisch *transition structure*).
 :::
 
 Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem **Sattelpunkt erster Ordnung**:
@@ -423,13 +425,13 @@ werden bei der Schwingungsprüfung ausgeblendet.
 ::::{seealso} Ergänzung: Übergangszustand oder Übergangsstruktur?
 :class: dropdown
 
-Wir verwenden im Versuch überwiegend **Übergangszustand** (englisch *transition state*, kurz **TS**).
-Die **Übergangsstruktur** (englisch *transition structure*) bezeichnet genauer die berechnete Geometrie
-am Sattelpunkt der Potentialenergiefläche. In der Webapp ist mit einem gefundenen Übergangszustand diese
-geprüfte Modellstruktur gemeint, kein langlebiges, isolierbares Zwischenprodukt.
+Die **Übergangsstruktur** ist die berechnete Geometrie am Sattelpunkt der
+Potentialenergiefläche. Diesen Begriff verwenden wir in der Webapp für das
+geprüfte Ergebnis. Die Struktur ist kein langlebiges, isolierbares Zwischenprodukt.
 
-In der Übergangszustandstheorie ist der Begriff weiter gefasst: Er bezeichnet eine Menge von Zuständen
-an der Grenze zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
+Der **Übergangszustand** (englisch *transition state*) ist ein Begriff der
+Übergangszustandstheorie. Er bezeichnet eine Menge von Zuständen an der Grenze
+zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
 Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/view/T06468)
 und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
 ::::
@@ -490,7 +492,7 @@ angeregten Zustand an; sie ist keine berechnete Potentialenergiekurve. Die therm
 im Grundzustand ist hier nicht eingezeichnet.
 :::
 
-**Umfang der Rechnungen in diesem Versuch:** Die Minimum- und Übergangszustandssuche untersucht die
+**Umfang der Rechnungen in diesem Versuch:** Die Minimum- und Übergangsstruktursuche untersucht die
 Abhängigkeit der elektronischen Grundzustandsenergie von der Molekülgeometrie. Die UV/Vis-Rechnung liefert
 Anregungsenergien und Übergangsstärken bei festgehaltener Geometrie. Diese Ergebnisse beschreiben ausgewählte
 energetische und spektroskopische Eigenschaften der Photoschalter. Der zeitliche Ablauf und die Ausbeute

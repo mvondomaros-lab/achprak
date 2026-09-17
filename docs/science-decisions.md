@@ -32,13 +32,13 @@ One reproducible starting conformation is generated for each input. The resultin
 minimum is local. This procedure does not determine the global minimum,
 equilibrium conformer populations or a spectrum averaged over those populations.
 
-## Transition states and barriers
+## Transition structures and barriers
 
-The [transition-state search](transition-state.md) follows one electronic energy
+The [transition-structure search](transition-state.md) follows one electronic energy
 surface. It does not model transitions between electronic states, including
 singlet/triplet pathways or the light-driven switching process.
 
-The **electronic energy barrier, ΔE‡**, is the transition-state energy minus the
+The **electronic energy barrier, ΔE‡**, is the transition-structure energy minus the
 energy of the calculation's source minimum. It excludes zero-point, thermal and
 entropic corrections. It is neither an Arrhenius activation energy nor a Gibbs
 energy of activation and cannot by itself predict a cis-isomer lifetime.
@@ -78,5 +78,5 @@ predictions. The application applies no empirical correction.
 The [development guide](development.md) separates routine software tests from
 optional calculations using the chemistry programs. Use `test-science` to check
 the parent molecule's planarity and cis/trans energy ordering, and `test-ts` for
-selected minimum-to-transition-state calculations. These checks detect changes in
+selected minimum-to-transition-structure calculations. These checks detect changes in
 model behavior; they are not a validation against experiment.

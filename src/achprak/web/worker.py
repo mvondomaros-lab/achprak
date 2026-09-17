@@ -139,15 +139,15 @@ def calculate(data):
     source = data["molecule"]
     if kind == "minimum" and source["kind"] == "minimum":
         raise ValueError(
-            "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten."
+            "Diese Struktur ist bereits eine Minimumstruktur. Der vorhandene Verlauf bleibt erhalten."
         )
     if kind == "minimum" and source["kind"] == "ts":
         raise ValueError(
-            "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur."
+            "Eine Minimumsuche ausgehend von einer Übergangsstruktur ist hier nicht möglich. Wählen Sie eine Startstruktur."
         )
     if kind == "ts" and (source["kind"] != "minimum" or not source.get("converged")):
         raise ValueError(
-            "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch."
+            "Die Übergangsstruktursuche benötigt eine optimierte Minimumstruktur als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch."
         )
     if kind == "ts":
         reason = ts_restriction(source.get("settings"))
@@ -164,12 +164,12 @@ def calculate(data):
                 **({"max_attempts": MAX_TS_ATTEMPTS} if kind == "ts" else {}),
             )
         )
-        suffix = "Minimum" if kind == "minimum" else "Übergangszustand"
+        suffix = "Minimumstruktur" if kind == "minimum" else "Übergangsstruktur"
         if not converged:
             suffix = (
                 "Minimumsuche nicht abgeschlossen"
                 if kind == "minimum"
-                else "Übergangszustandssuche nicht abgeschlossen"
+                else "Übergangsstruktursuche nicht abgeschlossen"
             )
         m = molecule(
             opt.atoms,
@@ -272,8 +272,11 @@ def calculate(data):
                 spec.excitations <= uvvis.EMAX
             )
             ax.scatter(
-                spec.excitations[visible], spec.oscillator_strengths[visible],
-                color="#c77825", s=16, zorder=3,
+                spec.excitations[visible],
+                spec.oscillator_strengths[visible],
+                color="#c77825",
+                s=16,
+                zorder=3,
             )
             peak_height = max(
                 float(absorption.max()),

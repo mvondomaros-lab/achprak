@@ -194,7 +194,7 @@ def test_minimum_spectrum_and_transition_state(client):
     assert "<svg" in spec["svg"]
     ts = run(client, "ts", molecule_id=minimum["id"])["molecule"]
     assert ts["converged"] and ts["kind"] == "ts"
-    assert ts["name"] == initial["name"] + " · Übergangszustand"
+    assert ts["name"] == initial["name"] + " · Übergangsstruktur"
     ts_job = client.get("/api/session").json()["jobs"][-1]
     output_log = client.get(f"/api/jobs/{ts_job['id']}").json()["log"]
     from achprak.web.worker import PROGRESS_PREFIX
@@ -303,7 +303,7 @@ def test_live_optimization_records(client):
         records[-1]["positions"], minimum["frames"][-1], atol=1e-6
     )
     assert minimum["base_name"] == initial["name"]
-    assert minimum["name"] == initial["name"] + " · Minimum"
+    assert minimum["name"] == initial["name"] + " · Minimumstruktur"
 
 
 @pytest.mark.skipif(

@@ -14,12 +14,12 @@ def ts_restriction(settings):
     ):
         return (
             "Die Substitution dieser Struktur ist nicht mehr zugeordnet. "
-            "Erstellen Sie die Startstruktur erneut und optimieren Sie ein Minimum, "
-            "bevor Sie einen Übergangszustand suchen."
+            "Erstellen Sie die Startstruktur erneut und suchen Sie eine Minimumstruktur, "
+            "bevor Sie eine Übergangsstruktur suchen."
         )
     if sum(v != "H" for v in values) > 2:
         return (
-            "Für die Übergangszustandssuche im Praktikum sind höchstens zwei "
+            "Für die Übergangsstruktursuche im Praktikum sind höchstens zwei "
             "Substituenten insgesamt erlaubt. "
             "Minimumsuche und Spektrenrechnung bleiben verfügbar."
         )

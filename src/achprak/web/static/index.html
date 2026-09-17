@@ -6,13 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-43"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-45"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-34" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-60" defer></script>
+    <script src="static/app.js?v=ui-69" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -39,7 +39,7 @@
         <span>02</span> Struktur optimieren
     </button>
     <button class="step" data-step="spectrum">
-        <span>03</span> UV/Vis-Spektrum
+        <span>03</span> Spektrum berechnen
     </button>
 </nav>
 <main id="workspace">
@@ -48,7 +48,7 @@
         <div>
             <h1 id="step-title">Struktur erstellen</h1>
             <p id="step-description">
-                Wählen Sie cis oder trans. Substituenten können Sie bei Bedarf
+                Wählen Sie die Konfiguration. Substituenten können Sie bei Bedarf
                 ergänzen.
             </p>
         </div>
@@ -122,13 +122,10 @@
                         cis- oder trans-Anordnung an der Azogruppe fest.
                         Das Programm RDKit erzeugt daraus mit dem Verfahren ETKDG eine
                         dreidimensionale Startstruktur. Dabei verwendet es typische
-                        Atomabstände, Bindungswinkel und bevorzugte Verdrehungen um
-                        Bindungen. Anschließend werden die Ringe entsprechend der
-                        2D-Formel ausgerichtet. Eine kurze Vorbereitung mit dem
-                        Kraftfeld MMFF passt Atomabstände, Bindungswinkel und
-                        Verdrehungen an, um die Energie im Kraftfeldmodell zu senken.
-                        Dabei begrenzen zusätzliche Vorgaben die Verdrehung der Ringe,
-                        damit die gewählte Ringanordnung erhalten bleibt.
+                        Atomabstände, Bindungswinkel und Diederwinkel. Anschließend passt eine kurze Rechnung mit dem
+                        Kraftfeld MMFF Atomabstände, Bindungswinkel und
+                        Diederwinkel an, um die Energie im Kraftfeldmodell zu senken.
+                        Dabei wird die gwählte Konfiguration durch Zwangsbedingungen forciert.
                         Diese Struktur dient als Ausgangspunkt für die anschließende
                         Geometrieoptimierung mit dem elektronischen Strukturmodell.
                     </p>
@@ -136,8 +133,8 @@
                     <p>
                         Standardmäßig sehen Sie die zweidimensionale (2D) Strukturformel. Sie zeigt
                         Bindungen und Substituenten, aber keine maßstabsgetreuen
-                        Abstände. Mit „3D“ wechseln Sie zur räumlichen
-                        Ansicht und können das Molekül drehen und vergrößern.
+                        Abstände. Diese sehen sie besser in der dreidimensionalen (3D) Darstellung.
+                        In dieser Ansicht und können das Molekül auch drehen und vergrößern.
 
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
@@ -172,18 +169,18 @@
                             value="minimum"
                             checked
                     /><span
-                    ><strong>Minimum</strong
+                    ><strong>Minimumstruktur</strong
                     ><small>Lokales Energieminimum suchen</small></span
                     ></label
                     ><label class="radio-card"
                 ><input type="radio" name="target" value="ts"/><span
-                ><strong>Übergangszustand</strong
+                ><strong>Übergangsstruktur</strong
                 ><small>Reaktionspfad zwischen cis und trans untersuchen</small></span
                 ></label
                 >
                 </fieldset>
                 <p id="ts-requirement" class="note" hidden>
-                    Suchen Sie zuerst ein Minimum.
+                    Suchen Sie zuerst eine Minimumstruktur.
                 </p>
                 <button id="optimize" class="primary full" disabled>
                     Optimierung starten
@@ -199,28 +196,26 @@
                         schnelle Rechnungen.
                     </p>
                     <p>
-                        <strong>Minimum:</strong> Das Optimierungsverfahren Sella passt
-                        die Atompositionen schrittweise an, um die elektronische Energie
-                        zu verringern. Die Suche gilt als abgeschlossen, wenn die verbleibenden Kräfte
-                        unter dem festgelegten Grenzwert liegen. Eine separate
-                        Schwingungsprüfung des Minimums findet hier nicht statt.
-                        Dieses Abbruchkriterium
-                        allein beweist weder, dass ein Minimum vorliegt, noch, dass
-                        das Rechenmodell die experimentelle Geometrie genau beschreibt.
+                        <strong>Minimumstruktur:</strong> Das Optimierungsverfahren Sella verändert
+                        die Atompositionen anhand der berechneten Kräfte, um die
+                        elektronische Energie zu verringern. Die Suche endet, wenn
+                        die verbleibenden Kräfte unter einem festgelegten Grenzwert liegen. Eine separate
+                        Prüfung der zweiten Ableitungen der Energie nach den Atomkoordinaten
+                        findet hier nicht statt. Kleine Kräfte allein bestätigen daher noch kein Minimum.
                     </p>
                     <p>
-                        <strong>Übergangszustand:</strong> Zwischen dem Ausgangsminimum
-                        und einem Minimum der anderen cis/trans-Konfiguration wird ein
+                        <strong>Übergangsstruktur:</strong> Zwischen dem Ausgangsstruktur
+                        und einer Minimumstruktur der anderen cis/trans-Konfiguration wird ein
                         Reaktionspfad aus 13 Strukturen aufgebaut. Das Verfahren CI-NEB
                         (Climbing-Image Nudged Elastic Band) optimiert diese Strukturen
                         und sucht dabei das Energiemaximum entlang des Pfads. Zusätzliche
                         rechnerische Federkräfte halten die benachbarten Strukturen
                         auf Abstand. Die Struktur am Energiemaximum des Pfads wird
-                        anschließend mit Sella verfeinert und als möglicher
-                        Übergangszustand geprüft.
+                        anschließend mit Sella verfeinert und als mögliche
+                        Übergangsstruktur geprüft.
                     </p>
                     <p>
-                        Im Praktikum ist die Übergangszustandssuche auf insgesamt zwei
+                        Im Praktikum ist die Übergangsstruktursuche auf insgesamt zwei
                         Substituenten begrenzt, um lange Suchläufe zu vermeiden.
                         Für Minimumsuche und Spektrenrechnung gilt diese Grenze nicht.
                         Falls der erste Suchlauf scheitert, folgt höchstens ein
@@ -228,54 +223,45 @@
                     </p>
                     <h3>Bedeutung der Ergebnisse</h3>
                     <p>
-                        <strong>Minimum:</strong> Gesucht ist eine Anordnung, deren Energie
+                        <strong>Minimumstruktur:</strong> Eine Anordnung der Atome, deren Energie
                         sich durch kleine Änderungen der Atompositionen nicht weiter
-                        verringern lässt. Vergleichen Sie die optimierten cis- und
-                        trans-Formen desselben Moleküls: Die niedrigere Energie kennzeichnet
-                        die Form mit der niedrigeren elektronischen Energie im verwendeten Modell.
-                        Daraus allein folgt noch kein Mengenverhältnis im thermischen Gleichgewicht.
+                        verringern lässt. Das Energieprofil zeigt die Energie entlang der
+                        numerischen Optimierungsschritte, keinen zeitlichen Reaktionsablauf.
                     </p>
                     <p>
-                        <strong>Übergangszustand:</strong> Das Energieprofil zeigt den
-                        berechneten Weg zwischen den beiden Minima. Die elektronische
-                        Energiebarriere ΔE‡ ist die Energie des Übergangszustands minus
-                        die Energie des Ausgangsminimums. Die Ergebnisse der
-                        Schwingungsprüfung und der Prüfung der Verbindung zwischen
-                        cis und trans stehen unter dem Diagramm.
+                        <strong>Übergangsstruktur:</strong> Eine Geometrie an einem Sattelpunkt erster Ordnung
+                        zwischen den beiden Minima.
+                        In einer Richtung
+                        sinkt die Energie bei kleinen Auslenkungen auf beiden Seiten;
+                        in den übrigen inneren Verformungsrichtungen steigt sie.
+                        Das Energieprofil zeigt den
+                        berechneten Weg zwischen den beiden Minimumstrukturen. Die elektronische
+                        Energiebarriere ΔE‡ ist die Energie der Übergangsstruktur minus
+                        die Energie des Ausgangsstruktur.
                     </p>
-                    <h3>Wie wird der Übergangszustand geprüft?</h3>
+                    <h3>Wie wird die Übergangsstruktur geprüft?</h3>
                     <p>
-                        Die berechnete Geometrie heißt genauer <em>Übergangsstruktur</em>.
-                        Sie ist ein Sattelpunkt: In einer Richtung sinkt die Energie
-                        bei kleinen Auslenkungen auf beiden Seiten; in den übrigen
-                        inneren Verformungsrichtungen steigt sie. „Übergangszustand“
-                        bezeichnet das theoretische Konzept für den Übergang zwischen
-                        Edukten und Produkten. In der Bedienoberfläche verwenden wir
-                        diesen Begriff auch für das berechnete Ergebnis.
-                    </p>
-                    <p>
-                        Eine Schwingungsrechnung prüft die Verformungsrichtungen.
-                        Eine imaginäre Frequenz kennzeichnet eine Richtung, in der
-                        die Energie abnimmt, statt eine stabile Schwingung zu beschreiben.
-                        Hier wird genau eine imaginäre Frequenz mit einem Betrag über
-                        20 cm⁻¹ verlangt. Die Angabe cm⁻¹ bedeutet inverse Zentimeter;
-                        sie ist die in der Spektroskopie übliche Wellenzahleinheit.
-                        Sehr kleine Beträge werden wegen numerischer Unsicherheiten
-                        bei dieser Prüfung nicht mitgezählt.
+                        Eine Schwingungsrechnung untersucht kleine Auslenkungen der Atome.
+                        Eine imaginäre Frequenz kennzeichnet eine Verformung, bei der
+                        die Energie abnimmt. Diese Verformung ist keine stabile Schwingung.
+                        Für einen Sattelpunkt erster Ordnung muss genau eine solche
+                        unabhängige Verformung vorliegen. Die App verlangt genau eine
+                        imaginäre Frequenz mit einem Betrag über 20 cm⁻¹. Beträge bis zu diesem Grenzwert werden
+                        wegen numerischer Unsicherheiten nicht mitgezählt.
                     </p>
                     <p>
                         Anschließend werden die Atome in beide Richtungen dieser
-                        Verformung ausgelenkt. Minimumsuchen müssen von dort ein
-                        cis- und ein trans-Minimum erreichen. Diese Prüfung bestätigt
+                        Verformung ausgelenkt. Minimumsuchen müssen von dort eine
+                        cis- und eine trans-Minimumstruktur erreichen. Diese Prüfung bestätigt
                         die Verbindung im verwendeten Modell; sie simuliert keinen
                         zeitlichen Reaktionsablauf.
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         <strong>Die Suche untersucht einen begrenzten Bereich der möglichen Strukturen.</strong>
-                        Je nach Ausgangsstruktur kann sie unterschiedliche Minima finden,
-                        etwa mit anders verdrehten Ringen oder Substituenten. Auch ein
-                        bestätigter Übergangszustand gehört nur zum untersuchten Weg;
+                        Je nach Ausgangsstruktur kann sie unterschiedliche Minimumstrukturen finden,
+                        etwa mit anders verdrehten Ringen oder Substituenten. Auch eine
+                        bestätigte Übergangsstruktur gehört nur zum untersuchten Weg;
                         ein anderer Weg kann eine niedrigere Barriere haben.
                     </p>
                     <p>
@@ -290,13 +276,15 @@
                         <strong>ΔE‡ beschreibt nur den elektronischen Energieunterschied.</strong>
                         Berechnet wird ΔE‡ im elektronischen Grundzustand. Beiträge
                         von Kernschwingungen, Temperatur und Entropie fehlen. ΔE‡ ist
-                        daher weder die Aktivierungsenergie aus der Arrhenius-Gleichung
-                        für die Temperaturabhängigkeit der Reaktionsgeschwindigkeit
-                        noch die freie Aktivierungsenthalpie ΔG‡, die auch
-                        Temperatur- und Entropiebeiträge enthält. Auch Wechsel in andere elektronische
-                        Zustände werden nicht untersucht. Um die
-                        Geschwindigkeit der cis/trans-Umwandlung bei einer bestimmten
-                        Temperatur vorherzusagen, wären zusätzliche Rechnungen nötig.
+                        daher nicht unmittelbar mit der Aktivierungsenergie aus der
+                        Arrhenius-Gleichung gleichzusetzen. Diese beschreibt die
+                        Temperaturabhängigkeit der Geschwindigkeitskonstante;
+                        unsere Rechnung liefert dagegen einen elektronischen
+                        Energieunterschied zwischen zwei Geometrien.
+                        Auch die freie Aktivierungsenthalpie ΔG‡, die thermische
+                        Beiträge und Entropie berücksichtigt, wird hier nicht berechnet.
+                        Wechsel in andere elektronische Zustände werden ebenfalls
+                        nicht untersucht.
                     </p>
                     <dl class="method">
                         <div>
@@ -312,7 +300,7 @@
             </section>
             <section class="step-panel" data-panel="spectrum" hidden>
                 <p id="spectrum-requirement" class="note">
-                    Wählen Sie ein Minimum.
+                    Wählen Sie eine Minimumstruktur.
                 </p>
                 <button id="calculate-spectrum" class="primary full" disabled>
                     Spektrum berechnen
@@ -324,8 +312,8 @@
                         Das UV/Vis-Spektrum beschreibt die Absorption von ultraviolettem
                         und sichtbarem Licht. Das Programm MOPAC berechnet mit dem
                         Näherungsverfahren INDO/S–CIS die Energien und Stärken
-                        elektronischer Anregungen. Die Rechnung verwendet ein
-                        optimiertes Minimum und hält die Atomkerne an ihren Positionen
+                        elektronischer Anregungen. Die Rechnung verwendet eine
+                        optimierte Minimumstruktur und hält die Atomkerne an ihren Positionen
                         fest. Diese Näherung beschreibt eine elektronische Anregung,
                         während der sich die Kernpositionen kaum ändern.
                     </p>
@@ -556,7 +544,7 @@
                 </section>
                 <p id="ts-summary" class="ts-summary" hidden></p>
                 <details id="ts-details" hidden>
-                    <summary>Prüfung des Übergangszustands</summary>
+                    <summary>Prüfung der Übergangsstruktur</summary>
                     <p id="ts-check-result"></p>
                     <p id="ts-check-technical"></p>
                 </details>
@@ -646,7 +634,7 @@
         <button id="clear-structures" class="text-button" type="button">
             Alle Strukturen löschen
         </button>
-        <small>Einschließlich aller Minima, Übergangszustände und Spektren.</small>
+        <small>Einschließlich aller Minimumstrukturen, Übergangsstrukturen und Spektren.</small>
     </div>
 </dialog>
 <dialog id="converter" aria-labelledby="converter-title">

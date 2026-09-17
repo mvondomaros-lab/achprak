@@ -161,7 +161,9 @@ class OptTS:
         initial.calc = self.calculator_factory()
         baseline = float(initial.get_potential_energy())
         if np.linalg.norm(initial.get_forces(), axis=1).max() > 0.03:
-            raise ValueError("Bitte vor der Übergangszustandssuche ein Minimum suchen.")
+            raise ValueError(
+                "Bitte vor der Übergangsstruktursuche eine Minimumstruktur suchen."
+            )
         source_cis = np.cos(np.radians(initial.get_dihedral(*self.indices))) > 0
 
         def publish(frame, phase, band=None, image_index=None):
@@ -338,7 +340,7 @@ class OptTS:
             lambda: publish(center, "refinement"),
         ):
             return failed(
-                "Die Verfeinerung des Kandidaten für den Übergangszustand ist nicht abgeschlossen."
+                "Die Verfeinerung des Kandidaten für die Übergangsstruktur ist nicht abgeschlossen."
             )
         # Relax both halves against the central seed before letting it climb.
         # This aligns the local band tangent with the saddle's downhill paths.
@@ -357,7 +359,7 @@ class OptTS:
                 lambda index=preview_index: band_progress(index),
             ):
                 return failed(
-                    "Ein Teil des Reaktionspfads zum Übergangszustand ist noch nicht ausreichend optimiert."
+                    "Ein Teil des Reaktionspfads zur Übergangsstruktur ist noch nicht ausreichend optimiert."
                 )
         band.climb = True
         if not optimize(band_optimizer(band), 0.05, 600, band_progress):
@@ -383,7 +385,7 @@ class OptTS:
         self.search_converged = refine_saddle(0.005)
         if not self.search_converged:
             return failed(
-                "Die abschließende Verfeinerung des Übergangszustands ist nicht abgeschlossen."
+                "Die abschließende Verfeinerung der Übergangsstruktur ist nicht abgeschlossen."
             )
         publish(atoms, "vibrations")
         frequencies, modes = internal_modes(atoms, hessian(atoms))
@@ -395,7 +397,7 @@ class OptTS:
             self.search_converged = refine_saddle(0.001)
             if not self.search_converged:
                 return failed(
-                    "Die zusätzliche Verfeinerung des Übergangszustands ist nicht abgeschlossen."
+                    "Die zusätzliche Verfeinerung der Übergangsstruktur ist nicht abgeschlossen."
                 )
             publish(atoms, "vibrations")
             frequencies, modes = internal_modes(atoms, hessian(atoms))
@@ -405,7 +407,7 @@ class OptTS:
             baseline, endpoint.get_potential_energy()
         ):
             return failed(
-                "Die Energie des Kandidaten liegt nicht oberhalb der Energien beider Minima."
+                "Die Energie des Kandidaten liegt nicht oberhalb der Energien beider Minimumstrukturen."
             )
         self.validation = {
             "scope": "all_atoms",
@@ -417,7 +419,7 @@ class OptTS:
         }
         if len(negative) != 1:
             return failed(
-                f"Kein bestätigter Übergangszustand: {len(negative)} imaginäre Frequenzen mit einem Betrag über 20 cm⁻¹."
+                f"Keine bestätigte Übergangsstruktur: {len(negative)} imaginäre Frequenzen mit einem Betrag über 20 cm⁻¹."
             )
         mode = modes[int(negative[0])].copy()
         mode /= np.linalg.norm(mode, axis=1).max()
@@ -534,7 +536,7 @@ class OptTS:
         publish(atoms, "complete")
         if not connected:
             return failed(
-                "Ein Sattelpunkt wurde gefunden, aber die Verbindung zu cis- und trans-Minima ist nicht bestätigt."
+                "Ein Sattelpunkt wurde gefunden, aber die Verbindung zu cis- und trans-Minimumstrukturen ist nicht bestätigt."
             )
         images[peak_index] = atoms
         self.path = self.path_records(images)

@@ -1,6 +1,6 @@
-# Transition-state screening and regression coverage
+# Transition-structure screening and regression coverage
 
-This page describes how to assess whether the transition-state (TS) search
+This page describes how to assess whether the transition-structure (TS) search
 completes for a set of course molecules. A screen runs the same workflow over many
 structures. A regression test repeats a selected calculation to detect changes
 after modifying the software. Neither measures agreement with experiment.

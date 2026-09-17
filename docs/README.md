@@ -14,11 +14,11 @@ classroom hosting, use the [JupyterHub deployment guide](../deploy/README.md). T
 | Question | Documentation |
 | --- | --- |
 | What does the model calculate, and what can students conclude? | [Scientific defaults and limitations](science-decisions.md) |
-| How is a transition state found and checked? | [Transition-state calculation](transition-state.md) |
+| How is a transition structure found and checked? | [Transition-structure calculation](transition-state.md) |
 | How much do numerical settings and starting geometries affect results? | [Settings benchmark](science-benchmark.md) |
 | What does the displayed solution color represent? | [Color model](solution-color.md) |
 | How does the spectrum compare with a measurement? | [Experimental spectral comparison](solution-color-validation.md) |
-| Which molecules have been checked, and how can coverage be extended? | [Transition-state screening](ts-screening.md) |
+| Which molecules have been checked, and how can coverage be extended? | [Transition-structure screening](ts-screening.md) |
 | How do I change the application or run tests? | [Development](development.md) |
 | Which files should be kept when sharing changes? | [Repository layout](repository-layout.md) |
 
@@ -34,7 +34,7 @@ classroom hosting, use the [JupyterHub deployment guide](../deploy/README.md). T
 
 A generated starting structure is an input geometry. Optimization searches from
 that input for a local minimum; it does not identify the global minimum by itself.
-A confirmed transition state passes the numerical checks described in its method
+A confirmed transition structure passes the numerical checks described in its method
 page, rather than an experimental validation of the reaction model.
 
 Technical pages use decimal points. Energies are given in electronvolts (eV) per

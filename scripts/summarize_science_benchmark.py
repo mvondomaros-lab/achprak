@@ -207,10 +207,10 @@ def main():
     if (root / "ts-methods.json").exists():
         text += [
             "",
-            "## GFN2-xTB transition-state checks",
+            "## GFN2-xTB transition-structure checks",
             "",
             "These two cases use the alternative GFN2-xTB method. They are not a success-rate estimate "
-            "for the default GFN1-xTB workflow. TS means transition state; confirmation requires "
+            "for the default GFN1-xTB workflow. TS means transition structure; confirmation requires "
             "the [force, frequency and connectivity checks](transition-state.md). The electronic energy "
             "barrier ΔE‡ is relative to the source minimum and excludes zero-point, thermal and entropic corrections.",
             "",

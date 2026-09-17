@@ -787,7 +787,7 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
   target = "ts";
   context.updateControls();
   assert.equal(elements.get("optimize").disabled, false);
-  molecule.ts_restriction = "Für die Übergangszustandssuche gilt: höchstens zwei Substituenten.";
+  molecule.ts_restriction = "Für die Übergangsstruktursuche gilt: höchstens zwei Substituenten.";
   context.updateControls();
   assert.equal(elements.get("optimize").disabled, true);
   assert.equal(elements.get("ts-requirement").hidden, false);
@@ -947,8 +947,8 @@ test("structure picker groups chemical identities and keeps variants individuall
   const context = vm.createContext({
     KIND: {
       initial: "Startstruktur",
-      minimum: "Minimum",
-      ts: "Übergangszustand",
+      minimum: "Minimumstruktur",
+      ts: "Übergangsstruktur",
       unconverged: "Optimierung nicht abgeschlossen",
     },
   });
@@ -999,8 +999,8 @@ test("structure picker groups chemical identities and keeps variants individuall
 
   assert.equal(context.structureGroupLabel(molecules[3]), "cis · unsubstituiert");
   assert.equal(context.structureGroupLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans · 4-OCH₃");
-  assert.equal(context.structureLabel(molecules[3]), "cis → trans Übergangszustand · unsubstituiert");
-  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans → cis Übergangszustand · 4-OCH₃");
+  assert.equal(context.structureLabel(molecules[3]), "cis → trans Übergangsstruktur · unsubstituiert");
+  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans → cis Übergangsstruktur · 4-OCH₃");
   assert.equal(context.structureLabel(molecules[5]), "trans · 2-F");
   assert.equal(context.structureLabel({ base_name: "cis-4-F, 4′-NMe2-Azobenzol", kind: "minimum" }), "cis · 4-F, 4′-N(CH₃)₂");
   assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "unconverged", ts_search: {} }), "trans → cis · 4-OCH₃");
@@ -1010,12 +1010,12 @@ test("structure picker groups chemical identities and keeps variants individuall
   assert.equal(groups[1].name, "trans · unsubstituiert");
   assert.equal(groups[2].name, "trans · 2-F");
   assert.deepEqual(Array.from(groups[0].entries, (entry) => entry.molecule.id), ["a", "b", "e", "d"]);
-  assert.equal(groups[0].entries[1].label, "Minimum · 1");
-  assert.equal(groups[0].entries[2].label, "Minimum · 2");
-  assert.equal(groups[0].entries[3].label, "Übergangszustand");
+  assert.equal(groups[0].entries[1].label, "Minimumstruktur · 1");
+  assert.equal(groups[0].entries[2].label, "Minimumstruktur · 2");
+  assert.equal(groups[0].entries[3].label, "Übergangsstruktur");
   assert.equal(context.structureGroups(molecules, "trans")[0].entries[0].molecule.id, "c");
   assert.equal(context.structureGroups(molecules, "C12H9FN2")[0].entries[0].molecule.id, "f");
-  assert.equal(context.structureGroups(molecules, "Minimum · 2")[0].entries[0].molecule.id, "e");
+  assert.equal(context.structureGroups(molecules, "Minimumstruktur · 2")[0].entries[0].molecule.id, "e");
   assert.equal(context.structureGroups(molecules.filter((m) => m.id !== "a"))[0].entries.length, 3);
 
 });
@@ -1156,7 +1156,7 @@ test("clear structures confirms the full scope and resets selection only after s
     },
     window: {
       confirm: (message) => {
-        assert.match(message, /Minima.*Übergangszustände.*Spektren/);
+        assert.match(message, /Minimumstrukturen.*Übergangsstrukturen.*Spektren/);
         return approved;
       },
     },
@@ -1318,7 +1318,7 @@ test("spectrum stage descriptions only appear for a running spectrum job", () =>
   const context = vm.createContext({
     state: { step: "spectrum", busy: true },
     SpectrumProgress: globalThis.SpectrumProgress,
-    JOBS: { uvvis: "UV/Vis-Spektrum wird berechnet", minimum: "Minimum wird gesucht" },
+    JOBS: { uvvis: "UV/Vis-Spektrum wird berechnet", minimum: "Minimumstruktur wird gesucht" },
     fmt: String,
     renderEnergyHistory() {},
     $: (id) => {
@@ -1358,7 +1358,7 @@ test("picker groups by starting configuration and substitution without redundant
   ];
   const context = vm.createContext({
     state: { selected: "min", busy: false },
-    KIND: { initial: "Startstruktur", minimum: "Minimum", ts: "Übergangszustand", unconverged: "Optimierung nicht abgeschlossen" },
+    KIND: { initial: "Startstruktur", minimum: "Minimumstruktur", ts: "Übergangsstruktur", unconverged: "Optimierung nicht abgeschlossen" },
     selectableMolecules: () => molecules,
     document: { createElement: element },
     handle: (fn) => fn,
@@ -1376,16 +1376,16 @@ test("picker groups by starting configuration and substitution without redundant
   assert.equal(groups[1].children[0].textContent, "cis · 4-OCH₃");
   const buttons = groups[0].children.slice(2).map((row) => row.children[0]);
   const minimum = buttons.find((button) => button.attributes["aria-current"] === "true");
-  assert.equal(minimum.children[0].textContent, "Minimum");
+  assert.equal(minimum.children[0].textContent, "Minimumstruktur");
   assert.equal(minimum.children[0].children[0].textContent, "✓");
-  const ts = buttons.find((button) => button.children[0].textContent === "Übergangszustand");
+  const ts = buttons.find((button) => button.children[0].textContent === "Übergangsstruktur");
   assert.equal(ts.children[0].children.length, 0);
   assert.equal(ts.children.length, 1);
-  assert.equal(ts.attributes["aria-label"], "trans · 4-OCH₃ · Übergangszustand");
+  assert.equal(ts.attributes["aria-label"], "trans · 4-OCH₃ · Übergangsstruktur");
   const failed = groups[1].children[2].children[0];
   assert.equal(failed.children[0].textContent, "Optimierung nicht abgeschlossen");
   for (const button of [...buttons, failed]) {
-    assert.doesNotMatch(button.attributes["aria-label"], /Azobenzol|Ausgangsminimum/);
+    assert.doesNotMatch(button.attributes["aria-label"], /Azobenzol|Ausgangsstruktur/);
   }
   elements.get("structure-search").value = "cis · 4-OCH₃";
   context.renderStructureOptions();
@@ -1429,14 +1429,15 @@ test("tasks follow navigation without opening collapsible sections", () => {
   lab.navigate("optimize");
   assert.equal(lab.$("guide-build").hidden, true);
   assert.equal(lab.$("guide-optimize").hidden, false);
-  assert.equal(lab.$("guide-optimize").open, false);
-  lab.$("guide-optimize").open = true;
+  lab.$("task-3-1").open = true;
+  lab.$("task-2-1").open = false;
   lab.navigate("spectrum");
   assert.equal(lab.$("guide-optimize").hidden, true);
   assert.equal(lab.$("guide-spectrum").hidden, false);
   assert.equal(lab.$("guide-spectrum").open, false);
   lab.navigate("optimize");
-  assert.equal(lab.$("guide-optimize").open, true);
+  assert.equal(lab.$("task-3-1").open, true);
+  assert.equal(lab.$("task-2-1").open, false);
 });
 
 test("task loading can retry and opens the current step without trapping focus", async () => {

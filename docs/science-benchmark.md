@@ -124,9 +124,9 @@ Unconstrained Cartesian BFGS refinement to 0.0001 eV/Å, including a second run 
 | GFN2-xTB | False | True | 17.71, 21.34 | 0.3384 | 35.67 |
 | GFN2-xTB | True | True | 8.49, 10.00 | 0.0349 | 29.32 |
 
-## GFN2-xTB transition-state checks
+## GFN2-xTB transition-structure checks
 
-These two cases use the alternative GFN2-xTB method. They are not a success-rate estimate for the default GFN1-xTB workflow. TS means transition state; confirmation requires the [force, frequency and connectivity checks](transition-state.md). The electronic energy barrier ΔE‡ is relative to the source minimum and excludes zero-point, thermal and entropic corrections.
+These two cases use the alternative GFN2-xTB method. They are not a success-rate estimate for the default GFN1-xTB workflow. TS means transition structure; confirmation requires the [force, frequency and connectivity checks](transition-state.md). The electronic energy barrier ΔE‡ is relative to the source minimum and excludes zero-point, thermal and entropic corrections.
 
 | Molecule | Confirmed TS | Time / s | Iterations | Electronic energy barrier ΔE‡ / eV | Failure |
 |---|---|---:|---:|---:|---|

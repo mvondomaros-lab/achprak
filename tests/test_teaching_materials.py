@@ -24,11 +24,19 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
         paragraphs = ["".join(p.itertext()) for p in xml.findall(".//w:p", ns)]
         titles = re.findall(
-            r'<section class="task" id="task-[^"]+"><h3>([^<]+)</h3>', guide
+            r'<(?:section|details) class="task" id="task-[^"]+"><(?:h3|summary)>([^<]+)</(?:h3|summary)>',
+            guide,
         )
         # The Word template is synchronized after the task editorial review.
         assert titles
         assert len(titles) == len(set(titles))
+        for step, count in (("build", 3), ("optimize", 5)):
+            page = re.search(
+                rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
+            )
+            assert page is not None
+            assert len(re.findall(r'<details class="task"', page[1])) == count
+
         assert not re.search(r"Aufgabe \d|<details[^>]*\bopen\b", guide)
         assert "guide-scope" not in client.get("/").text
         text = "\n".join(paragraphs)

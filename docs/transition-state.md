@@ -1,15 +1,14 @@
-# Transition-state calculation
+# Transition-structure calculation
 
-The application searches for a transition state (TS) connecting cis and trans
+The application searches for a transition structure (TS) connecting cis and trans
 minima on the chosen electronic energy surface. It requires a converged source
-minimum and permits at most two non-H substituents across both rings. The
+minimum structure and permits at most two non-H substituents across both rings. The
 [scientific defaults](science-decisions.md) describe the energy and solvent model.
 
-The interface calls an accepted result a **transition state**. More precisely, the
-calculated saddle-point geometry is a **transition structure**: a geometry at
-which the energy decreases along one internal motion and increases along the other
-internal directions. This geometric criterion does not describe the full
-statistical concept of a transition state in rate theory.
+The interface calls the calculated saddle-point geometry a **transition structure**:
+a geometry at which the energy decreases along one internal motion and increases
+along the other internal directions. The fundamentals distinguish this geometry
+from the statistical concept of a **transition state** in rate theory.
 
 ## What an accepted result establishes
 
@@ -22,7 +21,7 @@ A result is labeled as a TS only when all three checks pass:
    tolerated by the numerical criterion; they are not classified as additional
    physical instabilities by this check.
 3. Small displacements in the two directions of the unstable motion, followed
-   by minimization, reach one cis and one trans minimum without changing the
+   by minimization, reach one cis and one trans minimum structure without changing the
    molecule's atom identities and bond connectivity.
 
 This is a numerical downhill connectivity check. It is not an **intrinsic reaction
@@ -31,7 +30,7 @@ mass-weighted coordinates. Nor does it establish that the search found the
 globally lowest electronic energy barrier or the experimentally dominant reaction
 pathway. A failed check leaves the search unconfirmed.
 
-The reported **electronic energy barrier ΔE‡** is relative to the source minimum.
+The reported **electronic energy barrier ΔE‡** is relative to the source minimum structure.
 It excludes zero-point, thermal and entropic corrections and is neither an
 Arrhenius activation energy nor a Gibbs energy of activation.
 
@@ -76,7 +75,7 @@ energy, and a force threshold of 0.005 eV/Å. If additional imaginary modes rema
 refinement continues to 0.001 eV/Å within the shared iteration budget, then the
 Hessian is recalculated.
 
-Ordinary minima, opposite endpoints and downhill checks use a largest-force
+Ordinary minimum structures, opposite endpoints and downhill checks use a largest-force
 threshold of 0.002 eV/Å. Here eV denotes electronvolts and Å ångströms. Minimum
 refinement uses internal-coordinate Sella followed by at most 25 Cartesian BFGS
 steps at the same threshold. All use GFN1-xTB with ALPB ethanol and xTB numerical
@@ -97,7 +96,7 @@ internal frequencies.
 
 The unstable mode is scaled so that its largest atomic displacement is 0.15 Å.
 Minimization is started from both signs of that displacement. Copies of the band
-endpoints and the resulting downhill minima are refined to 0.002 eV/Å before
+endpoints and the resulting downhill minimum structures are refined to 0.002 eV/Å before
 comparison, to resolve soft torsions. This extra refinement preserves the original
 band and its energy reference.
 

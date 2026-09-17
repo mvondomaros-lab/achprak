@@ -386,28 +386,29 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
             if body.kind == "minimum" and m["kind"] == "minimum":
                 raise HTTPException(
                     422,
-                    "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
+                    "Diese Struktur ist bereits eine Minimumstruktur. Der vorhandene Verlauf bleibt erhalten.",
                 )
             if body.kind == "minimum" and m["kind"] == "ts":
                 raise HTTPException(
                     422,
-                    "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur.",
+                    "Eine Minimumsuche ausgehend von einer Übergangsstruktur ist hier nicht möglich. Wählen Sie eine Startstruktur.",
                 )
             if body.kind == "ts" and (m["kind"] != "minimum" or not m.get("converged")):
                 raise HTTPException(
                     422,
-                    "Die Übergangszustandssuche benötigt ein optimiertes Minimum als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch.",
+                    "Die Übergangsstruktursuche benötigt eine optimierte Minimumstruktur als Ausgangsstruktur. Führen Sie zuerst eine Minimumsuche durch.",
                 )
             if body.kind == "ts" and m["ts_restriction"]:
                 raise HTTPException(422, m["ts_restriction"])
             if body.kind == "uvvis" and m["kind"] != "minimum":
                 raise HTTPException(
                     422,
-                    "Die Spektrenrechnung benötigt ein optimiertes Minimum. Führen Sie zuerst eine Minimumsuche durch.",
+                    "Die Spektrenrechnung benötigt eine optimierte Minimumstruktur. Führen Sie zuerst eine Minimumsuche durch.",
                 )
             if body.kind == "uvvis" and m.get("spectrum"):
                 raise HTTPException(
-                    422, "Für dieses Minimum wurde bereits ein Spektrum berechnet."
+                    422,
+                    "Für diese Minimumstruktur wurde bereits ein Spektrum berechnet.",
                 )
             payload["molecule"] = m
         return manager.submit(session, payload)

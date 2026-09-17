@@ -14,7 +14,7 @@ is sufficient where the explanation is already available.
 
 # Verification
 
-When investigating or fixing a transition-state search failure, run
+When investigating or fixing a transition-structure search failure, run
 `pixi run -e dev test-ts`, the opt-in real chemistry regression set. Add a
 deterministic case for any newly reported failing molecule. A focused case is
 useful during debugging, but run the complete set before finishing and report
@@ -24,6 +24,8 @@ any failures. Keep these expensive tests disabled in default test runs.
 
 - Use German for student-facing text and address students consistently as “Sie”.
   Keep developer documentation and code identifiers in English.
+- Describe UI actions naturally instead of quoting control labels. Refer to the
+  structure list, image export, or unit converter by function when guidance is needed.
 - Naming the molecules is a student exercise. Generated structure labels should
   show configuration and substitution pattern (for example, “trans · 4-OMe”),
   not the full molecule name. Show calculation status separately as a badge.
@@ -37,18 +39,20 @@ any failures. Keep these expensive tests disabled in default test runs.
   “meaningful results” or “the model has limitations” with concrete statements.
   Keep uncertainty where scientifically necessary; do not replace it with an
   unsupported promise.
-- Use “Übergangszustand” / “transition state” (TS) in main-workflow labels,
-  actions, and result summaries, including labels for the calculated result.
-  In detailed explanations that distinguish the geometry from the theoretical
-  concept, call the calculated saddle-point geometry “Übergangsstruktur” /
-  “transition structure”. Explain this distinction in optional detail; do not
-  alternate the terms as unexplained synonyms in the main workflow.
+- Use “Übergangsstruktur” / “transition structure” (TS) for the calculated
+  saddle-point geometry, its search, validation, and results throughout the app.
+  Reserve “Übergangszustand” / “transition state” for the theoretical concept
+  and “Übergangszustandstheorie” / “transition-state theory”. Explain the
+  distinction once in the fundamentals; do not alternate the terms as synonyms.
 - Call the calculated barrier “elektronische Energiebarriere” / “electronic energy
   barrier”, with notation ΔE‡. Do not equate it with Arrhenius activation energy
   or Gibbs energy of activation.
 - Distinguish a generated “Startstruktur”, the “Ausgangsstruktur” of a particular
-  calculation, and an optimized “Minimum”. A local minimum is not necessarily
-  the global minimum; numerical convergence alone does not establish accuracy.
+  calculation, and an optimized “Minimumstruktur” / “minimum structure”. Use
+  “Minimum” / “minimum” for the mathematical feature of the energy surface,
+  as in “lokales Minimum” / “local minimum”, not as a label for a geometry.
+  A local minimum is not necessarily the global minimum; numerical convergence
+  alone does not establish accuracy.
 - Distinguish optimization playback, the reaction path, and illustrated molecular
   motions from real-time molecular dynamics. Describe an imaginary frequency by
   its magnitude when comparing it with a numerical threshold.

@@ -63,12 +63,12 @@ excluded from the default suite and must be requested explicitly.
 
 | Command | Purpose |
 | --- | --- |
-| `pixi run -e dev test-ts` | Run selected real minimum-to-transition-state calculations and saved failure cases. |
+| `pixi run -e dev test-ts` | Run selected real minimum-to-transition-structure calculations and saved failure cases. |
 | `pixi run -e dev test-science` | Check the parent molecule's planarity and cis/trans energy ordering in the model. |
 | `ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web` | Include the additional chemistry workflow checks enabled by this environment variable. |
 
 A **regression case** is a fixed input whose result is checked after code changes.
-Whenever investigating or fixing a transition-state search failure, add a
+Whenever investigating or fixing a transition-structure search failure, add a
 reproducible case for the reported molecule and run the complete `test-ts` suite
 before finishing. During debugging, a command such as `pixi run -e dev test-ts -k
 trans-2-Me` selects matching test names only; it does not replace the full run.
@@ -89,7 +89,9 @@ required verification.
 ## Tasks and protocol template
 
 The app bundles its tasks in `src/achprak/web/static/guide.html`. Each
-`section.task` contains a title and a `.protocol-output` paragraph. The task panel
+task contains a title and a `.protocol-output` paragraph. On pages 01 and 02,
+`details.task` provides an individually collapsible task inside a plain page section;
+page 03 still uses `section.task` inside a collapsible page section. The task panel
 shows only the current calculation step, with a closing note pointing to the next
 page. Collapsible sections start closed and retain the student’s chosen state.
 Tasks use descriptive titles without visible task numbering.
@@ -104,6 +106,8 @@ Do not put completed student protocols in this directory.
 
 During the current task review, leave the Word template and its generator unchanged.
 Synchronize all titles, required outputs and answer fields in one final pass.
+Update the generator to read task titles from `details.task > summary` as well
+as `section.task > h3`.
 At that point, run `python scripts/build_protocol.py` in an authoring
 environment with `python-docx` and `lxml`. The script reuses the app's task titles
 and required outputs; it supplies the corresponding answer fields and tables.

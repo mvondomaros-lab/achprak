@@ -63,20 +63,20 @@ const TITLES = {
     "Wählen Sie eine Struktur und das Ziel der Optimierung.",
   ],
   spectrum: [
-    "UV/Vis-Spektrum berechnen",
-    "Berechnen Sie die elektronischen Anregungsenergien und das UV/Vis-Spektrum eines optimierten Minimums.",
+    "Spektrum berechnen",
+    "Berechnen Sie die elektronischen Anregungsenergien und das UV/Vis-Spektrum einer optimierten Minimumstruktur.",
   ],
 };
 const JOBS = {
   template: "Struktur wird erstellt",
-  minimum: "Minimum wird gesucht",
-  ts: "Übergangszustand wird gesucht",
+  minimum: "Minimumstruktur wird gesucht",
+  ts: "Übergangsstruktur wird gesucht",
   uvvis: "UV/Vis-Spektrum wird berechnet",
 };
 const KIND = {
   initial: "Startstruktur",
-  minimum: "Minimum",
-  ts: "Übergangszustand",
+  minimum: "Minimumstruktur",
+  ts: "Übergangsstruktur",
   unconverged: "Optimierung nicht abgeschlossen",
 };
 const HC = 1239.8419843320026,
@@ -350,8 +350,8 @@ function updateControls() {
   const tsRestriction = m?.ts_restriction;
   const minimumRestriction = !tsSelected && m?.kind === "ts";
   $("ts-requirement").textContent = minimumRestriction
-    ? "Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur."
-    : tsRestriction || "Suchen Sie zuerst ein Minimum.";
+    ? "Eine Minimumsuche ausgehend von einer Übergangsstruktur ist hier nicht möglich. Wählen Sie eine Startstruktur."
+    : tsRestriction || "Suchen Sie zuerst eine Minimumstruktur.";
   $("ts-requirement").hidden = !minimumRestriction && (!m || !tsSelected || (m.kind === "minimum" && !tsRestriction));
   $("optimize").disabled =
     state.busy ||
@@ -360,7 +360,7 @@ function updateControls() {
     (!tsSelected && ["minimum", "ts"].includes(m.kind));
   $("optimize").textContent =
     !tsSelected && m?.kind === "minimum"
-      ? "Minimum bereits gefunden"
+      ? "Minimumstruktur bereits gefunden"
       : "Optimierung starten";
   const alreadyCreated = state.molecules.some(
     (molecule) =>
@@ -378,7 +378,7 @@ function updateControls() {
   $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum" || !!m?.spectrum;
   $("spectrum-requirement").hidden = m?.kind === "minimum";
   $("spectrum-requirement").textContent =
-    "Suchen Sie zuerst in Schritt 02 ein Minimum.";
+    "Suchen Sie zuerst in Schritt 02 eine Minimumstruktur.";
   $("calculate-spectrum").textContent = m?.spectrum
     ? "Spektrum bereits berechnet"
     : "Spektrum berechnen";
@@ -468,12 +468,12 @@ function renderState() {
     ? ""
     : m.converged
       ? `Elektronische Energiebarriere ΔE‡: ${fmt(ts.barrier_ev, 4)} eV`
-      : "Übergangszustand noch nicht bestätigt.";
+      : "Übergangsstruktur noch nicht bestätigt.";
   $("ts-details").hidden = state.step !== "optimize" || !ts;
   $("ts-check-result").textContent = !ts
     ? ""
     : ts.connectivity?.verified
-      ? `Die Minimumsuche ausgehend von beiden Seiten des Übergangszustands erreicht ein cis- und ein trans-Minimum.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minima haben anders angeordnete Ringe oder Substituenten als die Minima am Anfang und Ende des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Temperatureffekte sind nicht berücksichtigt.`
+      ? `Die Minimumsuche ausgehend von beiden Seiten der Übergangsstruktur erreicht eine cis- und eine trans-Minimumstruktur.${ts.connectivity.endpoint_conformers_match ? "" : " Die erreichten Minimumstrukturen haben anders angeordnete Ringe oder Substituenten als die Minimumstrukturen am Anfang und Ende des dargestellten Reaktionspfads."} Die elektronische Energiebarriere gilt für den untersuchten Reaktionspfad; Temperatureffekte sind nicht berücksichtigt.`
       : "Die Verbindung zwischen cis und trans wurde nicht bestätigt. Besprechen Sie das Ergebnis mit Ihrer Betreuung.";
   $("ts-check-technical").textContent = !ts
     ? ""
@@ -619,7 +619,7 @@ function renderEnergyHistory(activeStep) {
   const direction = source ? ` · ${source} → ${source === "cis" ? "trans" : "cis"}` : "";
   $("energy-path-meta").textContent = path?.length
     ? `Reaktionspfad im elektronischen Grundzustand${direction}`
-    : exploringTS ? "Übergangszustandssuche · Vorbereitung des Reaktionspfads"
+    : exploringTS ? "Übergangsstruktursuche · Vorbereitung des Reaktionspfads"
       : "Minimumsuche · Energie der Optimierungsschritte";
   $("energy-history").setAttribute("aria-label",
     path?.length ? "Energieprofil des Reaktionspfads" : "Energieverlauf der Suche");
@@ -669,7 +669,7 @@ function renderEnergyHistory(activeStep) {
               title: (items) =>
                 items[0].raw.phase === "path"
                   ? `Struktur auf dem Reaktionspfad ${items[0].raw.image + 1}`
-                  : `${{ endpoint: "Anderes Minimum", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Geometrie des Übergangszustands verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
+                  : `${{ endpoint: "Andere Minimumstruktur", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Geometrie der Übergangsstruktur verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
               label: (item) =>
                 `E = ${fmt(item.raw.energy, 4)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
             },
@@ -724,7 +724,7 @@ function renderEnergyHistory(activeStep) {
       path.reduce((a, b) => (a.energy_ev > b.energy_ev ? a : b));
     energyChart.data.datasets[1].data = selected ? [pathPoint(selected)] : [];
     $("energy-reference").textContent =
-      "ΔE relativ zum Ausgangsminimum · keine Zeitachse.";
+      "ΔE relativ zum Ausgangsstruktur · keine Zeitachse.";
     $("energy-chart").setAttribute(
       "aria-label",
       `Energieprofil des Reaktionspfads mit ${path.length} Strukturen`,
@@ -940,14 +940,14 @@ function displayJob(job) {
       $("job-time").textContent =
         `${fmt(job.elapsed || 0, 0)} s · Schritt ${progress.step} · E = ${fmt(progress.energy_ev, 4)} eV`;
       const phaseTitle = {
-        endpoint: "Minimum der anderen cis/trans-Konfiguration suchen",
+        endpoint: "Minimumstruktur der anderen cis/trans-Konfiguration suchen",
         path_seed: "Reaktionspfad zwischen cis und trans vorbereiten",
         neb: "Strukturen entlang des Reaktionspfads optimieren",
         neb_climb: "Energiebarriere zwischen cis und trans suchen",
-        connectivity: "Verbindung des Übergangszustands zu cis- und trans-Minima prüfen",
-        complete: "Prüfung des Übergangszustands abgeschlossen",
-        refinement: "Geometrie des Übergangszustands verfeinern",
-        vibrations: "Schwingungsfrequenzen zur Prüfung des Übergangszustands berechnen",
+        connectivity: "Verbindung der Übergangsstruktur zu cis- und trans-Minimumstrukturen prüfen",
+        complete: "Prüfung der Übergangsstruktur abgeschlossen",
+        refinement: "Geometrie der Übergangsstruktur verfeinern",
+        vibrations: "Schwingungsfrequenzen zur Prüfung der Übergangsstruktur berechnen",
       }[progress.phase];
       if (phaseTitle) $("job-title").textContent = phaseTitle;
     }
@@ -971,7 +971,7 @@ async function monitor(jobId) {
         if (job.result?.molecule?.converged === false)
           error(
             job.result.molecule.ts_search?.failure_reason ||
-              "Die Optimierung ist noch nicht abgeschlossen. Die zuletzt berechnete Struktur wurde gespeichert. Suchen Sie ausgehend davon ein Minimum, bevor Sie ein Spektrum berechnen.",
+              "Die Optimierung ist noch nicht abgeschlossen. Die zuletzt berechnete Struktur wurde gespeichert. Suchen Sie ausgehend davon eine Minimumstruktur, bevor Sie ein Spektrum berechnen.",
           );
         return job;
       }
@@ -990,13 +990,13 @@ async function monitor(jobId) {
 }
 async function startJob(payload) {
   if (payload.kind === "uvvis" && current()?.spectrum)
-    throw new Error("Für dieses Minimum wurde bereits ein Spektrum berechnet.");
+    throw new Error("Für diese Minimumstruktur wurde bereits ein Spektrum berechnet.");
   if (payload.kind === "minimum" && current()?.kind === "minimum")
     throw new Error(
-      "Diese Struktur ist bereits ein Minimum. Der vorhandene Verlauf bleibt erhalten.",
+      "Diese Struktur ist bereits eine Minimumstruktur. Der vorhandene Verlauf bleibt erhalten.",
     );
   if (payload.kind === "minimum" && current()?.kind === "ts")
-    throw new Error("Eine Minimumsuche ausgehend von einem Übergangszustand ist hier nicht möglich. Wählen Sie eine Startstruktur.");
+    throw new Error("Eine Minimumsuche ausgehend von einer Übergangsstruktur ist hier nicht möglich. Wählen Sie eine Startstruktur.");
   if (state.busy)
     throw new Error("Warten Sie, bis die laufende Berechnung abgeschlossen ist.");
   error("");
@@ -1093,7 +1093,7 @@ function structureLabel(molecule) {
   const direction = isPath
     ? `${configuration} → ${configuration === "cis" ? "trans" : "cis"}`
     : configuration;
-  return `${direction}${molecule.kind === "ts" ? " Übergangszustand" : ""} · ${pattern}`;
+  return `${direction}${molecule.kind === "ts" ? " Übergangsstruktur" : ""} · ${pattern}`;
 }
 function structureGroups(molecules, query = "") {
   const groups = new Map();
@@ -1221,7 +1221,7 @@ $("clear-structures").onclick = handle(async () => {
   if (state.busy || !state.molecules.length) return;
   if (
     !window.confirm(
-      "Alle Startstrukturen, Minima, Übergangszustände und Spektren dieser Sitzung löschen? Dies gilt auch für ausgeblendete Strukturen und kann nicht rückgängig gemacht werden.",
+      "Alle Startstrukturen, Minimumstrukturen, Übergangsstrukturen und Spektren dieser Sitzung löschen? Dies gilt auch für ausgeblendete Strukturen und kann nicht rückgängig gemacht werden.",
     )
   )
     return;
@@ -1413,7 +1413,7 @@ function updateGuide(step) {
 }
 async function guide(step, focus = true) {
   if (!$("guide-content").children.length) {
-    const response = await fetch("static/guide.html?v=ui-45");
+    const response = await fetch("static/guide.html?v=ui-54");
     if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden. Öffnen Sie die Aufgaben erneut.");
     $("guide-content").innerHTML = await response.text(); // Trusted, bundled teaching material.
   }
