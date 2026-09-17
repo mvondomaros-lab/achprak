@@ -92,8 +92,8 @@ The app bundles its tasks in `src/achprak/web/static/guide.html`. Each
 task contains a title and a `.protocol-output` paragraph. On pages 01 and 02,
 `details.task` provides an individually collapsible task inside a plain page section;
 page 03 still uses `section.task` inside a collapsible page section. The task panel
-shows only the current calculation step, with a closing note pointing to the next
-page. Collapsible sections start closed and retain the student’s chosen state.
+shows only the current calculation step, with a separate, initially collapsed “Weitere Schritte” section pointing to the
+next page or final protocol submission. Collapsible sections start closed and retain the student’s chosen state.
 Tasks use descriptive titles without visible task numbering.
 Stable task IDs remain internal identifiers for the protocol generator. Links
 point to explicit, stable labels in `site/theory.md` on GitHub Pages.

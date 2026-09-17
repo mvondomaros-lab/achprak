@@ -1432,13 +1432,14 @@ select {
 .task-panel h3 { font-size: 16px; margin: 20px 0 10px; }
 .task-panel summary { padding: 8px 0; cursor: pointer; font-weight: 600; line-height: 1.4; color: inherit; }
 #guide-content > details > summary { font-size: 18px; }
-.task-panel details.task > summary { font-size: 16px; }
+.task-panel details.task > summary,
+.task-panel .next-steps > summary { font-size: 16px; }
 .task-panel details[open] > summary { color: var(--blue); }
 .task-panel details { margin: 18px 0; padding: 0; font-size: inherit; }
-.task-panel .task-next { margin-top: 24px; color: var(--muted); }
 .task-panel li { margin-bottom: 8px; }
 .task-panel .protocol-output:has(> strong) { padding-top: 12px; border-top: 1px solid var(--line); }
-.task-panel .task { margin: 8px 0; }
+.task-panel .task,
+.task-panel .next-steps { margin: 8px 0; }
 .header-actions { flex-wrap: wrap; }
 @media (min-width: 1380px) {
   main:has(.task-panel:not([hidden])) { max-width: 1960px; }

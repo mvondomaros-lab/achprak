@@ -6,13 +6,13 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-45"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-46"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-34" defer></script>
     <script src="static/vendor/cie-color.js?v=1" defer></script>
     <script src="static/solution-color.js?v=1" defer></script>
-    <script src="static/app.js?v=ui-69" defer></script>
+    <script src="static/app.js?v=ui-70" defer></script>
 </head>
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
@@ -204,7 +204,7 @@
                         findet hier nicht statt. Kleine Kräfte allein bestätigen daher noch kein Minimum.
                     </p>
                     <p>
-                        <strong>Übergangsstruktur:</strong> Zwischen dem Ausgangsstruktur
+                        <strong>Übergangsstruktur:</strong> Zwischen der ausgewählten Minimumstruktur
                         und einer Minimumstruktur der anderen cis/trans-Konfiguration wird ein
                         Reaktionspfad aus 13 Strukturen aufgebaut. Das Verfahren CI-NEB
                         (Climbing-Image Nudged Elastic Band) optimiert diese Strukturen
@@ -231,27 +231,27 @@
                     <p>
                         <strong>Übergangsstruktur:</strong> Eine Geometrie an einem Sattelpunkt erster Ordnung
                         zwischen den beiden Minima.
-                        In einer Richtung
-                        sinkt die Energie bei kleinen Auslenkungen auf beiden Seiten;
-                        in den übrigen inneren Verformungsrichtungen steigt sie.
+                        Bei einer unabhängigen Änderung der Molekülgeometrie sinkt
+                        die Energie in beiden Auslenkungsrichtungen; bei den übrigen
+                        steigt sie. Verschiebungen und Drehungen des gesamten Moleküls
+                        bleiben dabei unberücksichtigt.
                         Das Energieprofil zeigt den
                         berechneten Weg zwischen den beiden Minimumstrukturen. Die elektronische
-                        Energiebarriere ΔE‡ ist die Energie der Übergangsstruktur minus
-                        die Energie des Ausgangsstruktur.
+                        Energiebarriere ΔE‡ ist die Energiedifferenz zwischen der Übergangsstruktur und der Ausgangsstruktur.
                     </p>
                     <h3>Wie wird die Übergangsstruktur geprüft?</h3>
                     <p>
                         Eine Schwingungsrechnung untersucht kleine Auslenkungen der Atome.
-                        Eine imaginäre Frequenz kennzeichnet eine Verformung, bei der
-                        die Energie abnimmt. Diese Verformung ist keine stabile Schwingung.
+                        Eine imaginäre Frequenz kennzeichnet eine instabile Schwingungsmode:
+                        Bei einer Auslenkung entlang dieser Mode nimmt die Energie ab.
                         Für einen Sattelpunkt erster Ordnung muss genau eine solche
-                        unabhängige Verformung vorliegen. Die App verlangt genau eine
+                        unabhängige Mode vorliegen. Die App verlangt genau eine
                         imaginäre Frequenz mit einem Betrag über 20 cm⁻¹. Beträge bis zu diesem Grenzwert werden
                         wegen numerischer Unsicherheiten nicht mitgezählt.
                     </p>
                     <p>
                         Anschließend werden die Atome in beide Richtungen dieser
-                        Verformung ausgelenkt. Minimumsuchen müssen von dort eine
+                        Mode ausgelenkt. Minimumsuchen müssen von dort eine
                         cis- und eine trans-Minimumstruktur erreichen. Diese Prüfung bestätigt
                         die Verbindung im verwendeten Modell; sie simuliert keinen
                         zeitlichen Reaktionsablauf.
