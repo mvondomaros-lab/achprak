@@ -429,8 +429,8 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
   context.state.live.replay = true;
   context.applyLiveGeometry();
   assert.equal(elements.get("properties-context").textContent,
-    "Wiedergabe · Werte der Struktur auf dem Reaktionspfad 4");
-  assert.equal(elements.get("geometry-badge").textContent, "Wiedergabe");
+    "Pfadstruktur · Werte der Struktur auf dem Reaktionspfad 4");
+  assert.equal(elements.get("geometry-badge").textContent, "Pfadstruktur");
   assert.equal(elements.get("geometry-badge").classList.live, false);
   assert.equal(elements.get("geometry-badge").classList.playback, true);
   assert.equal(elements.get("image-download").disabled, false);

@@ -867,15 +867,21 @@ function applyLiveGeometry() {
       : "—";
   }
   $("properties-context").hidden = false;
-  const displayStatus = progress.replay ? "Wiedergabe" : "Berechnung läuft";
+  const structureLabel = progress.phase === "optimization" && state.previewIndex === 0
+    ? "Startstruktur"
+    : progress.phase === "path" || Number.isInteger(progress.neb_image)
+      ? "Pfadstruktur"
+      : "Zwischenstruktur";
+  const displayStatus = progress.replay ? structureLabel : "Berechnung läuft";
+  const pathImage = progress.image ?? progress.neb_image;
   $("properties-context").textContent = !in3D
     ? "Werte der Ausgangsstruktur · 2D"
-    : Number.isInteger(progress.neb_image)
-      ? `${displayStatus} · Werte der Struktur auf dem Reaktionspfad ${progress.neb_image + 1}`
+    : Number.isInteger(pathImage)
+      ? `${displayStatus} · Werte der Struktur auf dem Reaktionspfad ${pathImage + 1}`
       : `${displayStatus} · Werte des Zwischenschritts ${progress.step}`;
   $("geometry-badge").hidden = false;
   $("geometry-badge").textContent = in3D
-    ? progress.replay ? "Wiedergabe" : "Live"
+    ? progress.replay ? structureLabel : "Live"
     : "Ausgangsstruktur · 2D";
   $("geometry-badge").classList.remove("initial", "minimum", "ts");
   $("geometry-badge").classList.toggle("live", in3D && state.busy && !progress.replay);
