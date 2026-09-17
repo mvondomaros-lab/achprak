@@ -31,6 +31,7 @@ PAGES = (
     ("theory/energy", "Energien und Strukturoptimierung"),
     ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
     ("installation", "Webapp starten"),
+    ("tasks", "Aufgaben und Protokoll"),
 )
 
 
@@ -134,7 +135,8 @@ def build(output: Path = OUTPUT) -> None:
             navigation += (
                 '</ul></section><section class="nav-group"><h2>Durchführung</h2>'
             )
-            navigation += nav_link("installation", "Webapp starten") + "</section>"
+            navigation += nav_link("installation", "Webapp starten")
+            navigation += nav_link("tasks", "Aufgaben und Protokoll") + "</section>"
             chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
             if slug in chapter_keys:
                 eyebrow = "Grundlagen"
@@ -142,6 +144,7 @@ def build(output: Path = OUTPUT) -> None:
                 eyebrow = {
                     "index": "ACh-Pr · TC Versuch",
                     "installation": "Durchführung",
+                    "tasks": "Durchführung",
                 }[slug]
             pagination = []
             for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
