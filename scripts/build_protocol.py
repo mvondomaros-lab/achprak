@@ -21,8 +21,8 @@ OUTPUT = STATIC / "materials/protokollvorlage.docx"
 def build():
     source = html.fromstring((STATIC / "guide.html").read_text())
     tasks = {
-        el.get("id").removeprefix("task-").replace("-", "."): el
-        for el in source.xpath('.//section[@class="task"]')
+        el.get("id"): el
+        for el in source.xpath('.//details[@class="task"]')
     }
     doc = Document()
     sec = doc.sections[0]
@@ -75,9 +75,9 @@ def build():
         for run in para.runs:
             run.font.color.rgb = RGBColor.from_string("586B80")
 
-    def task(number):
-        el = tasks[number]
-        title = el.find("h3").text.strip()
+    def task(task_id):
+        el = tasks[task_id]
+        title = el.find("summary").text.strip()
         doc.add_heading(title, 2)
         text = el.xpath('.//p[@class="protocol-output"]')[0].text_content()
         p(text.removeprefix("Für Ihr Protokoll:").strip())
@@ -144,59 +144,57 @@ def build():
     p(
         "Speichern Sie die Datei regelmäßig. Laden Sie das ausgefüllte Protokoll in ILIAS hoch. Die Grundlagen finden Sie unter https://mvondomaros-lab.github.io/achprak/theory/."
     )
-    doc.add_heading("Struktur erstellen", 1)
-    task("1.1")
-    for li in tasks["1.1"].xpath(".//li"):
+    doc.add_heading("Strukturen erstellen", 1)
+    task("task-compare-configurations")
+    answer("[Erklärung, Namen und 3D-Ansichten von cis- und trans-Azobenzol]")
+    task("task-build-structures")
+    for li in tasks["task-build-structures"].xpath(".//li"):
         answer(li.text_content() + ": [Strukturformel einfügen]")
-    task("1.3")
-    answer("[Name und zwei Strukturformeln]")
-    answer("Änderung beim Wechsel zwischen cis und trans: [Text]")
+    answer("Positionsangabe 4,4′: [Erklärung]")
+    task("task-interpret-structure-formulas")
+    answer("[Name der Verbindung]")
     answer("Überlagerungen in der Zeichnung und räumliche Anordnung: [Text]")
 
     doc.add_page_break()
-    doc.add_heading("Startstrukturen untersuchen", 1)
-    for num in ("2.1", "2.2"):
-        task(num)
-        answer("[Beobachtung und 3D-Ansicht]")
-    task("2.3")
+    doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)
+    task("task-examine-ring-geometry")
     table(
-        ["Startstruktur", "Elektronische Energie / eV"],
-        [["cis", "[Wert]"], ["trans", "[Wert]"]],
-        [6, 11],
+        ["Struktur", "Elektronische Energie / eV", "Diederwinkel / °", "Ringabstand / pm"],
+        [
+            [label, "[Wert]", "[Wert]", "[Wert]"]
+            for label in (
+                "cis-Startstruktur", "trans-Startstruktur",
+                "cis-Minimumstruktur", "trans-Minimumstruktur",
+            )
+        ],
+        [5, 4, 4, 4],
     )
-    answer("ΔE / (kJ/mol): [Wert]\nVorzeichen und energieärmere Startstruktur: [Text]")
-    task("2.4")
-    answer(
-        "trans geschätzt: [Wert] °    trans berechnet: [Wert] °    cis berechnet: [Wert] °"
-    )
-    task("2.5")
-    answer("cis: [Wert] pm    trans: [Wert] pm\nDefinition des Ringabstands: [Text]")
-
-    doc.add_page_break()
-    doc.add_heading("Minima und Übergangszustand", 1)
-    task("3.1")
-    answer(
-        "Ecis: [Wert] eV    Etrans: [Wert] eV    ΔE: [Wert] kJ/mol\nPlanarität und Vergleich mit den Startstrukturen: [Text]"
-    )
-    task("3.2")
+    answer("Anordnung der Ringe: [Text]")
+    task("task-compare-optimized-geometries")
+    answer("[Geometrieänderung und Ansichten vor und nach der Optimierung]")
+    answer("ΔE / (kJ/mol): [Wert]\nVorzeichen und energieärmere Konfiguration: [Text]")
+    task("task-examine-substituent-geometry")
+    answer("[Erwartung, Beobachtung und zwei 3D-Ansichten]")
+    task("task-analyze-reaction-path")
     answer("[Energieprofil und Beschreibung des Reaktionspfads]")
-    task("3.3")
-    answer(
-        "ETS: [Wert] eV    Etrans: [Wert] eV\nΔE‡: [Wert] kJ/mol    ΔE‡ / RT: [Wert ohne Einheit]\nInterpretation und Grenzen: [Text]"
-    )
-    task("3.4")
+    answer("Verbindung zwischen cis und trans bestätigt: [Ergebnis der Prüfung]")
+    task("task-compare-energy-barriers")
     table(
-        ["Minimum", "Diederwinkel / °", "Ringabstand / pm"],
-        [["cis", "[Wert]", "[Wert]"], ["trans", "[Wert]", "[Wert]"]],
+        ["Richtung", "ΔE‡ / (kJ/mol)", "ΔE‡ / RT bei 298 K"],
+        [["trans → cis", "[Wert]", "[Wert]"], ["cis → trans", "[Wert]", "[Wert]"]],
         [5, 6, 6],
     )
-    answer("Vergleich mit den Startstrukturen: [Text]")
+    answer("Unterschied der Barrieren und thermische Überwindung: [Text]")
+    task("task-examine-substituent-barrier")
+    answer("Derivat und Vermutung: [Text]")
+    answer("[Energieprofil und Ansicht der Übergangsstruktur]")
+    answer("Vergleich der elektronischen Energiebarrieren und Geometrien: [Text]")
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
-    task("4.1")
+    task("task-compare-isomer-spectra")
     table(
-        ["Minimum", "Maximum / eV", "Wellenlänge / nm", "UV oder sichtbar"],
+        ["Minimumstruktur", "Maximum / eV", "Wellenlänge / nm", "UV oder sichtbar"],
         [
             ["cis", "[Wert]", "[Wert]", "[Bereich]"],
             ["trans", "[Wert]", "[Wert]", "[Bereich]"],
@@ -213,7 +211,7 @@ def build():
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
-    task("4.2")
+    task("task-compare-substituent-spectra")
     table(
         ["Substitution der trans-Form", "Maximum / eV", "Wellenlänge / nm"],
         [
@@ -236,7 +234,7 @@ def build():
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
-    task("4.3")
+    task("task-plan-experiment-series")
     answer("Planung und Verteilung der Rechnungen in der Gruppe: [Text]")
     table(
         [

@@ -1429,15 +1429,15 @@ test("tasks follow navigation without opening collapsible sections", () => {
   lab.navigate("optimize");
   assert.equal(lab.$("guide-build").hidden, true);
   assert.equal(lab.$("guide-optimize").hidden, false);
-  lab.$("task-3-1").open = true;
-  lab.$("task-2-1").open = false;
+  lab.$("task-compare-optimized-geometries").open = true;
+  lab.$("task-examine-ring-geometry").open = false;
   lab.navigate("spectrum");
   assert.equal(lab.$("guide-optimize").hidden, true);
   assert.equal(lab.$("guide-spectrum").hidden, false);
   assert.equal(lab.$("guide-spectrum").open, false);
   lab.navigate("optimize");
-  assert.equal(lab.$("task-3-1").open, true);
-  assert.equal(lab.$("task-2-1").open, false);
+  assert.equal(lab.$("task-compare-optimized-geometries").open, true);
+  assert.equal(lab.$("task-examine-ring-geometry").open, false);
 });
 
 test("task loading can retry and opens the current step without trapping focus", async () => {

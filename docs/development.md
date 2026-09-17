@@ -93,8 +93,9 @@ task contains a title and a `.protocol-output` paragraph. On all three pages,
 `details.task` provides an individually collapsible task inside a plain page section. The task panel
 shows only the current calculation step, with a separate, initially collapsed “Weitere Schritte” section pointing to the
 next page or final protocol submission. Collapsible sections start closed and retain the student’s chosen state.
-Tasks use descriptive titles without visible task numbering.
-Stable task IDs remain internal identifiers for the protocol generator. Links
+Tasks use short German action titles that are unique across all three pages.
+Descriptive English task IDs (for example, `task-compare-configurations`) remain
+stable internal identifiers, independent of page order and title wording. Links
 point to explicit, stable labels in `site/theory.md` on GitHub Pages.
 
 The editable download is
@@ -103,10 +104,10 @@ packages and served locally under `static/materials/`, including through the Hub
 proxy. Students complete the document outside the app and submit through ILIAS.
 Do not put completed student protocols in this directory.
 
-During the current task review, leave the Word template and its generator unchanged.
-Synchronize all titles, required outputs and answer fields in one final pass.
-Update the generator to read task titles from `details.task > summary` as well
-as `section.task > h3`.
+During the current task review, leave the Word download unchanged.
+The generator reads titles from `details.task > summary` and uses descriptive task IDs.
+Its task references and answer fields follow the current exercise structure.
+Review all titles, required outputs and answer fields together before regenerating the download.
 At that point, run `python scripts/build_protocol.py` in an authoring
 environment with `python-docx` and `lxml`. The script reuses the app's task titles
 and required outputs; it supplies the corresponding answer fields and tables.
