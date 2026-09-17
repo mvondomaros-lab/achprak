@@ -1,5 +1,8 @@
 /* Shared by the calculation app and the static teaching website. */
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   min-height: 72px;
   display: flex;
   align-items: center;
@@ -37,6 +40,6 @@
 }
 .header :is(button, .quiet):hover { background: #294665; filter: none; }
 @media (max-width: 720px) {
-  .header { flex-wrap: wrap; gap: 12px; }
+  .header { position: static; flex-wrap: wrap; gap: 12px; }
   .header .brand { font-size: 20px; }
 }

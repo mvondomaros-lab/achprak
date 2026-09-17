@@ -1401,8 +1401,8 @@ select {
     display: grid; grid-template-columns: minmax(0, 1fr) 360px;
     align-items: start; gap: 24px;
   }
-  .task-panel { grid-column: 2; grid-row: 1; position: sticky; top: 20px;
-    max-height: calc(100dvh - 40px); overflow-y: auto; margin: 0; }
+  .task-panel { grid-column: 2; grid-row: 1; position: sticky; top: 92px;
+    max-height: calc(100dvh - 112px); overflow-y: auto; margin: 0; }
   .learning-layout > .workbench { grid-column: 1; grid-row: 1; min-width: 0; }
   .learning-layout:has(.task-panel:not([hidden])) .workbench {
     grid-template-columns: 280px minmax(0, 1fr); gap: 16px;
