@@ -2,8 +2,6 @@
 
 <p class="subtitle">Wie Licht die Struktur von Molekülen verändert</p>
 
-## Motivation
-
 Molekulare Photoschalter sind Verbindungen, deren räumliche Struktur sich durch Lichtbestrahlung verändern lässt.
 Die beteiligten Formen unterscheiden sich in ihren chemischen und physikalischen Eigenschaften.
 Bei Azobenzol ermöglicht die Lichtabsorption eine Umwandlung zwischen der cis- und der trans-Form.
