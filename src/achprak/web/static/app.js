@@ -725,7 +725,7 @@ function renderEnergyHistory(activeStep) {
       path.reduce((a, b) => (a.energy_ev > b.energy_ev ? a : b));
     energyChart.data.datasets[1].data = selected ? [pathPoint(selected)] : [];
     $("energy-reference").textContent =
-      "ΔE bezogen auf die Ausgangsstruktur · Pfadkoordinate, keine Zeitachse.";
+      "ΔE bezogen auf die Ausgangsstruktur";
     $("energy-chart").setAttribute(
       "aria-label",
       `Energieprofil des Reaktionspfads mit ${path.length} Strukturen`,
