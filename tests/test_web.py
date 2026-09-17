@@ -601,3 +601,40 @@ def test_session_hub_navigation(client, monkeypatch, hub_env, expected):
     for key, value in hub_env.items():
         monkeypatch.setenv(key, value)
     assert client.get("/api/session").json()["hub"] == expected
+
+
+def test_repeated_template_reuses_start_and_preserves_results(client, app):
+    session = next(iter(app.state.manager.sessions.values()))
+    settings = {"configuration": "trans", "substituents": ["H"] * 10}
+    initial = {"id": "start", "kind": "initial", "settings": settings}
+    minimum = {"id": "minimum", "kind": "minimum", "parent_id": "start"}
+    session.molecules.update(start=initial, minimum=minimum)
+    # Reuse also works when the session has reached its structure limit.
+    session.molecules.update(
+        {str(i): {"id": str(i), "kind": "minimum"} for i in range(98)}
+    )
+    for _ in range(2):
+        response = client.post("/api/jobs", headers=HEADERS, json={"kind": "template"})
+        assert response.status_code == 202
+        job = response.json()
+        assert job["status"] == "complete"
+        assert job["result"]["molecule"] == initial
+        assert (
+            client.get(f"/api/jobs/{job['id']}").json()["result"]["molecule"] == initial
+        )
+        assert job["id"] not in app.state.manager.tasks
+    assert len(session.molecules) == 100
+    assert session.molecules["minimum"] == minimum
+    session.molecules = {"start": initial, "minimum": minimum}
+    for different in [
+        {**settings, "configuration": "cis"},
+        {**settings, "substituents": ["Me"] + ["H"] * 9},
+    ]:
+        response = client.post(
+            "/api/jobs",
+            headers=HEADERS,
+            json={"kind": "template", "settings": different},
+        )
+        assert response.status_code == 202
+        assert response.json()["status"] == "queued"
+        client.delete(f"/api/jobs/{response.json()['id']}", headers=HEADERS)

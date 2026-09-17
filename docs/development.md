@@ -85,3 +85,43 @@ Student-facing text is German and addresses students as **Sie**. Technical
 identifiers and developer documentation are English. Follow
 [AGENTS.md](../AGENTS.md) for scientific terminology, audience conventions and
 required verification.
+
+## Tasks and protocol template
+
+The app bundles its tasks in `src/achprak/web/static/guide.html`. Each
+`section.task` contains a title and a `.protocol-output` paragraph. The task panel
+shows only the current calculation step, with a closing note pointing to the next
+page. Collapsible sections start closed and retain the student’s chosen state.
+Tasks use descriptive titles without visible task numbering.
+Stable task IDs remain internal identifiers for the protocol generator. Links
+point to explicit, stable labels in `site/theory.md` on GitHub Pages.
+
+The editable download is
+`src/achprak/web/static/materials/protokollvorlage.docx`. It is included in Python
+packages and served locally under `static/materials/`, including through the Hub
+proxy. Students complete the document outside the app and submit through ILIAS.
+Do not put completed student protocols in this directory.
+
+During the current task review, leave the Word template and its generator unchanged.
+Synchronize all titles, required outputs and answer fields in one final pass.
+At that point, run `python scripts/build_protocol.py` in an authoring
+environment with `python-docx` and `lxml`. The script reuses the app's task titles
+and required outputs; it supplies the corresponding answer fields and tables.
+Update those tables when the required quantities or molecules change. Regeneration
+replaces the DOCX, so make maintained changes in the script and task HTML.
+Render the resulting Word document and inspect every page before release.
+Document-authoring dependencies are not required to run the app.
+
+`site/teaching.css` uses the app's navy, blue, neutral colours and typography,
+with the same palette in the protocol's tables. MyST includes it through
+[`site.options.style`](https://mystmd.org/guide/website-style).
+Preview with the existing `site` task; verify the Pages build using
+`cd site` followed by `BASE_URL=/achprak pixi run -e dev myst build --html`.
+Keep task titles, units, terminology and the protocol's answer fields aligned.
+
+## Substituent display labels
+
+Student-facing text and structure labels use CH₃, OCH₃ and N(CH₃)₂.
+The API, saved settings and benchmark case identifiers retain `Me`, `OMe`
+and `NMe2` for compatibility. Translate these identifiers at display time;
+do not change chemistry inputs or stored identifiers to Unicode labels.

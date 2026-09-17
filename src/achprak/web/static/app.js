@@ -2,8 +2,8 @@
 const $ = (id) => document.getElementById(id);
 const SUBS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"];
 function substituentLabel(text) {
-  return text.replace(/\b(?:NMe2|CF3|NO2)\b/g, (sub) =>
-    ({ NMe2: "NMe₂", CF3: "CF₃", NO2: "NO₂" })[sub],
+  return text.replace(/\b(?:NMe2|OMe|Me|CF3|NO2)\b/g, (sub) =>
+    ({ Me: "CH₃", OMe: "OCH₃", NMe2: "N(CH₃)₂", CF3: "CF₃", NO2: "NO₂" })[sub],
   );
 }
 for (let r = 0; r < 2; r++) {
@@ -362,7 +362,17 @@ function updateControls() {
     !tsSelected && m?.kind === "minimum"
       ? "Minimum bereits gefunden"
       : "Optimierung starten";
-  $("create").disabled = state.busy;
+  const alreadyCreated = state.molecules.some(
+    (molecule) =>
+      molecule.kind === "initial" &&
+      molecule.settings?.configuration ===
+        document.querySelector("input[name=configuration]:checked").value &&
+      molecule.settings.substituents.every((sub, i) => sub === $("sub-" + i).value),
+  );
+  $("create").disabled = state.busy || alreadyCreated;
+  $("create").textContent = alreadyCreated
+    ? "Struktur bereits erstellt"
+    : "Struktur erstellen";
   $("molecule-select").disabled = state.busy || !selectableMolecules().length;
   $("clear-structures").disabled = state.busy || !state.molecules.length;
   $("calculate-spectrum").disabled = state.busy || m?.kind !== "minimum" || !!m?.spectrum;
@@ -493,6 +503,7 @@ function navigate(step) {
       ? state.resultSelection
       : state.selected;
   state.step = step;
+  updateGuide(step);
   selectMolecule(selection, step !== "build");
   if (step === "optimize") state.mode = "3d";
   document.querySelectorAll("[data-step]").forEach((button) => {
@@ -952,6 +963,8 @@ async function monitor(jobId) {
       const job = await api(`jobs/${jobId}`);
       displayJob(job);
       if (!["queued", "running"].includes(job.status)) {
+        if (job.kind === "template" && job.result?.molecule?.id)
+          state.buildMode = "2d";
         await refresh(job.result?.molecule?.id, true);
         displayJob(job);
         if (job.error) error(job.error);
@@ -1041,6 +1054,7 @@ function builderPayload() {
   );
   return { kind: "template", settings: { configuration, substituents } };
 }
+$("builder").addEventListener("change", updateControls);
 $("builder").addEventListener(
   "submit",
   handle(() => startJob(builderPayload())),
@@ -1390,21 +1404,39 @@ for (const key of ["ev", "kj", "nm"])
   $("convert-" + key).oninput = () => convert(key);
 convert("ev");
 $("converter-open").onclick = () => $("converter").showModal();
-async function guide(step) {
+function updateGuide(step) {
+  for (const key of Object.keys(TITLES)) {
+    const section = $("guide-" + key);
+    if (!section) continue;
+    section.hidden = key !== step;
+  }
+}
+async function guide(step, focus = true) {
   if (!$("guide-content").children.length) {
-    const response = await fetch("static/guide.html?v=ui-33");
-    if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden.");
+    const response = await fetch("static/guide.html?v=ui-45");
+    if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden. Öffnen Sie die Aufgaben erneut.");
     $("guide-content").innerHTML = await response.text(); // Trusted, bundled teaching material.
   }
-  for (const key of Object.keys(TITLES)) $("guide-" + key).open = key === step;
-  $("guide").showModal();
-  if (step) {
-    const section = $("guide-" + step);
-    section.open = true;
-    section.scrollIntoView({ block: "start" });
-  } else $("guide").scrollTop = 0;
+  updateGuide(state.step);
+  $("guide").hidden = false;
+  $("guide-open").setAttribute("aria-expanded", "true");
+  if (focus) $("guide-title").focus();
+  window.dispatchEvent(new Event("resize"));
 }
-$("guide-open").onclick = handle(() => guide(state.step));
+function closeGuide() {
+  $("guide").hidden = true;
+  $("guide-open").setAttribute("aria-expanded", "false");
+  $("guide-open").focus();
+  window.dispatchEvent(new Event("resize"));
+}
+$("guide-open").onclick = handle(() => $("guide").hidden ? guide(state.step) : closeGuide());
+$("guide-close").onclick = closeGuide;
+$("guide").addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeGuide();
+  }
+});
 async function boot() {
   try {
     const data = await refresh();
@@ -1492,3 +1524,6 @@ if (document.modelContext?.registerTool) {
       document.modelContext.registerTool(tool, { signal: lifecycle.signal }),
     ).catch(console.warn);
 }
+
+// Task loading must not delay restoration of calculations.
+handle(() => guide(state.step, false))();

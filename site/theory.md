@@ -1,9 +1,10 @@
 # Theoretische Grundlagen
 
+(molecular-structures)=
 ## Azobenzol
 
 In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
-Es besteht aus zwei Phenylgruppen, die über eine Azobrücke (–N=N–) miteinander verbunden sind.
+Es besteht aus zwei Phenylgruppen, die über eine Azogruppe (–N=N–) miteinander verbunden sind.
 
 :::{figure} ../figures/drawings/azobenzene.svg
 :width: 350px
@@ -18,7 +19,7 @@ Azobenzol besteht aus 12 Kohlenstoff-, 10 Wasserstoff- und 2 Stickstoffatomen un
 C₁₂H₁₀N₂.
 
 In den beiden Phenylringen ist jedes Kohlenstoffatom mit zwei weiteren Kohlenstoffatomen verbunden. Je ein
-Kohlenstoffatom pro Ring bindet die Azobrücke. Die übrigen Kohlenstoffatome tragen jeweils ein Wasserstoffatom.
+Kohlenstoffatom pro Ring bindet die Azogruppe. Die übrigen Kohlenstoffatome tragen jeweils ein Wasserstoffatom.
 
 Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstellen:
 
@@ -55,7 +56,7 @@ Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können meh
 
 Die Nummerierung der Kohlenstoffatome im Grundgerüst legt die Positionsangaben der Substituenten fest.
 Beim Azobenzol werden die Kohlenstoffatome des ersten Phenylrings mit 1–6 und die des zweiten Rings mit 1′–6′
-nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, die direkt an die Azobrücke gebunden sind.
+nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, die direkt an die Azogruppe gebunden sind.
 In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeigersinn) hängt normalerweise von den
 vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
 
@@ -70,14 +71,16 @@ Wird beispielsweise am Kohlenstoffatom 2 ein Wasserstoffatom durch ein Chloratom
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
-| Gruppenformel | Abkürzung | Name des Substituenten   |
-|--------------|-----------|--------------------------|
-| CH₃          | Me        | Methyl                   |
-| OCH₃         | OMe       | Methoxy                  |
-| N(CH₃)₂      | NMe₂      | (Dimethylamino)          |
-| CF₃          | CF₃       | (Trifluormethyl)         |
-| C≡N          | CN        | Cyano                    |
-| NO₂          | NO₂       | Nitro                    |
+| Gruppenformel | Name des Substituenten |
+|---------------|-----------------------|
+| CH₃           | Methyl                |
+| OCH₃          | Methoxy               |
+| N(CH₃)₂       | (Dimethylamino)        |
+| CF₃           | (Trifluormethyl)       |
+| C≡N           | Cyano                 |
+| NO₂           | Nitro                 |
+
+Die Cyanogruppe (–C≡N) wird in der Auswahl als CN angezeigt.
 
 H steht in der Auswahl für ein Wasserstoffatom; an dieser Position wird kein Substituent eingeführt.
 
@@ -95,9 +98,9 @@ handelt:
 :::
 ::::
 
-Durch die Azobrücke kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
+Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
 Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
-Seiten der Azobrücke stehen.
+Seiten der Azogruppe stehen.
 Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 
 ::::{seealso} Ergänzung: *E*,*Z*-Nomenklatur
@@ -186,6 +189,7 @@ Die untere Reihe vergrößert den sichtbaren Teil des Spektrums.
 Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Spectre.svg).
 :::
 
+(light-absorption)=
 ## Absorption elektromagnetischer Strahlung
 
 Moleküle können mit Licht wechselwirken, indem sie dieses absorbieren. Wie diese Wechselwirkung abläuft, wird durch die
@@ -388,6 +392,7 @@ $$
 Der negative Wert bedeutet, dass die *trans*-Struktur im verwendeten Modell eine niedrigere elektronische
 Energie besitzt. Daraus allein lässt sich weder die Reaktionsgeschwindigkeit noch die freie Reaktionsenergie bestimmen.
 
+(structure-optimization)=
 ## Strukturoptimierung
 
 Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in ihren Atompositionen – und damit auch in

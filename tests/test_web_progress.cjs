@@ -994,13 +994,16 @@ test("structure picker groups chemical identities and keeps variants individuall
     },
   ];
   assert.equal(context.structureLabel(molecules[0]), "cis · unsubstituiert");
+  assert.equal(context.substituentLabel("Me OMe NMe2 CF3 NO2"), "CH₃ OCH₃ N(CH₃)₂ CF₃ NO₂");
+  assert.equal(context.substituentLabel("CH₃ OCH₃ N(CH₃)₂"), "CH₃ OCH₃ N(CH₃)₂");
+
   assert.equal(context.structureGroupLabel(molecules[3]), "cis · unsubstituiert");
-  assert.equal(context.structureGroupLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans · 4-OMe");
+  assert.equal(context.structureGroupLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans · 4-OCH₃");
   assert.equal(context.structureLabel(molecules[3]), "cis → trans Übergangszustand · unsubstituiert");
-  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans → cis Übergangszustand · 4-OMe");
+  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "ts" }), "trans → cis Übergangszustand · 4-OCH₃");
   assert.equal(context.structureLabel(molecules[5]), "trans · 2-F");
-  assert.equal(context.structureLabel({ base_name: "cis-4-F, 4′-NMe2-Azobenzol", kind: "minimum" }), "cis · 4-F, 4′-NMe₂");
-  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "unconverged", ts_search: {} }), "trans → cis · 4-OMe");
+  assert.equal(context.structureLabel({ base_name: "cis-4-F, 4′-NMe2-Azobenzol", kind: "minimum" }), "cis · 4-F, 4′-N(CH₃)₂");
+  assert.equal(context.structureLabel({ base_name: "trans-4-OMe-Azobenzol", kind: "unconverged", ts_search: {} }), "trans → cis · 4-OCH₃");
   const groups = context.structureGroups(molecules);
   assert.equal(groups.length, 3);
   assert.equal(groups[0].name, "cis · unsubstituiert");
@@ -1033,6 +1036,7 @@ function selectionLab(molecules) {
   });
   loadSelectionFunctions(context);
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  vm.runInContext(app.slice(app.indexOf("function updateGuide("), app.indexOf("async function guide(")), context);
   vm.runInContext(
     app.slice(
       app.indexOf("function navigate("),
@@ -1368,8 +1372,8 @@ test("picker groups by starting configuration and substitution without redundant
   context.renderStructureOptions();
   const groups = elements.get("structure-options").children;
   assert.equal(groups.length, 2);
-  assert.equal(groups[0].children[0].textContent, "trans · 4-OMe");
-  assert.equal(groups[1].children[0].textContent, "cis · 4-OMe");
+  assert.equal(groups[0].children[0].textContent, "trans · 4-OCH₃");
+  assert.equal(groups[1].children[0].textContent, "cis · 4-OCH₃");
   const buttons = groups[0].children.slice(2).map((row) => row.children[0]);
   const minimum = buttons.find((button) => button.attributes["aria-current"] === "true");
   assert.equal(minimum.children[0].textContent, "Minimum");
@@ -1377,13 +1381,13 @@ test("picker groups by starting configuration and substitution without redundant
   const ts = buttons.find((button) => button.children[0].textContent === "Übergangszustand");
   assert.equal(ts.children[0].children.length, 0);
   assert.equal(ts.children.length, 1);
-  assert.equal(ts.attributes["aria-label"], "trans · 4-OMe · Übergangszustand");
+  assert.equal(ts.attributes["aria-label"], "trans · 4-OCH₃ · Übergangszustand");
   const failed = groups[1].children[2].children[0];
   assert.equal(failed.children[0].textContent, "Optimierung nicht abgeschlossen");
   for (const button of [...buttons, failed]) {
     assert.doesNotMatch(button.attributes["aria-label"], /Azobenzol|Ausgangsminimum/);
   }
-  elements.get("structure-search").value = "cis · 4-OMe";
+  elements.get("structure-search").value = "cis · 4-OCH₃";
   context.renderStructureOptions();
   assert.equal(elements.get("structure-options").children.length, 1);
   assert.equal(elements.get("structure-options").children[0].children.length, 3);
@@ -1417,4 +1421,119 @@ test("Logout uses the public Hub URL and disappears in local mode", async () => 
   assert.equal(elements.get("hub-logout").hidden, true);
   assert.equal(elements.get("hub-logout").href, "");
   assert.equal(elements.get("hub-logout").title, "");
+});
+
+test("tasks follow navigation without opening collapsible sections", () => {
+  const lab = selectionLab([]);
+  for (const step of ["build", "optimize", "spectrum"]) lab.$("guide-" + step).open = false;
+  lab.navigate("optimize");
+  assert.equal(lab.$("guide-build").hidden, true);
+  assert.equal(lab.$("guide-optimize").hidden, false);
+  assert.equal(lab.$("guide-optimize").open, false);
+  lab.$("guide-optimize").open = true;
+  lab.navigate("spectrum");
+  assert.equal(lab.$("guide-optimize").hidden, true);
+  assert.equal(lab.$("guide-spectrum").hidden, false);
+  assert.equal(lab.$("guide-spectrum").open, false);
+  lab.navigate("optimize");
+  assert.equal(lab.$("guide-optimize").open, true);
+});
+
+test("task loading can retry and opens the current step without trapping focus", async () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  let focused = null;
+  let succeeds = false;
+  const lab = vm.createContext({
+    state: { step: "build" },
+    TITLES: { build: [], optimize: [], spectrum: [] },
+    Event: class {},
+    window: { dispatchEvent() {} },
+    fetch: async () => ({ ok: succeeds, text: async () => "<p>Tasks</p>" }),
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, {
+        children: [], hidden: true,
+        setAttribute(key, value) { this[key] = value; },
+        focus() { focused = id; },
+      });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("function updateGuide("), app.indexOf('$("guide-open").onclick')), lab);
+  await assert.rejects(lab.guide("build"), /Aufgaben konnten nicht geladen/);
+  assert.equal(lab.$("guide").hidden, true);
+  succeeds = true;
+  lab.state.step = "spectrum";
+  await lab.guide("build", false);
+  assert.equal(lab.$("guide-spectrum").hidden, false);
+  assert.equal(lab.$("guide-build").hidden, true);
+  assert.equal(lab.$("guide-open")["aria-expanded"], "true");
+  assert.equal(focused, null);
+  lab.closeGuide();
+  assert.equal(lab.$("guide").hidden, true);
+  assert.equal(lab.$("guide-open")["aria-expanded"], "false");
+  assert.equal(focused, "guide-open");
+});
+
+
+test("new structures reset the build view to 2D while failed builds and calculations preserve it", async () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  for (const [kind, result, expected] of [
+    ["template", { molecule: { id: "new" } }, "2d"],
+    ["template", undefined, "3d"],
+    ["minimum", { molecule: { id: "minimum" } }, "3d"],
+  ]) {
+    let modeAtRefresh;
+    const context = vm.createContext({
+      state: { buildMode: "3d" },
+      api: async () => ({ kind, status: result ? "completed" : "failed", result }),
+      refresh: async () => { modeAtRefresh = context.state.buildMode; },
+      displayJob() {},
+      updateControls() {},
+      renderEnergyHistory() {},
+    });
+    vm.runInContext(app.slice(app.indexOf("async function monitor("), app.indexOf("async function startJob(")), context);
+    await context.monitor("job");
+    assert.equal(modeAtRefresh, expected);
+  }
+});
+
+test("builder disables existing starting structures and updates when settings change", () => {
+  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const elements = new Map();
+  let configuration = "trans";
+  const molecule = {
+    kind: "initial",
+    settings: { configuration: "trans", substituents: Array(10).fill("H") },
+  };
+  const context = vm.createContext({
+    state: { molecules: [molecule], busy: false, step: "build" },
+    current: () => null,
+    selectableMolecules: () => [],
+    updateMode() {},
+    document: { querySelector: (selector) => ({ value: selector.includes("configuration") ? configuration : "minimum" }) },
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, { value: "H" });
+      return elements.get(id);
+    },
+  });
+  vm.runInContext(app.slice(app.indexOf("function updateControls()"), app.indexOf("function renderSpectrum()")), context);
+  const check = (disabled, label) => {
+    context.updateControls();
+    assert.equal(elements.get("create").disabled, disabled);
+    assert.equal(elements.get("create").textContent, label);
+  };
+  check(true, "Struktur bereits erstellt");
+  configuration = "cis";
+  check(false, "Struktur erstellen");
+  configuration = "trans";
+  elements.get("sub-0").value = "Me";
+  check(false, "Struktur erstellen");
+  elements.get("sub-0").value = "H";
+  check(true, "Struktur bereits erstellt");
+  molecule.kind = "minimum";
+  check(false, "Struktur erstellen");
+  context.state.busy = true;
+  check(true, "Struktur erstellen");
+  assert.ok(app.includes('$("builder").addEventListener("change", updateControls)'));
 });

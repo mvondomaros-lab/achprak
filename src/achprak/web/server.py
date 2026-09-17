@@ -108,11 +108,22 @@ class JobManager:
     def submit(self, session, payload):
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
             raise HTTPException(409, "Eine Berechnung läuft bereits in dieser Sitzung.")
+        existing = next(
+            (
+                m
+                for m in session.molecules.values()
+                if payload["kind"] == "template"
+                and m.get("kind") == "initial"
+                and m.get("settings") == payload.get("settings")
+            ),
+            None,
+        )
         replacing = matching_results(
             session, payload.get("molecule", {}).get("base_name"), payload["kind"]
         )
         if (
-            not replacing
+            existing is None
+            and not replacing
             and len(session.molecules) >= 100
             and payload["kind"]
             in {
@@ -130,13 +141,6 @@ class JobManager:
             session.jobs.pop(old)
             shutil.rmtree(self.root / old, ignore_errors=True)
         job_id = secrets.token_hex(16)
-        folder = self.root / job_id
-        folder.mkdir(mode=0o700)
-        try:
-            (folder / "input.json").write_text(json.dumps(payload))
-        except Exception:
-            shutil.rmtree(folder)
-            raise
         job = {
             "id": job_id,
             "kind": payload["kind"],
@@ -146,6 +150,17 @@ class JobManager:
             "error": None,
             "result": None,
         }
+        if existing is not None:
+            job.update(status="complete", result={"molecule": existing})
+            session.jobs[job_id] = job
+            return job
+        folder = self.root / job_id
+        folder.mkdir(mode=0o700)
+        try:
+            (folder / "input.json").write_text(json.dumps(payload))
+        except Exception:
+            shutil.rmtree(folder)
+            raise
         session.jobs[job_id] = job
         self.tasks[job_id] = (session, job, folder, None)
         return job

@@ -6,8 +6,8 @@ structures. A regression test repeats a selected calculation to detect changes
 after modifying the software. Neither measures agreement with experiment.
 
 The optional [`screen_ts.py`](../scripts/screen_ts.py) screen enumerates one or
-two substituents from the course menu across both rings: methyl (Me), methoxy
-(OMe), dimethylamino (NMe2), trifluoromethyl (CF3), cyano (CN) and nitro (NO2).
+two substituents from the course menu across both rings: methyl (CH₃), methoxy
+(OCH₃), dimethylamino (N(CH₃)₂), trifluoromethyl (CF3), cyano (CN) and nitro (NO2).
 Independent ring reflections and ring exchange identify equivalent substitution
 patterns; cis and trans remain distinct. RDKit checks the enumeration using
 canonical isomeric SMILES: standardized text representations of molecular
@@ -35,7 +35,7 @@ calculations; reduce this number if memory is limited. The complete screen can b
 expensive, so begin with a single case when checking a new installation.
 
 Case identifiers encode the input rather than a molecule name. For example,
-`trans-r1-2-NMe2_r1-6-CF3` means a trans input with NMe2 at position 2 and CF3 at
+`trans-r1-2-NMe2_r1-6-CF3` means a trans input with N(CH₃)₂ at position 2 and CF3 at
 position 6 on ring 1. `r2` denotes ring 2. A seed such as 42 makes the initial
 geometry generation reproducible.
 
@@ -79,7 +79,7 @@ pixi run -e dev test-ts
 ```
 
 `tests/test_web.py` covers deterministic cis/trans parent templates and selected
-Me, NMe2, CF3, CN and NO2 derivatives through the web worker.
+CH₃, N(CH₃)₂, CF3, CN and NO2 derivatives through the web worker.
 `tests/test_ts_screen.py` runs the exact geometries in `tests/data/ts_failures/`.
 Source-minimum failures are distinguished from TS failures. Collected fixtures are
 never overwritten by later runs, even if another conformer succeeds. All real

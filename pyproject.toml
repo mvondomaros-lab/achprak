@@ -7,7 +7,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 [tool.setuptools.package-data]
-"achprak.web" = ["static/*", "static/vendor/*"]
+"achprak.web" = ["static/*", "static/vendor/*", "static/materials/*"]
 
 [tool.pixi.workspace]
 channels = ["https://prefix.dev/conda-forge"]

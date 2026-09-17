@@ -1,9 +1,15 @@
 """Summarize the reproducible local numerical sensitivity benchmark."""
 
 import json
+import re
 from pathlib import Path
 
 import numpy as np
+
+
+def group_labels(text):
+    labels = {"Me": "CH₃", "OMe": "OCH₃", "NMe2": "N(CH₃)₂"}
+    return re.sub(r"\b(?:NMe2|OMe|Me)\b", lambda match: labels[match[0]], text)
 
 
 def peak(spec, sigma=0.15):
@@ -226,7 +232,7 @@ def main():
             (root / "environment.json").read_text(),
             "```",
         ]
-    Path("docs/science-benchmark.md").write_text("\n".join(text) + "\n")
+    Path("docs/science-benchmark.md").write_text(group_labels("\n".join(text)) + "\n")
 
 
 if __name__ == "__main__":

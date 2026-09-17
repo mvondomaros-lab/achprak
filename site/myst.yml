@@ -1,5 +1,9 @@
 version: 1
 project:
+  title: Photoschalter
+  description: Grundlagen zum Computerexperiment mit AChPrak
   id: cb34a77d-1ea2-4132-ae03-b8804e48cf6c
 site:
   template: book-theme
+  options:
+    style: ./teaching.css

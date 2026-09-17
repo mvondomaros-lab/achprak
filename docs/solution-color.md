@@ -84,7 +84,7 @@ trans-azobenzene in ethanol. Numerical color integration passes, but quantitativ
 solution-color prediction is not validated. No measured spectra are bundled.
 Collect full molar absorption spectra in ethanol with known path length,
 concentration, temperature and isomer composition, starting with the parent,
-para-OMe, para-NMe2 and selected donor–acceptor derivatives. Compare visible band
+para-OCH₃, para-N(CH₃)₂ and selected donor–acceptor derivatives. Compare visible band
 positions, integrated intensities and widths before fitting corrections. Reserve
 some derivatives for validation rather than fitting all available measurements.
 Measured spectra can use the same transmission/color integration with A(lambda) =

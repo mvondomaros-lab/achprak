@@ -1419,3 +1419,40 @@ select {
   justify-content: space-between;
   gap: 12px;
 }
+
+/* Teaching materials stay usable alongside the calculation workspace. */
+.learning-layout { min-width: 0; }
+.task-panel {
+  margin: 0 0 24px; padding: 24px; background: white;
+  border: 1px solid var(--line); border-radius: 12px;
+  line-height: 1.6; overflow-wrap: anywhere;
+}
+.task-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.task-heading h2 { margin: 0; font-size: 22px; }
+.task-panel h3 { font-size: 18px; margin: 24px 0 12px; }
+.task-panel summary { padding: 12px 0; cursor: pointer; font-weight: 600; color: inherit; }
+#guide-content > details > summary { font-size: 20px; }
+.task-panel details[open] > summary { color: var(--blue); }
+.task-panel details { margin: 18px 0; padding: 0; font-size: inherit; }
+.task-panel .task-next { margin-top: 24px; color: var(--muted); }
+.task-panel li { margin-bottom: 8px; }
+.task-panel .protocol-output:has(> strong) { padding-top: 12px; border-top: 1px solid var(--line); }
+.task-panel .task-reference { font-size: 14px; }
+.task-panel .task { margin-top: 24px; }
+.header-actions { flex-wrap: wrap; }
+@media (min-width: 1380px) {
+  main:has(.task-panel:not([hidden])) { max-width: 1960px; }
+  .learning-layout:has(.task-panel:not([hidden])) {
+    display: grid; grid-template-columns: minmax(0, 1fr) 360px;
+    align-items: start; gap: 24px;
+  }
+  .task-panel { grid-column: 2; grid-row: 1; position: sticky; top: 20px;
+    max-height: calc(100dvh - 40px); overflow-y: auto; margin: 0; }
+  .learning-layout > .workbench { grid-column: 1; grid-row: 1; min-width: 0; }
+  .learning-layout:has(.task-panel:not([hidden])) .workbench {
+    grid-template-columns: 280px minmax(0, 1fr); gap: 16px;
+  }
+}
+@media (max-width: 1379px) {
+  .task-panel { max-height: 45dvh; overflow-y: auto; }
+}
