@@ -3,6 +3,8 @@
 from html import unescape
 from html.parser import HTMLParser
 import importlib.util
+import json
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -74,11 +76,14 @@ class SiteBuildTests(unittest.TestCase):
                         )
 
     def test_teaching_content_survives(self):
-        text = (self.output / "theory/index.html").read_text()
+        text = "\n".join(
+            re.search(r"<article>(.*?)</article>", file.read_text(), re.S)[1]
+            for file in sorted((self.output / "theory").glob("*/index.html"))
+        )
         page = Document(text)
         self.assertEqual(
-            page.tags.count("details"), 9
-        )  # Eight supplements plus outline.
+            page.tags.count("details"), 8
+        )  # Eight optional explanations across five chapters.
         self.assertEqual(page.tags.count("figure"), 17)
         self.assertEqual(page.tags.count("math"), 26)
         self.assertEqual(text.count('display="block"'), 5)
@@ -93,6 +98,33 @@ class SiteBuildTests(unittest.TestCase):
         self.assertNotIn('type="math/tex', text)
         self.assertNotIn(":::{", text)
         self.assertNotIn("cdn.", text)
+
+    def test_chapters_search_and_old_section_links(self):
+        overview = (self.output / "theory/index.html").read_text()
+        aliases = re.findall(r"<a[^>]+data-legacy-anchor[^>]*>", overview)
+        self.assertEqual(len(aliases), 9)
+        chapters = [key for key, _ in site.PAGES if key.startswith("theory/")]
+        self.assertEqual(len(chapters), 5)
+        for chapter in chapters:
+            text = (self.output / chapter / "index.html").read_text()
+            self.assertEqual(text.count('aria-current="page"'), 1)
+            self.assertIn('class="breadcrumbs"', text)
+        entries = json.loads((self.output / "assets/search.json").read_text())
+        for entry in entries:
+            self.assertTrue(entry["text"].strip())
+            url = urlsplit(entry["url"])
+            target = self.output / url.path / "index.html"
+            self.assertTrue(target.is_file(), entry["url"])
+            if url.fragment:
+                self.assertIn(url.fragment, Document(target.read_text()).ids)
+        barrier = [
+            entry
+            for entry in entries
+            if "elektronische Energiebarriere" in entry["text"]
+        ]
+        self.assertTrue(
+            any(entry["url"].startswith("theory/energy/") for entry in barrier)
+        )
 
     def test_math_does_not_consume_code(self):
         content, _ = site.render('Inline $E=hc/\\lambda$.\n\n```sh\necho "$HOME"\n```')

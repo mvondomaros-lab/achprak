@@ -1,6 +1,11 @@
 /* Optional enhancements; navigation, disclosures and equations work without JS. */
 const root = new URL('../', document.currentScript.src);
-if (matchMedia('(max-width: 1150px)').matches) document.querySelector('.outline details').open = false;
+const mobileNavigation = matchMedia('(max-width: 700px)');
+const siteMenu = document.querySelector('.site-menu');
+siteMenu.open = !mobileNavigation.matches;
+mobileNavigation.addEventListener('change', event => { siteMenu.open = !event.matches; });
+const outline = document.querySelector('.outline details');
+if (outline && matchMedia('(max-width: 1150px)').matches) outline.open = false;
 
 const dialog = document.querySelector('#search-dialog');
 const input = document.querySelector('#search-input');
@@ -26,6 +31,9 @@ function search() {
   const terms = input.value.trim().toLocaleLowerCase('de').split(/\s+/).filter(Boolean);
   if (!terms.length) { status.textContent = 'Geben Sie einen Suchbegriff ein.'; return; }
   const matches = entries.filter(entry => terms.every(term => (entry.title + ' ' + entry.text).toLocaleLowerCase('de').includes(term)));
+  // Prefer matches in chapter/section names over incidental mentions in prose.
+  const score = entry => terms.filter(term => entry.title.toLocaleLowerCase('de').includes(term)).length;
+  matches.sort((a, b) => score(b) - score(a));
   status.textContent = `${matches.length} Treffer`;
   for (const entry of matches) {
     const item = document.createElement('li');
@@ -43,6 +51,7 @@ function revealAnchor() {
   let target;
   try { target = document.getElementById(decodeURIComponent(location.hash.slice(1))); } catch (_) { return; }
   if (!target) return;
+  if (target.matches('a[data-legacy-anchor]')) { location.replace(target.href); return; }
   for (let parent = target.parentElement; parent; parent = parent.parentElement) {
     if (parent.tagName === 'DETAILS') parent.open = true;
   }

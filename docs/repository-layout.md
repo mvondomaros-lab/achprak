@@ -27,7 +27,7 @@ downloads a fresh checkout.
   regression tests, which check whether behavior changes after a code edit. These are test inputs, not disposable run output.
 - `figures/drawings/` and `figures/commons/`: editable artwork and attributed
   source images, including the PowerPoint source for the dihedral illustration.
-- Published SVG figures referenced by `site/theory.md`. These rendered assets are intentional:
+- Published SVG figures referenced by the chapters under `site/theory/`. These rendered assets are intentional:
   a checkout can build the site and run the app without regenerating artwork.
 - Bundled browser libraries, color tables and their licenses under
   `src/achprak/web/static/vendor/`. Offline operation depends on these files.

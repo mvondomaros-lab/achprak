@@ -116,7 +116,7 @@ next page or final protocol submission. Collapsible sections start closed and re
 Tasks use short German action titles that are unique across all three pages.
 Descriptive English task IDs (for example, `task-compare-configurations`) remain
 stable internal identifiers, independent of page order and title wording. Links
-point to explicit, stable labels in `site/theory.md` on GitHub Pages.
+point to explicit, stable labels in the chapters under `site/theory/` on GitHub Pages.
 
 The editable download is
 `src/achprak/web/static/materials/protokollvorlage.docx`. It is included in Python
@@ -137,8 +137,16 @@ Render the resulting Word document and inspect every page before release.
 Document-authoring dependencies are not required to run the app.
 
 `site/assets/teaching.css` uses the app's navy, blue, neutral colours and typography.
-`scripts/build_site.py` renders the three Markdown pages through `site/template.html`.
+`scripts/build_site.py` renders the Markdown pages through `site/template.html`.
 The page order and navigation labels are defined in the builder's `PAGES` constant.
+`site/theory.md` is the chapter overview; the five source files under `site/theory/`
+cover structures, light, models, energies and photoswitching. The sidebar groups
+preparation and practical access, while previous/next links follow the reading order.
+Use source-relative Markdown links between chapters. The builder calculates paths
+for nested routes and source downloads automatically. Existing `/theory/#…` links
+are retained as fallback links on the overview and forwarded to the matching
+chapter by the local script; preserve these anchors when reorganizing content.
+Search results link to chapter sections and prioritize matches in their titles.
 Python-Markdown handles tables, fenced code, explicit heading IDs and Markdown
 inside HTML elements marked `markdown="1"`. Use native `<details>`/`<summary>`
 for optional reading, `<aside class="callout">` for essential caveats, and

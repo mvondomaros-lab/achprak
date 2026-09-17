@@ -26,6 +26,11 @@ OUTPUT = SITE / "_build"
 PAGES = (
     ("index", "Photoschalter"),
     ("theory", "Theoretische Grundlagen"),
+    ("theory/structures", "Molekülstruktur und Isomerie"),
+    ("theory/light", "Licht und Absorption"),
+    ("theory/models", "Modelle und Atomkoordinaten"),
+    ("theory/energy", "Energien und Strukturoptimierung"),
+    ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
     ("installation", "Webapp starten"),
 )
 
@@ -68,16 +73,18 @@ def build(output: Path = OUTPUT) -> None:
             title, body = source.split("\n", 1)
             title = title.removeprefix("# ")
             content, outline = render(body)
-            root = "./" if slug == "index" else "../"
+            root = "./" if slug == "index" else "../" * len(Path(slug).parts)
 
             def local_url(match):
                 attr, url = match.groups()
                 parts = urlsplit(html.unescape(url))
                 if parts.scheme or parts.netloc or not parts.path:
                     return match[0]
-                path = (SITE / parts.path).resolve()
-                if path.suffix == ".md" and path.parent == SITE:
-                    target = root + page_url(path.stem)
+                path = (SITE / f"{slug}.md").parent.joinpath(parts.path).resolve()
+                if path.suffix == ".md" and path.is_relative_to(SITE):
+                    target = root + page_url(
+                        path.relative_to(SITE).with_suffix("").as_posix()
+                    )
                 else:
                     relative = path.relative_to(ROOT)
                     target = root + "media/" + relative.as_posix()
@@ -89,12 +96,33 @@ def build(output: Path = OUTPUT) -> None:
                 return f'{attr}="{html.escape(target, quote=True)}"'
 
             content = re.sub(r'(href|src)="([^"]+)"', local_url, content)
-            navigation = "\n".join(
-                f'<a href="{root}{page_url(key)}"'
-                + (' aria-current="page"' if key == slug else "")
-                + f">{text}</a>"
-                for key, text in PAGES
+
+            def nav_link(key, text):
+                return (
+                    f'<a href="{root}{page_url(key)}"'
+                    + (' aria-current="page"' if key == slug else "")
+                    + f">{html.escape(text)}</a>"
+                )
+
+            navigation = nav_link("index", "Versuchsüberblick")
+            navigation += '<section class="nav-group"><h2>Vorbereitung</h2>'
+            navigation += nav_link("theory", "Kapitelübersicht") + "<ol>"
+            for key, text in PAGES:
+                if key.startswith("theory/"):
+                    navigation += "<li>" + nav_link(key, text) + "</li>"
+            navigation += (
+                '</ol></section><section class="nav-group"><h2>Durchführung</h2>'
             )
+            navigation += nav_link("installation", "Webapp starten") + "</section>"
+            chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
+            if slug in chapter_keys:
+                eyebrow = f"Grundlagen · Kapitel {chapter_keys.index(slug) + 1} von {len(chapter_keys)}"
+            else:
+                eyebrow = {
+                    "index": "Computerexperiment",
+                    "theory": "Vorbereitung",
+                    "installation": "Durchführung",
+                }[slug]
             pagination = []
             for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
                 if 0 <= other < len(PAGES):
@@ -109,17 +137,32 @@ def build(output: Path = OUTPUT) -> None:
                 content=content,
                 navigation=navigation,
                 pagination="".join(pagination),
-                outline=outline,
+                outline_sidebar=(
+                    f'<nav class="outline" aria-label="Auf dieser Seite"><details open><summary>Auf dieser Seite</summary>{outline}</details></nav>'
+                    if outline.count("<a ") >= 2
+                    else ""
+                ),
+                eyebrow=eyebrow,
+                breadcrumbs=(
+                    f'<nav class="breadcrumbs" aria-label="Pfad"><a href="{root}theory/">Grundlagen</a><span aria-hidden="true"> / </span><span>{html.escape(label)}</span></nav>'
+                    if slug in chapter_keys
+                    else ""
+                ),
             )
             destination = stage / page_url(slug) / "index.html"
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_text(document)
-            (stage / "sources").mkdir(exist_ok=True)
+            (stage / "sources" / f"{slug}.md").parent.mkdir(parents=True, exist_ok=True)
             (stage / "sources" / f"{slug}.md").write_text(source)
             # Section-sized search results include optional explanations and captions.
-            for section in re.split(r"(?=<h[23] id=)", content):
+            search_content = re.sub(
+                r'<details class="legacy-links".*?</details>', "", content, flags=re.S
+            )
+            for section in re.split(r"(?=<h[23] id=)", search_content):
                 heading = re.match(r'<h[23] id="([^"]+)">(.*?)</h[23]>', section)
                 text = html.unescape(re.sub(r"<[^>]+>", " ", section))
+                if not text.strip():
+                    continue
                 search.append(
                     {
                         "title": label

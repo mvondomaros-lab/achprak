@@ -17,14 +17,15 @@
     </div>
   </header>
   <div class="layout">
-    <nav class="sidebar" aria-label="Seiten">$navigation</nav>
+    <nav class="sidebar" aria-label="Seiten"><details class="site-menu" open><summary>Inhalt</summary>$navigation</details></nav>
     <main id="inhalt" tabindex="-1">
-      <header class="page-title"><p class="eyebrow">Computerexperiment · Grundlagen</p><h1>$title</h1></header>
+      ${breadcrumbs}
+      <header class="page-title"><p class="eyebrow">$eyebrow</p><h1>$title</h1></header>
       <article>$content</article>
       <nav class="page-navigation" aria-label="Weitere Seiten">$pagination</nav>
       <footer><a href="${root}sources/$slug.md" download>Seite als Markdown herunterladen</a></footer>
     </main>
-    <nav class="outline" aria-label="Auf dieser Seite"><details open><summary>Auf dieser Seite</summary>$outline</details></nav>
+    $outline_sidebar
   </div>
   <dialog id="search-dialog" aria-labelledby="search-title">
     <form method="dialog"><button class="close" aria-label="Suche schließen">Schließen</button></form>

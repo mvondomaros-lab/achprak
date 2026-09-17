@@ -112,3 +112,34 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
   .layout { display: block; } main { padding: 0; }
   article details { break-inside: avoid; }
 }
+
+/* Navigation follows preparation chapters rather than one long theory page. */
+.nav-group { margin-top: 1.6rem; }
+.nav-group h2 { margin: 0 0 .55rem .8rem; font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.nav-group ol { list-style: none; counter-reset: chapter; padding: 0; margin: .4rem 0; }
+.nav-group li { counter-increment: chapter; margin: 0; }
+.nav-group li a { display: flex; gap: .65rem; align-items: baseline; font-size: .9rem; }
+.nav-group li a::before { content: counter(chapter, decimal-leading-zero); font-size: .75rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.breadcrumbs { font-size: .8rem; color: var(--muted); margin-bottom: 1.2rem; }
+.breadcrumbs a { color: var(--muted); }
+.chapter-list { list-style: none; counter-reset: chapter; padding: 0; margin: 2rem 0; }
+.chapter-list li { counter-increment: chapter; position: relative; padding: 1rem 1rem 1rem 3.5rem; margin: 0; border-top: 1px solid var(--line); }
+.chapter-list li:last-child { border-bottom: 1px solid var(--line); }
+.chapter-list li::before { content: counter(chapter, decimal-leading-zero); position: absolute; left: .5rem; top: 1.1rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chapter-list p { margin: 0 0 .3rem; }
+.chapter-list p + p { color: var(--muted); font-size: .9rem; }
+.legacy-links { display: none; }
+.legacy-links:has(:target) { display: block; }
+.legacy-links a { display: block; padding: .4rem 0; }
+@media (max-width: 700px) {
+  .sidebar { display: block; }
+  .nav-group { margin-top: .8rem; }
+  .nav-group ol { display: flex; flex-wrap: wrap; gap: .2rem .5rem; }
+  .nav-group li { flex: 1 1 15rem; }
+  .nav-group h2 { margin-left: .55rem; }
+}
+
+.site-menu > summary { display: none; }
+@media (max-width: 700px) {
+  .site-menu > summary { display: list-item; padding: .4rem .55rem; font-weight: 600; }
+}
