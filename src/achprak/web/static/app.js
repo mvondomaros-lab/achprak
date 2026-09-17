@@ -1413,7 +1413,7 @@ function updateGuide(step) {
 }
 async function guide(step, focus = true) {
   if (!$("guide-content").children.length) {
-    const response = await fetch("static/guide.html?v=ui-55");
+    const response = await fetch("static/guide.html?v=ui-56");
     if (!response.ok) throw new Error("Aufgaben konnten nicht geladen werden. Öffnen Sie die Aufgaben erneut.");
     $("guide-content").innerHTML = await response.text(); // Trusted, bundled teaching material.
   }

@@ -1427,7 +1427,7 @@ select {
   border: 1px solid var(--line); border-radius: 12px;
   line-height: 1.6; overflow-wrap: anywhere;
 }
-.task-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.task-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
 .task-heading h2 { margin: 0; font-size: 20px; }
 .task-panel h3 { font-size: 16px; margin: 20px 0 10px; }
 .task-panel summary { padding: 8px 0; cursor: pointer; font-weight: 600; line-height: 1.4; color: inherit; }
