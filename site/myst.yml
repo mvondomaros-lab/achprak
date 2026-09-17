@@ -6,4 +6,5 @@ project:
 site:
   template: book-theme
   options:
+    logo_text: Photoschalter · AChPrak
     style: ./teaching.css
