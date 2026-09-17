@@ -137,6 +137,9 @@ Render the resulting Word document and inspect every page before release.
 Document-authoring dependencies are not required to run the app.
 
 `site/assets/teaching.css` uses the app's navy, blue, neutral colours and typography.
+Both interfaces load `src/achprak/web/static/header.css`; the site builder copies it
+into the published assets. Keep header appearance there, with layout-specific
+`--header-inset` values in the app and website stylesheets.
 `scripts/build_site.py` renders the Markdown pages through `site/template.html`.
 The page order and navigation labels are defined in the builder's `PAGES` constant.
 `site/theory.md` is the chapter overview; the five source files under `site/theory/`

@@ -14,17 +14,8 @@ button, summary { cursor: pointer; }
 :focus-visible { outline: 3px solid #6ba1ff; outline-offset: 4px; }
 .skip-link { position: fixed; top: -6rem; left: 1rem; z-index: 10; background: var(--page); padding: .5rem 1rem; }
 .skip-link:focus { top: .5rem; }
-.header {
-  position: sticky; top: 0; z-index: 3; min-height: 72px;
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  padding: .75rem max(1.5rem, calc((100vw - 1440px) / 2));
-  background: var(--navy); color: #fff; border-bottom: 3px solid #2673f2;
-}
-.brand { color: #fff; font-size: 1.2rem; font-weight: 650; text-decoration: none; letter-spacing: -.025em; }
-.brand span { color: #b7c9df; font-weight: 400; }
-.header-actions { display: flex; gap: .6rem; }
-.header button { border: 1px solid #586b80; border-radius: 6px; color: #e3ecf7; background: #1d334e; padding: .3rem .8rem; }
-.header button:hover { background: #294665; }
+.header { position: sticky; top: 0; z-index: 3; --header-inset: 1.8rem; }
+.header-actions { display: flex; gap: 8px; }
 .layout { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 760px) minmax(200px, 1fr); gap: 0 40px; }
 .sidebar {
   position: sticky; top: 72px; height: calc(100dvh - 72px); overflow-y: auto;
@@ -95,8 +86,7 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
   .sidebar { grid-row: 1 / 3; }
 }
 @media (max-width: 700px) {
-  .header { position: static; flex-wrap: wrap; padding: 1rem; }
-  .brand { font-size: 1.1rem; }
+  .header { position: static; --header-inset: 1.3rem; }
   .layout { display: flex; flex-direction: column; }
   .sidebar { position: static; height: auto; display: flex; flex-wrap: wrap; gap: .25rem; padding: .75rem; border-right: 0; border-bottom: 1px solid var(--line); }
   .sidebar a { font-size: .875rem; padding: .55rem; margin: 0; }

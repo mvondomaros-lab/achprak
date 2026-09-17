@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#102238"/>
     <title>Photoschalter · AChPrak</title>
     <link rel="icon" href="data:,"/>
-    <link rel="stylesheet" href="static/app.css?v=ui-53"/>
+    <link rel="stylesheet" href="static/header.css?v=1"/>
+    <link rel="stylesheet" href="static/app.css?v=ui-54"/>
     <script src="static/vendor/ngl.js" defer></script>
     <script src="static/vendor/chart.js" defer></script>
     <script src="static/progress.js?v=ui-35" defer></script>
@@ -17,12 +18,7 @@
 <body>
 <a href="#workspace" class="skip">Zum Arbeitsbereich</a>
 <header class="header">
-    <a class="brand" href="./"
-    ><span class="brand-icon" aria-hidden="true">λ</span
-    ><span
-    >Photoschalter <small>AChPrak · Theoretische Chemie</small></span
-    ></a
-    >
+    <a class="brand" href="./">Photoschalter <span>· AChPrak</span></a>
     <div class="header-actions">
         <a class="quiet" href="https://mvondomaros-lab.github.io/achprak/theory/" target="_blank" rel="noreferrer">Grundlagen</a>
         <button class="quiet" id="guide-open" aria-expanded="false" aria-controls="guide">Aufgaben</button>
@@ -644,10 +640,12 @@
         <button type="button" class="close" popovertarget="dihedral-help"
                 popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
     </div>
+    <img class="property-help-figure" src="static/dihedral.svg" width="800" height="320"
+         alt="Links: C–N=N–C mit Blickrichtung entlang N=N. Rechts: Die N-Atome liegen hintereinander; φ markiert den Winkel zwischen den projizierten N–C-Bindungen.">
     <p>Blicken Sie entlang der Bindung zwischen den beiden Stickstoffatomen
         der Azogruppe. Die Stickstoffatome liegen dann hintereinander.
         Von jedem Stickstoffatom führt eine N–C-Bindung zum jeweiligen Ring.
-        Der Winkel zwischen diesen beiden N–C-Bindungen in dieser Ansicht ist
+        Der mit φ markierte Winkel zwischen diesen beiden N–C-Bindungen in dieser Ansicht ist
         der C–N=N–C-Diederwinkel. Zeigen die Bindungen vom Stickstoff aus in dieselbe
         Richtung, beträgt er 0°; zeigen sie in entgegengesetzte Richtungen, beträgt er 180°.</p>
 </div>

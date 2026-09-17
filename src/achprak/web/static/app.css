@@ -63,45 +63,7 @@ a {
 [hidden] {
   display: none !important;
 }
-.header {
-  min-height: 72px;
-  background: var(--navy);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 4%;
-  gap: 24px;
-}
-.brand {
-  display: flex;
-  flex-shrink: 0;
-  gap: 14px;
-  align-items: center;
-  color: #fff;
-  text-decoration: none;
-  font-size: 22px;
-  font-weight: 650;
-  letter-spacing: -0.5px;
-}
-.brand small {
-  display: block;
-  color: #a5b8ce;
-  font-size: 13px;
-  letter-spacing: 0.3px;
-  font-weight: 400;
-  margin-top: 5px;
-}
-.brand-icon {
-  background: #2673f2;
-  width: 45px;
-  height: 45px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  font-size: 32px;
-  font-family: Georgia, serif;
-}
+.header { --header-inset: 4%; }
 .header-actions {
   width: 560px;
   min-width: 0;
@@ -898,7 +860,7 @@ dialog textarea {
 }
 @media (max-width: 1000px) {
   .header {
-    padding: 12px 24px;
+    --header-inset: 24px;
   }
   .steps {
     padding: 0 24px;
@@ -944,15 +906,7 @@ dialog textarea {
   }
 }
 @media (max-width: 720px) {
-  .header {
-    padding: 16px;
-    align-items: start;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .brand {
-    font-size: 20px;
-  }
+  .header { --header-inset: 16px; }
   .header-actions {
     width: 100%;
   }
@@ -1489,6 +1443,15 @@ select {
   margin: 14px 0 0;
   font-size: 14px;
   line-height: 1.6;
+}
+#dihedral-help {
+  width: min(580px, calc(100vw - 24px));
+}
+.property-help-figure {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 14px;
 }
 
 .solution-color-values {

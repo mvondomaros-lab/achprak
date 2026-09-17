@@ -66,6 +66,9 @@ def build(output: Path = OUTPUT) -> None:
     with tempfile.TemporaryDirectory(prefix=".site-build-", dir=output.parent) as tmp:
         stage = Path(tmp)
         shutil.copytree(SITE / "assets", stage / "assets")
+        shutil.copy2(
+            ROOT / "src/achprak/web/static/header.css", stage / "assets/header.css"
+        )
         template = Template((SITE / "template.html").read_text())
         search = []
         for index, (slug, label) in enumerate(PAGES):
