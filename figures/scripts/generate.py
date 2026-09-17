@@ -4,11 +4,11 @@ from importlib import import_module
 from style import run
 
 FIGURES = (
-    "jablonski",
-    "line_spectrum",
-    "uvvis_spectrum",
-    "profile",
-    "photoswitch_mechanism",
+    "energy_levels",
+    "spectrum_lines",
+    "spectrum_bands",
+    "energy_profile",
+    "photoswitch",
     "substituent_effects",
 )
 

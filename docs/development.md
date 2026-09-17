@@ -56,7 +56,7 @@ to GitHub Pages. Pages must be configured to deploy through GitHub Actions.
 Regenerate the SVG teaching figures with:
 
 ```sh
-pixi run -e dev python figures/scripts/figures.py
+pixi run -e dev python figures/scripts/generate.py
 ```
 
 Each figure also has an independently runnable source; see [figure sources](../figures/README.md)

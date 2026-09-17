@@ -1,4 +1,4 @@
-"""Source for jablonski.svg; run directly to regenerate this figure."""
+"""Source for energy_levels.svg; run directly to regenerate this figure."""
 
 from style import export, run
 import matplotlib.pyplot as plt
@@ -32,7 +32,7 @@ def draw():
 
 
 def render(output_dir=None, formats=("svg",)):
-    export(draw, "jablonski", output_dir, formats)
+    export(draw, "energy_levels", output_dir, formats)
 
 
 if __name__ == "__main__":

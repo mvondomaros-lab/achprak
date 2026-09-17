@@ -1,26 +1,30 @@
 # Teaching figures
 
+Use short English `snake_case` names throughout `figures/`. Generated sources and
+exports share the same stem; molecular drawings start with `azobenzene`.
+Original external titles and source URLs remain unchanged in the attribution file.
+
 Each generated illustration has its own executable source in `scripts/`:
 
 | Source | Published SVG |
 | --- | --- |
-| `jablonski.py` | `outputs/jablonski.svg` |
-| `line_spectrum.py` | `outputs/line-spectrum.svg` |
-| `uvvis_spectrum.py` | `outputs/uvvis-spectrum.svg` |
-| `profile.py` | `outputs/profile.svg` |
-| `photoswitch_mechanism.py` | `outputs/photoswitch-mechanism.svg` |
-| `substituent_effects.py` | `outputs/substituent-effects.svg` |
+| `energy_levels.py` | `outputs/energy_levels.svg` |
+| `spectrum_lines.py` | `outputs/spectrum_lines.svg` |
+| `spectrum_bands.py` | `outputs/spectrum_bands.svg` |
+| `energy_profile.py` | `outputs/energy_profile.svg` |
+| `photoswitch.py` | `outputs/photoswitch.svg` |
+| `substituent_effects.py` | `outputs/substituent_effects.svg` |
 
 Regenerate one figure from the repository root:
 
 ```sh
-pixi run -e dev python figures/scripts/uvvis_spectrum.py
+pixi run -e dev python figures/scripts/spectrum_bands.py
 ```
 
 Regenerate all figures using the small batch runner:
 
 ```sh
-pixi run -e dev python figures/scripts/figures.py
+pixi run -e dev python figures/scripts/generate.py
 ```
 
 Both commands accept `--format svg|png|both` (default: `svg`) and

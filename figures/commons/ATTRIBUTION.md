@@ -5,7 +5,7 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 
 ---
 
-## Azobenzene-trans-3D-balls.png
+## azobenzene_trans.png
 
 - **T (Title):** *Azobenzene-trans-3D-balls.png* (ball-and-stick model of trans-azobenzene)
 - **A (Author):** Benjah-bmm27
@@ -14,7 +14,7 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 
 ---
 
-## Spectre.svg
+## electromagnetic_spectrum.svg
 
 - **T (Title):** *Spectre.svg* (electromagnetic spectrum overview)
 - **A (Author):** Tatoute and Phrood~commonswiki (original; later edits by multiple contributors)
@@ -23,7 +23,7 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 
 ---
 
-## Atmosphaerische_Durchlaessigkeit_DE.svg
+## atmospheric_transmission.svg
 
 - **T (Title):** *Atmosphärische Durchlässigkeit DE.svg* (atmospheric transmission / “atmospheric window”)
 - **A (Author):** Herbertweidner (PNG original) and Cepheiden (SVG adaptation)
@@ -32,7 +32,7 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 
 ---
 
-## Blackbox3D.png
+## black_box.png
 
 - **T (Title):** *Blackbox3D.png* (black-box diagram with input/output)
 - **A (Author):** Krauss

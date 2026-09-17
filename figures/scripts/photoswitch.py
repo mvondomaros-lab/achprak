@@ -1,4 +1,4 @@
-"""Source for photoswitch-mechanism.svg; run directly to regenerate this figure."""
+"""Source for photoswitch.svg; run directly to regenerate this figure."""
 
 from style import TEXT, export, run
 import matplotlib.pyplot as plt
@@ -62,7 +62,7 @@ def draw():
 
 
 def render(output_dir=None, formats=("svg",)):
-    export(draw, "photoswitch-mechanism", output_dir, formats)
+    export(draw, "photoswitch", output_dir, formats)
 
 
 if __name__ == "__main__":

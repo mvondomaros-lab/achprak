@@ -1,4 +1,4 @@
-"""Source for substituent-effects.svg; run directly to regenerate this figure."""
+"""Source for substituent_effects.svg; run directly to regenerate this figure."""
 
 from style import TEXT, export, run
 import matplotlib.pyplot as plt
@@ -88,7 +88,7 @@ def draw():
 
 
 def render(output_dir=None, formats=("svg",)):
-    export(draw, "substituent-effects", output_dir, formats)
+    export(draw, "substituent_effects", output_dir, formats)
 
 
 if __name__ == "__main__":

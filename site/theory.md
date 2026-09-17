@@ -29,7 +29,7 @@ Kohlenstoffatom pro Ring bindet die Azogruppe. Die übrigen Kohlenstoffatome tra
 Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstellen:
 
 <figure markdown="1">
-<img src="../figures/drawings/azobenzene-explicit.svg" alt="Die Strukturformel des Azobenzols." width="380" loading="lazy">
+<img src="../figures/drawings/azobenzene_explicit.svg" alt="Die Strukturformel des Azobenzols." width="380" loading="lazy">
 
 <figcaption markdown="1">
 Die Strukturformel des Azobenzols.
@@ -51,7 +51,7 @@ Ein Beispiel ist 4-Methoxyazobenzol: Hier ersetzt eine Methoxygruppe (–OCH₃)
 Die beobachtete Farbe hängt auch vom Lösungsmittel, der Konzentration und der Zusammensetzung der Probe ab.
 
 <figure markdown="1">
-<img src="../figures/drawings/4-methoxy-azobenzene.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
+<img src="../figures/drawings/azobenzene_4_methoxy.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
 
 <figcaption markdown="1">
 Strukturformel von 4-Methoxyazobenzol.
@@ -72,7 +72,7 @@ In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeig
 vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
 
 <figure markdown="1">
-<img src="../figures/drawings/azobenzene-numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="350" loading="lazy">
+<img src="../figures/drawings/azobenzene_numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="350" loading="lazy">
 
 <figcaption markdown="1">
 Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
@@ -106,7 +106,7 @@ sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(tri
 handelt:
 
 <figure markdown="1">
-<img src="../figures/drawings/azobenzene-derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="500" loading="lazy">
+<img src="../figures/drawings/azobenzene_derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="500" loading="lazy">
 
 </figure>
 
@@ -130,7 +130,7 @@ Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der r�
 Atome unterscheiden, bezeichnet man als Isomere.
 
 <figure markdown="1">
-<img src="../figures/drawings/cis-azobenzene.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
+<img src="../figures/drawings/azobenzene_cis.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
 
 <figcaption markdown="1">
 *Cis*-Azobenzol.
@@ -147,7 +147,7 @@ Beide Formen besitzen unterschiedliche Absorptionsspektren. Welche Mischung unte
 hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
 
 <figure markdown="1">
-<img src="../figures/drawings/azobenzene-isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
+<img src="../figures/drawings/azobenzene_isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
 
 <figcaption markdown="1">
 Die lichtinduzierte Isomerisierung des Azobenzols.
@@ -167,7 +167,7 @@ Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Si
 Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
 
 <figure markdown="1">
-<img src="../figures/commons/Azobenzene-trans-3D-balls.png" alt="Kugel-Stab-Modell von trans-Azobenzol." width="512" loading="lazy">
+<img src="../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol." width="512" loading="lazy">
 
 <figcaption markdown="1">
 Kugel-Stab-Modell von trans-Azobenzol. Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
@@ -203,7 +203,7 @@ Ein Nanometer (nm) ist ein Milliardstel Meter: 1 nm = 10⁻⁹ m. Mit diesen Ein
 lassen sich die hier betrachteten Photonenenergien und Wellenlängen ohne sehr kleine Dezimalzahlen angeben.
 
 <figure markdown="1">
-<img src="../figures/commons/Spectre.svg" alt="Übersicht über das elektromagnetische Spektrum mit markiertem sichtbarem Bereich." width="800" loading="lazy">
+<img src="../figures/commons/electromagnetic_spectrum.svg" alt="Übersicht über das elektromagnetische Spektrum mit markiertem sichtbarem Bereich." width="800" loading="lazy">
 
 <figcaption markdown="1">
 Das elektromagnetische Spektrum. Die obere Reihe zeigt (von links nach rechts) stilisierte Darstellungen von
@@ -223,7 +223,7 @@ Nicht jeder energetisch passende Übergang ist gleich wahrscheinlich: Manche tra
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
 
 <figure markdown="1">
-<img src="../figures/outputs/jablonski.svg" alt="Vereinfachtes Energieniveauschema eines Absorptionsprozesses." width="600" loading="lazy">
+<img src="../figures/outputs/energy_levels.svg" alt="Vereinfachtes Energieniveauschema eines Absorptionsprozesses." width="600" loading="lazy">
 
 <figcaption markdown="1">
 Vereinfachtes Energieniveauschema eines Absorptionsprozesses.
@@ -236,7 +236,7 @@ Für eine festgehaltene Molekülgeometrie liefert die hier verwendete Rechnung e
 Trägt man ihre Energien und Stärken auf, erhält man das folgende Linienspektrum.
 
 <figure markdown="1">
-<img src="../figures/outputs/line-spectrum.svg" alt="Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
+<img src="../figures/outputs/spectrum_lines.svg" alt="Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
 
 <figcaption markdown="1">
 Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert.
@@ -256,7 +256,7 @@ Die Bandenlagen zeigen, welche Anregungsenergien zur Absorption beitragen.
 Ihre relativen Höhen hängen von den Übergangsstärken und der Überlagerung benachbarter Banden ab.
 
 <figure markdown="1">
-<img src="../figures/outputs/uvvis-spectrum.svg" alt="Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
+<img src="../figures/outputs/spectrum_bands.svg" alt="Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
 
 <figcaption markdown="1">
 Das Bandenspektrum eines Moleküls, das bevorzugt Licht mit 3,0 eV und 4,0 eV absorbiert.
@@ -299,7 +299,7 @@ p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wir
 können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
 
 <figure markdown="1">
-<img src="../figures/outputs/substituent-effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
+<img src="../figures/outputs/substituent_effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
 
 <figcaption markdown="1">
 Einfluss von Substituenten auf die Anregungsenergie: A zeigt das Vergleichssystem,
@@ -321,7 +321,7 @@ relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
 Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Sonnenlicht und die Wärmestrahlung der Erde liegen dabei in unterschiedlichen Wellenlängenbereichen.
 
 <figure markdown="1">
-<img src="../figures/commons/Atmosphaerische_Durchlaessigkeit_DE.svg" alt="Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster." width="1024" loading="lazy">
+<img src="../figures/commons/atmospheric_transmission.svg" alt="Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster." width="1024" loading="lazy">
 
 <figcaption markdown="1">
 Atmosphärische Durchlässigkeit. PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden. Quelle/Lizenz: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg).
@@ -361,7 +361,7 @@ in der Webapp erläutern, wie die Programme aus Ihren Eingaben Ergebnisse erzeug
 Prüfungen sie ausführen und wie sie die Ergebnisse darstellen.
 
 <figure markdown="1">
-<img src="../figures/commons/Blackbox3D.png" alt="Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe." loading="lazy">
+<img src="../figures/commons/black_box.png" alt="Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe." loading="lazy">
 
 <figcaption markdown="1">
 Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
@@ -474,7 +474,7 @@ miteinander verbindet. Die **Reaktionskoordinate** gibt die Position entlang die
 nicht die verstrichene Zeit.
 
 <figure markdown="1">
-<img src="../figures/outputs/profile.svg" alt="Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. cis und trans liegen in lokalen Minima." width="600" loading="lazy">
+<img src="../figures/outputs/energy_profile.svg" alt="Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. cis und trans liegen in lokalen Minima." width="600" loading="lazy">
 
 <figcaption markdown="1">
 Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. *cis* und *trans* liegen in lokalen Minima.
@@ -560,7 +560,7 @@ keine Obergrenze für die Energie einzelner Moleküle: Eine Barriere oberhalb vo
 Die Möglichkeit einer thermischen Rückreaktion gehört auch zur [IUPAC-Beschreibung der Photochromie](https://www.old.goldbook.iupac.org/html/P/P04589.html).
 
 <figure markdown="1">
-<img src="../figures/outputs/photoswitch-mechanism.svg" alt="Vereinfachtes Schema der lichtinduzierten Isomerisierung mit angedeutetem angeregtem Zustand." width="600" loading="lazy">
+<img src="../figures/outputs/photoswitch.svg" alt="Vereinfachtes Schema der lichtinduzierten Isomerisierung mit angedeutetem angeregtem Zustand." width="600" loading="lazy">
 
 <figcaption markdown="1">
 Stark vereinfachtes Schema der lichtinduzierten Isomerisierung. Die gestrichelte Linie deutet einen

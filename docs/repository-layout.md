@@ -33,7 +33,7 @@ downloads a fresh checkout.
   `src/achprak/web/static/vendor/`. Offline operation depends on these files.
 
 The root `.gitignore` lists which generated figures are deliberately kept in Git.
-Regenerate SVGs with `pixi run -e dev python figures/scripts/figures.py`. Each figure
+Regenerate SVGs with `pixi run -e dev python figures/scripts/generate.py`. Each figure
 has its own source; see [figure sources](../figures/README.md) for individual and PNG
 exports. Review changed images before committing them.
 
