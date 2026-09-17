@@ -31,13 +31,15 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         task_ids = re.findall(r'<details class="task" id="([^"]+)">', guide)
         assert len(task_ids) == len(set(task_ids)) == len(titles) == 12
         assert all(re.fullmatch(r"task-[a-z]+(?:-[a-z]+)*", task_id) for task_id in task_ids)
-        assert len(titles) == len(set(titles))
         for step, count in (("build", 3), ("optimize", 6), ("spectrum", 3)):
             page = re.search(
                 rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
             )
             assert page is not None
             assert len(re.findall(r'<details class="task"', page[1])) == count
+            # A topic may recur in another step, but headings within a step are distinct.
+            page_titles = re.findall(r'<summary>([^<]+)</summary>', page[1])
+            assert len(page_titles) == len(set(page_titles))
 
         assert not re.search(r"Aufgabe \d|<details[^>]*\bopen\b", guide)
         assert "guide-scope" not in client.get("/").text
