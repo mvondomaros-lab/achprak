@@ -1,6 +1,6 @@
 """Source for photoswitch.svg; run directly to regenerate this figure."""
 
-from style import TEXT, export, run
+from style import TEXT, REFERENCE, export, run
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
@@ -28,7 +28,7 @@ def draw():
     for (xm, ym), conf in zip(min_positions, ["trans", "cis"]):
         plt.text(xm, ym + 0.08, conf, ha="center", va="bottom")
 
-    plt.plot([x[mask].min(), x[mask].max()], [1.5, 1.5], color="C1", ls="--")
+    plt.plot([x[mask].min(), x[mask].max()], [1.5, 1.5], **{**REFERENCE, "color": "C1"})
     plt.text(0.89, 1.54, "angeregter Zustand", ha="right", va="bottom", color="C1")
     plt.text(0.89, 0.05, "Grundzustand", ha="right", va="bottom", color="C0")
 

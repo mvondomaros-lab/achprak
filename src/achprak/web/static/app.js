@@ -547,13 +547,19 @@ async function refresh(selected, finishCalculation = false) {
 }
 let energyChart = null;
 let spectrumChart = null;
-// Keep aligned with the Matplotlib spectrum style in web/worker.py.
+// Keep aligned with achprak/plot_style.py (1 pt = 4/3 CSS px).
 const plotStyle = {
   font: { family: "Arial, Helvetica, sans-serif", size: 16 },
   titleFont: { family: "Arial, Helvetica, sans-serif", size: 17 },
   text: "#586b80",
   border: "#dce4ed",
   grid: "#e7edf5",
+  primary: "#165de1",
+  accent: "#c77825",
+  selected: "#995511",
+  ink: "#192d43",
+  curveWidth: 2,
+  stickWidth: 1.5,
 };
 function energyRecords() {
   if (
@@ -630,8 +636,9 @@ function renderEnergyHistory(activeStep) {
           {
             label: "ΔE",
             data: [],
-            borderColor: "#165de1",
-            borderWidth: 2,
+            borderColor: plotStyle.primary,
+            backgroundColor: plotStyle.primary,
+            borderWidth: plotStyle.curveWidth,
             pointRadius: 2,
             pointHoverRadius: 5,
             pointHitRadius: 12,
@@ -640,8 +647,8 @@ function renderEnergyHistory(activeStep) {
           {
             label: "Dargestellte Struktur",
             data: [],
-            borderColor: "#c77825",
-            backgroundColor: "#c77825",
+            borderColor: plotStyle.selected,
+            backgroundColor: plotStyle.selected,
             pointRadius: 4,
             showLine: false,
           },
@@ -664,7 +671,7 @@ function renderEnergyHistory(activeStep) {
             filter: (item) => item.datasetIndex === 0,
             titleFont: plotStyle.titleFont,
             bodyFont: plotStyle.font,
-            backgroundColor: "#192d43",
+            backgroundColor: plotStyle.ink,
             padding: 10,
             callbacks: {
               title: (items) =>
@@ -757,15 +764,15 @@ function renderSpectrumChart(spec) {
     spectrumChart = new Chart($("spectrum-chart"), {
       type: "line",
       data: { datasets: [
-        { label: "Verbreiterte Banden", order: 1, data: [], borderColor: "#165de1",
-          borderWidth: 2, pointRadius: 0, tension: 0 },
-        { label: "Diskrete Übergänge", data: [], borderColor: "#c77825",
-          borderWidth: 1.5, backgroundColor: "#c77825",
+        { label: "Verbreiterte Banden", order: 1, data: [], borderColor: plotStyle.primary,
+          borderWidth: plotStyle.curveWidth, pointRadius: 0, tension: 0 },
+        { label: "Diskrete Übergänge", data: [], borderColor: plotStyle.accent,
+          borderWidth: plotStyle.stickWidth, backgroundColor: plotStyle.accent,
           pointRadius: (context) => context.dataIndex % 3 === 1 ? 3 : 0,
           pointHoverRadius: (context) => context.dataIndex % 3 === 1 ? 5 : 0,
           spanGaps: false },
-        { label: "Ausgewählter Übergang", order: -1, data: [], borderColor: "#995511",
-          backgroundColor: "#995511", borderWidth: 3, pointRadius: [0, 4] },
+        { label: "Ausgewählter Übergang", order: -1, data: [], borderColor: plotStyle.selected,
+          backgroundColor: plotStyle.selected, borderWidth: 3, pointRadius: [0, 4] },
       ] },
       options: {
         locale: "de-DE", color: plotStyle.text, font: plotStyle.font,
@@ -1329,7 +1336,7 @@ $("energy-png").onclick = handle(async () => {
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#192d43";
+  ctx.fillStyle = plotStyle.ink;
   ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
   ctx.fillText(structureLabel(current()), 12 * scale, 25 * scale,
     canvas.width - 24 * scale);
@@ -1369,7 +1376,7 @@ $("spectrum-png").onclick = handle(async () => {
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#192d43";
+  ctx.fillStyle = plotStyle.ink;
   ctx.font = `${16 * scale}px Arial, Helvetica, sans-serif`;
   ctx.fillText(structureLabel(current()), 12 * scale, 25 * scale, canvas.width - 24 * scale);
   ctx.drawImage(source, 0, header);

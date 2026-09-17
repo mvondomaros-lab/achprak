@@ -37,11 +37,27 @@ Its default output directory is the app's static directory; an explicit
 `--output-dir` sends previews elsewhere, just as for the other scripts.
 Review rendered figures before committing regenerated artwork.
 
-`scripts/style.py` shares only appearance and export setup. It matches the web
-app's Chart.js palette, muted axes, horizontal grid lines and sans-serif type,
-also used by the app's Matplotlib spectrum export. Figure-specific data and
+`src/achprak/plot_style.py` defines the shared Matplotlib palette, typography,
+line weights, markers and axes for teaching figures, app exports and the spectral
+validation plot. `scripts/style.py` adds the teaching-figure export setup.
+The app's Chart.js `plotStyle` uses the same colors and point-to-pixel equivalents.
+Figure-specific data and
 annotations belong in the individual source files. Schematic diagrams retain
 their unnumbered axes; they do not represent calculated energy surfaces.
+
+- Blue (`#165de1`): primary curves, ground-state levels and molecular bonds.
+- Ochre (`#c77825`): secondary data, excited-state levels and angle highlights.
+  Selected structures and spectral transitions use darker ochre (`#995511`).
+- Solid curves: 1.5 pt / 2 px. Transition sticks: 1.125 pt / 1.5 px,
+  with filled circular endpoints of diameter 4.5 pt / 6 px.
+- Reference guides: muted slate, 0.75 pt, dashed. A schematic excited-state
+  guide retains ochre; measured comparison spectra use dashed ochre to distinguish
+  them from calculated solid blue spectra.
+- White backgrounds, light horizontal grids, muted axes, no top/right frame,
+  Arial/Helvetica with DejaVu Sans fallback. German plots use decimal commas.
+
+Externally sourced illustrations and chemical element/spectrum colors retain
+their scientific meaning and original attribution.
 
 SVG keeps lines and labels sharp at any display size. Glyphs are outlined to
 preserve typography on machines without the generation font; accessible

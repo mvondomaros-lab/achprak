@@ -224,49 +224,27 @@ def calculate(data):
         spectrum_progress("broaden")
         energies, absorption = spec.spectrum()
         import matplotlib.pyplot as plt
-        from matplotlib.ticker import FuncFormatter, MaxNLocator
+        from matplotlib.ticker import FuncFormatter
+        from achprak.plot_style import (
+            STYLE,
+            PRIMARY,
+            ACCENT,
+            STICK_WIDTH,
+            MARKER_SIZE,
+            style_axes,
+        )
 
         spectrum_progress("plot")
-        with plt.rc_context(
-            {
-                "font.family": "sans-serif",
-                "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans"],
-                # Match the browser energy plots: readable sans-serif labels,
-                # muted axes, horizontal grid lines and a 2 px-equivalent curve.
-                "font.size": 11,
-                "axes.labelsize": 12,
-                "axes.facecolor": "white",
-                "figure.facecolor": "white",
-                "axes.edgecolor": "#dce4ed",
-                "axes.linewidth": 0.75,
-                "axes.labelcolor": "#586b80",
-                "axes.labelpad": 9,
-                "text.color": "#192d43",
-                "xtick.color": "#586b80",
-                "ytick.color": "#586b80",
-                "grid.color": "#e7edf5",
-                "grid.linewidth": 0.75,
-                "xtick.major.size": 0,
-                "ytick.major.size": 0,
-                "xtick.major.pad": 7,
-                "ytick.major.pad": 7,
-                "svg.fonttype": "none",
-            }
-        ):
+        with plt.rc_context(STYLE):
             fig, ax = plt.subplots(figsize=(9, 3.3), layout="constrained")
-            ax.set_axisbelow(True)
-            ax.yaxis.grid(True)
-            ax.spines[["top", "right"]].set_visible(False)
-            ax.xaxis.set_major_locator(MaxNLocator(nbins=7))
-            ax.yaxis.set_major_locator(MaxNLocator(nbins=4))
-            ax.plot(energies, absorption, color="#165de1", linewidth=1.5)
+            style_axes(ax)
+            ax.plot(energies, absorption, color=PRIMARY)
             ax.vlines(
                 spec.excitations,
                 0,
                 spec.oscillator_strengths,
-                color="#c77825",
-                linewidth=1.2,
-                alpha=0.9,
+                color=ACCENT,
+                linewidth=STICK_WIDTH,
             )
             visible = (spec.excitations >= uvvis.EMIN) & (
                 spec.excitations <= uvvis.EMAX
@@ -274,8 +252,9 @@ def calculate(data):
             ax.scatter(
                 spec.excitations[visible],
                 spec.oscillator_strengths[visible],
-                color="#c77825",
-                s=16,
+                color=ACCENT,
+                s=MARKER_SIZE**2,
+                linewidths=0,
                 zorder=3,
             )
             peak_height = max(
@@ -287,7 +266,7 @@ def calculate(data):
                 xlim=(uvvis.EMIN, uvvis.EMAX),
                 ylim=(-0.03 * peak_height, 1.15 * peak_height),
                 xlabel="Energie / eV",
-                ylabel="Relative Absorption / willk. Einheiten",
+                ylabel="Relative Absorption",
             )
             for axis in (ax.xaxis, ax.yaxis):
                 axis.set_major_formatter(

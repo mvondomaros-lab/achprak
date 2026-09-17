@@ -1,6 +1,6 @@
 """Source for substituent_effects.svg; run directly to regenerate this figure."""
 
-from style import TEXT, export, run
+from style import TEXT, REFERENCE, export, run
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
@@ -9,8 +9,8 @@ def draw():
     w = 1.0
     d = 0.5
 
-    plt.axhline(0.0, color=TEXT, alpha=0.2, ls="--")
-    plt.axhline(1.0, color=TEXT, alpha=0.2, ls="--")
+    plt.axhline(0.0, **REFERENCE)
+    plt.axhline(1.0, **REFERENCE)
 
     plt.plot([0, w], [0, 0], color="C0")
     plt.plot([0, w], [1, 1], color="C1")

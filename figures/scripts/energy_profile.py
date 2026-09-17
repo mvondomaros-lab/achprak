@@ -1,6 +1,6 @@
 """Source for energy_profile.svg; run directly to regenerate this figure."""
 
-from style import TEXT, export, run
+from style import TEXT, REFERENCE, export, run
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import numpy as np
@@ -36,7 +36,7 @@ def draw():
             (xm + span / 2, ym + 0.07),
             arrowstyle="<->",
             connectionstyle="arc3,rad=0.4",
-            linewidth=1.0,
+            linewidth=1.5,
             edgecolor=TEXT,
             mutation_scale=10,
         )
@@ -54,15 +54,15 @@ def draw():
         (x_ts + span / 2, y_ts + 0.01),
         arrowstyle="<->",
         connectionstyle="arc3,rad=-0.4",
-        linewidth=1.0,
+        linewidth=1.5,
         edgecolor=TEXT,
         mutation_scale=10,
     )
     plt.gca().add_patch(arrow_ts)
     plt.text(x_ts, y_ts + 0.06, "TS", ha="center", va="bottom")
 
-    plt.plot([-0.7, 0.0], [0.0, 0.0], color=TEXT, ls="--")
-    plt.plot([-0.6, 0.1], [y_ts, y_ts], color=TEXT, ls="--")
+    plt.plot([-0.7, 0.0], [0.0, 0.0], **REFERENCE)
+    plt.plot([-0.6, 0.1], [y_ts, y_ts], **REFERENCE)
     arrow_vert = patches.FancyArrowPatch(
         (-0.25, 0.0),
         (-0.25, y_ts),

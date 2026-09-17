@@ -22,7 +22,7 @@ def draw():
                 [start[0], end[0]],
                 [start[1] + offset, end[1] + offset],
                 color=blue,
-                linewidth=2,
+                linewidth=1.5,
                 zorder=2,
             )
 
@@ -71,7 +71,7 @@ def draw():
     bond(center, upper)
     ax.add_patch(
         Circle(
-            center, 0.32, facecolor="white", edgecolor=blue, linewidth=1.2, zorder=2.5
+            center, 0.32, facecolor="white", edgecolor=blue, linewidth=1.5, zorder=2.5
         )
     )
     atom(center, "N")
