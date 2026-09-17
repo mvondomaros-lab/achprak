@@ -1,9 +1,7 @@
 # Target audience and design
 
 The target audience is first-year chemistry students with little to no experience
-in theoretical chemistry. Use a scientific but accessible tone: scientific means
-precise about the calculation and its interpretation, not formal or jargon-heavy.
-Use short, direct sentences and explain necessary technical terms in plain language.
+in theoretical chemistry. Use a scientific but accessible tone.
 Never sacrifice scientific accuracy for simpler wording.
 
 Keep the main workflow concise and easy to follow. State assumptions and
