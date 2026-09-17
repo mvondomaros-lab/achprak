@@ -127,7 +127,7 @@ def build(output: Path = OUTPUT) -> None:
                 )
 
             navigation = nav_link("index", "Versuchsüberblick")
-            navigation += '<section class="nav-group"><h2>Vorbereitung</h2>'
+            navigation += '<section class="nav-group"><h2>Grundlagen</h2>'
             navigation += "<ul>"
             for key, text in PAGES:
                 if key.startswith("theory/"):
