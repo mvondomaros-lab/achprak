@@ -18,9 +18,9 @@ Ausbildung (3./4. Semester, optional 5./6. Semester sowie im Masterstudium).
 
 Jede Rechnung verwendet definierte Eingaben, etwa die Molekülstruktur, und liefert Ergebnisse wie Energien
 oder Spektren. Die folgende Abbildung stellt diesen Zusammenhang als *Blackbox* dar: Das Rechenverfahren
-zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt.
-Für diesen Versuch sollen Sie erklären können, welche Größen berechnet werden und welche Annahmen dabei gelten.
-Die mathematische Herleitung der Verfahren wird nicht vorausgesetzt. Die optionalen Methodenabschnitte
+zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt. Für die Einordnung der Ergebnisse sind vor allem
+die berechneten Größen und die zugrunde liegenden Annahmen wichtig; die mathematische Herleitung der Verfahren
+ist nicht Bestandteil dieses Versuchs. Die optionalen Methodenabschnitte
 in der Webapp erläutern, wie die Programme aus Ihren Eingaben Ergebnisse erzeugen, welche numerischen
 Prüfungen sie ausführen und wie sie die Ergebnisse darstellen.
 
@@ -36,15 +36,16 @@ Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 <p class="callout-title" markdown="span">Modell und Genauigkeit</p>
 
 
-Eine Rechnung beschreibt ein Molekül mit einem Modell. Die Genauigkeit hängt von der Methode,
-der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können zusätzliche Wechselwirkungen berücksichtigen,
-benötigen aber meist mehr Rechenzeit. Eine längere Rechenzeit allein belegt keine höhere Genauigkeit.
+Eine Rechnung beschreibt ein Molekül mit einem Modell. Wie genau ein konkretes Ergebnis ist, hängt von der
+Methode, der untersuchten Eigenschaft und dem Molekül ab. Aufwendigere Verfahren können zusätzliche
+Wechselwirkungen berücksichtigen, benötigen aber meist mehr Rechenzeit. Sie liefern für eine bestimmte
+Fragestellung nicht automatisch genauere Ergebnisse; eine längere Rechenzeit allein belegt keine höhere Genauigkeit.
 
-Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energien und Spektren können deshalb
-merklich vom Experiment abweichen. Vergleichen Sie beispielsweise die Absorptionsmaxima einer Reihe von Azobenzolen mit unterschiedlichen
-Substituenten. Formulieren Sie die berechneten Verschiebungen als Vorhersagen des verwendeten Modells.
-Ob die berechneten Trends das Verhalten der untersuchten Moleküle wiedergeben, muss durch einen Vergleich
-mit Experimenten oder geeigneten Referenzrechnungen geprüft werden.
+Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energieunterschiede und Bandenlagen können
+deshalb merklich vom Experiment abweichen. Auch relative Verschiebungen der Absorptionsmaxima innerhalb einer
+Reihe unterschiedlich substituierter Azobenzole sind Vorhersagen des verwendeten Modells. Ob ein berechneter
+Trend das Verhalten der untersuchten Moleküle wiedergibt, muss durch Experimente oder geeignete
+Referenzrechnungen geprüft werden.
 
 </aside>
 
@@ -80,6 +81,5 @@ Dieses Format zeigt, dass sich das Sauerstoffatom im Ursprung des Koordinatensys
 die beiden Wasserstoffatome in der YZ-Ebene liegen $(x = 0)$.
 
 Das XYZ-Format dient in diesem Versuch zur Übergabe molekularer Strukturen zwischen den einzelnen Werkzeugen. Es
-fungiert damit sowohl als Eingabe- als auch als Ausgabeformat der jeweiligen Rechenprogramme.
-Sie selbst müssen keine XYZ-Dateien erstellen – sollten den grundlegenden Aufbau dieses Formats jedoch kennen und
-beschreiben können.
+fungiert damit sowohl als Eingabe- als auch als Ausgabeformat der jeweiligen Rechenprogramme. Die XYZ-Dateien
+werden dabei automatisch erzeugt.
