@@ -75,19 +75,31 @@ Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können meh
 Die Nummerierung der Kohlenstoffatome im Grundgerüst legt die Positionsangaben der Substituenten fest.
 Beim Azobenzol werden die Kohlenstoffatome des ersten Phenylrings mit 1–6 und die des zweiten Rings mit 1′–6′
 nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, die direkt an die Azogruppe gebunden sind.
-In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeigersinn) hängt normalerweise von den
-vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
+Beide Phenylringe können vertauscht und jeweils in zwei Richtungen nummeriert werden. Für den Namen wird von diesen
+gleichwertigen Möglichkeiten die Nummerierung mit der niedrigsten Folge von Positionsnummern gewählt. Man vergleicht
+dazu die aufsteigend geordneten Positionsnummern der Reihe nach; die erste unterschiedliche Nummer entscheidet.
+Bleiben mehrere Nummerierungen gleichwertig, erhält der alphabetisch zuerst genannte Substituent die niedrigere
+Positionsnummer.
+
+Die Eingabemaske der Webapp verwendet aus technischen Gründen feste Ring- und Positionsnummern. Dadurch bezeichnet
+jedes Auswahlfeld stets dieselbe Stelle in der gezeichneten Struktur. Diese Nummern sind Auswahlpositionen und müssen
+nicht mit den Positionsnummern im chemischen Namen übereinstimmen. Beim Erstellen einer Struktur berücksichtigt die
+Webapp die Umkehrung und den Austausch der Ringe, bildet daraus den Namen mit den niedrigsten Positionsnummern und
+verwendet für symmetrieäquivalente Eingaben dieselbe chemische Identität.
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="313" loading="lazy">
+<img src="../../figures/drawings/azobenzene_numbering.svg" alt="Feste Positionsnummern der Eingabemaske für die beiden Phenylringe des Azobenzols." width="313" loading="lazy">
 
 <figcaption markdown="1">
-Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
+Feste Positionsnummern der Eingabemaske. Der chemische Name wird anschließend nach den Nomenklaturregeln nummeriert.
 </figcaption>
 </figure>
 
-Wird beispielsweise am Kohlenstoffatom 2 ein Wasserstoffatom durch ein Chloratom ersetzt, erhält man die Verbindung
-2-Chlorazobenzol.
+Wird beispielsweise in der Eingabemaske an Position 6 eine Methoxygruppe gewählt, ist diese Position zur Position 2
+symmetrieäquivalent. Die Verbindung heißt daher 2-Methoxyazobenzol. Eine einzelne Methylgruppe an Position 2 oder 2′
+ergibt in beiden Fällen dieselbe Verbindung, 2-Methylazobenzol. Die Webapp stellt dem Namen zusätzlich die
+Konfiguration voran, beispielsweise *trans*-2-Methoxyazobenzol; die Bezeichnungen *cis* und *trans* werden im nächsten
+Abschnitt erläutert.
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
@@ -95,8 +107,8 @@ In diesem Versuch treten die folgenden Substituenten auf:
 |---------------|-----------------------|
 | CH₃           | Methyl                |
 | OCH₃          | Methoxy               |
-| N(CH₃)₂       | (Dimethylamino)        |
-| CF₃           | (Trifluormethyl)       |
+| N(CH₃)₂       | Dimethylamino          |
+| CF₃           | Trifluormethyl         |
 | C≡N           | Cyano                 |
 | NO₂           | Nitro                 |
 
@@ -108,9 +120,9 @@ Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* o
 2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht
 die Verbindung 2,3′-Dichlorazobenzol.
 
-Mit der gezeigten Nummerierung können Sie angeben, an welchen Positionen die Substituenten gebunden sind. Überprüfen Sie zur Übung, ob es
-sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(trifluormethyl)-5′-(dimethylamino)-azobenzol
-handelt:
+Mit den festen Positionsnummern können Sie zunächst angeben, an welchen Stellen die Substituenten gebunden sind.
+Bestimmen Sie anschließend für die folgende Verbindung die Nummerierung mit den niedrigsten Positionsnummern und
+leiten Sie daraus den Namen ab:
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="469" loading="lazy">
@@ -129,8 +141,15 @@ Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
 <details markdown="1">
 <summary markdown="span">Ergänzung: *E*,*Z*-Nomenklatur</summary>
 
-Eine andere, systematischere Bezeichnungsweise für die Anordnung von Substituenten an Doppelbindungen verwendet die
-Symbole *E* (für entgegen) und *Z* (für zusammen). In diesem Versuch werden für die beiden Konfigurationen von Azobenzol die Bezeichnungen *trans* und *cis* verwendet.
+Die systematische *E*,*Z*-Nomenklatur beschreibt die Anordnung an einer Doppelbindung anhand der Priorität der
+gebundenen Gruppen. Liegen die Gruppen mit höherer Priorität auf entgegengesetzten Seiten, lautet der Deskriptor *E*
+(von *entgegen*); liegen sie auf derselben Seite, lautet er *Z* (von *zusammen*). Dieses Verfahren bleibt auch bei
+unterschiedlichen Substituenten eindeutig und ist daher allgemeiner und genauer als die Bezeichnungen *cis* und
+*trans*.
+
+Beim Azobenzol beschreiben *trans* und *cis* anschaulich, ob die beiden Phenylringe auf gegenüberliegenden Seiten oder
+auf derselben Seite der Azogruppe liegen. Diese Bezeichnungen sind für Azobenzole gebräuchlich und werden im gesamten
+Versuch sowie in der Webapp einheitlich verwendet. Dabei entspricht *trans* der *E*- und *cis* der *Z*-Konfiguration.
 
 
 </details>
