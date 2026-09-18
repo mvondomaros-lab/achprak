@@ -27,11 +27,10 @@ def test_protocol_download_and_tasks_without_starting_a_session():
             r'<(?:section|details) class="task" id="task-[^"]+"><(?:h3|summary)>([^<]+)</(?:h3|summary)>',
             guide,
         )
-        # The Word template is synchronized after the task editorial review.
         task_ids = re.findall(r'<details class="task" id="([^"]+)">', guide)
-        assert len(task_ids) == len(set(task_ids)) == len(titles) == 12
+        assert len(task_ids) == len(set(task_ids)) == len(titles) == 6
         assert all(re.fullmatch(r"task-[a-z]+(?:-[a-z]+)*", task_id) for task_id in task_ids)
-        for step, count in (("build", 3), ("optimize", 6), ("spectrum", 3)):
+        for step, count in (("build", 1), ("optimize", 2), ("spectrum", 3)):
             page = re.search(
                 rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
             )

@@ -31,4 +31,4 @@ Nach Abschluss dieses Versuches können Sie:
 - Startstrukturen erzeugen, Minimumstrukturen berechnen und Änderungen ihrer Geometrie bestimmen.
 - elektronische Energieunterschiede und -barrieren sowie UV/Vis-Spektren analysieren.
 - Übergangsstrukturen anhand der Verbindungsprüfung und vorhergesagte Absorptionsmaxima und Lösungsfarben unter Berücksichtigung der Modellgrenzen beurteilen.
-- den Einfluss von Substituenten untersuchen und eine begründete Versuchsreihe zur Verschiebung der Absorption und zum Farbunterschied zwischen cis und trans entwickeln.
+- den Einfluss von Substituenten auf Absorption und Farbvorhersage untersuchen und ein eigenes cis/trans-Paar begründet auswählen.

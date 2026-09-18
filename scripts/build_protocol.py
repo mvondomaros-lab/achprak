@@ -39,7 +39,7 @@ def build():
         style.paragraph_format.space_after = Pt(7)
     subtitle = doc.styles["Subtitle"]
     subtitle.font.name, subtitle.font.size = "Arial", Pt(14)
-    subtitle.font.color.rgb = RGBColor.from_string("586B80")
+    subtitle.font.color.rgb = RGBColor(0, 0, 0)
     subtitle.paragraph_format.space_after = Pt(10)
     for border in doc.styles.element.xpath(".//w:pBdr"):
         border.getparent().remove(border)
@@ -149,18 +149,12 @@ def build():
     )
     doc.add_heading("Strukturen erstellen", 1)
     task("task-compare-configurations")
-    answer("[Erklärung, Namen und 3D-Ansichten von cis- und trans-Azobenzol]")
-    task("task-build-structures")
-    for li in tasks["task-build-structures"].xpath(".//li"):
-        answer(li.text_content() + ": [Strukturformel einfügen]")
-    answer("Positionsangabe 4,4′: [Erklärung]")
-    task("task-interpret-structure-formulas")
-    answer("[Namen beider Moleküle einschließlich cis/trans]")
-    answer("Überlagerungen in der Zeichnung und räumliche Anordnung: [Text]")
+    answer("Name des selbst gewählten Derivats: [Name einschließlich Konfiguration]")
+    answer("Unterschied zwischen cis und trans: [höchstens zwei Sätze]")
 
     doc.add_page_break()
     doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)
-    task("task-examine-ring-geometry")
+    task("task-compare-optimized-geometries")
     table(
         [
             "Struktur",
@@ -179,62 +173,42 @@ def build():
         ],
         [5, 4, 4, 4],
     )
-    answer("Anordnung der Ringe: [Text]")
-    task("task-compare-optimized-geometries")
     answer(
-        "[Erwartung und beobachtete Ringstellung für cis und trans; je zwei 3D-Ansichten]"
-    )
-    answer("ΔE / (kJ/mol): [Wert]\nVorzeichen und energieärmere Konfiguration: [Text]")
-    task("task-examine-substituent-geometry")
-    answer(
-        "[Name, Erwartung, Beobachtung und zwei 3D-Ansichten; Vergleich mit unsubstituiertem trans-Azobenzol]"
+        "ΔE = Etrans − Ecis / (kJ/mol): [Wert]\nGeometrieänderungen und Einordnung des Vorzeichens: [höchstens drei Sätze]"
     )
     task("task-analyze-reaction-path")
-    answer(
-        "[Energieprofil; Konfiguration der Enden; Anordnung und Diederwinkel am Anfang, am Energiemaximum und am Ende]"
-    )
-    answer("Verbindung zwischen cis und trans bestätigt: [Ergebnis der Prüfung]")
-    task("task-compare-energy-barriers")
+    p("")
+    answer("[Energieprofil einfügen und beschriften]")
+    p("\n\n")
     table(
         ["Richtung", "ΔE‡ / (kJ/mol)", "ΔE‡ / RT bei 298 K"],
         [["trans → cis", "[Wert]", "[Wert]"], ["cis → trans", "[Wert]", "[Wert]"]],
         [5, 6, 6],
     )
-    answer("Rechenweg, Unterschied der Barrieren und Vergleich mit RT: [Text]")
-    task("task-examine-substituent-barrier")
-    answer("Derivat, Vermutung und Ergebnis der Verbindungsprüfung: [Text]")
-    answer("[Energieprofil und Ansicht der Übergangsstruktur]")
     answer(
-        "Elektronische Energiebarrieren für trans → cis / (kJ/mol): [Derivat] / [unsubstituiert]\nVergleich der Übergangsstrukturen und Prüfung der Vermutung: [Text]"
+        "Pfad, Verbindungsprüfung, Barrieren- und RT-Vergleich: [höchstens drei Sätze]"
     )
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-compare-isomer-spectra")
     table(
-        ["Minimumstruktur", "Maximum / eV", "Wellenlänge / nm", "UV oder sichtbar"],
         [
-            ["cis", "[Wert]", "[Wert]", "[Bereich]"],
-            ["trans", "[Wert]", "[Wert]", "[Bereich]"],
+            "Minimumstruktur",
+            "Maximum / eV",
+            "Wellenlänge / nm",
+            "UV oder sichtbar",
+            "Farbvorhersage",
         ],
-        [3, 4, 5, 5],
-    )
-    answer("cis-Azobenzol: [Spektrum einfügen]")
-    p("\n\n")
-    answer("trans-Azobenzol: [Spektrum einfügen]")
-    p("\n\n")
-    answer(
-        "Vergleich der Spektren: [Konfiguration mit Maximum bei kleinerer Energie beziehungsweise längerer Wellenlänge]"
+        [
+            ["cis", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]"],
+            ["trans", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]"],
+        ],
+        [3, 3, 3.5, 3.2, 4.3],
     )
     answer(
-        "Bevorzugte Anregung: [Wellenlängenbereich, stärker absorbierende Konfiguration, mögliche Verschiebung des cis/trans-Verhältnisses und Grenze der Vorhersage]"
+        "Bevorzugte Anregung und Grenze der Vorhersage: [höchstens drei Sätze]"
     )
-    answer(
-        "Verwendeter Faktor für die optische Dichte: [Wert]\nVergleich von Farbvorhersagen und Lichtdurchlässigkeit anhand der Absorption im sichtbaren Bereich sowie zwei Gründe für Abweichungen: [Text]"
-    )
-
-    doc.add_page_break()
-    doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-compare-substituent-spectra")
     table(
         ["Name und Substitution der trans-Form", "Maximum / eV", "Wellenlänge / nm"],
@@ -242,56 +216,46 @@ def build():
             [label + " [Name]", "[Wert]", "[Wert]"]
             for label in [
                 "unsubstituiert",
-                "4-Me",
                 "4-OMe",
                 "4-NMe₂",
                 "4-CF₃",
-                "4-CN",
                 "4-NO₂",
             ]
         ],
         [8, 4, 5],
     )
-    answer("[Spektren mit Beschriftungen einfügen]")
-    p("\n\n")
     answer(
-        "Derivat mit stärkster Verschiebung: [Name]\nVerschiebung gegenüber unsubstituiertem trans-Azobenzol / eV: [Wert]\nMaximum im ultravioletten oder sichtbaren Bereich: [Text]"
+        "Stärkste Verschiebung zu kleinerer Energie: [Derivat und Verschiebung in eV]"
     )
 
     doc.add_page_break()
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-plan-experiment-series")
     answer(
-        "Mindestens fünf Substitutionsmuster mit jeweils cis- und trans-Konfiguration; Auswahl und Verteilung der Rechnungen: [Text]"
+        "Name und Substitutionsmuster des eigenen Derivats: [Name]\nErwartete Verschiebung gegenüber den unsubstituierten Formen: [Vorhersage]"
     )
     table(
         [
-            "Substitution und Konfiguration",
-            "Erwartete Verschiebung zur Referenz",
+            "Konfiguration",
             "Maximum / eV",
             "Wellenlänge / nm",
             "Farbvorhersage",
         ],
         [
-            [
-                f"{n}  [Konfiguration, Positionen, Gruppen]",
-                "[Erwartung]",
-                "[Wert]",
-                "[Wert]",
-                "[Farbe]",
-            ]
-            for n in range(1, 11)
+            ["cis", "[Wert]", "[Wert]", "[Farbe]"],
+            ["trans", "[Wert]", "[Wert]", "[Farbe]"],
         ],
-        [4.5, 4, 2.5, 3, 3],
+        [3.5, 4, 5, 4.5],
     )
+    answer("cis: [Spektrum einfügen und beschriften]")
+    p("\n\n")
+    answer("trans: [Spektrum einfügen und beschriften]")
+    p("\n\n")
+    answer("Vorhersage und Ergebnis: [höchstens zwei Sätze]")
+    answer("Längstwelliges Gruppenresultat: [Name und Wellenlänge]")
     answer(
-        "Derivat mit Absorptionsmaximum bei der längsten Wellenlänge: [Name und Ergebnis]"
+        "Stärkster vorhergesagter cis/trans-Farbunterschied: [Name und Farben bei Faktor 1,0]"
     )
-    answer(
-        "Derivat mit dem stärksten vorhergesagten Farbunterschied zwischen cis und trans: [Name, verwendeter Faktor und Vergleich]"
-    )
-    answer("[Ausgewählte cis- und trans-Spektren mit Beschriftungen einfügen]")
-    answer("Vergleich der Erwartungen mit den berechneten Ergebnissen: [Text]")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)
     print(OUTPUT)
