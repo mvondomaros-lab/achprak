@@ -70,9 +70,8 @@ def canonical_substitution(substituents):
 
 
 def azobenzene_name(configuration, substituents):
-    """Return a canonical German retained name such as ``(E)-2-Methoxyazobenzol``."""
-    descriptor = {"trans": "(E)", "cis": "(Z)"}.get(configuration)
-    if descriptor is None:
+    """Return a canonical German retained name such as ``trans-2-Methoxyazobenzol``."""
+    if configuration not in {"trans", "cis"}:
         raise ValueError(f"Unbekannte Konfiguration: {configuration}")
 
     locants = _locants(canonical_substitution(substituents))
@@ -91,4 +90,4 @@ def azobenzene_name(configuration, substituents):
         parts.append(f"{locant_text}-{name}")
     substitution = "-".join(parts)
     parent = "azobenzol" if substitution else "Azobenzol"
-    return f"{descriptor}-{substitution}{parent}"
+    return f"{configuration}-{substitution}{parent}"

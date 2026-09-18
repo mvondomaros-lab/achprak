@@ -619,10 +619,9 @@ function renderEnergyHistory(activeStep) {
   const sourceMolecule = current();
   const sourceName = sourceMolecule?.base_name || "";
   const source = sourceMolecule?.settings?.configuration ||
-    (sourceName.startsWith("(E)-") ? "trans" : sourceName.startsWith("(Z)-") ? "cis" : "");
-  const descriptor = source === "trans" ? "(E)" : source === "cis" ? "(Z)" : "";
-  const target = source === "trans" ? "(Z)" : source === "cis" ? "(E)" : "";
-  const direction = source ? ` · ${descriptor} → ${target}` : "";
+    (sourceName.startsWith("trans-") ? "trans" : sourceName.startsWith("cis-") ? "cis" : "");
+  const target = source === "trans" ? "cis" : source === "cis" ? "trans" : "";
+  const direction = source ? ` · ${source} → ${target}` : "";
   $("energy-path-meta").textContent = path?.length
     ? `Reaktionspfad im elektronischen Grundzustand${direction}`
     : exploringTS ? "Übergangsstruktursuche · Vorbereitung des Reaktionspfads"
@@ -1094,7 +1093,7 @@ $("cancel").onclick = handle(async () => {
 function structureIdentity(molecule) {
   const name = molecule?.base_name || molecule?.name || "";
   const configuration = molecule?.settings?.configuration ||
-    (name.startsWith("(E)-") ? "trans" : name.startsWith("(Z)-") ? "cis" : "");
+    (name.startsWith("trans-") ? "trans" : name.startsWith("cis-") ? "cis" : "");
   return {
     name,
     configuration,
@@ -1108,8 +1107,8 @@ function structureLabel(molecule) {
   const { name, configuration, isPath } = structureIdentity(molecule);
   if (!isPath) return name;
   const target = configuration === "trans"
-    ? name.replace(/^\(E\)-/, "(Z)-")
-    : name.replace(/^\(Z\)-/, "(E)-");
+    ? name.replace(/^trans-/, "cis-")
+    : name.replace(/^cis-/, "trans-");
   return `${name} → ${target}${molecule?.kind === "ts" ? " · Übergangsstruktur" : ""}`;
 }
 function structureGroups(molecules, query = "") {

@@ -290,7 +290,7 @@ test("energy chart shows only reaction coordinates and describes the path", () =
     { ...record(8, "neb_climb"), energy_ev: -10, neb_path: path, neb_image: 0 },
     { ...record(9, "vibrations"), energy_ev: -8 },
   ];
-  const m = { id: "m", base_name: "(E)-Azobenzol", ts_search: { path }, optimization_history: records };
+  const m = { id: "m", base_name: "trans-Azobenzol", ts_search: { path }, optimization_history: records };
   const elements = new Map();
   let chart;
   const context = vm.createContext({
@@ -339,7 +339,7 @@ test("energy chart shows only reaction coordinates and describes the path", () =
     [0, 0.5, 1],
   );
   assert.equal(chart.options.scales.x.title.text, "Reaktionspfad");
-  assert.equal(elements.get("energy-path-meta").textContent, "Reaktionspfad im elektronischen Grundzustand · (E) → (Z)");
+  assert.equal(elements.get("energy-path-meta").textContent, "Reaktionspfad im elektronischen Grundzustand · trans → cis");
   context.state.busy = true;
   context.state.tracking = { sourceId: "m", kind: "ts", status: "queued", records: [] };
   context.renderEnergyHistory();
@@ -963,57 +963,57 @@ test("structure picker groups chemical identities and keeps variants individuall
   const molecules = [
     {
       id: "a",
-      base_name: "(Z)-Azobenzol",
+      base_name: "cis-Azobenzol",
       formula: "C12H10N2",
       kind: "initial",
     },
     {
       id: "b",
-      base_name: "(Z)-Azobenzol",
+      base_name: "cis-Azobenzol",
       formula: "C12H10N2",
       kind: "minimum",
     },
     {
       id: "c",
-      base_name: "(E)-Azobenzol",
+      base_name: "trans-Azobenzol",
       formula: "C12H10N2",
       kind: "minimum",
     },
-    { id: "d", base_name: "(Z)-Azobenzol", formula: "C12H10N2", kind: "ts" },
+    { id: "d", base_name: "cis-Azobenzol", formula: "C12H10N2", kind: "ts" },
     {
       id: "e",
-      base_name: "(Z)-Azobenzol",
+      base_name: "cis-Azobenzol",
       formula: "C12H10N2",
       kind: "minimum",
     },
     {
       id: "f",
-      base_name: "(E)-2-Fluorazobenzol",
+      base_name: "trans-2-Fluorazobenzol",
       formula: "C12H9FN2",
       kind: "initial",
     },
   ];
-  assert.equal(context.structureLabel(molecules[0]), "(Z)-Azobenzol");
+  assert.equal(context.structureLabel(molecules[0]), "cis-Azobenzol");
   assert.equal(context.substituentLabel("Me OMe NMe2 CF3 NO2"), "CH₃ OCH₃ N(CH₃)₂ CF₃ NO₂");
   assert.equal(context.substituentLabel("CH₃ OCH₃ N(CH₃)₂"), "CH₃ OCH₃ N(CH₃)₂");
 
-  assert.equal(context.structureGroupLabel(molecules[3]), "(Z)-Azobenzol");
-  assert.equal(context.structureGroupLabel({ base_name: "(E)-4-Methoxyazobenzol", kind: "ts" }), "(E)-4-Methoxyazobenzol");
-  assert.equal(context.structureLabel(molecules[3]), "(Z)-Azobenzol → (E)-Azobenzol · Übergangsstruktur");
-  assert.equal(context.structureLabel({ base_name: "(E)-4-Methoxyazobenzol", kind: "ts" }), "(E)-4-Methoxyazobenzol → (Z)-4-Methoxyazobenzol · Übergangsstruktur");
-  assert.equal(context.structureLabel(molecules[5]), "(E)-2-Fluorazobenzol");
-  assert.equal(context.structureLabel({ base_name: "(Z)-4-Fluor-4′-Dimethylaminoazobenzol", kind: "minimum" }), "(Z)-4-Fluor-4′-Dimethylaminoazobenzol");
-  assert.equal(context.structureLabel({ base_name: "(E)-4-Methoxyazobenzol", kind: "unconverged", ts_search: {} }), "(E)-4-Methoxyazobenzol → (Z)-4-Methoxyazobenzol");
+  assert.equal(context.structureGroupLabel(molecules[3]), "cis-Azobenzol");
+  assert.equal(context.structureGroupLabel({ base_name: "trans-4-Methoxyazobenzol", kind: "ts" }), "trans-4-Methoxyazobenzol");
+  assert.equal(context.structureLabel(molecules[3]), "cis-Azobenzol → trans-Azobenzol · Übergangsstruktur");
+  assert.equal(context.structureLabel({ base_name: "trans-4-Methoxyazobenzol", kind: "ts" }), "trans-4-Methoxyazobenzol → cis-4-Methoxyazobenzol · Übergangsstruktur");
+  assert.equal(context.structureLabel(molecules[5]), "trans-2-Fluorazobenzol");
+  assert.equal(context.structureLabel({ base_name: "cis-4-Fluor-4′-Dimethylaminoazobenzol", kind: "minimum" }), "cis-4-Fluor-4′-Dimethylaminoazobenzol");
+  assert.equal(context.structureLabel({ base_name: "trans-4-Methoxyazobenzol", kind: "unconverged", ts_search: {} }), "trans-4-Methoxyazobenzol → cis-4-Methoxyazobenzol");
   const groups = context.structureGroups(molecules);
   assert.equal(groups.length, 3);
-  assert.equal(groups[0].name, "(Z)-Azobenzol");
-  assert.equal(groups[1].name, "(E)-Azobenzol");
-  assert.equal(groups[2].name, "(E)-2-Fluorazobenzol");
+  assert.equal(groups[0].name, "cis-Azobenzol");
+  assert.equal(groups[1].name, "trans-Azobenzol");
+  assert.equal(groups[2].name, "trans-2-Fluorazobenzol");
   assert.deepEqual(Array.from(groups[0].entries, (entry) => entry.molecule.id), ["a", "b", "e", "d"]);
   assert.equal(groups[0].entries[1].label, "Minimumstruktur · 1");
   assert.equal(groups[0].entries[2].label, "Minimumstruktur · 2");
   assert.equal(groups[0].entries[3].label, "Übergangsstruktur");
-  assert.equal(context.structureGroups(molecules, "(E)-Azobenzol")[0].entries[0].molecule.id, "c");
+  assert.equal(context.structureGroups(molecules, "trans-Azobenzol")[0].entries[0].molecule.id, "c");
   assert.equal(context.structureGroups(molecules, "C12H9FN2")[0].entries[0].molecule.id, "f");
   assert.equal(context.structureGroups(molecules, "Minimumstruktur · 2")[0].entries[0].molecule.id, "e");
   assert.equal(context.structureGroups(molecules.filter((m) => m.id !== "a"))[0].entries.length, 3);
@@ -1351,10 +1351,10 @@ test("picker groups by starting configuration and substitution without redundant
   });
   const elements = new Map();
   const molecules = [
-    { id: "start", base_name: "(E)-4-Methoxyazobenzol", kind: "initial", formula: "C13H12N2O" },
-    { id: "min", base_name: "(E)-4-Methoxyazobenzol", kind: "minimum", formula: "C13H12N2O" },
-    { id: "ts", base_name: "(E)-4-Methoxyazobenzol", kind: "ts", formula: "C13H12N2O" },
-    { id: "failed", base_name: "(Z)-4-Methoxyazobenzol", kind: "unconverged", ts_search: {}, formula: "C13H12N2O" },
+    { id: "start", base_name: "trans-4-Methoxyazobenzol", kind: "initial", formula: "C13H12N2O" },
+    { id: "min", base_name: "trans-4-Methoxyazobenzol", kind: "minimum", formula: "C13H12N2O" },
+    { id: "ts", base_name: "trans-4-Methoxyazobenzol", kind: "ts", formula: "C13H12N2O" },
+    { id: "failed", base_name: "cis-4-Methoxyazobenzol", kind: "unconverged", ts_search: {}, formula: "C13H12N2O" },
   ];
   const context = vm.createContext({
     state: { selected: "min", busy: false },
@@ -1372,8 +1372,8 @@ test("picker groups by starting configuration and substitution without redundant
   context.renderStructureOptions();
   const groups = elements.get("structure-options").children;
   assert.equal(groups.length, 2);
-  assert.equal(groups[0].children[0].textContent, "(E)-4-Methoxyazobenzol");
-  assert.equal(groups[1].children[0].textContent, "(Z)-4-Methoxyazobenzol");
+  assert.equal(groups[0].children[0].textContent, "trans-4-Methoxyazobenzol");
+  assert.equal(groups[1].children[0].textContent, "cis-4-Methoxyazobenzol");
   const buttons = groups[0].children.slice(2).map((row) => row.children[0]);
   const minimum = buttons.find((button) => button.attributes["aria-current"] === "true");
   assert.equal(minimum.children[0].textContent, "Minimumstruktur");
@@ -1381,13 +1381,13 @@ test("picker groups by starting configuration and substitution without redundant
   const ts = buttons.find((button) => button.children[0].textContent === "Übergangsstruktur");
   assert.equal(ts.children[0].children.length, 0);
   assert.equal(ts.children.length, 1);
-  assert.equal(ts.attributes["aria-label"], "(E)-4-Methoxyazobenzol · Übergangsstruktur");
+  assert.equal(ts.attributes["aria-label"], "trans-4-Methoxyazobenzol · Übergangsstruktur");
   const failed = groups[1].children[2].children[0];
   assert.equal(failed.children[0].textContent, "Optimierung nicht abgeschlossen");
   for (const button of [...buttons, failed]) {
     assert.doesNotMatch(button.attributes["aria-label"], /Ausgangsstruktur/);
   }
-  elements.get("structure-search").value = "(Z)-4-Methoxyazobenzol";
+  elements.get("structure-search").value = "cis-4-Methoxyazobenzol";
   context.renderStructureOptions();
   assert.equal(elements.get("structure-options").children.length, 1);
   assert.equal(elements.get("structure-options").children[0].children.length, 3);
