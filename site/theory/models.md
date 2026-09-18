@@ -8,8 +8,9 @@ quantitative Berechnungen und Simulationen sowie vereinfachte qualitative Modell
 
 Dieser Praktikumsversuch bietet einen ersten anwendungsbezogenen Einblick in das Fachgebiet. Die mathematischen
 Grundlagen und die Herleitung der verwendeten Verfahren sind nicht Bestandteil des Versuchs. Sie werden im
-weiteren Studium der theoretischen Chemie vertieft: zunächst im 3. und 4. Semester, optional im 5. und 6. Semester
-sowie in weiterführenden Lehrveranstaltungen des Masterstudiums.
+weiteren Studium der theoretischen Chemie vertieft: im 3. oder 4. Semester sowie in einem optionalen Modul im
+5. oder 6. Semester. Die Zuordnung richtet sich jeweils danach, ob das Studium im Winter- oder Sommersemester
+begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
 
 ## Rechenmodelle
 
