@@ -138,9 +138,13 @@ def build(output: Path = OUTPUT) -> None:
                     navigation += "<li>" + nav_link(key, text) + "</li>"
             navigation += (
                 '</ul></section><section class="nav-group"><h2>Durchführung</h2>'
+                "<ul>"
             )
-            navigation += nav_link("installation", "Webapp starten")
-            navigation += nav_link("tasks", "Aufgaben und Protokoll") + "</section>"
+            navigation += "<li>" + nav_link("installation", "Webapp starten") + "</li>"
+            navigation += (
+                "<li>" + nav_link("tasks", "Aufgaben und Protokoll") + "</li>"
+                "</ul></section>"
+            )
             chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
             if slug in chapter_keys:
                 eyebrow = "Grundlagen"
