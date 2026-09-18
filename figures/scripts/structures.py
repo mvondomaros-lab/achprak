@@ -14,6 +14,7 @@ def export_structure(name, smiles, output_dir=None, formats=("svg",), **options)
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
         raise ValueError(f"Invalid structure: {smiles}")
+    options.setdefault("scale_bond_width", True)
     for extension in formats:
         drawing = draw_structure(mol, format=extension, **options)
         path = output_dir / f"{name}.{extension}"

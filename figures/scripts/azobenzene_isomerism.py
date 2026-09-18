@@ -16,6 +16,7 @@ def render(output_dir=None, formats=("svg",)):
     for extension in formats:
         drawer = structure_drawer(1100, 340, extension, 420, 280)
         drawer.drawOptions().fixedScale = 0.1
+        drawer.drawOptions().scaleBondWidth = True
         for smiles, x in ((TRANS, 0), (CIS, 680)):
             mol = Chem.MolFromSmiles(smiles)
             draw_coordinates(mol)

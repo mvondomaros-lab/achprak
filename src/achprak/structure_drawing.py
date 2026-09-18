@@ -16,11 +16,15 @@ def structure_drawer(width, height, format="svg", panel_width=-1, panel_height=-
 
 
 def draw_structure(mol, *, width=700, height=340, explicit=False,
-                   numbered=False, aromatic=False, format="svg"):
+                   numbered=False, aromatic=False, format="svg", rotate=0,
+                   scale_bond_width=False, bond_line_width=2):
     mol = Chem.AddHs(Chem.Mol(mol)) if explicit else Chem.RemoveHs(Chem.Mol(mol))
     draw_coordinates(mol)
     drawer = structure_drawer(width, height, format)
     options = drawer.drawOptions()
+    options.bondLineWidth = bond_line_width
+    options.rotate = rotate
+    options.scaleBondWidth = scale_bond_width
     if explicit:
         for atom in mol.GetAtoms():
             options.atomLabels[atom.GetIdx()] = atom.GetSymbol()

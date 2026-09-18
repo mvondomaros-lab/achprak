@@ -10,6 +10,7 @@ def render(output_dir=None, formats=("svg",)):
         "c1cc(OC)ccc1/N=N/c1ccc([N+](=O)[O-])cc1",
         output_dir,
         formats,
+        rotate=11,
     )
 
 
