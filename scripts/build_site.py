@@ -25,10 +25,10 @@ SITE = ROOT / "site"
 OUTPUT = SITE / "_build"
 PAGES = (
     ("index", "Molekulare Photoschalter"),
+    ("theory/models", "Theoretische Chemie"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
-    ("theory/light", "Licht und Absorption"),
-    ("theory/models", "Modelle und Atomkoordinaten"),
     ("theory/energy", "Energien und Strukturoptimierung"),
+    ("theory/light", "Licht und Absorption"),
     ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
     ("installation", "Webapp starten"),
     ("tasks", "Aufgaben und Protokoll"),
