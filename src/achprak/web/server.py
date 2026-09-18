@@ -20,11 +20,24 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
+from achprak import nomenclature
+
 from .ts_policy import with_ts_policy
 
 STATIC = Path(__file__).parent / "static"
 SUBSTITUENTS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]
 ACTIVE = {"queued", "running"}
+
+
+def template_identity(settings):
+    """Identify templates modulo reversal and exchange of the phenyl rings."""
+    if not isinstance(settings, dict):
+        return None
+    try:
+        rings = nomenclature.canonical_substitution(settings["substituents"])
+        return settings["configuration"], *rings
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def job_output(folder, kind):
@@ -108,13 +121,14 @@ class JobManager:
     def submit(self, session, payload):
         if any(j["status"] in ACTIVE for j in session.jobs.values()):
             raise HTTPException(409, "Eine Berechnung läuft bereits in dieser Sitzung.")
+        requested_identity = template_identity(payload.get("settings"))
         existing = next(
             (
                 m
                 for m in session.molecules.values()
                 if payload["kind"] == "template"
                 and m.get("kind") == "initial"
-                and m.get("settings") == payload.get("settings")
+                and template_identity(m.get("settings")) == requested_identity
             ),
             None,
         )

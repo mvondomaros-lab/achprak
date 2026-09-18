@@ -641,3 +641,36 @@ def test_repeated_template_reuses_start_and_preserves_results(client, app):
         assert response.status_code == 202
         assert response.json()["status"] == "queued"
         client.delete(f"/api/jobs/{response.json()['id']}", headers=HEADERS)
+
+
+def test_symmetry_equivalent_template_reuses_existing_start(client, app):
+    session = next(iter(app.state.manager.sessions.values()))
+    substituents = ["Me", "OMe", "H", "H", "H"] + ["H"] * 5
+    settings = {"configuration": "trans", "substituents": substituents}
+    initial = {"id": "start", "kind": "initial", "settings": settings}
+    session.molecules["start"] = initial
+
+    equivalents = [
+        ["H", "H", "H", "OMe", "Me"] + ["H"] * 5,
+        ["H"] * 5 + ["Me", "OMe", "H", "H", "H"],
+        ["H"] * 5 + ["H", "H", "H", "OMe", "Me"],
+    ]
+    for equivalent in equivalents:
+        response = client.post(
+            "/api/jobs",
+            headers=HEADERS,
+            json={
+                "kind": "template",
+                "settings": {
+                    "configuration": "trans",
+                    "substituents": equivalent,
+                },
+            },
+        )
+        assert response.status_code == 202
+        job = response.json()
+        assert job["status"] == "complete"
+        assert job["result"]["molecule"] == initial
+        assert job["id"] not in app.state.manager.tasks
+
+    assert list(session.molecules) == ["start"]
