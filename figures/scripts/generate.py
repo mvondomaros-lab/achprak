@@ -4,6 +4,14 @@ from importlib import import_module
 from style import run
 
 FIGURES = (
+    "azobenzene",
+    "azobenzene_4_methoxy",
+    "azobenzene_aromatic",
+    "azobenzene_cis",
+    "azobenzene_derivative",
+    "azobenzene_explicit",
+    "azobenzene_isomerism",
+    "azobenzene_numbering",
     "dihedral",
     "energy_levels",
     "spectrum_lines",

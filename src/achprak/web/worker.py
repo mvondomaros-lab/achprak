@@ -11,7 +11,6 @@ from pathlib import Path
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
-from rdkit.Chem.Draw import rdMolDraw2D
 
 from achprak import azobenzene, common, optimization, uvvis
 from achprak.transition_state import OptTS
@@ -73,14 +72,9 @@ def read_atoms(xyz):
 
 def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     mol = mol if mol is not None else common.atoms_to_mol(atoms)
-    flat = Chem.RemoveHs(Chem.Mol(mol))
-    from achprak.conformation import draw_coordinates
+    from achprak.structure_drawing import draw_structure
 
-    draw_coordinates(flat)
-    drawer = rdMolDraw2D.MolDraw2DSVG(700, 340)
-    drawer.drawOptions().clearBackground = False
-    drawer.DrawMolecule(flat)
-    drawer.FinishDrawing()
+    svg = draw_structure(mol)
     geometry = azobenzene.Properties(atoms.copy(), mol=mol)
     return {
         "geometry_definition": {
@@ -97,7 +91,7 @@ def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
         "parent_id": parent_id,
         "xyz": common.atoms_to_xyz(atoms),
         "sdf": Chem.MolToMolBlock(mol),
-        "svg": drawer.GetDrawingText(),
+        "svg": svg,
         "formula": rdMolDescriptors.CalcMolFormula(mol),
         "atom_count": len(atoms),
     }
