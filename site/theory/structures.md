@@ -51,9 +51,7 @@ Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösu
 Substitution, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
 Stärke der Absorptionsbanden verändern
 ([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist
-4-Methoxy-4′-nitroazobenzol: Eine Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator, eine Nitrogruppe
-(–NO₂) an Position 4′ als Elektronenakzeptor. Dieses Donator-Akzeptor-Muster verschiebt die Absorption zu längeren
-Wellenlängen; die Verbindung kann deshalb in Lösung deutlich gefärbt erscheinen
+4-Methoxy-4′-nitroazobenzol, das in Lösung deutlich gefärbt erscheinen kann
 ([experimentelle Lösungsspektren](https://doi.org/10.1016/S0022-2860(01)00457-4)).
 
 <figure markdown="1">
@@ -63,6 +61,9 @@ Wellenlängen; die Verbindung kann deshalb in Lösung deutlich gefärbt erschein
 Strukturformel von 4-Methoxy-4′-nitroazobenzol.
 </figcaption>
 </figure>
+
+Wie Substituenten die elektronischen Übergänge verändern, wird im Abschnitt
+[Licht und Absorption](light.md#einfluss-der-substituenten-auf-die-absorption) erläutert.
 
 <details markdown="1">
 <summary markdown="span">Ergänzung: Nomenklatur</summary>

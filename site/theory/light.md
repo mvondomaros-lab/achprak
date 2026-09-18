@@ -121,6 +121,14 @@ p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wir
 Delokalisierung bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
 können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
 
+Ein Beispiel ist das auf der Seite zu den [Molekülstrukturen](structures.md#substituenten) gezeigte
+4-Methoxy-4′-nitroazobenzol. Die Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator,
+die Nitrogruppe (–NO₂) an Position 4′ als Elektronenakzeptor. Dieses Donator-Akzeptor-Muster
+beeinflusst Grundzustand und angeregte Zustände unterschiedlich und kann dadurch die Energiedifferenz
+für einen elektronischen Übergang verkleinern. Bei dieser Verbindung liegen Absorptionsbeiträge deshalb
+bei längeren Wellenlängen als bei unsubstituiertem Azobenzol
+([experimentelle Lösungsspektren](https://doi.org/10.1016/S0022-2860(01)00457-4)).
+
 <figure markdown="1">
 <img src="../../figures/outputs/substituent_effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
 
