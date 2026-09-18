@@ -780,7 +780,7 @@ function renderSpectrumChart(spec) {
         onClick: selectSpectrumTransition,
         plugins: { legend: { display: false }, tooltip: { enabled: false } },
         scales: {
-          x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks, callback: (value) => fmt(value, 4) },
+          x: { type: "linear", title: title("Energie / eV"), ticks: { ...ticks, callback: (value) => fmt(value, 2) },
             grid: { display: false, drawTicks: false }, border: { color: plotStyle.border } },
           wavelength: { type: "linear", position: "top", title: title("Wellenlänge / nm"),
             afterBuildTicks: (axis) => { axis.ticks = [800, 600, 500, 400, 300, 250]
