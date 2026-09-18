@@ -113,6 +113,9 @@ def test_validation_and_csrf(client):
     )
     assert client.get("/static/../server.py").status_code == 404
     assert "no-store" in client.get("/api/session").headers["cache-control"]
+    index = client.get("/")
+    assert "no-cache" in index.headers["cache-control"]
+    assert 'static/app.js?v=ui-92' in index.text
     client.cookies.clear()
     assert (
         client.post("/api/jobs", headers=HEADERS, json={"kind": "template"}).status_code

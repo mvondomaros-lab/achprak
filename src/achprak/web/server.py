@@ -457,7 +457,8 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
 
     @app.get("/")
     async def index():
-        return FileResponse(STATIC / "index.html")
+        # Revalidate the HTML so its asset versions cannot lag behind the API.
+        return FileResponse(STATIC / "index.html", headers={"Cache-Control": "no-cache"})
 
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
     return app
