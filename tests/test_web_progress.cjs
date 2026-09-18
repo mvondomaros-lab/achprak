@@ -1263,13 +1263,16 @@ test("minimum playback uses its optimization history without a mode toggle", () 
 test("spectrum preserves bands and stick strengths with reciprocal wavelength ticks", () => {
   const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
   let chart;
-  const selection = {};
+  const elements = new Map();
   const context = vm.createContext({
     spectrumChart: null,
     HC: 1239.8419843320026,
     fmt: (value) => String(Math.round(value)),
     plotStyle: { text: "#586b80", font: { size: 16 }, titleFont: { size: 17 } },
-    $: () => selection,
+    $: (id) => {
+      if (!elements.has(id)) elements.set(id, {});
+      return elements.get(id);
+    },
     Chart: class {
       constructor(_, config) { Object.assign(this, config); chart = this; }
       update() {}
@@ -1292,14 +1295,15 @@ test("spectrum preserves bands and stick strengths with reciprocal wavelength ti
   chart.options.onClick({ x: 153, y: 100 }, [], chart);
   assert.equal(chart.data.datasets[2].data[1].x, 3);
   assert.equal(chart.data.datasets[2].data[1].y, 0.7);
-  assert.match(selection.textContent, /Übergang 2/);
+  assert.match(elements.get("spectrum-selection-values").textContent, /Übergang 2/);
+  assert.match(elements.get("spectrum-selection-strength").textContent, /^: /);
   chart.options.onClick({ x: 250, y: 100 }, [], chart); // Empty space does not select a band.
   assert.equal(chart.data.datasets[2].data[1].x, 3);
   chart.options.onClick({ x: 350, y: -1 }, [], chart); // Axis labels are not clickable lines.
   assert.equal(chart.data.datasets[2].data[1].x, 3);
   chart.options.onClick({ x: 350, y: 100 }, [], chart);
   assert.equal(chart.data.datasets[2].data[1].x, 5);
-  assert.match(selection.textContent, /Übergang 3/);
+  assert.match(elements.get("spectrum-selection-values").textContent, /Übergang 3/);
 });
 
 test("spectrum notes rotate without inventing stage changes", () => {

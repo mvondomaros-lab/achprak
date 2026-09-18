@@ -144,8 +144,8 @@ globalThis.SpectrumProgress = {
       "Zu einem angeregten Zustand können mehrere Orbitalübergänge beitragen. Ihr jeweiliger Anteil wird in dieser Rechnung bestimmt.",
     ]],
     transitions: ["Lichtabsorption auswerten", [
-      "Die Anregungsenergien und Oszillatorstärken bestimmen die Lage und die relativen Intensitäten der berechneten Absorptionsbanden.",
-      "Die Oszillatorstärke ist ein dimensionsloses Maß für die Stärke eines elektronischen Übergangs. Sie bestimmt dessen Beitrag zur berechneten Absorption.",
+      "Die ausgegebenen Übergänge werden nach Anregungsenergie und Oszillatorstärke geordnet.",
+      "Die Werte der elektronischen Übergänge werden für das Linienspektrum bereitgestellt.",
     ]],
     read_transitions: ["Anregungsenergien und Oszillatorstärken einlesen", [
       "Die berechneten Übergänge werden eingelesen. Geprüft wird, ob sie über den dargestellten Energiebereich hinausreichen, damit auch die Ausläufer höher liegender Banden berücksichtigt werden.",

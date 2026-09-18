@@ -51,3 +51,17 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "elektronische Energiebarriere" in text
         assert "Jupyter Notebook" not in text
         assert "Azobenzol farblos" not in text
+
+
+def test_spectrum_terms_link_fundamentals_to_contextual_app_help():
+    with TestClient(create_app()) as client:
+        index = client.get("/").text
+        guide = client.get("/static/guide.html").text
+        progress = client.get("/static/progress.js").text
+
+    anchor = "theory/light/#absorbance-transmission-oscillator-strength"
+    assert index.count(anchor) == 2
+    assert "Gewichtete Lichtdurchlässigkeit:" in index
+    assert "gewichtete Lichtdurchlässigkeit" in guide
+    assert "dimensionsloses Maß dafür, wie stark" not in index
+    assert "Die ausgegebenen Übergänge werden" in progress

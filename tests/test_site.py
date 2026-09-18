@@ -90,6 +90,7 @@ class SiteBuildTests(unittest.TestCase):
         for anchor in (
             "molecular-structures",
             "light-absorption",
+            "absorbance-transmission-oscillator-strength",
             "structure-optimization",
         ):
             self.assertIn(anchor, page.ids)

@@ -86,21 +86,22 @@ Zur besseren Orientierung wurde das zugrunde liegende Linienspektrum im Hintergr
 </figcaption>
 </figure>
 
-<details markdown="1">
+<details id="absorbance-transmission-oscillator-strength" markdown="1">
 <summary markdown="span">Ergänzung: Absorption, Transmission und Oszillatorstärke</summary>
 
 
-Absorption ist die Aufnahme von Strahlungsenergie. Die Transmission $T = I/I_0$ gibt an,
-welcher Anteil der einfallenden Lichtintensität $I_0$ als Intensität $I$ durch eine Probe hindurchtritt.
-Die dekadische Absorbanz ist $A = -\log_{10}(T)$. Für geeignete verdünnte Lösungen ist sie nach dem
+Absorption ist die Aufnahme von Strahlungsenergie. Die wellenlängenabhängige Transmission
+$T(\lambda) = I(\lambda)/I_0(\lambda)$ gibt an, welcher Anteil der einfallenden Lichtintensität
+$I_0(\lambda)$ als Intensität $I(\lambda)$ durch eine Probe hindurchtritt. Die dekadische Absorbanz ist
+$A(\lambda) = -\log_{10}(T(\lambda))$. Für geeignete verdünnte Lösungen ist sie nach dem
 Lambert-Beer-Gesetz proportional zur Konzentration und zur durchstrahlten Schichtdicke.
 In Praktika wird dafür oft auch „Extinktion“ gesagt; dieser Begriff kann jedoch zusätzlich Streuverluste einschließen.
 Siehe die [IUPAC-Definition der Absorbanz](https://goldbook.iupac.org/terms/view/A00028).
 
 Die Rechnung liefert Oszillatorstärken: dimensionslose Maße für die Stärke elektronischer Übergänge.
 Sie sind keine Absorptionswahrscheinlichkeiten zwischen 0 und 1 und keine Absorbanzwerte einer konkreten Probe.
-Die Kurve in der Webapp zeigt daraus gebildete relative Absorptionsbanden. Für eine gemessene Absorbanz wären
-zusätzlich unter anderem Konzentration und Schichtdicke nötig.
+Zusammen mit den Anregungsenergien bestimmen sie die Lage und relative Intensität der berechneten
+Absorptionsbanden. Eine gemessene Absorbanz lässt sich daraus ohne weitere Angaben zur Probe nicht ableiten.
 
 </details>
 
