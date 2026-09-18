@@ -175,10 +175,17 @@ Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Si
 Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
 
 <figure markdown="1">
-<img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol." width="512" loading="lazy">
+<div id="azobenzene-trans-viewer" class="structure-viewer" data-ngl-viewer role="img"
+     aria-label="Interaktives Kugel-Stab-Modell von trans-Azobenzol">
+<p class="structure-viewer-status" data-viewer-status role="status">Interaktives 3D-Modell wird geladen …</p>
+</div>
+<p class="structure-viewer-instruction" data-viewer-instruction hidden>Ziehen zum Drehen, scrollen zum Zoomen.</p>
+<div class="structure-viewer-fallback" data-viewer-fallback>
+<img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol als statische Ersatzdarstellung." width="512" loading="lazy">
+</div>
 
 <figcaption markdown="1">
-Kugel-Stab-Modell von trans-Azobenzol. Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
+Interaktives Kugel-Stab-Modell von trans-Azobenzol. Statische Ersatzdarstellung: Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
 </figcaption>
 </figure>
 

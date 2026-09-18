@@ -69,6 +69,10 @@ def build(output: Path = OUTPUT) -> None:
         shutil.copy2(
             ROOT / "src/achprak/web/static/header.css", stage / "assets/header.css"
         )
+        vendor = stage / "assets/vendor"
+        vendor.mkdir(parents=True, exist_ok=True)
+        for name in ("ngl.js", "NGL-LICENSE"):
+            shutil.copy2(ROOT / "src/achprak/web/static/vendor" / name, vendor / name)
         template = Template((SITE / "template.html").read_text())
         search = []
         for index, (slug, label) in enumerate(
@@ -170,6 +174,11 @@ def build(output: Path = OUTPUT) -> None:
                     else ""
                 ),
                 eyebrow=eyebrow,
+                page_scripts=(
+                    f'<script src="{root}assets/structure-viewer.js" defer></script>'
+                    if slug == "theory/structures"
+                    else ""
+                ),
                 breadcrumbs=(
                     f'<nav class="breadcrumbs" aria-label="Pfad"><span>Grundlagen</span><span aria-hidden="true"> / </span><span>{html.escape(label)}</span></nav>'
                     if slug in chapter_keys

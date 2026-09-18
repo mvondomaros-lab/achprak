@@ -99,6 +99,57 @@ class SiteBuildTests(unittest.TestCase):
         self.assertNotIn(":::{", text)
         self.assertNotIn("cdn.", text)
 
+    def test_structures_page_has_progressive_local_3d_viewer(self):
+        structures_path = self.output / "theory/structures/index.html"
+        structures = structures_path.read_text()
+        document = Document(structures)
+        self.assertIn('id="azobenzene-trans-viewer"', structures)
+        self.assertIn("data-ngl-viewer", structures)
+        self.assertIn("../../assets/structure-viewer.js", document.links)
+        self.assertNotIn("ngl.js", structures)
+
+        fallback = [
+            image
+            for image in document.images
+            if "azobenzene_trans.png" in image.get("src", "")
+        ]
+        self.assertEqual(len(fallback), 1)
+        self.assertIn("statische Ersatzdarstellung", fallback[0]["alt"])
+
+        for asset in (
+            "assets/structure-viewer.js",
+            "assets/vendor/ngl.js",
+            "assets/vendor/NGL-LICENSE",
+            "assets/structures/azobenzene-trans.sdf",
+        ):
+            self.assertTrue((self.output / asset).is_file(), asset)
+
+        viewer_script = (self.output / "assets/structure-viewer.js").read_text()
+        self.assertIn("assets/vendor/ngl.js", viewer_script)
+        self.assertIn("assets/structures/azobenzene-trans.sdf", viewer_script)
+        self.assertIn("document.createElement('script')", viewer_script)
+        sdf = (self.output / "assets/structures/azobenzene-trans.sdf").read_text()
+        self.assertIn(" 24 25 ", sdf)
+        self.assertTrue(sdf.endswith("$$$$\n"))
+
+        for prefix in ("/", "/AChPrak/"):
+            page_url = "https://example.org" + prefix + "theory/structures/"
+            script_url = urljoin(page_url, "../../assets/structure-viewer.js")
+            asset_root = urljoin(script_url, "../")
+            for relative in (
+                "assets/vendor/ngl.js",
+                "assets/structures/azobenzene-trans.sdf",
+            ):
+                url = urlsplit(urljoin(asset_root, relative))
+                self.assertTrue(url.path.startswith(prefix))
+                self.assertTrue((self.output / url.path[len(prefix) :]).is_file())
+
+        for file in self.output.rglob("*.html"):
+            if file == structures_path:
+                continue
+            self.assertNotIn("structure-viewer.js", file.read_text())
+            self.assertNotIn("ngl.js", file.read_text())
+
     def test_chapters_search_and_old_section_links(self):
         overview = (self.output / "theory/index.html").read_text()
         aliases = re.findall(r"<a[^>]+data-legacy-anchor[^>]*>", overview)
