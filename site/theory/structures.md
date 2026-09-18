@@ -107,12 +107,8 @@ In diesem Versuch treten die folgenden Substituenten auf:
 | OCH₃          | Methoxy               |
 | N(CH₃)₂       | Dimethylamino          |
 | CF₃           | Trifluormethyl         |
-| C≡N           | Cyano                 |
+| CN            | Cyano                 |
 | NO₂           | Nitro                 |
-
-Die Cyanogruppe (–C≡N) wird in der Auswahl als CN angezeigt.
-
-H steht in der Auswahl für ein Wasserstoffatom; an dieser Position wird kein Substituent eingeführt.
 
 ### Beispiele
 
