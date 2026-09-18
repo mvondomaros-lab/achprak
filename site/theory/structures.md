@@ -69,6 +69,8 @@ Strukturformel von 4-Methoxy-4′-nitroazobenzol.
 Systematische Namen beschreiben den Aufbau einer Verbindung. Die IUPAC (International Union of Pure and
 Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können mehrere zulässige Namen gebräuchlich sein.
 
+### Chemische Nummerierung
+
 Die Nummerierung der Kohlenstoffatome im Grundgerüst legt die Positionsangaben der Substituenten fest.
 Beim Azobenzol werden die Kohlenstoffatome des ersten Phenylrings mit 1–6 und die des zweiten Rings mit 1′–6′
 nummeriert. Die Atome 1 und 1′ sind dabei immer die beiden Kohlenstoffatome, die direkt an die Azogruppe gebunden sind.
@@ -78,11 +80,14 @@ dazu die aufsteigend geordneten Positionsnummern der Reihe nach; die erste unter
 Bleiben mehrere Nummerierungen gleichwertig, erhält der alphabetisch zuerst genannte Substituent die niedrigere
 Positionsnummer.
 
+### Positionsnummern in der Webapp
+
 Die Eingabemaske der Webapp verwendet aus technischen Gründen feste Ring- und Positionsnummern. Dadurch bezeichnet
 jedes Auswahlfeld stets dieselbe Stelle in der gezeichneten Struktur. Diese Nummern sind Auswahlpositionen und müssen
 nicht mit den Positionsnummern im chemischen Namen übereinstimmen. Beim Erstellen einer Struktur berücksichtigt die
 Webapp die Umkehrung und den Austausch der Ringe, bildet daraus den Namen mit den niedrigsten Positionsnummern und
-verwendet für symmetrieäquivalente Eingaben dieselbe chemische Identität.
+erkennt symmetrieäquivalente Eingaben als dasselbe Molekül. Eine bereits vorhandene Startstruktur wird daher nicht
+erneut gespeichert.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_numbering.svg" alt="Feste Positionsnummern der Eingabemaske für die beiden Phenylringe des Azobenzols." width="313" loading="lazy">
@@ -92,9 +97,7 @@ Feste Positionsnummern der Eingabemaske. Der chemische Name wird anschließend n
 </figcaption>
 </figure>
 
-Wird beispielsweise in der Eingabemaske an Position 6 eine Methoxygruppe gewählt, ist diese Position zur Position 2
-symmetrieäquivalent. Die Verbindung heißt daher 2-Methoxyazobenzol. Eine einzelne Methylgruppe an Position 2 oder 2′
-ergibt in beiden Fällen dieselbe Verbindung, 2-Methylazobenzol.
+### Substituentennamen
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
@@ -111,9 +114,21 @@ Die Cyanogruppe (–C≡N) wird in der Auswahl als CN angezeigt.
 
 H steht in der Auswahl für ein Wasserstoffatom; an dieser Position wird kein Substituent eingeführt.
 
-Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* oder *tetra-* angezeigt. Wird z. B. beim
-2-Chlorazobenzol zusätzlich am dritten Kohlenstoffatom des zweiten Rings ein weiteres Chloratom eingeführt, entsteht
-die Verbindung 2,3′-Dichlorazobenzol.
+### Beispiele
+
+Wird in der Eingabemaske an Position 6 eine Methoxygruppe gewählt, ist diese Position zur Position 2
+symmetrieäquivalent. Die Verbindung heißt daher 2-Methoxyazobenzol. Eine einzelne Methylgruppe an Position 2 oder 2′
+ergibt in beiden Fällen dasselbe Molekül, 2-Methylazobenzol.
+
+Tritt ein Substituent mehrfach auf, wird dies durch Präfixe wie *di-*, *tri-* oder *tetra-* angezeigt. Zwei
+Methoxygruppen an den Positionen 2 und 2′ ergeben beispielsweise 2,2′-Dimethoxyazobenzol.
+
+Bei unterschiedlichen Substituenten kann die alphabetische Reihenfolge entscheiden: Tragen die Positionen 2 und 6
+eine Methoxy- und eine Nitrogruppe, bleibt die Zahlenfolge 2,6 beim Umkehren der Nummerierungsrichtung gleich.
+*Methoxy* steht alphabetisch vor *Nitro* und erhält deshalb die Position 2. Der Name lautet
+2-Methoxy-6-Nitroazobenzol.
+
+### Übung
 
 Mit den festen Positionsnummern können Sie zunächst angeben, an welchen Stellen die Substituenten gebunden sind.
 Bestimmen Sie anschließend für die folgende Verbindung die Nummerierung mit den niedrigsten Positionsnummern und
