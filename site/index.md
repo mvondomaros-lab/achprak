@@ -1,6 +1,6 @@
 # Molekulare Photoschalter
 
-<p class="subtitle">Wie Licht die Struktur von Molekülen verändert</p>
+<p class="subtitle">Struktur, Energie und Absorption im Vergleich</p>
 
 ## Motivation
 
