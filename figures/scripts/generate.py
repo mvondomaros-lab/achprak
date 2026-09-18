@@ -5,8 +5,7 @@ from style import run
 
 FIGURES = (
     "azobenzene",
-    "azobenzene_4_methoxy",
-    "azobenzene_aromatic",
+    "azobenzene_4_methoxy_4_prime_nitro",
     "azobenzene_cis",
     "azobenzene_derivative",
     "azobenzene_explicit",

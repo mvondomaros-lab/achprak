@@ -16,8 +16,7 @@ Each generated illustration has its own executable source in `scripts/`:
 | `photoswitch.py` | `outputs/photoswitch.svg` |
 | `substituent_effects.py` | `outputs/substituent_effects.svg` |
 | `azobenzene.py` | `drawings/azobenzene.svg` |
-| `azobenzene_4_methoxy.py` | `drawings/azobenzene_4_methoxy.svg` |
-| `azobenzene_aromatic.py` | `drawings/azobenzene_aromatic.svg` |
+| `azobenzene_4_methoxy_4_prime_nitro.py` | `drawings/azobenzene_4_methoxy_4_prime_nitro.svg` |
 | `azobenzene_cis.py` | `drawings/azobenzene_cis.svg` |
 | `azobenzene_derivative.py` | `drawings/azobenzene_derivative.svg` |
 | `azobenzene_explicit.py` | `drawings/azobenzene_explicit.svg` |

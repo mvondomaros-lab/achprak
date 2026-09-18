@@ -50,14 +50,17 @@ hängt neben dem Absorptionsspektrum auch von Konzentration, Lösungsmittel und 
 Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Durch
 **Substitution**, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
 Stärke der Absorptionsbanden verändern
-([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist 4-Methoxyazobenzol: Hier
-ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
+([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist
+4-Methoxy-4′-nitroazobenzol: Eine Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator, eine Nitrogruppe
+(–NO₂) an Position 4′ als Elektronenakzeptor. Dieses Donator-Akzeptor-Muster verschiebt die Absorption zu längeren
+Wellenlängen; die Verbindung kann deshalb in Lösung deutlich gefärbt erscheinen
+([experimentelle Lösungsspektren](https://doi.org/10.1016/S0022-2860(01)00457-4)).
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_4_methoxy.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
+<img src="../../figures/drawings/azobenzene_4_methoxy_4_prime_nitro.svg" alt="Strukturformel von 4-Methoxy-4′-nitroazobenzol." width="400" loading="lazy">
 
 <figcaption markdown="1">
-Strukturformel von 4-Methoxyazobenzol.
+Strukturformel von 4-Methoxy-4′-nitroazobenzol.
 </figcaption>
 </figure>
 
@@ -115,7 +118,7 @@ handelt:
 
 </details>
 
-## Cis-trans-Isomerie
+## Konfigurationsisomerie
 
 Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
 Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
