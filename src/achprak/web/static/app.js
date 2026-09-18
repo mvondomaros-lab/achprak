@@ -1091,7 +1091,9 @@ $("cancel").onclick = handle(async () => {
   if (state.job) await api(`jobs/${state.job}`, { method: "DELETE" });
 });
 function structureIdentity(molecule) {
-  const name = molecule?.base_name || molecule?.name || "";
+  const name = (molecule?.base_name || molecule?.name || "")
+    .replace(/^\(E\)-/, "trans-")
+    .replace(/^\(Z\)-/, "cis-");
   const configuration = molecule?.settings?.configuration ||
     (name.startsWith("trans-") ? "trans" : name.startsWith("cis-") ? "cis" : "");
   return {

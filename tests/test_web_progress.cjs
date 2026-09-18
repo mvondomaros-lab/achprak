@@ -994,6 +994,7 @@ test("structure picker groups chemical identities and keeps variants individuall
     },
   ];
   assert.equal(context.structureLabel(molecules[0]), "cis-Azobenzol");
+  assert.equal(context.structureLabel({ base_name: "(E)-Azobenzol", kind: "initial" }), "trans-Azobenzol");
   assert.equal(context.substituentLabel("Me OMe NMe2 CF3 NO2"), "CH₃ OCH₃ N(CH₃)₂ CF₃ NO₂");
   assert.equal(context.substituentLabel("CH₃ OCH₃ N(CH₃)₂"), "CH₃ OCH₃ N(CH₃)₂");
 
