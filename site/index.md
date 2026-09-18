@@ -15,8 +15,9 @@ sich durch Bestrahlung verändern lassen.
 
 In diesem Computerexperiment vergleichen Sie die cis- und trans-Formen von Azobenzol und substituierten Azobenzolen.
 Sie berechnen ihre Strukturen, elektronische Energieunterschiede, elektronische Energiebarrieren und
-Absorptionsspektren im ultravioletten und sichtbaren Bereich (UV/Vis). Dabei untersuchen Sie, wie Substituenten
-die Geometrie, die Barrieren und die Absorption verändern, und planen in der Gruppe eine eigene Versuchsreihe.
+Absorptionsspektren im ultravioletten und sichtbaren Bereich (UV/Vis). Dabei vergleichen Sie cis- und trans-Formen
+anhand ihrer Geometrie und Energie und untersuchen in der Gruppe, wie Substituenten die Absorption und die
+vorhergesagte Farbe verändern.
 
 Dieser Versuch wird ausschließlich am Computer durchgeführt.
 
@@ -27,8 +28,8 @@ Für den Computerraum gelten die Regeln vor Ort.
 
 Nach Abschluss dieses Versuches können Sie:
 
-- cis- und trans-Konfigurationen in Strukturformeln und 3D-Modellen unterscheiden und ihre räumlichen Merkmale erläutern.
-- Startstrukturen erzeugen, Minimumstrukturen berechnen und Änderungen ihrer Geometrie bestimmen.
-- elektronische Energieunterschiede und -barrieren sowie UV/Vis-Spektren analysieren.
-- Übergangsstrukturen anhand der Verbindungsprüfung und vorhergesagte Absorptionsmaxima und Lösungsfarben unter Berücksichtigung der Modellgrenzen beurteilen.
-- den Einfluss von Substituenten auf Absorption und Farbvorhersage untersuchen und ein eigenes cis/trans-Paar begründet auswählen.
+- cis- und trans-Konfigurationen in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
+- Start- und Minimumstrukturen anhand ihrer Geometrie und elektronischen Energie vergleichen und die energetische Reihenfolge aus ΔE ableiten.
+- einen berechneten Reaktionspfad überprüfen, die elektronischen Energiebarrieren ΔE‡ bestimmen und thermische Barrierenübertritte anhand von ΔE‡ / RT qualitativ beurteilen.
+- cis- und trans-Spektren vergleichen und daraus einen Bereich für die bevorzugte Anregung einer Konfiguration ableiten.
+- den Einfluss von Substituenten auf Absorptionsmaximum und vorhergesagte Farbe vorhersagen, anhand berechneter Spektren vergleichen und unter Berücksichtigung der Modellgrenzen beurteilen.
