@@ -47,11 +47,11 @@ Als Feststoff bildet Azobenzol typischerweise orange bis orange-rote Kristalle
 unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erscheinen. Der Farbeindruck einer Lösung
 hängt neben dem Absorptionsspektrum auch von Konzentration, Lösungsmittel und cis/trans-Verhältnis ab.
 
-Azobenzol bildet das Grundgerüst vieler Azofarbstoffe. Durch **Substitution**, also den Austausch von
-Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und Stärke der Absorptionsbanden verändern.
-Substituierte Azobenzole können deshalb deutlich kräftiger gefärbt sein
-([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist 4-Methoxyazobenzol:
-Hier ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
+Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Durch
+**Substitution**, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
+Stärke der Absorptionsbanden verändern
+([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist 4-Methoxyazobenzol: Hier
+ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_4_methoxy.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
