@@ -6,7 +6,7 @@ In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
 Es besteht aus zwei Phenylgruppen, die über eine Azogruppe (–N=N–) miteinander verbunden sind.
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene.svg" alt="Azobenzol, dargestellt als Skelettformel." width="350" loading="lazy">
+<img src="../../figures/drawings/azobenzene.svg" alt="Azobenzol, dargestellt als Skelettformel." width="300" loading="lazy">
 
 <figcaption markdown="1">
 Azobenzol, dargestellt als Skelettformel.
@@ -26,7 +26,7 @@ Kohlenstoffatom pro Ring bindet die Azogruppe. Die übrigen Kohlenstoffatome tra
 Die genauen Bindungsverhältnisse lassen sich mit einer Strukturformel darstellen:
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_explicit.svg" alt="Die Strukturformel des Azobenzols." width="380" loading="lazy">
+<img src="../../figures/drawings/azobenzene_explicit.svg" alt="Die Strukturformel des Azobenzols." width="400" loading="lazy">
 
 <figcaption markdown="1">
 Die Strukturformel des Azobenzols.
@@ -57,7 +57,7 @@ Wellenlängen; die Verbindung kann deshalb in Lösung deutlich gefärbt erschein
 ([experimentelle Lösungsspektren](https://doi.org/10.1016/S0022-2860(01)00457-4)).
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_4_methoxy_4_prime_nitro.svg" alt="Strukturformel von 4-Methoxy-4′-nitroazobenzol." width="400" loading="lazy">
+<img src="../../figures/drawings/azobenzene_4_methoxy_4_prime_nitro.svg" alt="Strukturformel von 4-Methoxy-4′-nitroazobenzol." width="463" loading="lazy">
 
 <figcaption markdown="1">
 Strukturformel von 4-Methoxy-4′-nitroazobenzol.
@@ -78,7 +78,7 @@ In welcher Richtung anschließend weitergezählt wird (im oder gegen den Uhrzeig
 vorhandenen Substituenten ab – in diesem Versuch wird zur Vereinfachung jedoch eine feste Nummerierung verwendet.
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="350" loading="lazy">
+<img src="../../figures/drawings/azobenzene_numbering.svg" alt="Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome." width="313" loading="lazy">
 
 <figcaption markdown="1">
 Die in diesem Versuch verwendete Nummerierung der Kohlenstoffatome.
@@ -112,7 +112,7 @@ sich bei der folgenden Verbindung um 3,5-Dimethyl-4-methoxy-2′-fluor-4′-(tri
 handelt:
 
 <figure markdown="1">
-<img src="../../figures/drawings/azobenzene_derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="500" loading="lazy">
+<img src="../../figures/drawings/azobenzene_derivative.svg" alt="Strukturformel des substituierten Azobenzols." width="469" loading="lazy">
 
 </figure>
 
