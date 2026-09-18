@@ -27,11 +27,8 @@ Für den Computerraum gelten die Regeln vor Ort.
 
 Nach Abschluss dieses Versuches können Sie:
 
-- cis- und trans-Konfigurationen anhand von Strukturformeln und 3D-Modellen unterscheiden, substituierte Azobenzole benennen und räumliche Anordnungen von Überlagerungen in Strukturformeln unterscheiden.
-- Startstrukturen erzeugen und Minimumstrukturen suchen sowie Änderungen der Ringstellung anhand von 3D-Ansichten, Diederwinkeln und Ringabständen beschreiben und mit Ihren Erwartungen vergleichen.
-- elektronische Energieunterschiede zwischen Minimumstrukturen berechnen, zwischen eV und kJ/mol umrechnen und daraus die im verwendeten Modell energetisch günstigere Konfiguration bestimmen.
-- Übergangsstrukturen suchen, die Geometrien entlang eines berechneten Reaktionspfads zuordnen und anhand der Verbindungsprüfung beurteilen, ob der Pfad cis und trans verbindet.
-- elektronische Energiebarrieren $\Delta E^\ddagger$ für beide Reaktionsrichtungen aus dem Energieprofil bestimmen und ihre Unterschiede erklären; das Verhältnis $\Delta E^\ddagger / RT$ einordnen, ohne daraus allein eine Reaktionszeit abzuleiten.
-- berechnete UV/Vis-Spektren vergleichen, Absorptionsmaxima mithilfe des Zusammenhangs zwischen Photonenenergie und Wellenlänge in eV und nm angeben und dem ultravioletten oder sichtbaren Bereich zuordnen; geschätzte Lösungsfarben bei gleichem Faktor für die optische Dichte vergleichen und konkrete Gründe für Abweichungen von tatsächlichen Farben nennen.
-- den Einfluss von Substituenten auf Geometrien, elektronische Energiebarrieren und Absorptionsmaxima anhand der berechneten Ergebnisse im verwendeten Modell diskutieren.
-- in der Gruppe eine Versuchsreihe zur Verschiebung der Absorptionsmaxima zu längeren Wellenlängen im sichtbaren Bereich planen, die Auswahl der Varianten begründen und Ihre Vorhersagen anhand einer gemeinsamen Referenz mit den berechneten Ergebnissen vergleichen.
+- cis- und trans-Konfigurationen in Strukturformeln und 3D-Modellen unterscheiden und ihre räumlichen Merkmale erläutern.
+- Startstrukturen erzeugen, Minimumstrukturen berechnen und Änderungen ihrer Geometrie bestimmen.
+- elektronische Energieunterschiede und -barrieren sowie UV/Vis-Spektren analysieren.
+- Übergangsstrukturen anhand der Verbindungsprüfung und vorhergesagte Absorptionsmaxima und Lösungsfarben unter Berücksichtigung der Modellgrenzen beurteilen.
+- den Einfluss von Substituenten untersuchen und eine begründete Versuchsreihe zur Verschiebung der Absorption entwickeln.
