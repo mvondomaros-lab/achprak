@@ -62,9 +62,6 @@ Strukturformel von 4-Methoxy-4′-nitroazobenzol.
 </figcaption>
 </figure>
 
-Wie Substituenten die elektronischen Übergänge verändern, wird im Abschnitt
-[Licht und Absorption](light.md#einfluss-der-substituenten-auf-die-absorption) erläutert.
-
 <details markdown="1">
 <summary markdown="span">Ergänzung: Nomenklatur</summary>
 
@@ -97,9 +94,7 @@ Feste Positionsnummern der Eingabemaske. Der chemische Name wird anschließend n
 
 Wird beispielsweise in der Eingabemaske an Position 6 eine Methoxygruppe gewählt, ist diese Position zur Position 2
 symmetrieäquivalent. Die Verbindung heißt daher 2-Methoxyazobenzol. Eine einzelne Methylgruppe an Position 2 oder 2′
-ergibt in beiden Fällen dieselbe Verbindung, 2-Methylazobenzol. Die Webapp stellt dem Namen zusätzlich die
-Konfiguration voran, beispielsweise *trans*-2-Methoxyazobenzol; die Bezeichnungen *cis* und *trans* werden im nächsten
-Abschnitt erläutert.
+ergibt in beiden Fällen dieselbe Verbindung, 2-Methylazobenzol.
 
 In diesem Versuch treten die folgenden Substituenten auf:
 
