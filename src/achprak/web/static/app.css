@@ -1383,11 +1383,9 @@ select {
 .task-panel details.task > summary,
 .task-panel .next-steps > summary { font-size: 16px; }
 .task-panel details[open] > summary { color: var(--blue); }
-.task-panel details { margin: 18px 0; padding: 0; font-size: inherit; }
+.task-panel details { margin: 8px 0; padding: 0; font-size: inherit; }
 .task-panel li { margin-bottom: 8px; }
 .task-panel .protocol-output:has(> strong) { padding-top: 12px; border-top: 1px solid var(--line); }
-.task-panel .task,
-.task-panel .next-steps { margin: 8px 0; }
 .header-actions { flex-wrap: wrap; }
 @media (min-width: 1380px) {
   .learning-layout:has(.task-panel:not([hidden])) {

@@ -19,6 +19,7 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         )
         assert "set-cookie" not in response.headers
         guide = client.get("/static/guide.html").text
+        styles = client.get("/static/app.css").text
         with ZipFile(io.BytesIO(response.content)) as archive:
             xml = ET.fromstring(archive.read("word/document.xml"))
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
@@ -51,6 +52,13 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "Symmetrieäquivalente Auswahlpositionen" in text
         assert "Falls Sie nicht weiterkommen" in guide
         assert "Name des selbst gewählten Derivats" not in text
+        assert ".task-panel details { margin: 8px 0;" in styles
+        for title in (
+            "Reaktionspfad analysieren",
+            "Spektren vergleichen",
+            "Derivat untersuchen",
+        ):
+            assert title in guide and title in text
         assert "ILIAS" in text
         assert "elektronische Energiebarriere" in text
         assert "Jupyter Notebook" not in text
