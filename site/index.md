@@ -4,25 +4,32 @@
 
 ## Motivation
 
-Molekulare Photoschalter sind Verbindungen, deren räumliche Struktur sich durch Lichtbestrahlung verändern lässt.
-Die beteiligten Formen unterscheiden sich in ihren chemischen und physikalischen Eigenschaften.
-Bei Azobenzol ermöglicht die Lichtabsorption eine Umwandlung zwischen der cis- und der trans-Form.
+Molekulare Photoschalter sind chemische Verbindungen, die Licht aufnehmen und dadurch zwischen räumlich
+unterschiedlichen Formen umgewandelt werden können. Mit der Struktur ändern sich häufig auch Eigenschaften wie
+Farbe, Löslichkeit oder die Bindung an andere Moleküle. Man kann sie deshalb als molekulare Schalter verstehen:
+Statt eines mechanischen Hebels dient Licht als Steuersignal, das gezielt zu einem bestimmten Zeitpunkt und an einem
+bestimmten Ort eingesetzt werden kann.
 
-Solche Systeme werden zum Beispiel für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren Eigenschaften
-sich durch Bestrahlung verändern lassen.
+Solche Systeme werden beispielsweise für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren
+Eigenschaften sich durch Bestrahlung gezielt verändern lassen. Azobenzol ist ein klassisches Beispiel: Seine beiden
+Konfigurationen unterscheiden sich deutlich in ihrer Geometrie und zeigen unterschiedliche Absorptionsspektren.
 
 ## Computerexperiment
 
-In diesem Computerexperiment vergleichen Sie die cis- und trans-Formen von Azobenzol und substituierten Azobenzolen.
-Sie berechnen ihre Strukturen, elektronische Energieunterschiede, elektronische Energiebarrieren und
-Absorptionsspektren im ultravioletten und sichtbaren Bereich (UV/Vis). Dabei vergleichen Sie cis- und trans-Formen
-anhand ihrer Geometrie und Energie und untersuchen in der Gruppe, wie Substituenten die Absorption und die
-vorhergesagte Farbe verändern.
+In diesem Computerexperiment verfolgen Sie Azobenzol von der Strukturformel bis zum berechneten UV/Vis-Spektrum.
+Sie erzeugen räumliche Modelle, berechnen Minimumstrukturen und elektronische Energien und untersuchen einen
+Reaktionspfad über eine Übergangsstruktur. Anschließend vergleichen Sie die Absorptionsspektren der beiden
+Konfigurationen und suchen einen Wellenlängenbereich für ihre bevorzugte Anregung.
 
-Dieser Versuch wird ausschließlich am Computer durchgeführt.
+In der Gruppe untersuchen Sie außerdem, wie verschiedene Substituenten das Absorptionsmaximum und die vorhergesagte
+Farbe verändern. Dabei formulieren Sie für ein eigenes Derivat zunächst eine Vorhersage und prüfen diese anschließend
+anhand der berechneten Spektren. Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption; aus den Spektren
+lässt sich daher eine bevorzugte Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
 
-Sie erzeugen und untersuchen Molekülmodelle. Dabei arbeiten Sie nicht mit Laborchemikalien.
-Für den Computerraum gelten die Regeln vor Ort.
+:::{important} Computerexperiment
+Der Versuch wird ausschließlich am Computer durchgeführt. Sie arbeiten mit digitalen Molekülmodellen und nicht mit
+Laborchemikalien. Für den Computerraum gelten die Regeln vor Ort.
+:::
 
 ## Lernziele
 
