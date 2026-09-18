@@ -130,6 +130,10 @@ class SiteBuildTests(unittest.TestCase):
         self.assertIn("document.createElement('script')", viewer_script)
         sdf = (self.output / "assets/structures/azobenzene-trans.sdf").read_text()
         self.assertIn(" 24 25 ", sdf)
+        self.assertIn("trans-Azobenzol · optimierte Minimumstruktur", sdf)
+        self.assertIn("GFN1-xTB/ALPB(ethanol)", sdf)
+        self.assertIn("<optimization_fmax_ev_angstrom>", sdf)
+        self.assertIn("0.002", sdf)
         self.assertTrue(sdf.endswith("$$$$\n"))
 
         for prefix in ("/", "/AChPrak/"):
