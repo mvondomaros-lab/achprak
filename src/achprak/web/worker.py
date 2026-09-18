@@ -12,7 +12,7 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 
-from achprak import azobenzene, common, optimization, uvvis
+from achprak import azobenzene, common, nomenclature, optimization, uvvis
 from achprak.transition_state import OptTS
 from achprak.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
@@ -119,13 +119,9 @@ def calculate(data):
             for c in range(5)
         }
         t = azobenzene.Template(configuration=settings["configuration"], **kwargs)
-        labels = [
-            f"{i % 5 + 2}{'′' if i >= 5 else ''}-{sub}"
-            for i, sub in enumerate(settings["substituents"])
-            if sub != "H"
-        ]
-        substitutions = ", ".join(labels)
-        name = f"{settings['configuration']}-{substitutions + '-' if labels else ''}Azobenzol"
+        name = nomenclature.azobenzene_name(
+            settings["configuration"], settings["substituents"]
+        )
         m = molecule(t.atoms, name, mol=t.molh)
         m["settings"] = settings
         m["properties"] = properties(t.atoms, mol=t.molh)

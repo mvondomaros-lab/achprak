@@ -616,8 +616,13 @@ function renderEnergyHistory(activeStep) {
   const pathActive = state.live?.phase === "path" ? state.live : null;
   const live = state.busy;
   $("energy-history-state").textContent = live ? "· Laufende Berechnung" : "";
-  const source = current()?.base_name?.match(/^(cis|trans)-/)?.[1];
-  const direction = source ? ` · ${source} → ${source === "cis" ? "trans" : "cis"}` : "";
+  const sourceMolecule = current();
+  const sourceName = sourceMolecule?.base_name || "";
+  const source = sourceMolecule?.settings?.configuration ||
+    (sourceName.startsWith("(E)-") ? "trans" : sourceName.startsWith("(Z)-") ? "cis" : "");
+  const descriptor = source === "trans" ? "(E)" : source === "cis" ? "(Z)" : "";
+  const target = source === "trans" ? "(Z)" : source === "cis" ? "(E)" : "";
+  const direction = source ? ` · ${descriptor} → ${target}` : "";
   $("energy-path-meta").textContent = path?.length
     ? `Reaktionspfad im elektronischen Grundzustand${direction}`
     : exploringTS ? "Übergangsstruktursuche · Vorbereitung des Reaktionspfads"
@@ -1087,25 +1092,25 @@ $("cancel").onclick = handle(async () => {
   if (state.job) await api(`jobs/${state.job}`, { method: "DELETE" });
 });
 function structureIdentity(molecule) {
-  const base = molecule.base_name || "";
-  const configuration = base.match(/^(cis|trans)-/)?.[1] || "";
-  const pattern = base.replace(/^(cis|trans)-/, "").replace(/-?Azobenzol$/, "");
+  const name = molecule?.base_name || molecule?.name || "";
+  const configuration = molecule?.settings?.configuration ||
+    (name.startsWith("(E)-") ? "trans" : name.startsWith("(Z)-") ? "cis" : "");
   return {
+    name,
     configuration,
-    pattern: substituentLabel(pattern || "unsubstituiert"),
-    isPath: molecule.kind === "ts" || !!molecule.ts_search,
+    isPath: molecule?.kind === "ts" || !!molecule?.ts_search,
   };
 }
 function structureGroupLabel(molecule) {
-  const { configuration, pattern } = structureIdentity(molecule);
-  return `${configuration} · ${pattern}`;
+  return structureIdentity(molecule).name;
 }
 function structureLabel(molecule) {
-  const { configuration, pattern, isPath } = structureIdentity(molecule);
-  const direction = isPath
-    ? `${configuration} → ${configuration === "cis" ? "trans" : "cis"}`
-    : configuration;
-  return `${direction}${molecule.kind === "ts" ? " Übergangsstruktur" : ""} · ${pattern}`;
+  const { name, configuration, isPath } = structureIdentity(molecule);
+  if (!isPath) return name;
+  const target = configuration === "trans"
+    ? name.replace(/^\(E\)-/, "(Z)-")
+    : name.replace(/^\(Z\)-/, "(E)-");
+  return `${name} → ${target}${molecule?.kind === "ts" ? " · Übergangsstruktur" : ""}`;
 }
 function structureGroups(molecules, query = "") {
   const groups = new Map();
@@ -1151,7 +1156,7 @@ function renderStructureOptions() {
     const section = document.createElement("section");
     section.className = "structure-group";
     const heading = document.createElement("h3");
-    heading.textContent = substituentLabel(group.name);
+    heading.textContent = group.name;
     const formula = document.createElement("p");
     formula.className = "structure-group-formula";
     formula.textContent = group.formula;

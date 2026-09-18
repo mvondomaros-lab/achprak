@@ -59,7 +59,7 @@ def test_structure_properties_and_session_isolation(client):
         ).status_code
         == 422
     )
-    assert molecule["name"] == "cis-Azobenzol"
+    assert molecule["name"] == "(Z)-Azobenzol"
     assert molecule["atom_count"] == 24
     assert molecule["formula"] == "C12H10N2"
     assert "<svg" in molecule["svg"] and "M  END" in molecule["sdf"]
@@ -172,7 +172,7 @@ def test_template_names_follow_configuration_and_substituents(client):
             "substituents": ["NO2", "H", "Me"] + ["H"] * 6 + ["OMe"],
         },
     )["molecule"]
-    assert m["name"] == "cis-2-NO2, 4-Me, 6′-OMe-Azobenzol"
+    assert m["name"] == "(Z)-2-Methoxy-4′-Methyl-2′-Nitroazobenzol"
     assert m["base_name"] == m["name"]
     assert m["kind"] == "initial"
 
