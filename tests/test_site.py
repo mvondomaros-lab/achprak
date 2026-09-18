@@ -82,8 +82,8 @@ class SiteBuildTests(unittest.TestCase):
         )
         page = Document(text)
         self.assertEqual(
-            page.tags.count("details"), 8
-        )  # Eight optional explanations across five chapters.
+            page.tags.count("details"), 9
+        )  # Nine optional explanations across five chapters.
         self.assertEqual(page.tags.count("figure"), 17)
         self.assertEqual(page.tags.count("math"), 26)
         self.assertEqual(text.count('display="block"'), 5)

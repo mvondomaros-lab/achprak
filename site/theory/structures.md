@@ -135,6 +135,22 @@ leiten Sie daraus den Namen ab:
 
 </figure>
 
+<details markdown="1">
+<summary markdown="span">Lösung</summary>
+
+Mit den festen Positionsnummern der Abbildung liegen am ersten Ring Methylgruppen an 3 und 5 sowie eine
+Methoxygruppe an 4. Am zweiten Ring befinden sich Fluor an 2′, Trifluormethyl an 4′ und Dimethylamino an 5′.
+
+Für den chemischen Namen werden die beiden Ringe vertauscht. Die niedrigste Zahlenfolge bleibt dabei
+2,3,4,4,5,5; bei dieser Gleichheit erhält der alphabetisch zuerst genannte Substituent Dimethylamino eine ungestrichene
+Positionsnummer. Damit trägt der erste Ring Fluor an 2, Trifluormethyl an 4 und Dimethylamino an 5. Am zweiten Ring
+liegen Methyl an 3′ und 5′ sowie Methoxy an 4′.
+
+Die Substituenten werden alphabetisch geordnet. Der Name lautet daher
+**5-Dimethylamino-2-fluor-4′-methoxy-3′,5′-dimethyl-4-trifluormethylazobenzol**.
+
+</details>
+
 </details>
 
 ## Konfigurationsisomerie
