@@ -1455,14 +1455,6 @@ select {
   line-height: 1.5;
   color: var(--muted);
 }
-.solution-color-value + .solution-color-value {
-  margin-top: 12px;
-}
-.solution-color-value output,
 .solution-color-value > span {
   font-variant-numeric: tabular-nums;
-}
-#solution-color-density {
-  display: block;
-  margin: 16px 0 0;
 }

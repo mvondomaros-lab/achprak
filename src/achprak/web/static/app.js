@@ -406,20 +406,16 @@ function renderSpectrum() {
 
 }
 function renderSolutionColor() {
-  const density = Number($("solution-color-density").value);
-  const result = SolutionColor.estimate(current()?.spectrum, density);
-  $("solution-color-density-value").textContent = fmt(density, 1);
-  $("solution-color-density").setAttribute("aria-valuetext", `Faktor ${fmt(density, 1)}`);
+  const result = SolutionColor.estimate(current()?.spectrum);
   const swatch = $("solution-color-swatch");
   swatch.hidden = !result;
   swatch.style.backgroundColor = result?.css || "";
-  swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}, Faktor ${fmt(density, 1)}`);
+  swatch.setAttribute("aria-label", `Geschätzte Lösungsfarbe für ${structureLabel(current())}`);
   $("transmission-help-trigger").hidden = !result;
   $("solution-color-status").textContent = result
     ? `${fmt(100 * result.luminance, 1)} %`
     : "Keine Farbschätzung verfügbar: Das Spektrum ist unvollständig oder enthält keine auswertbaren Absorptionsdaten.";
 }
-$("solution-color-density").addEventListener("input", renderSolutionColor);
 
 function renderState() {
   const m = current();

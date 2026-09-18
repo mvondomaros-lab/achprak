@@ -1,13 +1,14 @@
 /* Approximate transmitted color; physical concentration is not inferred. */
 (() => {
   const HC = 1239.841984;
+  const ABSORBANCE_SCALE = 1;
   const encode = (v) => v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055;
 
-  function estimate(spectrum, density = 1) {
+  function estimate(spectrum) {
     const energy = spectrum?.energy_ev, absorption = spectrum?.absorption;
     if (spectrum?.coverage_complete === false) return null;
     if (!Array.isArray(energy) || !Array.isArray(absorption) || energy.length < 2 ||
-        energy.length !== absorption.length || !Number.isFinite(density) || density < 0 ||
+        energy.length !== absorption.length ||
         energy.some((e, i) => !Number.isFinite(e) || e <= 0 || (i && e <= energy[i - 1])) ||
         absorption.some((a) => !Number.isFinite(a) || a < 0) ||
         energy[0] > HC / 780 || energy.at(-1) < HC / 380) return null;
@@ -28,7 +29,7 @@
     const rows = globalThis.CIEColorData;
     rows.forEach(([nm, light, x, y, z], i) => {
       const weight = (i === 0 || i === rows.length - 1) ? 0.5 : 1;
-      const transmitted = 10 ** (-density * sample(HC / nm));
+      const transmitted = 10 ** (-ABSORBANCE_SCALE * sample(HC / nm));
       referenceY += weight * light * y;
       [x, y, z].forEach((value, channel) => {
         xyz[channel] += weight * light * transmitted * value;

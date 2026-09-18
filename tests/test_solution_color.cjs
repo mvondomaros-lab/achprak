@@ -5,19 +5,16 @@ require("../src/achprak/web/static/solution-color.js");
 const estimate = globalThis.SolutionColor.estimate;
 const flat = (a) => ({ energy_ev: [1.5, 5.5], absorption: [a, a], coverage_complete: true });
 
-test("unabsorbed D65 is white, including at zero optical density", () => {
-  for (const result of [estimate(flat(0)), estimate(flat(10), 0)]) {
-    assert.deepEqual(result.rgb, [255, 255, 255]);
-    assert.ok(Math.abs(result.luminance - 1) < 1e-12);
-  }
+test("unabsorbed D65 is white", () => {
+  const result = estimate(flat(0));
+  assert.deepEqual(result.rgb, [255, 255, 255]);
+  assert.ok(Math.abs(result.luminance - 1) < 1e-12);
 });
 
 test("neutral absorption follows Beer–Lambert transmission without brightness normalization", () => {
   const result = estimate(flat(1));
   assert.ok(Math.abs(result.luminance - 0.1) < 1e-12);
   for (const channel of result.rgb) assert.ok(Math.abs(channel - 89) <= 1);
-  assert.ok(estimate(flat(1), 2).rgb.every((c) => c < result.rgb[0]));
-  assert.deepEqual(estimate(flat(1), 2).rgb, estimate(flat(2), 1).rgb);
 });
 
 test("selective blue absorption gives a yellow transmitted color", () => {
@@ -35,10 +32,9 @@ test("missing coverage and invalid data never produce a misleading swatch", () =
     {energy_ev: [1.5, 5.5], absorption: [NaN, 1]},
     {energy_ev: [1.5, 5.5], absorption: [-1, 1]},
     {energy_ev: [1.5, 5.5], absorption: [1]}]) assert.equal(estimate(spec), null);
-  for (const density of [-1, NaN, Infinity]) assert.equal(estimate(flat(1), density), null);
 });
 
-test("slider and structure changes refresh the swatch and clear unavailable results", () => {
+test("structure changes refresh the swatch and clear unavailable results", () => {
   const fs = require("node:fs"), vm = require("node:vm");
   const elements = {};
   const get = (id) => elements[id] ||= {
@@ -56,11 +52,9 @@ test("slider and structure changes refresh the swatch and clear unavailable resu
   context.renderSolutionColor();
   assert.equal(get("solution-color-swatch").style.backgroundColor, "rgb(255, 255, 255)");
   molecule = {label: "cis · 4-OMe", spectrum: flat(1)};
-  get("solution-color-density").value = "2";
-  get("solution-color-density").input();
-  assert.equal(get("solution-color-density-value").textContent, "2,0");
+  context.renderSolutionColor();
   assert.match(get("solution-color-swatch")["aria-label"], /cis · 4-OMe/);
-  assert.match(get("solution-color-status").textContent, /1,0 %/);
+  assert.match(get("solution-color-status").textContent, /10,0 %/);
   molecule.spectrum.coverage_complete = false;
   context.renderSolutionColor();
   assert.equal(get("solution-color-swatch").hidden, true);

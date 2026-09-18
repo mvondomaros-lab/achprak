@@ -289,10 +289,10 @@
                         mit vorgegebener Breite verbreitert; anschließend werden die Beiträge addiert.
                     </p>
                     <h3>Abschätzung der Lösungsfarbe</h3>
-                    <p>Für jede Wellenlänge von 380 bis 780 nm wird die relative Absorption I
-                        aus der blauen Kurve bestimmt. Mit dem gewählten Faktor s wird die
-                        dimensionslose optische Dichte (Absorbanz) A = s · I angesetzt. Der durchgelassene Lichtanteil ist
-                        T = 10<sup>−A</sup>.</p>
+                    <p>Für die Farbschätzung wird die relative Absorptionskurve mit einer festen
+                        Skalierung als Absorbanz behandelt. Diese Annahme entspricht keiner bestimmten
+                        Konzentration oder Schichtdicke. Der durchgelassene Lichtanteil wird mit
+                        T = 10<sup>−A</sup> berechnet.</p>
                     <p>Das durchgelassene Tageslicht wird mit den Farbempfindlichkeitsfunktionen des
                         CIE-1931-Standardbeobachters (2°) gewichtet und als Bildschirmfarbe dargestellt.
                         Diese Funktionen beschreiben die mittlere Farbwahrnehmung des menschlichen Auges.
@@ -535,16 +535,8 @@
                                         aria-haspopup="dialog">Lichtdurchlässigkeit:</button>
                                     <span id="solution-color-status"></span>
                                 </div>
-                                <div class="solution-color-value">
-                                    <button type="button" class="property-help-trigger" id="density-help-trigger"
-                                        popovertarget="density-help" aria-haspopup="dialog">Faktor für die optische Dichte:</button>
-                                    <output id="solution-color-density-value" for="solution-color-density">1,0</output>
-                                </div>
                             </div>
-                            <input id="solution-color-density" type="range" min="0" max="10" step="0.1" value="1"
-                                   aria-labelledby="density-help-trigger" aria-describedby="solution-color-limitation"/>
-                            <p id="solution-color-limitation" class="note">Relative Skalierung ohne festgelegte Konzentration oder Schichtdicke.
-                                Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
+                            <p id="solution-color-limitation" class="note">Das Modell unterschätzt die sichtbare Bande von trans-Azobenzol in Ethanol.
                                 Die tatsächliche Lösungsfarbe kann deshalb deutlich abweichen.</p>
                         </div>
                     </section>
@@ -682,22 +674,6 @@
         Beiträge mehrerer Übergänge überlagern, kann dieses Maximum zwischen
         einzelnen Übergängen liegen. Es ist daher nicht zwangsläufig die
         Anregungsenergie eines einzelnen Übergangs.</p>
-</div>
-<div id="density-help" class="property-help" popover role="dialog"
-     aria-labelledby="density-help-title">
-    <div class="dialog-heading">
-        <h2 id="density-help-title">Faktor für die optische Dichte</h2>
-        <button type="button" class="close" popovertarget="density-help"
-                popovertargetaction="hide" aria-label="Erklärung schließen" autofocus>×</button>
-    </div>
-    <p>Der Faktor skaliert die relative Absorption des berechneten Spektrums.
-        Ein größerer Faktor bedeutet stärkere Absorption und weniger durchgelassenes Licht
-        in den absorbierten Wellenlängenbereichen. Bei Faktor 0 wird im Modell das gesamte Licht durchgelassen.</p>
-    <p>Bei unveränderter Form des Absorptionsspektrums beeinflussen Konzentration und
-        durchstrahlte Schichtdicke die optische Dichte über ihr Produkt.
-        Der Faktor fasst diese Einflüsse in einer relativen Skalierung zusammen.
-        Da absolute molare Absorptionskoeffizienten fehlen, lassen sich daraus
-        weder eine Konzentration noch eine Schichtdicke bestimmen.</p>
 </div>
 <div id="transmission-help" class="property-help" popover role="dialog"
      aria-labelledby="transmission-help-title">
