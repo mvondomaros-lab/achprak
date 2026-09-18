@@ -225,10 +225,6 @@ Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
 <div class="structure-viewer-fallback" data-viewer-fallback>
 <img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol als statische Ersatzdarstellung." width="512" loading="lazy">
 </div>
-
-<figcaption markdown="1">
-Interaktives Kugel-Stab-Modell von trans-Azobenzol. Statische Ersatzdarstellung: Benjah-bmm27, Public Domain. Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png).
-</figcaption>
 </figure>
 
 
