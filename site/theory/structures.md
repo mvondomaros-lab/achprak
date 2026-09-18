@@ -4,6 +4,10 @@
 
 In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
 Es besteht aus zwei Phenylgruppen, die über eine Azogruppe (–N=N–) miteinander verbunden sind.
+Unsubstituiertes Azobenzol ist auch in Lösung schwach gefärbt: Verdünnte Lösungen können nahezu farblos bis blassgelb
+erscheinen. Farbton und Farbintensität hängen unter anderem von Konzentration, Lösungsmittel und cis/trans-Verhältnis
+ab; substituierte Azobenzole können deutlich kräftiger gefärbt sein
+([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)).
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene.svg" alt="Azobenzol, dargestellt als Skelettformel." width="350" loading="lazy">
