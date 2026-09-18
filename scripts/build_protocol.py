@@ -150,6 +150,7 @@ def build():
     doc.add_heading("Strukturen erstellen", 1)
     task("task-compare-configurations")
     answer("Unterschied zwischen cis und trans: [höchstens zwei Sätze]")
+    task("task-identify-symmetry")
     answer(
         "Anzahl chemisch verschiedener trans-Azobenzole mit genau einer "
         "Methoxygruppe: [Anzahl]"
@@ -158,6 +159,7 @@ def build():
         "Symmetrieäquivalente Auswahlpositionen: [Fassen Sie die zehn Positionen "
         "in Gruppen zusammen]"
     )
+    answer("Begründung anhand der Symmetrie: [höchstens zwei Sätze]")
 
     doc.add_page_break()
     doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)
