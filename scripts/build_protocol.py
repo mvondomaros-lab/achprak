@@ -137,7 +137,7 @@ def build():
         p("")
 
     doc.add_heading("Molekulare Photoschalter", 0)
-    doc.add_paragraph("Wie Licht die Struktur von Molekülen verändert", "Subtitle")
+    doc.add_paragraph("Struktur, Energie und Absorption im Vergleich", "Subtitle")
     p("ACh-Pr · TC Versuch")
     p("Praktikumsprotokoll")
     p("Name: [Name]    Gruppe: [Gruppe]    Datum: [Datum]")
@@ -224,7 +224,13 @@ def build():
     answer("trans-Azobenzol: [Spektrum einfügen]")
     p("\n\n")
     answer(
-        "Verwendeter Faktor für die optische Dichte: [Wert]\nVergleich der Farbvorhersagen und zwei Gründe für Abweichungen: [Text]"
+        "Vergleich der Spektren: [Konfiguration mit Maximum bei kleinerer Energie beziehungsweise längerer Wellenlänge]"
+    )
+    answer(
+        "Bevorzugte Anregung: [Wellenlängenbereich, stärker absorbierende Konfiguration, mögliche Verschiebung des cis/trans-Verhältnisses und Grenze der Vorhersage]"
+    )
+    answer(
+        "Verwendeter Faktor für die optische Dichte: [Wert]\nVergleich von Farbvorhersagen und Lichtdurchlässigkeit anhand der Absorption im sichtbaren Bereich sowie zwei Gründe für Abweichungen: [Text]"
     )
 
     doc.add_page_break()
@@ -256,14 +262,15 @@ def build():
     doc.add_heading("UV/Vis-Spektrum", 1)
     task("task-plan-experiment-series")
     answer(
-        "Mindestens zehn Varianten in der Gruppe; Auswahl, Referenz und Verteilung der Rechnungen: [Text]"
+        "Mindestens fünf Substitutionsmuster mit jeweils cis- und trans-Konfiguration; Auswahl und Verteilung der Rechnungen: [Text]"
     )
     table(
         [
-            "Variante und Konfiguration",
+            "Substitution und Konfiguration",
             "Erwartete Verschiebung zur Referenz",
             "Maximum / eV",
             "Wellenlänge / nm",
+            "Farbvorhersage",
         ],
         [
             [
@@ -271,14 +278,19 @@ def build():
                 "[Erwartung]",
                 "[Wert]",
                 "[Wert]",
+                "[Farbe]",
             ]
             for n in range(1, 11)
         ],
-        [6, 5, 3, 3],
+        [4.5, 4, 2.5, 3, 3],
     )
     answer(
-        "[Referenzspektrum und zwei ausgewählte Spektren mit Beschriftungen einfügen]"
+        "Derivat mit Absorptionsmaximum bei der längsten Wellenlänge: [Name und Ergebnis]"
     )
+    answer(
+        "Derivat mit dem stärksten vorhergesagten Farbunterschied zwischen cis und trans: [Name, verwendeter Faktor und Vergleich]"
+    )
+    answer("[Ausgewählte cis- und trans-Spektren mit Beschriftungen einfügen]")
     answer("Vergleich der Erwartungen mit den berechneten Ergebnissen: [Text]")
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)
