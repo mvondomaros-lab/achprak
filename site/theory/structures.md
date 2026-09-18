@@ -4,10 +4,6 @@
 
 In diesem Versuch arbeiten Sie mit dem Molekül Azobenzol.
 Es besteht aus zwei Phenylgruppen, die über eine Azogruppe (–N=N–) miteinander verbunden sind.
-Unsubstituiertes Azobenzol ist auch in Lösung schwach gefärbt: Verdünnte Lösungen können nahezu farblos bis blassgelb
-erscheinen. Farbton und Farbintensität hängen unter anderem von Konzentration, Lösungsmittel und cis/trans-Verhältnis
-ab; substituierte Azobenzole können deutlich kräftiger gefärbt sein
-([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)).
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene.svg" alt="Azobenzol, dargestellt als Skelettformel." width="350" loading="lazy">
@@ -46,12 +42,16 @@ dass Kohlenstoff insgesamt vier Bindungen eingeht.
 
 ## Substituenten
 
-Azobenzol ist selbst farbig; als Feststoff bildet es typischerweise orange bis orange-rote Kristalle
-([Stoffdaten in PubChem](https://pubchem.ncbi.nlm.nih.gov/compound/Azobenzene)).
-Es bildet außerdem das Grundgerüst vieler Azofarbstoffe. Durch **Substitution**, also den Austausch von
-Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich die Absorption und damit die Farbe verändern.
-Ein Beispiel ist 4-Methoxyazobenzol: Hier ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
-Die beobachtete Farbe hängt auch vom Lösungsmittel, der Konzentration und der Zusammensetzung der Probe ab.
+Als Feststoff bildet Azobenzol typischerweise orange bis orange-rote Kristalle
+([Stoffdaten in PubChem](https://pubchem.ncbi.nlm.nih.gov/compound/Azobenzene)). Verdünnte Lösungen von
+unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erscheinen. Der Farbeindruck einer Lösung
+hängt neben dem Absorptionsspektrum auch von Konzentration, Lösungsmittel und cis/trans-Verhältnis ab.
+
+Azobenzol bildet das Grundgerüst vieler Azofarbstoffe. Durch **Substitution**, also den Austausch von
+Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und Stärke der Absorptionsbanden verändern.
+Substituierte Azobenzole können deshalb deutlich kräftiger gefärbt sein
+([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist 4-Methoxyazobenzol:
+Hier ersetzt eine Methoxygruppe (–OCH₃) ein Wasserstoffatom an Position 4.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_4_methoxy.svg" alt="Strukturformel von 4-Methoxyazobenzol." width="400" loading="lazy">
