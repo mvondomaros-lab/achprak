@@ -149,8 +149,15 @@ def build():
     )
     doc.add_heading("Strukturen erstellen", 1)
     task("task-compare-configurations")
-    answer("Name des selbst gewählten Derivats: [Name einschließlich Konfiguration]")
     answer("Unterschied zwischen cis und trans: [höchstens zwei Sätze]")
+    answer(
+        "Anzahl chemisch verschiedener trans-Azobenzole mit genau einer "
+        "Methoxygruppe: [Anzahl]"
+    )
+    answer(
+        "Symmetrieäquivalente Auswahlpositionen: [Fassen Sie die zehn Positionen "
+        "in Gruppen zusammen]"
+    )
 
     doc.add_page_break()
     doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)

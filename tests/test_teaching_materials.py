@@ -47,6 +47,9 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert (
             "die Verknüpfung der Atome" in guide and "die Verknüpfung der Atome" in text
         )
+        assert "symmetrieäquivalenten Auswahlpositionen" in guide
+        assert "Symmetrieäquivalente Auswahlpositionen" in text
+        assert "Name des selbst gewählten Derivats" not in text
         assert "ILIAS" in text
         assert "elektronische Energiebarriere" in text
         assert "Jupyter Notebook" not in text
