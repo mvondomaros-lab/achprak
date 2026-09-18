@@ -40,7 +40,7 @@ Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.o
 
 Moleküle können mit Licht wechselwirken, indem sie dieses absorbieren. Wie diese Wechselwirkung abläuft, wird durch die
 Gesetze der Quantenmechanik beschrieben.
-Moleküle besitzen bestimmte, erlaubte Energieniveaus. Bei der Absorption eines Photons geht ein Molekül in einen
+Moleküle besitzen bestimmte, erlaubte Energiezustände. Bei der Absorption eines Photons geht ein Molekül in einen energetisch
 höheren Zustand über. Die Energie des Photons entspricht dabei der Energiedifferenz zwischen den beiden Zuständen.
 Nicht jeder energetisch passende Übergang ist gleich wahrscheinlich: Manche tragen stark, andere kaum zur Absorption bei.
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
@@ -55,16 +55,15 @@ Zustand versetzt zu werden.
 </figcaption>
 </figure>
 
-Für eine festgehaltene Molekülgeometrie liefert die hier verwendete Rechnung einzelne elektronische Übergänge.
+Für eine festgehaltene Molekülgeometrie liefert die im Versuch verwendete Rechnung einzelne elektronische Übergänge.
 Trägt man ihre Energien und Stärken auf, erhält man das folgende Linienspektrum.
 
 <figure markdown="1">
 <img src="../../figures/outputs/spectrum_lines.svg" alt="Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert." width="600" loading="lazy">
 
 <figcaption markdown="1">
-Das Spektrum eines Moleküls, das Licht mit 3,0 eV und 4,0 eV absorbiert.
-Die Linienhöhen sind schematische relative Übergangsstärken. *a.u.* bedeutet hier „arbitrary units“, also
-beliebige Einheiten; gemeint sind keine atomaren Einheiten und keine gemessenen Absorbanzwerte.
+Schematisches Linienspektrum mit elektronischen Übergängen bei 3,0 eV und 4,0 eV.
+Die Linienhöhen zeigen relative Übergangsstärken.
 </figcaption>
 </figure>
 

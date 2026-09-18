@@ -29,7 +29,7 @@ def draw():
     plt.xlim(1.4, 5.6)
     plt.ylim(0, 0.6)
     plt.xlabel(r"Energie / eV")
-    plt.ylabel(r"Relative Absorption")
+    plt.ylabel(r"Relative Übergangsstärke")
     plt.gca().xaxis.set_major_formatter(
         FuncFormatter(lambda value, _: f"{value:.1f}".replace(".", ","))
     )
