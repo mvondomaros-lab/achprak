@@ -24,9 +24,8 @@ In der Gruppe prüfen Sie anschließend, wie Substituenten das Absorptionsmaximu
 Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption: Aus den Spektren lässt sich eine bevorzugte
 Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
 
-### 💻 Reiner Computerversuch
-
-Sie arbeiten mit digitalen Molekülmodellen und nicht mit Laborchemikalien. Das bedeutet:
+Der Versuch findet ausschließlich am Computer statt. Sie arbeiten mit digitalen Molekülmodellen und nicht mit
+Laborchemikalien. Das bedeutet:
 
 - 🛡️ keine Unfallgefahr
 - 🥼 keine Schutzkleidung erforderlich
