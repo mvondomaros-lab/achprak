@@ -90,14 +90,14 @@ Zur besseren Orientierung wurde das zugrunde liegende Linienspektrum im Hintergr
 <summary markdown="span">Ergänzung: Absorption, Transmission und Oszillatorstärke</summary>
 
 
-**Absorption** ist die Aufnahme von Strahlungsenergie. Die **Transmission** $T = I/I_0$ gibt an,
+Absorption ist die Aufnahme von Strahlungsenergie. Die Transmission $T = I/I_0$ gibt an,
 welcher Anteil der einfallenden Lichtintensität $I_0$ als Intensität $I$ durch eine Probe hindurchtritt.
-Die dekadische **Absorbanz** ist $A = -\log_{10}(T)$. Für geeignete verdünnte Lösungen ist sie nach dem
+Die dekadische Absorbanz ist $A = -\log_{10}(T)$. Für geeignete verdünnte Lösungen ist sie nach dem
 Lambert-Beer-Gesetz proportional zur Konzentration und zur durchstrahlten Schichtdicke.
 In Praktika wird dafür oft auch „Extinktion“ gesagt; dieser Begriff kann jedoch zusätzlich Streuverluste einschließen.
 Siehe die [IUPAC-Definition der Absorbanz](https://goldbook.iupac.org/terms/view/A00028).
 
-Die Rechnung liefert **Oszillatorstärken**: dimensionslose Maße für die Stärke elektronischer Übergänge.
+Die Rechnung liefert Oszillatorstärken: dimensionslose Maße für die Stärke elektronischer Übergänge.
 Sie sind keine Absorptionswahrscheinlichkeiten zwischen 0 und 1 und keine Absorbanzwerte einer konkreten Probe.
 Die Kurve in der Webapp zeigt daraus gebildete relative Absorptionsbanden. Für eine gemessene Absorbanz wären
 zusätzlich unter anderem Konzentration und Schichtdicke nötig.
@@ -108,16 +108,16 @@ zusätzlich unter anderem Konzentration und Schichtdicke nötig.
 
 Substituenten verändern die Elektronenverteilung und können Grundzustand und angeregte
 Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz zwischen zwei Zuständen
-kleiner, verschiebt sich der zugehörige Übergang zu längeren Wellenlängen (**bathochrom**).
-Eine größere Energiedifferenz entspricht kürzeren Wellenlängen (**hypsochrom**).
+kleiner, verschiebt sich der zugehörige Übergang zu längeren Wellenlängen (bathochrom).
+Eine größere Energiedifferenz entspricht kürzeren Wellenlängen (hypsochrom).
 Das Absorptionsmaximum hängt zusätzlich von den Oszillatorstärken und der Überlagerung
 der verbreiterten Übergänge ab.
 
-Ein **Orbital** beschreibt im Modell den räumlichen Zustand eines Elektrons. Daraus lässt
+Ein Orbital beschreibt im Modell den räumlichen Zustand eines Elektrons. Daraus lässt
 sich ableiten, mit welcher Wahrscheinlichkeit das Elektron in einem bestimmten Raumbereich
-gefunden wird. Ein **π-System** entsteht durch die seitliche Überlappung benachbarter
+gefunden wird. Ein π-System entsteht durch die seitliche Überlappung benachbarter
 p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wird als
-**Delokalisierung** bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
+Delokalisierung bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
 können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
 
 <figure markdown="1">
@@ -140,7 +140,7 @@ entscheidend für das Verständnis des Energiehaushalts unserer Erde – und dam
 
 Eines der wichtigsten Beispiele ist das Absorptionsspektrum unserer Atmosphäre. Die folgende Darstellung zeigt die
 relative Durchlässigkeit (Transmission) für elektromagnetische Strahlung.
-Bereiche mit hoher Durchlässigkeit heißen **atmosphärische Fenster**. Sonnenlicht und die Wärmestrahlung der Erde liegen dabei in unterschiedlichen Wellenlängenbereichen.
+Bereiche mit hoher Durchlässigkeit heißen atmosphärische Fenster. Sonnenlicht und die Wärmestrahlung der Erde liegen dabei in unterschiedlichen Wellenlängenbereichen.
 
 <figure markdown="1">
 <img src="../../figures/commons/atmospheric_transmission.svg" alt="Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster." width="1024" loading="lazy">

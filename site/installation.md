@@ -12,15 +12,15 @@ Die Webapp führt Sie durch drei Schritte:
 2. Suchen Sie eine Minimumstruktur. Von einer optimierten Minimumstruktur aus können Sie anschließend eine Übergangsstruktursuche starten.
 3. Berechnen und untersuchen Sie das UV/Vis-Spektrum einer optimierten Minimumstruktur.
 
-Die Aufgaben und Hinweise finden Sie direkt in der Webapp unter **Versuch & Aufgaben**.
+Die Aufgaben und Hinweise finden Sie direkt im Aufgabenbereich der Webapp.
 Schritt 1 bietet nur Startstrukturen zur Auswahl; in Schritt 2 können Sie auch Minimumstrukturen und Übergangsstrukturen auswählen.
-Unter **Was passiert im Hintergrund?** finden Sie in jedem Schritt Angaben zur Rechenmethode,
+Der Methodenabschnitt jedes Schritts enthält Angaben zur Rechenmethode,
 zu den dargestellten Ergebnissen und zu den Annahmen der Rechnung.
-Speichern Sie Strukturansichten und Spektren mit **Bild speichern** als PNG für Ihr Protokoll. Die Ergebnisse
+Exportieren Sie Strukturansichten und Spektren als PNG für Ihr Protokoll. Die Ergebnisse
 bleiben bis zum Neustart des Servers oder bis zu 24 Stunden Inaktivität erhalten.
 
 Während einer Optimierung zeigt die Webapp die berechneten Zwischenschritte. Nach Abschluss können Sie
-mit **Abspielen** den Optimierungsverlauf oder den Reaktionspfad einer Übergangsstruktur untersuchen.
+den Optimierungsverlauf oder den Reaktionspfad einer Übergangsstruktur abspielen und untersuchen.
 Die Wiedergabe zeigt eine Folge berechneter Strukturen, keinen zeitlichen Ablauf einer Molekülbewegung.
 Bei der Spektrenrechnung werden die gemeldete Rechenphase und kurze Erläuterungen angezeigt.
 Die Erläuterungen wechseln während längerer Rechenschritte; daraus lässt sich keine verbleibende Rechenzeit ableiten.
@@ -35,6 +35,6 @@ pixi install -e web
 pixi run -e web web
 ```
 
-Öffnen Sie anschließend **http://127.0.0.1:8000/** im Browser.
+Öffnen Sie anschließend [http://127.0.0.1:8000/](http://127.0.0.1:8000/) im Browser.
 Weitere Hinweise für Entwicklung und Serverbetrieb stehen in der
 [README](https://github.com/mvondomaros-lab/achprak#readme).

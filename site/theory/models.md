@@ -42,7 +42,7 @@ benötigen aber meist mehr Rechenzeit. Eine längere Rechenzeit allein belegt ke
 
 Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energien und Spektren können deshalb
 merklich vom Experiment abweichen. Vergleichen Sie beispielsweise die Absorptionsmaxima einer Reihe von Azobenzolen mit unterschiedlichen
-Substituenten. Formulieren Sie die berechneten Verschiebungen als **Vorhersagen des verwendeten Modells**.
+Substituenten. Formulieren Sie die berechneten Verschiebungen als Vorhersagen des verwendeten Modells.
 Ob die berechneten Trends das Verhalten der untersuchten Moleküle wiedergeben, muss durch einen Vergleich
 mit Experimenten oder geeigneten Referenzrechnungen geprüft werden.
 
@@ -51,7 +51,7 @@ mit Experimenten oder geeigneten Referenzrechnungen geprüft werden.
 ## Atomkoordinaten
 
 Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diese Information beispielsweise
-als SMILES-Text verarbeiten. Diese Zeichenfolge beschreibt Atome, Bindungen und gegebenenfalls die räumliche Anordnung von Gruppen. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich **Atomkoordinaten**
+als SMILES-Text verarbeiten. Diese Zeichenfolge beschreibt Atome, Bindungen und gegebenenfalls die räumliche Anordnung von Gruppen. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich Atomkoordinaten
 benötigt: die Positionen $(x, y, z)$ aller Atome.
 
 Das Strukturerstellungswerkzeug erzeugt für Sie solche atomaren Koordinaten im sogenannten XYZ-Format.

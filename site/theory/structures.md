@@ -48,7 +48,7 @@ unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erschein
 hängt neben dem Absorptionsspektrum auch von Konzentration, Lösungsmittel und cis/trans-Verhältnis ab.
 
 Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Durch
-**Substitution**, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
+Substitution, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
 Stärke der Absorptionsbanden verändern
 ([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist
 4-Methoxy-4′-nitroazobenzol: Eine Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator, eine Nitrogruppe

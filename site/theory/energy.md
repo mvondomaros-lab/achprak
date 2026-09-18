@@ -10,7 +10,7 @@ Die Webapp zeigt elektronische Energien einschließlich der im Modell berücksic
 Die Werte sind häufig groß und negativ. Ihr Nullpunkt hängt vom Rechenmodell ab: Ein negativer Wert allein
 beweist weder die Stabilität eines Moleküls noch, dass eine bestimmte Reaktion ablaufen wird.
 
-Für den Versuch sind **Energiedifferenzen** zwischen Strukturen mit gleicher Zusammensetzung entscheidend.
+Für den Versuch sind Energiedifferenzen zwischen Strukturen mit gleicher Zusammensetzung entscheidend.
 Vergleichen Sie beispielsweise cis und trans desselben Azobenzolderivats.
 Die Gesamtenergien unterschiedlich substituierter Moleküle lassen sich so nicht nach Stabilität ordnen.
 Die niedrigere Energie beschreibt die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
@@ -41,7 +41,7 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
-Eine **Minimumstruktur** ist eine Atomgeometrie, die einem lokalen Minimum der Energiefläche entspricht.
+Eine Minimumstruktur ist eine Atomgeometrie, die einem lokalen Minimum der Energiefläche entspricht.
 
 Bei Azobenzol und seinen Derivaten gibt es Minima sowohl in der *cis*- als auch in der *trans*-Konfiguration.
 Innerhalb einer Konfiguration können weitere Minima auftreten, etwa mit anders verdrehten Substituenten.
@@ -49,8 +49,8 @@ Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt nie
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
-Ein **Reaktionspfad** beschreibt eine Folge von Molekülgeometrien, die Ausgangs- und Produktstruktur
-miteinander verbindet. Die **Reaktionskoordinate** gibt die Position entlang dieses Pfads an,
+Ein Reaktionspfad beschreibt eine Folge von Molekülgeometrien, die Ausgangs- und Produktstruktur
+miteinander verbindet. Die Reaktionskoordinate gibt die Position entlang dieses Pfads an,
 nicht die verstrichene Zeit.
 
 <figure markdown="1">
@@ -62,13 +62,13 @@ Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, engli
 </figcaption>
 </figure>
 
-Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem **Sattelpunkt erster Ordnung**:
+Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem Sattelpunkt erster Ordnung:
 Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab; in den übrigen inneren Richtungen
 steigt sie bei kleinen Auslenkungen an. Die Webapp prüft diese Eigenschaft näherungsweise mit einer Schwingungsrechnung
 und verfolgt anschließend beide Abwärtsrichtungen zu Minima. Reine Verschiebungen und Drehungen des ganzen Moleküls
 werden bei der Schwingungsprüfung ausgeblendet.
 
-Eine **Schwingungsmode** beschreibt ein gemeinsames Auslenkungsmuster der Atome.
+Eine Schwingungsmode beschreibt ein gemeinsames Auslenkungsmuster der Atome.
 Eine imaginäre Frequenz kennzeichnet eine instabile Mode: Bei kleinen Auslenkungen
 entlang dieser Richtung nimmt die Energie am Sattelpunkt auf beiden Seiten ab.
 Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mode.
@@ -78,11 +78,11 @@ Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mod
 <summary markdown="span">Ergänzung: Übergangszustand oder Übergangsstruktur?</summary>
 
 
-Die **Übergangsstruktur** ist die berechnete Geometrie am Sattelpunkt der
+Die Übergangsstruktur ist die berechnete Geometrie am Sattelpunkt der
 Potentialenergiefläche. Diesen Begriff verwenden wir in der Webapp für das
 geprüfte Ergebnis. Die Struktur ist kein langlebiges, isolierbares Zwischenprodukt.
 
-Der **Übergangszustand** (englisch *transition state*) ist ein Begriff der
+Der Übergangszustand (englisch *transition state*) ist ein Begriff der
 Übergangszustandstheorie. Er bezeichnet eine Menge von Zuständen an der Grenze
 zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
 Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/view/T06468)
@@ -90,7 +90,7 @@ und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
 
 </details>
 
-Die **elektronische Energiebarriere** gegenüber einem Ausgangsminimum ist
+Die elektronische Energiebarriere gegenüber einem Ausgangsminimum ist
 
 $$
 \Delta E^\ddagger = E_\mathrm{TS} - E_\mathrm{Minimum}.
@@ -103,7 +103,7 @@ liefern. Die Barriere beeinflusst die Reaktionsgeschwindigkeit, bestimmt sie abe
 <summary markdown="span">Ergänzung: Energiebarriere und Aktivierungsenergie</summary>
 
 
-Die **Aktivierungsenergie** $E_\mathrm{a}$ beschreibt, wie sich die Geschwindigkeitskonstante einer Reaktion
+Die Aktivierungsenergie $E_\mathrm{a}$ beschreibt, wie sich die Geschwindigkeitskonstante einer Reaktion
 mit der Temperatur ändert. Sie ist nicht generell mit unserer elektronischen Energiebarriere
 $\Delta E^\ddagger$ identisch. In der Übergangszustandstheorie wird die Geschwindigkeit über eine freie
 Aktivierungsenergie $\Delta G^\ddagger$ beschrieben; darin gehen auch thermische Beiträge und Entropie ein.
