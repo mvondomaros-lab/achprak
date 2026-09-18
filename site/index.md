@@ -17,19 +17,15 @@ Konfigurationen unterscheiden sich deutlich in ihrer Geometrie und zeigen unters
 ## Computerexperiment
 
 In diesem Computerexperiment verfolgen Sie Azobenzol von der Strukturformel bis zum berechneten UV/Vis-Spektrum.
-Sie erzeugen räumliche Modelle, berechnen Minimumstrukturen und elektronische Energien und untersuchen einen
-Reaktionspfad über eine Übergangsstruktur. Anschließend vergleichen Sie die Absorptionsspektren der beiden
-Konfigurationen und suchen einen Wellenlängenbereich für ihre bevorzugte Anregung.
+Sie vergleichen Geometrien und Energien, untersuchen einen Reaktionspfad über eine Übergangsstruktur und suchen in
+den Spektren nach einem Wellenlängenbereich für die bevorzugte Anregung einer Konfiguration.
 
-In der Gruppe untersuchen Sie außerdem, wie verschiedene Substituenten das Absorptionsmaximum und die vorhergesagte
-Farbe verändern. Dabei formulieren Sie für ein eigenes Derivat zunächst eine Vorhersage und prüfen diese anschließend
-anhand der berechneten Spektren. Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption; aus den Spektren
-lässt sich daher eine bevorzugte Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
+In der Gruppe prüfen Sie anschließend, wie Substituenten das Absorptionsmaximum und die vorhergesagte Farbe verändern.
+Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption: Aus den Spektren lässt sich eine bevorzugte
+Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
 
-:::{important} Computerexperiment
-Der Versuch wird ausschließlich am Computer durchgeführt. Sie arbeiten mit digitalen Molekülmodellen und nicht mit
-Laborchemikalien. Für den Computerraum gelten die Regeln vor Ort.
-:::
+💻 **Reiner Computerversuch:** Sie arbeiten mit digitalen Molekülmodellen und nicht mit Laborchemikalien. Für den
+Computerraum gelten die Regeln vor Ort.
 
 ## Lernziele
 
