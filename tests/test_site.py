@@ -85,7 +85,7 @@ class SiteBuildTests(unittest.TestCase):
             page.tags.count("details"), 9
         )  # Nine optional explanations across five chapters.
         self.assertEqual(page.tags.count("figure"), 17)
-        self.assertEqual(page.tags.count("math"), 26)
+        self.assertEqual(page.tags.count("math"), 22)
         self.assertEqual(text.count('display="block"'), 5)
         for anchor in (
             "molecular-structures",
@@ -158,7 +158,7 @@ class SiteBuildTests(unittest.TestCase):
     def test_chapters_search_and_old_section_links(self):
         overview = (self.output / "theory/index.html").read_text()
         aliases = re.findall(r"<a[^>]+data-legacy-anchor[^>]*>", overview)
-        self.assertEqual(len(aliases), 9)
+        self.assertEqual(len(aliases), 8)
         chapters = [key for key, _ in site.PAGES if key.startswith("theory/")]
         self.assertEqual(len(chapters), 5)
         for chapter in chapters:

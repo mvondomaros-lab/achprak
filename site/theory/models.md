@@ -1,4 +1,4 @@
-# Modelle und Atomkoordinaten
+# Modelle
 
 ## Theoretische Chemie
 
@@ -48,38 +48,3 @@ Trend das Verhalten der untersuchten Moleküle wiedergibt, muss durch Experiment
 Referenzrechnungen geprüft werden.
 
 </aside>
-
-## Atomkoordinaten
-
-Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Programme können diese Information beispielsweise
-als SMILES-Text verarbeiten. Diese Zeichenfolge beschreibt Atome, Bindungen und gegebenenfalls die räumliche Anordnung von Gruppen. Für eine Rechnung an einer räumlichen Struktur werden zusätzlich Atomkoordinaten
-benötigt: die Positionen $(x, y, z)$ aller Atome.
-
-Das Strukturerstellungswerkzeug erzeugt für Sie solche atomaren Koordinaten im sogenannten XYZ-Format.
-Dieses einfache Textformat ist wie folgt aufgebaut:
-
-```text
-[Anzahl Atome]
-[Kommentar oder Leerzeile]
-[Elementsymbol des ersten Atoms]  [X] [Y] [Z]
-[Elementsymbol des zweiten Atoms] [X] [Y] [Z]
-[...]
-```
-
-Die Koordinaten werden dabei in der Einheit Ångström angegeben ($1\ \text{Å} = 10^{-10}\ \mathrm{m}$).
-Die Struktur eines einfachen Wassermoleküls (H₂O) kann zum Beispiel wie folgt im XYZ-Format beschrieben werden:
-
-```text
-3
-
-O  0.000  0.000  0.000
-H  0.000 -0.757  0.587
-H  0.000  0.757  0.587
-```
-
-Dieses Format zeigt, dass sich das Sauerstoffatom im Ursprung des Koordinatensystems $(x=0,y=0,z=0)$ befindet und dass
-die beiden Wasserstoffatome in der YZ-Ebene liegen $(x = 0)$.
-
-Das XYZ-Format dient in diesem Versuch zur Übergabe molekularer Strukturen zwischen den einzelnen Werkzeugen. Es
-fungiert damit sowohl als Eingabe- als auch als Ausgabeformat der jeweiligen Rechenprogramme. Die XYZ-Dateien
-werden dabei automatisch erzeugt.
