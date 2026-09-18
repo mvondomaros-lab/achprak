@@ -28,8 +28,8 @@ Für den Computerraum gelten die Regeln vor Ort.
 
 Nach Abschluss dieses Versuches können Sie:
 
-- cis- und trans-Konfigurationen in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
+- Konfigurationsisomere in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
 - Start- und Minimumstrukturen anhand ihrer Geometrie und elektronischen Energie vergleichen und die energetische Reihenfolge aus ΔE ableiten.
 - einen berechneten Reaktionspfad überprüfen, die elektronischen Energiebarrieren ΔE‡ bestimmen und thermische Barrierenübertritte anhand von ΔE‡ / RT qualitativ beurteilen.
-- cis- und trans-Spektren vergleichen und daraus einen Bereich für die bevorzugte Anregung einer Konfiguration ableiten.
+- die Spektren beider Konfigurationen vergleichen und daraus einen Bereich für die bevorzugte Anregung einer Konfiguration ableiten.
 - den Einfluss von Substituenten auf Absorptionsmaximum und vorhergesagte Farbe vorhersagen, anhand berechneter Spektren vergleichen und unter Berücksichtigung der Modellgrenzen beurteilen.
