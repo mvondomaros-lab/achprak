@@ -103,12 +103,20 @@ class SiteBuildTests(unittest.TestCase):
     def test_homepage_learning_goals_match_practical(self):
         homepage = (self.output / "index.html").read_text()
         for outcome in (
-            "Einfluss sterischer Nähe",
-            "Substituentenart, Substitutionsposition und Mehrfachsubstitution",
-            "wiederkehrende Trends und Abweichungen",
+            "Konfigurationsisomere und Substitutionsmuster",
+            "Einfluss räumlich benachbarter Gruppen",
+            "keine Änderung des cis/trans-Verhältnisses",
+            "systematischen Spektrenreihen Trends und Abweichungen",
             "begründete Vermutung für ein neues Derivat",
         ):
             self.assertIn(outcome, homepage)
+        learning_goals = re.search(
+            r'<h2 id="lernziele">.*?</h2>\s*<p>.*?</p>\s*<ul>(.*?)</ul>',
+            homepage,
+            re.S,
+        )
+        self.assertIsNotNone(learning_goals)
+        self.assertEqual(learning_goals[1].count("<li>"), 4)
 
     def test_structures_page_has_progressive_local_3d_viewer(self):
         structures_path = self.output / "theory/structures/index.html"

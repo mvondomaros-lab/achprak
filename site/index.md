@@ -37,10 +37,7 @@ Laborchemikalien. Das bedeutet:
 
 Nach Abschluss dieses Versuches können Sie:
 
-- Konfigurationsisomere in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
-- Start- und Minimumstrukturen anhand ihrer Geometrie und elektronischen Energie vergleichen, die energetische Reihenfolge aus ΔE ableiten und den Einfluss sterischer Nähe auf eine optimierte Geometrie beurteilen.
-- einen berechneten Reaktionspfad überprüfen, die elektronischen Energiebarrieren ΔE‡ bestimmen und thermische Barrierenübertritte anhand von ΔE‡ / RT qualitativ beurteilen.
-- die Spektren beider Konfigurationen vergleichen und daraus einen Bereich für die bevorzugte Anregung einer Konfiguration ableiten.
-- den Einfluss von Substituentenart, Substitutionsposition und Mehrfachsubstitution in kontrollierten Spektrenreihen vergleichen.
-- wiederkehrende Trends und Abweichungen aus berechneten Spektren ableiten und ihre Aussage auf die untersuchten Strukturen und das verwendete Rechenmodell begrenzen.
-- aus einer Spektrenreihe eine begründete Vermutung für ein neues Derivat entwickeln und anhand der berechneten cis- und trans-Spektren beurteilen.
+- Konfigurationsisomere und Substitutionsmuster in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
+- Start- und Minimumstrukturen anhand ihrer Geometrie und elektronischen Energie vergleichen, den Einfluss räumlich benachbarter Gruppen beurteilen und einen berechneten Reaktionspfad mit seinen elektronischen Energiebarrieren auswerten.
+- berechnete cis- und trans-Spektren vergleichen, einen Wellenlängenbereich mit unterschiedlicher Absorption finden und erklären, warum daraus allein keine Änderung des cis/trans-Verhältnisses folgt.
+- in systematischen Spektrenreihen Trends und Abweichungen erkennen und daraus eine begründete Vermutung für ein neues Derivat entwickeln und prüfen.
