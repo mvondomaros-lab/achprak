@@ -40,19 +40,98 @@ dass Kohlenstoff insgesamt vier Bindungen eingeht.
 
 </details>
 
+## Konfigurationsisomerie
+
+Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
+Die oben gezeigte Struktur entspricht der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
+Seiten der Azogruppe stehen.
+Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: *E*,*Z*-Nomenklatur</summary>
+
+Die systematische *E*,*Z*-Nomenklatur beschreibt die Anordnung an einer Doppelbindung anhand der Priorität der
+gebundenen Gruppen. Liegen die Gruppen mit höherer Priorität auf entgegengesetzten Seiten, lautet der Deskriptor *E*
+(von *entgegen*); liegen sie auf derselben Seite, lautet er *Z* (von *zusammen*). Dieses Verfahren bleibt auch bei
+unterschiedlichen gebundenen Gruppen eindeutig und ist daher allgemeiner und genauer als die Bezeichnungen *cis* und
+*trans*.
+
+Beim Azobenzol beschreiben *trans* und *cis* anschaulich, ob die beiden Phenylringe auf gegenüberliegenden Seiten oder
+auf derselben Seite der Azogruppe liegen. Diese Bezeichnungen sind für Azobenzole gebräuchlich und werden im gesamten
+Versuch sowie in der Webapp einheitlich verwendet. Dabei entspricht *trans* der *E*- und *cis* der *Z*-Konfiguration.
+
+
+</details>
+
+Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der räumlichen Anordnung oder Verknüpfung der
+Atome unterscheiden, bezeichnet man als Isomere.
+
+<figure markdown="1">
+<img src="../../figures/drawings/azobenzene_cis.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
+
+<figcaption markdown="1">
+*Cis*-Azobenzol.
+</figcaption>
+</figure>
+
+Bei Azobenzol liegt die *trans*-Form energetisch tiefer als die *cis*-Form.
+Ohne Bestrahlung überwiegt sie im thermischen Gleichgewicht bei Raumtemperatur.
+Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
+Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
+
+Die beiden Formen unterscheiden sich darin, bei welchen Wellenlängen und wie stark sie Licht absorbieren.
+Welche Mischung unter Bestrahlung entsteht,
+hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
+
+<figure markdown="1">
+<img src="../../figures/drawings/azobenzene_isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
+
+<figcaption markdown="1">
+Die lichtinduzierte Isomerisierung des Azobenzols.
+</figcaption>
+</figure>
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Dreidimensionale Visualisierung</summary>
+
+
+Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
+*cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
+Abstände in einer Strukturformel sind nicht maßstabsgetreu; überlagerte Atomgruppen in der
+Zeichnung müssen sich im Raum nicht überlagern.
+Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
+Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
+Das Drehen der Ansicht verändert die Molekülstruktur nicht.
+
+<figure markdown="1">
+<div id="azobenzene-trans-viewer" class="structure-viewer" data-ngl-viewer role="img"
+     aria-label="Interaktives Kugel-Stab-Modell von trans-Azobenzol">
+<p class="structure-viewer-status" data-viewer-status role="status">Interaktives 3D-Modell wird geladen …</p>
+</div>
+<p class="structure-viewer-instruction" data-viewer-instruction hidden>Ziehen zum Drehen, scrollen zum Zoomen.</p>
+<div class="structure-viewer-fallback" data-viewer-fallback>
+<img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol als statische Ersatzdarstellung." width="512" loading="lazy">
+</div>
+</figure>
+
+
+</details>
+
 ## Substituenten
 
-Als Feststoff bildet Azobenzol typischerweise orange bis orange-rote Kristalle
-([Stoffdaten in PubChem](https://pubchem.ncbi.nlm.nih.gov/compound/Azobenzene)). Verdünnte Lösungen von
-unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erscheinen. Der Farbeindruck einer Lösung
-hängt neben dem Absorptionsspektrum auch von Konzentration, Lösungsmittel und cis/trans-Verhältnis ab.
+Durch Substitution, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, entstehen
+Abwandlungen des Azobenzols. Die eingeführten Atome oder Atomgruppen heißen Substituenten. Auch substituierte
+Azobenzole können durch Licht zwischen *cis* und *trans* umgeschaltet werden.
 
-Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Durch
-Substitution, also den Austausch von Wasserstoffatomen gegen andere Atome oder Atomgruppen, können sich Lage und
-Stärke der Absorptionsbanden verändern
-([Absorptionsspektren in Methanol](https://doi.org/10.1039/C7PP00314E)). Ein Beispiel ist
-4-Methoxy-4′-nitroazobenzol, das in Lösung deutlich gefärbt erscheinen kann
-([experimentelle Lösungsspektren](https://doi.org/10.1016/S0022-2860(01)00457-4)).
+Als Feststoff bildet Azobenzol typischerweise orange bis orange-rote Kristalle. Verdünnte Lösungen von
+unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erscheinen. Der Farbeindruck einer Lösung
+hängt davon ab, welche Anteile des sichtbaren Lichts sie absorbiert. Dabei spielen unter anderem Konzentration,
+Lösungsmittel und das Mengenverhältnis der *cis*- und *trans*-Form eine Rolle.
+
+Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Substituenten
+können verändern, bei welchen Wellenlängen und wie stark ein Molekül Licht absorbiert. Ein Beispiel ist
+4-Methoxy-4′-nitroazobenzol, das in Lösung deutlich gefärbt erscheinen kann. Den Zusammenhang zwischen
+Lichtabsorption und Farbe erläutert das nächste Kapitel [Licht und Absorption](light.md).
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_4_methoxy_4_prime_nitro.svg" alt="Strukturformel von 4-Methoxy-4′-nitroazobenzol." width="463" loading="lazy">
@@ -150,82 +229,5 @@ Die Substituenten werden alphabetisch geordnet. Der Name lautet daher
 **5-Dimethylamino-2-fluor-4′-methoxy-3′,5′-dimethyl-4-trifluormethylazobenzol**.
 
 </details>
-
-</details>
-
-## Konfigurationsisomerie
-
-Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
-Alle bisher gezeigten Strukturen entsprechen der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
-Seiten der Azogruppe stehen.
-Bei der *cis*-Form befinden sich beide Ringsysteme auf derselben Seite.
-
-<details markdown="1">
-<summary markdown="span">Ergänzung: *E*,*Z*-Nomenklatur</summary>
-
-Die systematische *E*,*Z*-Nomenklatur beschreibt die Anordnung an einer Doppelbindung anhand der Priorität der
-gebundenen Gruppen. Liegen die Gruppen mit höherer Priorität auf entgegengesetzten Seiten, lautet der Deskriptor *E*
-(von *entgegen*); liegen sie auf derselben Seite, lautet er *Z* (von *zusammen*). Dieses Verfahren bleibt auch bei
-unterschiedlichen Substituenten eindeutig und ist daher allgemeiner und genauer als die Bezeichnungen *cis* und
-*trans*.
-
-Beim Azobenzol beschreiben *trans* und *cis* anschaulich, ob die beiden Phenylringe auf gegenüberliegenden Seiten oder
-auf derselben Seite der Azogruppe liegen. Diese Bezeichnungen sind für Azobenzole gebräuchlich und werden im gesamten
-Versuch sowie in der Webapp einheitlich verwendet. Dabei entspricht *trans* der *E*- und *cis* der *Z*-Konfiguration.
-
-
-</details>
-
-Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der räumlichen Anordnung oder Verknüpfung der
-Atome unterscheiden, bezeichnet man als Isomere.
-
-<figure markdown="1">
-<img src="../../figures/drawings/azobenzene_cis.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
-
-<figcaption markdown="1">
-*Cis*-Azobenzol.
-</figcaption>
-</figure>
-
-Bei unsubstituiertem Azobenzol liegt die *trans*-Form energetisch tiefer als die *cis*-Form.
-Ohne Bestrahlung überwiegt sie im thermischen Gleichgewicht bei Raumtemperatur.
-Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
-Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
-
-Auch substituierte Azobenzole können durch Licht zwischen *cis* und *trans* umgeschaltet werden.
-Beide Formen besitzen unterschiedliche Absorptionsspektren. Welche Mischung unter Bestrahlung entsteht,
-hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
-
-<figure markdown="1">
-<img src="../../figures/drawings/azobenzene_isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
-
-<figcaption markdown="1">
-Die lichtinduzierte Isomerisierung des Azobenzols.
-</figcaption>
-</figure>
-
-<details markdown="1">
-<summary markdown="span">Ergänzung: Dreidimensionale Visualisierung</summary>
-
-
-Chemische Strukturformeln eignen sich gut zur Darstellung grundlegender räumlicher Eigenschaften wie der
-*cis*-*trans*-Isomerie, sind jedoch durch ihre zweidimensionale Darstellung begrenzt.
-Abstände in einer Strukturformel sind nicht maßstabsgetreu; überlagerte Atomgruppen in der
-Zeichnung müssen sich im Raum nicht überlagern.
-Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
-Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
-Das Drehen der Ansicht verändert die Molekülstruktur nicht.
-
-<figure markdown="1">
-<div id="azobenzene-trans-viewer" class="structure-viewer" data-ngl-viewer role="img"
-     aria-label="Interaktives Kugel-Stab-Modell von trans-Azobenzol">
-<p class="structure-viewer-status" data-viewer-status role="status">Interaktives 3D-Modell wird geladen …</p>
-</div>
-<p class="structure-viewer-instruction" data-viewer-instruction hidden>Ziehen zum Drehen, scrollen zum Zoomen.</p>
-<div class="structure-viewer-fallback" data-viewer-fallback>
-<img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol als statische Ersatzdarstellung." width="512" loading="lazy">
-</div>
-</figure>
-
 
 </details>
