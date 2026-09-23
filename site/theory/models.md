@@ -52,11 +52,10 @@ Methodenabschnitten der Webapp erläutert.
 
 ## Berechnete Größen im Versuch
 
-An Azobenzol untersuchen Sie zunächst den Zusammenhang zwischen räumlicher Struktur und elektronischer Energie.
-Bei der Strukturoptimierung werden die Atompositionen so verändert, dass die berechnete Energie abnimmt.
-Die dabei gesuchten Strukturen und ihre Energien lassen sich für cis und trans vergleichen. Außerdem untersuchen
-Sie die Energie entlang eines Reaktionspfads zwischen den beiden Konfigurationen. Das nächste Kapitel führt
-die Begriffe Minimumstruktur und elektronische Energiebarriere ein und erläutert diese Rechnungen.
+An Azobenzol vergleichen Sie die berechneten räumlichen Strukturen und elektronischen Energien der cis- und
+trans-Konfiguration. Außerdem untersuchen Sie, wie sich die Energie entlang eines Reaktionspfads zwischen ihnen
+ändert. Das nächste Kapitel „Energien und Strukturoptimierung“ erläutert dazu Minimumstrukturen, Reaktionspfade
+und elektronische Energiebarrieren anhand eines schematischen Energieprofils.
 
 Die Spektrenrechnung untersucht dagegen die Aufnahme von Licht. Sie liefert Energien und relative Stärken
 elektronischer Anregungen, aus denen ein Absorptionsspektrum dargestellt wird. Durch den Vergleich unterschiedlich
