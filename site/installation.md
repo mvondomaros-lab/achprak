@@ -1,6 +1,6 @@
 # Webapp starten
 
-Öffnen Sie die [Webapp](https://lserver.chemie.uni-marburg.de) im Browser.
+Öffnen Sie [https://lserver.chemie.uni-marburg.de](https://lserver.chemie.uni-marburg.de) im Browser.
 Sie ist nur aus dem Universitätsnetz erreichbar. Die Zugangsdaten erhalten Sie
 vor Ort von Ihrer Betreuung.
 
