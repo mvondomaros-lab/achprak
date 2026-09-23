@@ -1,14 +1,22 @@
 # Aufgaben und Protokoll
 
-Der Versuch findet im Computerraum der Theoretischen Chemie statt. Öffnen Sie dort die bereitgestellte Webapp.
-Sie können auch Ihren eigenen Laptop verwenden; Hinweise dazu finden Sie unter [Webapp starten](installation.md).
-Bei Fragen zur Einrichtung wenden Sie sich an Ihre Betreuung.
+Bearbeiten Sie die Pflichtaufgaben in allen drei Versuchsschritten der Webapp.
+Hinweise zum Zugang finden Sie unter [Webapp starten](installation.md).
+Im Aufgabenbereich steht für jeden Schritt, was Sie untersuchen und welche
+Ergebnisse Sie im Protokoll festhalten sollen. Freiwillige
+Vertiefungen gehören nicht zum Pflichtteil.
 
-Die Webapp zeigt die Aufgaben zum aktuellen Versuchsschritt. Am Ende finden Sie
-einen Hinweis auf die nächste Seite.
-Zu jeder Aufgabe steht, welche Ergebnisse Sie im Protokoll festhalten sollen.
+## Protokoll führen
 
-Laden Sie die Protokollvorlage im DOCX-Format in der Webapp herunter. Sie können sie
-mit Word oder LibreOffice Writer bearbeiten. Die Überschriften entsprechen den
-Aufgaben in der Webapp. Speichern Sie Ihre Abbildungen und tragen Sie Ihre Werte
-mit Einheiten ein. Laden Sie das ausgefüllte Protokoll anschließend in ILIAS hoch.
+Laden Sie die Protokollvorlage im DOCX-Format aus der Webapp herunter und
+bearbeiten Sie sie mit Word oder LibreOffice Writer. Die Überschriften entsprechen
+den Aufgaben. Tragen Sie berechnete Werte mit Einheiten ein und fügen Sie die
+geforderten Strukturansichten, Energieprofile und Spektren ein. Kennzeichnen Sie
+Modellvorhersagen, wo die Aufgaben es verlangen.
+
+Speichern Sie die Vorlage und exportierte Abbildungen während der Arbeit auf
+Ihrem Computer. Ergebnisse in der Webapp bleiben nur bis zum nächsten
+Serverneustart oder bis zu 24 Stunden Inaktivität erhalten.
+
+Besprechen Sie das ausgefüllte Protokoll anschließend mit Ihrer Betreuung und
+laden Sie es danach in [ILIAS](https://ilias.uni-marburg.de/) hoch.
