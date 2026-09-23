@@ -7,17 +7,11 @@ vor Ort von Ihrer Betreuung.
 Die Aufgaben stehen in der Webapp. Hinweise zur Bearbeitung und Abgabe finden
 Sie unter [Aufgaben und Protokoll](tasks.md).
 
-## Optional: Lokal starten
+## Zu Hause ausprobieren
 
-Wenn Sie die Webapp unabhängig vom Praktikumsserver auf Ihrem Computer
-ausführen möchten, installieren Sie [Pixi](https://pixi.sh), klonen Sie das
-Repository und führen Sie im Projektverzeichnis folgende Befehle aus:
-
-```sh
-pixi install -e web
-pixi run -e web web
-```
-
-Öffnen Sie anschließend [http://127.0.0.1:8000/](http://127.0.0.1:8000/) im Browser.
-Weitere Hinweise für Entwicklung und Serverbetrieb stehen in der
-[README](https://github.com/mvondomaros-lab/achprak#readme).
+Sie können die Webapp auch zu Hause auf Ihrem eigenen Computer installieren und
+weitere Strukturen und Rechnungen in Ihrem eigenen Tempo ausprobieren. Die
+[Installationsanleitung](https://github.com/mvondomaros-lab/achprak#auf-dem-eigenen-rechner-starten)
+führt Sie Schritt für Schritt durch die Einrichtung und den Start. Der lokale
+Betrieb wird derzeit für Macs mit Apple Silicon und Linux-Computer mit
+x86-64-Prozessor unterstützt.
