@@ -111,7 +111,6 @@ Die Rechnung untersucht außerdem nur den elektronischen Grundzustand. Bei Azobe
 Wechsel zwischen Zuständen mit unterschiedlicher Elektronenspin-Anordnung (Singulett und Triplett)
 zur thermischen Isomerisierung beitragen. Solche Zustandswechsel werden hier nicht berechnet.
 Auch eine numerisch bestätigte Übergangsstruktur belegt deshalb nicht den experimentell maßgeblichen
-Reaktionsweg oder die Lebensdauer der cis-Form. Ein Beispiel für die Untersuchung solcher Wege ist
-die [Arbeit von Axelrod und Kollegen](https://arxiv.org/abs/2207.11592).
+Reaktionsweg oder die Lebensdauer der cis-Form.
 
 </details>
