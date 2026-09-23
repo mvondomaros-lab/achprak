@@ -7,33 +7,31 @@ Atomkerne und der Verteilung der Elektronen ab. Neben anziehenden und abstoßend
 die kinetische Energie der Elektronen in die Rechnung ein.
 
 Die Webapp zeigt elektronische Energien einschließlich der im Modell berücksichtigten Lösungsmittelwirkung.
-Die Werte sind häufig groß und negativ. Ihr Nullpunkt hängt vom Rechenmodell ab: Ein negativer Wert allein
-beweist weder die Stabilität eines Moleküls noch, dass eine bestimmte Reaktion ablaufen wird.
+Die Werte sind häufig groß und negativ; ihr Nullpunkt hängt vom Rechenmodell ab. Für den Vergleich verschiedener
+Strukturen sind deshalb die Energiedifferenzen entscheidend.
 
-Für den Versuch sind Energiedifferenzen zwischen Strukturen mit gleicher Zusammensetzung entscheidend.
-Vergleichen Sie beispielsweise cis und trans desselben Azobenzolderivats.
-Die Gesamtenergien unterschiedlich substituierter Moleküle lassen sich so nicht nach Stabilität ordnen.
-Die niedrigere Energie beschreibt die energetisch günstigere Anordnung innerhalb dieses Modells. Die Rechnung liefert hier keine freien Energien;
-Beiträge von Kernschwingungen, Temperatur und Entropie werden nicht ergänzt.
+Verglichen werden Strukturen mit gleicher Zusammensetzung, die mit demselben Rechenmodell untersucht wurden,
+beispielsweise die cis- und trans-Konfiguration desselben Azobenzolderivats. Die Struktur mit der niedrigeren
+elektronischen Energie ist in diesem Vergleich energetisch günstiger.
 
-Die Energiedifferenz zwischen zwei Konfigurationen ergibt sich durch Subtraktion ihrer elektronischen Energien.
-Für ein Azobenzolderivat seien beispielsweise die Energien
+Eine Energiedifferenz wird als Energie der Zielstruktur minus Energie der Ausgangsstruktur angegeben.
+Ein Zahlenbeispiel verdeutlicht die Vorzeichenkonvention: Für die angenommenen Werte
 $E_\mathrm{cis} = -932{,}48\ \text{eV}$ und
-$E_\mathrm{trans} = -933{,}00\ \text{eV}$ berechnet worden. Dann beträgt die Energiedifferenz:
+$E_\mathrm{trans} = -933{,}00\ \text{eV}$ ergibt sich für die Richtung von cis nach trans:
 
 $$
-\Delta E_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -933{,}00\ \text{eV} - (-932{,}48\ \text{eV}) = -0{,}52\ \text{eV}.
+\Delta E_{\mathrm{cis\to trans}} = E_\mathrm{trans} - E_\mathrm{cis} = -0{,}52\ \text{eV}.
 $$
 
-1 eV pro Molekül entspricht etwa 96,49 kJ/mol. Für das Protokoll berichten Sie solche
-Energiedifferenzen zwischen Konfigurationen in kJ/mol:
+Das negative Vorzeichen bedeutet, dass die trans-Struktur um 0,52 eV niedriger liegt als die cis-Struktur.
+Für die umgekehrte Richtung ist die Energiedifferenz positiv: +0,52 eV.
+
+Energiedifferenzen können pro Molekül oder pro Mol angegeben werden. 1 eV pro Molekül entspricht etwa
+96,49 kJ/mol. Die molare Energiedifferenz beträgt in diesem Beispiel daher:
 
 $$
--0{,}52\ \text{eV} \approx -50\ \text{kJ mol}^{-1}.
+\Delta E_\mathrm{m} \approx -50\ \text{kJ mol}^{-1}.
 $$
-
-Der negative Wert bedeutet, dass die *trans*-Struktur im verwendeten Modell eine niedrigere elektronische
-Energie besitzt. Daraus allein lässt sich weder die Reaktionsgeschwindigkeit noch die freie Reaktionsenergie bestimmen.
 
 ## Strukturoptimierung {#structure-optimization}
 
