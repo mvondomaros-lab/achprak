@@ -14,6 +14,9 @@ begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
 
 ## Mathematische Beschreibung
 
+Die bisherigen Kapitel haben den Zusammenhang zwischen Molekülstruktur, Energie und Lichtabsorption am Beispiel
+von Azobenzol erläutert. Die theoretische Chemie macht diese Zusammenhänge einer Berechnung zugänglich.
+
 Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Um Bindungslängen, Energien oder
 Absorptionsspektren zu berechnen, braucht man zusätzlich eine physikalische Beschreibung des Moleküls.
 Für die hier untersuchten Eigenschaften bildet die Quantenmechanik die Grundlage. Sie beschreibt die möglichen
@@ -56,7 +59,7 @@ ergänzt diesen Vergleich um die elektronische Energiebarriere zwischen den beid
 Die Spektrenrechnung untersucht dagegen die Aufnahme von Licht. Sie liefert Energien und relative Stärken
 elektronischer Anregungen, aus denen ein Absorptionsspektrum dargestellt wird. Durch den Vergleich unterschiedlich
 substituierter Azobenzole untersuchen Sie, wie Veränderungen des molekularen Aufbaus mit Veränderungen der
-Absorption zusammenhängen. Die folgenden Kapitel erläutern die dafür benötigten Begriffe und Größen.
+Absorption zusammenhängen. Dabei wenden Sie die Begriffe und Zusammenhänge aus den vorangegangenen Kapiteln an.
 
 ## Vorhersagen und Prüfung
 

@@ -1,6 +1,6 @@
 # Theoretische Grundlagen
 
-[Zu den Grundlagen](theory/models.md)
+[Zu den Grundlagen](theory/structures.md)
 
 <details class="legacy-links" open markdown="1">
 <summary>Direkt zu einem bisherigen Abschnitt</summary>
