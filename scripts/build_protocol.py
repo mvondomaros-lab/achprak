@@ -84,7 +84,8 @@ def build():
         title = el.find("summary").text.strip()
         doc.add_heading(title, 2)
         text = el.xpath('.//p[@class="protocol-output"]')[0].text_content()
-        p(text.removeprefix("Für Ihr Protokoll:").strip())
+        text = " ".join(text.removeprefix("Für Ihr Protokoll:").split())
+        p(text)
 
     def table(headers, rows, widths):
         t = doc.add_table(rows=1, cols=len(headers))
@@ -189,7 +190,7 @@ def build():
         "ΔE = Etrans − Ecis / (kJ/mol): [Wert]\nGeometrieänderungen und Einordnung des Vorzeichens: [höchstens drei Sätze]"
     )
     task("task-examine-substituent-geometry")
-    answer("Vorhersage für die Änderung der Ringstellung: [Ihre Vorhersage]")
+    answer("Vermutung zur Änderung der Ringstellung: [Ihre Vermutung]")
     table(
         ["Struktur", "Diederwinkel / °", "Ringabstand / pm"],
         [
@@ -241,15 +242,12 @@ def build():
         [2.5, 2.5, 3.0, 2.7, 3.0, 3.3],
     )
     answer(
-        "Bevorzugte Anregung und Grenze der Vorhersage: [höchstens drei Sätze]"
+        "Wellenlängenbereich, stärker absorbierende Konfiguration und Grenze der Aussage: [höchstens drei Sätze]"
     )
     doc.add_page_break()
     doc.add_heading("Systematische Substituentenreihe", 1)
     task("task-compare-substituent-spectra")
     answer("Zugeordnete Reihe: [4-X, 2-X, 3-X oder 4,4′-X₂]")
-    answer(
-        "Vorhersage: [Substituent mit der erwarteten stärksten Verschiebung zu kleinerer Energie und kurze Begründung]"
-    )
     table(
         [
             "X",
@@ -272,9 +270,7 @@ def build():
     p("\n")
     answer("Spektrum zum größten Wert von ΔEmax: [Abbildung einfügen und beschriften]")
     p("\n")
-    answer(
-        "Trend, Vergleich mit der Vorhersage und Abweichung: [höchstens vier Sätze]"
-    )
+    answer("Trend und Abweichung: [höchstens vier Sätze]")
 
     doc.add_page_break()
     doc.add_heading("Vergleich der Substituentenreihen", 1)
@@ -307,7 +303,7 @@ def build():
     answer(
         "Name und Substitutionsmuster des eigenen Derivats: [Name]\n"
         "Bezug zur systematischen Reihe und Begründung der Auswahl: [Ergebnis und Begründung]\n"
-        "Vorhersage: [Ihre Vorhersage vor den Rechnungen]"
+        "Vermutung: [Ihre Vermutung vor den Rechnungen]"
     )
     table(
         [
@@ -328,7 +324,7 @@ def build():
     answer("trans: [Spektrum einfügen und beschriften]")
     p("\n\n")
     answer(
-        "Vergleich der vollständigen Spektren und Prüfung der Vorhersage: [Stützt das Ergebnis den Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
+        "Vergleich der vollständigen Spektren und Prüfung der Vermutung: [Stützt das Ergebnis den zugrunde gelegten Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
     )
     answer("Längstwelliges Gruppenresultat: [Name und Wellenlänge]")
     answer(

@@ -21,8 +21,8 @@ Sie vergleichen Geometrien und Energien, untersuchen einen Reaktionspfad über e
 den Spektren nach einem Wellenlängenbereich für die bevorzugte Anregung einer Konfiguration.
 
 In der Gruppe untersuchen Sie systematische Substituentenreihen, vergleichen Positions- und Mehrfachsubstitution und
-prüfen, welche Trends und Abweichungen in den berechneten Spektren auftreten. Aus diesen Ergebnissen leiten Sie eine
-Vorhersage für ein selbst gewähltes Derivat ab und prüfen sie an dessen cis- und trans-Konfiguration.
+prüfen, welche Trends und Abweichungen in den berechneten Spektren auftreten. Aus diesen Ergebnissen entwickeln Sie
+eine begründete Vermutung für ein selbst gewähltes Derivat und prüfen sie an dessen cis- und trans-Konfiguration.
 Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption: Aus den Spektren lässt sich eine bevorzugte
 Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
 
@@ -43,4 +43,4 @@ Nach Abschluss dieses Versuches können Sie:
 - die Spektren beider Konfigurationen vergleichen und daraus einen Bereich für die bevorzugte Anregung einer Konfiguration ableiten.
 - den Einfluss von Substituentenart, Substitutionsposition und Mehrfachsubstitution in kontrollierten Spektrenreihen vergleichen.
 - wiederkehrende Trends und Abweichungen aus berechneten Spektren ableiten und ihre Aussage auf die untersuchten Strukturen und das verwendete Rechenmodell begrenzen.
-- aus einer Spektrenreihe eine überprüfbare Vorhersage für ein neues Derivat entwickeln und anhand der berechneten cis- und trans-Spektren beurteilen.
+- aus einer Spektrenreihe eine begründete Vermutung für ein neues Derivat entwickeln und anhand der berechneten cis- und trans-Spektren beurteilen.

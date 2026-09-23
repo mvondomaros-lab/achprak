@@ -19,13 +19,14 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         )
         assert "set-cookie" not in response.headers
         guide = client.get("/static/guide.html").text
+        guide_text = " ".join(guide.split())
         styles = client.get("/static/app.css").text
         with ZipFile(io.BytesIO(response.content)) as archive:
             xml = ET.fromstring(archive.read("word/document.xml"))
         ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
         paragraphs = ["".join(p.itertext()) for p in xml.findall(".//w:p", ns)]
         titles = re.findall(
-            r'<(?:section|details) class="task" id="task-[^"]+"><(?:h3|summary)>([^<]+)</(?:h3|summary)>',
+            r'<(?:section|details) class="task" id="task-[^"]+">\s*<(?:h3|summary)>([^<]+)</(?:h3|summary)>',
             guide,
         )
         task_ids = re.findall(r'<details class="task" id="([^"]+)">', guide)
@@ -65,13 +66,20 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         for substituent in ("CH₃", "OCH₃", "N(CH₃)₂", "CF₃", "CN", "NO₂"):
             assert substituent in guide and substituent in text
         assert "trans-4,4′-X₂-Azobenzole" in guide
-        assert "gemeinsame Ergebnismatrix" in guide
-        assert "mindestens eine Abweichung" in guide
+        assert "gemeinsame Ergebnismatrix" in guide_text
+        assert "mindestens eine Abweichung" in guide_text
+        assert "Sagen Sie voraus" not in guide_text and "Sagen Sie voraus" not in text
+        assert "ortho-, meta- und para-Substitution" not in guide_text
+        assert "trans-Push–Pull-Systeme" in guide_text
+        assert "welcher Substituent das Absorptionsmaximum" not in guide_text
+        assert "keine Änderung des cis/trans-Verhältnisses ableiten lässt" in guide_text
         for field in (
             "Sterischer Einfluss und Vergleich",
             "Zugeordnete Reihe",
             "Übergreifender Trend 1",
             "Bezug zur systematischen Reihe",
+            "Vermutung zur Änderung der Ringstellung",
+            "Prüfung der Vermutung",
         ):
             assert field in text
         assert "ILIAS" in text

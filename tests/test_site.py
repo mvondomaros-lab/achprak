@@ -106,7 +106,7 @@ class SiteBuildTests(unittest.TestCase):
             "Einfluss sterischer Nähe",
             "Substituentenart, Substitutionsposition und Mehrfachsubstitution",
             "wiederkehrende Trends und Abweichungen",
-            "überprüfbare Vorhersage für ein neues Derivat",
+            "begründete Vermutung für ein neues Derivat",
         ):
             self.assertIn(outcome, homepage)
 
