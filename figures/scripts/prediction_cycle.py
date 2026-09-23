@@ -3,12 +3,12 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
-from style import TEXT, export, run
+from style import TEXT, DIAGRAM_WIDTH, DIAGRAM_BODY, DIAGRAM_HEADING, export, run
 
 
 def draw():
     fig = plt.gcf()
-    fig.set_size_inches(9, 5.5)
+    fig.set_size_inches(DIAGRAM_WIDTH, 5.5)
     ax = plt.gca()
     ax.set(xlim=(0, 14), ylim=(0, 8))
     ax.set_axis_off()
@@ -25,11 +25,11 @@ def draw():
         )
         ax.text(
             x + width / 2, y + 1.1, title,
-            ha="center", va="center", weight="bold", color=TEXT, fontsize=12,
+            ha="center", va="center", weight="bold", color=TEXT, fontsize=DIAGRAM_HEADING,
         )
         ax.text(
             x + width / 2, y + 0.48, detail,
-            ha="center", va="center", color=TEXT, fontsize=10.5,
+            ha="center", va="center", color=TEXT, fontsize=DIAGRAM_BODY,
             linespacing=1.35,
         )
 
@@ -66,13 +66,13 @@ def draw():
             mutation_scale=12, linewidth=1.5, color=blue,
         ))
         ax.text(center, 1.9, title, ha="center", va="center",
-                weight="bold", color=TEXT, fontsize=10.5)
+                weight="bold", color=TEXT, fontsize=DIAGRAM_HEADING)
         ax.text(center, 1.25, detail, ha="center", va="center",
-                color=TEXT, fontsize=10.5, linespacing=1.35)
+                color=TEXT, fontsize=DIAGRAM_BODY, linespacing=1.35)
 
     ax.text(
-        7, 0.35, "Vergleiche für mehrere Moleküle helfen, die Zuverlässigkeit eines Trends einzuschätzen.",
-        ha="center", va="center", color=TEXT, fontsize=10,
+        7, 0.35, "Vergleiche für mehrere Moleküle helfen,\ndie Zuverlässigkeit eines Trends einzuschätzen.",
+        ha="center", va="center", color=TEXT, fontsize=DIAGRAM_BODY, linespacing=1.35,
     )
 
 

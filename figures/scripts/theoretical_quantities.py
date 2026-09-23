@@ -3,12 +3,14 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
-from style import TEXT, export, run
+from style import (
+    TEXT, DIAGRAM_WIDTH, DIAGRAM_BODY, DIAGRAM_HEADING, DIAGRAM_TITLE, export, run,
+)
 
 
 def draw():
     fig = plt.gcf()
-    fig.set_size_inches(10, 5)
+    fig.set_size_inches(DIAGRAM_WIDTH, 6)
     ax = plt.gca()
     ax.set(xlim=(0, 15), ylim=(0, 7))
     ax.set_axis_off()
@@ -34,7 +36,7 @@ def draw():
             va="center",
             weight="bold",
             color=TEXT,
-            fontsize=12.5,
+            fontsize=DIAGRAM_HEADING,
         )
         ax.text(
             x + width / 2,
@@ -43,7 +45,8 @@ def draw():
             ha="center",
             va="center",
             color=TEXT,
-            fontsize=10.5,
+            fontsize=DIAGRAM_BODY,
+            linespacing=1.35,
         )
 
     ax.text(
@@ -54,7 +57,7 @@ def draw():
         va="center",
         weight="bold",
         color=TEXT,
-        fontsize=14,
+        fontsize=DIAGRAM_TITLE,
     )
     box(
         2.5, 4.65, 10, 1.25,
@@ -81,11 +84,11 @@ def draw():
     tasks = (
         (2.5, "Strukturen optimieren", "Atompositionen verändern,\num die Energie zu verringern", "Molekülstrukturen", "Bindungslängen und Winkel"),
         (7.5, "Energien vergleichen", "Energien für verschiedene\nStrukturen berechnen", "Energieunterschiede", "z. B. zwischen cis und trans"),
-        (12.5, "Anregungen berechnen", "Energien und Stärken\nelektronischer Anregungen bestimmen", "Absorptionsspektren", "Lage und relative Stärke der Banden"),
+        (12.5, "Anregungen berechnen", "Energien und Stärken\nelektronischer Anregungen\nbestimmen", "Absorptionsspektren", "Lage und relative Stärke\nder Banden"),
     )
     for x, task, description, result, detail in tasks:
-        ax.text(x, 3.28, task, ha="center", va="center", weight="bold", color=TEXT, fontsize=12.5)
-        ax.text(x, 2.62, description, ha="center", va="center", color=TEXT, fontsize=10.5, linespacing=1.4)
+        ax.text(x, 3.28, task, ha="center", va="center", weight="bold", color=TEXT, fontsize=DIAGRAM_HEADING)
+        ax.text(x, 2.62, description, ha="center", va="center", color=TEXT, fontsize=DIAGRAM_BODY, linespacing=1.35)
         ax.add_patch(FancyArrowPatch((x, 2.12), (x, 1.7), arrowstyle="-|>", mutation_scale=12, linewidth=1.5, color=blue))
         box(x - 2.25, 0.3, 4.5, 1.25, result, detail)
 

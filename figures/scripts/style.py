@@ -17,6 +17,13 @@ from achprak.plot_style import (
     style_axes,
 )
 
+# Diagram type scale: at the site's 760 px article width, 12 pt on an
+# 8-inch canvas renders as 15.8 CSS px, close to the 16 px body text.
+DIAGRAM_WIDTH = 8
+DIAGRAM_BODY = 12
+DIAGRAM_HEADING = 13.5
+DIAGRAM_TITLE = 15
+
 
 def export(draw, name, output_dir=None, formats=("svg",)):
     output_dir = Path(output_dir or Path(__file__).resolve().parents[1] / "outputs")
