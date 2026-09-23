@@ -55,7 +55,7 @@ Zustand versetzt zu werden.
 </figcaption>
 </figure>
 
-Für eine festgehaltene Molekülgeometrie liefert die im Versuch verwendete Rechnung einzelne elektronische Übergänge.
+Für eine festgehaltene Molekülstruktur liefert die im Versuch verwendete Rechnung einzelne elektronische Übergänge.
 Trägt man ihre Energien und Stärken auf, erhält man das folgende Linienspektrum.
 
 <figure markdown="1">
@@ -119,7 +119,7 @@ sich ableiten, mit welcher Wahrscheinlichkeit das Elektron in einem bestimmten R
 gefunden wird. Ein π-System entsteht durch die seitliche Überlappung benachbarter
 p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wird als
 Delokalisierung bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
-können aber auch die Geometrie und damit die Wechselwirkung zwischen den Molekülteilen verändern.
+können aber auch die räumliche Struktur und damit die Wechselwirkung zwischen den Molekülteilen verändern.
 
 Ein Beispiel ist das auf der Seite zu den [Molekülstrukturen](structures.md#substituenten) gezeigte
 4-Methoxy-4′-nitroazobenzol. Die Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator,

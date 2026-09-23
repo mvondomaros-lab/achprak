@@ -214,7 +214,7 @@ Abstände in einer Strukturformel sind nicht maßstabsgetreu; überlagerte Atomg
 Zeichnung müssen sich im Raum nicht überlagern.
 Eine Alternative bietet die [3D-Visualisierung](https://de.wikipedia.org/wiki/3D-Visualisierung).
 Sogenannte Kalotten- oder Kugel-Stab-Modelle zeigen Moleküle im Raum. Drehen Sie das Modell, um zu erkennen, welche Atome vor oder hinter der Bildebene liegen.
-Das Drehen der Ansicht verändert die Molekülgeometrie nicht.
+Das Drehen der Ansicht verändert die Molekülstruktur nicht.
 
 <figure markdown="1">
 <div id="azobenzene-trans-viewer" class="structure-viewer" data-ngl-viewer role="img"

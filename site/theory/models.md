@@ -24,7 +24,7 @@ Elektronen lassen sich diese Zusammenhänge nicht ohne Näherungen berechnen. Da
 keine vollständige Beschreibung des Moleküls, sondern eine Aussage innerhalb eines festgelegten Modells.
 
 <figure markdown="1">
-<img src="../../figures/outputs/theoretical_quantities.svg" alt="Schematische Übersicht: Im Rechenmodell werden Atomkerne und Elektronen beschrieben. Daraus werden Geometrien, elektronische Energien und elektronische Anregungen berechnet." width="800" loading="lazy">
+<img src="../../figures/outputs/theoretical_quantities.svg" alt="Schematische Übersicht: Im Rechenmodell werden Atomkerne und Elektronen beschrieben. Daraus werden Molekülstrukturen, elektronische Energien und elektronische Anregungen berechnet." width="800" loading="lazy">
 
 <figcaption markdown="1">
 Die Beschreibung von Atomkernen und Elektronen verbindet den molekularen Aufbau mit den im Versuch berechneten
@@ -34,12 +34,12 @@ Größen.
 
 ## Berechnete Größen im Versuch
 
-Die Rechnungen dieses Versuchs liefern mehrere miteinander verbundene Größen. Eine Geometrie gibt die berechneten
+Die Rechnungen dieses Versuchs liefern mehrere miteinander verbundene Größen. Eine berechnete Molekülstruktur gibt die
 Positionen der Atomkerne an. Elektronische Energien ermöglichen den Vergleich verschiedener Anordnungen desselben
-Moleküls. Eine Folge von Geometrien und Energien beschreibt einen untersuchten Reaktionspfad. Berechnete Energien und
+Moleküls. Eine Folge von Strukturen und Energien beschreibt einen untersuchten Reaktionspfad. Berechnete Energien und
 relative Stärken elektronischer Anregungen bilden die Grundlage des dargestellten Absorptionsspektrums.
 
-Diese Ergebnisse beantworten unterschiedliche chemische Fragestellungen. Eine energetisch günstigere Geometrie ist
+Diese Ergebnisse beantworten unterschiedliche chemische Fragestellungen. Eine Struktur mit niedrigerer elektronischer Energie ist
 nicht automatisch stärker gefärbt, und ein Absorptionsspektrum bestimmt keine Reaktionsgeschwindigkeit. Für jede
 Aussage muss deshalb die dafür berechnete Größe verwendet werden.
 

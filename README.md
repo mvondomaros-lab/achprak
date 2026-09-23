@@ -1,8 +1,8 @@
 # AChPrak: Theoretische Chemie im Praktikum
 
 AChPrak ist eine deutschsprachige Browser-Anwendung für Chemiestudierende im
-ersten Studienjahr. Sie können Molekülstrukturen erzeugen, ihre Geometrie
-optimieren, Übergangszustände suchen und Spektren berechnen. Die
+ersten Studienjahr. Sie können Molekülstrukturen erzeugen, Strukturoptimierungen
+durchführen, Übergangsstrukturen suchen und Spektren berechnen. Die
 [Praktikumsanleitung](https://mvondomaros-lab.github.io/achprak/) erklärt die
 Grundlagen und führt durch die Aufgaben.
 
@@ -67,9 +67,10 @@ pixi run --locked -e web web --port 8001
 1. **Startstruktur erzeugen:** Wählen Sie die cis- oder trans-Konfiguration und
    das Substitutionsmuster. Betrachten Sie die Struktur als Formel oder im
    dreidimensionalen Modell.
-2. **Minimum optimieren:** Optimieren Sie die Geometrie. Aus einem konvergierten
-   Minimum können Sie anschließend einen Übergangszustand suchen. Dafür sind
-   höchstens zwei Substituenten außer H über beide Ringe zusammen zulässig.
+2. **Minimumstruktur berechnen:** Führen Sie eine Strukturoptimierung durch. Aus
+   einer konvergierten Minimumstruktur können Sie anschließend eine
+   Übergangsstruktur suchen. Dafür sind höchstens zwei Substituenten außer H über
+   beide Ringe zusammen zulässig.
 3. **Spektrum berechnen:** Berechnen Sie für ein optimiertes Minimum ein
    Absorptionsspektrum im ultravioletten und sichtbaren Bereich (UV/Vis).
 

@@ -83,7 +83,7 @@ def draw():
             )
         )
 
-    box(0.45, 0.65, 3.1, 1.6, "Geometrie", "optimierte Atompositionen", blue)
+    box(0.45, 0.65, 3.1, 1.6, "Molekülstruktur", "berechnete Atompositionen", blue)
     box(4.45, 0.65, 3.1, 1.6, "Elektronische Energie", "Unterschiede und Barrieren", blue)
     box(8.45, 0.65, 3.1, 1.6, "Elektronische Anregungen", "Lage und relative Stärke", ochre)
 

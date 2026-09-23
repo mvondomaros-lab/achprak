@@ -41,7 +41,7 @@ Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in
 ihrer Energie – unterscheiden.
 Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
 Atomkoordinaten nicht weiter verringern.
-Eine Minimumstruktur ist eine Atomgeometrie, die einem lokalen Minimum der Energiefläche entspricht.
+Eine Minimumstruktur entspricht einem lokalen Minimum der Energiefläche.
 
 Bei Azobenzol und seinen Derivaten gibt es Minima sowohl in der *cis*- als auch in der *trans*-Konfiguration.
 Innerhalb einer Konfiguration können weitere Minima auftreten, etwa mit anders verdrehten Substituenten.
@@ -49,7 +49,7 @@ Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt nie
 Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumstrukturen zu finden und zu
 charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
 
-Ein Reaktionspfad beschreibt eine Folge von Molekülgeometrien, die Ausgangs- und Produktstruktur
+Ein Reaktionspfad beschreibt eine Folge von Molekülstrukturen, die Ausgangs- und Produktstruktur
 miteinander verbindet. Die Reaktionskoordinate gibt die Position entlang dieses Pfads an,
 nicht die verstrichene Zeit.
 
@@ -62,7 +62,7 @@ Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, engli
 </figcaption>
 </figure>
 
-Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Geometrie einem Sattelpunkt erster Ordnung:
+Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Struktur einem Sattelpunkt erster Ordnung:
 Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab; in den übrigen inneren Richtungen
 steigt sie bei kleinen Auslenkungen an. Die Webapp prüft diese Eigenschaft näherungsweise mit einer Schwingungsrechnung
 und verfolgt anschließend beide Abwärtsrichtungen zu Minima. Reine Verschiebungen und Drehungen des ganzen Moleküls
@@ -78,13 +78,13 @@ Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mod
 <summary markdown="span">Ergänzung: Übergangszustand oder Übergangsstruktur?</summary>
 
 
-Die Übergangsstruktur ist die berechnete Geometrie am Sattelpunkt der
+Die Übergangsstruktur ist die berechnete Molekülstruktur am Sattelpunkt der
 Potentialenergiefläche. Diesen Begriff verwenden wir in der Webapp für das
 geprüfte Ergebnis. Die Struktur ist kein langlebiges, isolierbares Zwischenprodukt.
 
 Der Übergangszustand (englisch *transition state*) ist ein Begriff der
 Übergangszustandstheorie. Er bezeichnet eine Menge von Zuständen an der Grenze
-zwischen Edukten und Produkten, nicht nur eine einzelne Atomgeometrie.
+zwischen Edukten und Produkten, nicht nur eine einzelne Molekülstruktur.
 Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/view/T06468)
 und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
 

@@ -127,16 +127,16 @@ document their own choices.
                         Atomabstände, Bindungswinkel und Diederwinkel. Anschließend erfolgt eine
                         Voroptimierung mit dem molekülmechanischen Kraftfeld MMFF.
                         Dieses Modell beschreibt die Energie als Funktion der Atompositionen.
-                        Die Geometrie wird angepasst, um diese Energie zu verringern;
-                        geometrische Zwangsbedingungen erhalten dabei die gewählte Konfiguration.
+                        Die Atompositionen werden angepasst, um diese Energie zu verringern;
+                        Zwangsbedingungen erhalten dabei die gewählte Konfiguration.
                         Diese Struktur dient als Ausgangspunkt für die anschließende
-                        Geometrieoptimierung mit dem elektronischen Strukturmodell.
+                        Strukturoptimierung mit dem elektronischen Strukturmodell.
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         Die erzeugten Startstrukturen sind noch nicht mit dem
                         elektronischen Strukturmodell optimiert. Ihre Atomabstände
-                        und Bindungswinkel können sich bei der Geometrieoptimierung
+                        und Bindungswinkel können sich bei der Strukturoptimierung
                         in Schritt 02 ändern; ebenso kann sich die Orientierung der Ringe ändern.
                         Erst in diesem Schritt wird ein lokales Minimum der elektronischen Energie gesucht.
                     </p>
@@ -219,7 +219,7 @@ document their own choices.
                         Bei der Minimumsuche werden die Energien der gespeicherten
                         Optimierungsschritte aufgetragen. Bei der Übergangsstruktursuche
                         zeigt das Profil die Energien entlang des berechneten Pfads.
-                        Die Wiedergabe durchläuft diese Geometrien; ihre Geschwindigkeit
+                        Die Wiedergabe durchläuft diese Strukturen; ihre Geschwindigkeit
                         entspricht keiner physikalischen Zeitentwicklung.
                         Für ΔE‡ verwendet die App die ausgewählte Minimumstruktur als
                         energetischen Bezugspunkt.
@@ -241,7 +241,7 @@ document their own choices.
                     </p>
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
-                        <strong>Die Suche erfasst nur einen Teil der möglichen Molekülgeometrien.</strong>
+                        <strong>Die Suche erfasst nur einen Teil der möglichen Molekülstrukturen.</strong>
                         Je nach Ausgangsstruktur kann sie unterschiedliche Minimumstrukturen finden,
                         beispielsweise mit unterschiedlichen Orientierungen der Ringe oder Substituenten. Auch eine
                         bestätigte Übergangsstruktur gehört nur zum untersuchten Weg;
@@ -252,7 +252,7 @@ document their own choices.
                         GFN1-xTB vereinfacht die Beschreibung der Elektronen. Ethanol
                         wird als kontinuierliches Medium dargestellt; einzelne
                         Lösungsmittelmoleküle und ihre Anordnung um den Photoschalter
-                        fehlen. Die berechneten Geometrien und Energieunterschiede
+                        fehlen. Die berechneten Strukturen und Energieunterschiede
                         können deshalb von experimentellen Ergebnissen abweichen.
                     </p>
                     <dl class="method">
@@ -282,7 +282,7 @@ document their own choices.
                         Näherungsverfahren INDO/S–CIS die Anregungsenergien und Oszillatorstärken
                         elektronischer Übergänge. Die Rechnung verwendet eine
                         optimierte Minimumstruktur und hält die Atomkerne an ihren Positionen
-                        fest; eine weitere Geometrieoptimierung findet dabei nicht statt.
+                        fest; eine weitere Strukturoptimierung findet dabei nicht statt.
                     </p>
                     <p>
                         INDO/S vereinfacht die Beschreibung der Elektronen und ist für
@@ -324,7 +324,7 @@ document their own choices.
                     <h3>Annahmen und Grenzen der Rechnung</h3>
                     <p>
                         Das Spektrum ist eine Modellvorhersage für eine einzelne
-                        Geometrie. Ethanol wird über seine elektrische Abschirmwirkung
+                        Minimumstruktur. Ethanol wird über seine elektrische Abschirmwirkung
                         berücksichtigt. Die Breite der Banden ist vorgegeben, nicht aus
                         Molekülbewegungen berechnet. Auch die Lage und relative Stärke der Banden können
                         vom Experiment abweichen. Die Farbschätzung berücksichtigt kein cis/trans-Gemisch;

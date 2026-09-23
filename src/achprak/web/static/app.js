@@ -677,7 +677,7 @@ function renderEnergyHistory(activeStep) {
               title: (items) =>
                 items[0].raw.phase === "path"
                   ? `Struktur auf dem Reaktionspfad ${items[0].raw.image + 1}`
-                  : `${{ endpoint: "Andere Minimumstruktur", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Geometrie der Übergangsstruktur verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
+                  : `${{ endpoint: "Andere Minimumstruktur", path_seed: "Pfadvorbereitung", neb: "Reaktionspfad optimieren", neb_climb: "Energiebarriere suchen", connectivity: "Verbindungsprüfung", complete: "Prüfung abgeschlossen", refinement: "Übergangsstruktur verfeinern", vibrations: "Schwingungsprüfung" }[items[0].raw.phase] || "Optimierung"} · Schritt ${items[0].raw.x}`,
               label: (item) =>
                 `E = ${fmt(item.raw.energy, 4)} eV · ΔE = ${fmt(item.raw.y, 4)} eV (${fmt(item.raw.y * EV_KJ, 1)} kJ/mol)`,
             },
@@ -962,7 +962,7 @@ function displayJob(job) {
         neb_climb: "Energiebarriere zwischen cis und trans suchen",
         connectivity: "Verbindung der Übergangsstruktur zu cis- und trans-Minimumstrukturen prüfen",
         complete: "Prüfung der Übergangsstruktur abgeschlossen",
-        refinement: "Geometrie der Übergangsstruktur verfeinern",
+        refinement: "Übergangsstruktur verfeinern",
         vibrations: "Schwingungsfrequenzen zur Prüfung der Übergangsstruktur berechnen",
       }[progress.phase];
       if (phaseTitle) $("job-title").textContent = phaseTitle;

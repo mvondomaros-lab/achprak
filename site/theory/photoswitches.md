@@ -36,7 +36,7 @@ im Grundzustand ist hier nicht eingezeichnet.
 ## Was die Rechnungen beschreiben
 
  Die Minimum- und Übergangsstruktursuche untersucht die
-Abhängigkeit der elektronischen Grundzustandsenergie von der Molekülgeometrie. Die UV/Vis-Rechnung liefert
-Anregungsenergien und Übergangsstärken bei festgehaltener Geometrie. Diese Ergebnisse beschreiben ausgewählte
+Abhängigkeit der elektronischen Grundzustandsenergie von den Atompositionen. Die UV/Vis-Rechnung liefert
+Anregungsenergien und Übergangsstärken bei festgehaltener Struktur. Diese Ergebnisse beschreiben ausgewählte
 energetische und spektroskopische Eigenschaften der Photoschalter. Der zeitliche Ablauf und die Ausbeute
 der lichtinduzierten Isomerisierung werden damit nicht berechnet.

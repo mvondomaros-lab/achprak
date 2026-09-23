@@ -20,6 +20,9 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "set-cookie" not in response.headers
         guide = client.get("/static/guide.html").text
         guide_text = " ".join(guide.split())
+        visible_guide = re.sub(r"<[^>]+>", " ", guide)
+        index = client.get("/").text
+        visible_index = re.sub(r"<[^>]+>", " ", index)
         styles = client.get("/static/app.css").text
         with ZipFile(io.BytesIO(response.content)) as archive:
             xml = ET.fromstring(archive.read("word/document.xml"))
@@ -45,6 +48,9 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert not re.search(r"Aufgabe \d|<details[^>]*\bopen\b", guide)
         assert "guide-scope" not in client.get("/").text
         text = "\n".join(paragraphs)
+        assert not re.search(r"geometr", visible_guide, re.I)
+        assert not re.search(r"geometr", visible_index, re.I)
+        assert not re.search(r"geometr", text, re.I)
         assert "Atome zählen" not in guide and "Atome zählen" not in text
         assert (
             "die Verknüpfung der Atome" in guide and "die Verknüpfung der Atome" in text

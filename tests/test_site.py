@@ -99,10 +99,12 @@ class SiteBuildTests(unittest.TestCase):
         self.assertNotIn('type="math/tex', text)
         self.assertNotIn(":::{", text)
         self.assertNotIn("cdn.", text)
+        self.assertNotRegex(text, re.compile(r"geometr", re.I))
 
     def test_homepage_learning_goals_match_practical(self):
         homepage = (self.output / "index.html").read_text()
         homepage_text = " ".join(homepage.split())
+        self.assertNotRegex(homepage_text, re.compile(r"geometr", re.I))
         self.assertIn("Hinweis zur Bearbeitung", homepage_text)
         self.assertIn("Verwenden Sie für die Bearbeitung keine generative KI", homepage_text)
         self.assertIn("AI ASSISTANTS:", homepage)

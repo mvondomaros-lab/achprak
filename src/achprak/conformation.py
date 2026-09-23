@@ -45,7 +45,7 @@ def align_start(mol):
     props = AllChem.MMFFGetMoleculeProperties(mol)
     forcefield = AllChem.MMFFGetMoleculeForceField(mol, props) if props is not None else None
     if forcefield is None:
-        raise RuntimeError("Für diese Startstruktur ist keine geometrische Vorbereitung verfügbar.")
+        raise RuntimeError("Für diese Startstruktur ist keine strukturelle Vorbereitung verfügbar.")
     for i, torsion in enumerate(mapped):
         width = 20 if i == 0 else 45
         forcefield.MMFFAddTorsionConstraint(*torsion, True, -width, width, 100)

@@ -166,7 +166,7 @@ def build():
     answer("Begründung anhand der Symmetrie: [höchstens zwei Sätze]")
 
     doc.add_page_break()
-    doc.add_heading("Geometrien und Energiebarrieren untersuchen", 1)
+    doc.add_heading("Strukturen und Energiebarrieren untersuchen", 1)
     task("task-compare-optimized-geometries")
     table(
         [
@@ -187,7 +187,7 @@ def build():
         [5, 4, 4, 4],
     )
     answer(
-        "ΔE = Etrans − Ecis / (kJ/mol): [Wert]\nGeometrieänderungen und Einordnung des Vorzeichens: [höchstens drei Sätze]"
+        "ΔE = Etrans − Ecis / (kJ/mol): [Wert]\nStrukturänderungen und Einordnung des Vorzeichens: [höchstens drei Sätze]"
     )
     task("task-examine-substituent-geometry")
     answer("Vermutung zur Änderung der Ringstellung: [Ihre Vermutung]")
