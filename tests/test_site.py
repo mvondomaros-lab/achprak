@@ -100,6 +100,16 @@ class SiteBuildTests(unittest.TestCase):
         self.assertNotIn(":::{", text)
         self.assertNotIn("cdn.", text)
 
+    def test_homepage_learning_goals_match_practical(self):
+        homepage = (self.output / "index.html").read_text()
+        for outcome in (
+            "Einfluss sterischer Nähe",
+            "Substituentenart, Substitutionsposition und Mehrfachsubstitution",
+            "wiederkehrende Trends und Abweichungen",
+            "überprüfbare Vorhersage für ein neues Derivat",
+        ):
+            self.assertIn(outcome, homepage)
+
     def test_structures_page_has_progressive_local_3d_viewer(self):
         structures_path = self.output / "theory/structures/index.html"
         structures = structures_path.read_text()

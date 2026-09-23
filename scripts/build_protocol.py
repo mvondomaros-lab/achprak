@@ -60,13 +60,16 @@ def build():
 
     def p(text):
         para = doc.add_paragraph()
-        for part in re.split(r"(E(?:trans|cis|TS)|ΔE‡)", text):
-            if part in ("Etrans", "Ecis", "ETS"):
+        for part in re.split(r"(E(?:trans|cis|TS|max)|ΔE(?:‡|max))", text):
+            if part in ("Etrans", "Ecis", "ETS", "Emax"):
                 para.add_run("E")
                 para.add_run(part[1:]).font.subscript = True
             elif part == "ΔE‡":
                 para.add_run("ΔE")
                 para.add_run("‡").font.superscript = True
+            elif part == "ΔEmax":
+                para.add_run("ΔE")
+                para.add_run("max").font.subscript = True
             else:
                 para.add_run(part)
         return para
@@ -185,6 +188,27 @@ def build():
     answer(
         "ΔE = Etrans − Ecis / (kJ/mol): [Wert]\nGeometrieänderungen und Einordnung des Vorzeichens: [höchstens drei Sätze]"
     )
+    task("task-examine-substituent-geometry")
+    answer("Vorhersage für die Änderung der Ringstellung: [Ihre Vorhersage]")
+    table(
+        ["Struktur", "Diederwinkel / °", "Ringabstand / pm"],
+        [
+            ["unsubstituierte trans-Minimumstruktur", "[Wert]", "[Wert]"],
+            ["2,6,2′,6′-Tetramethoxy-Startstruktur", "[Wert]", "[Wert]"],
+            ["2,6,2′,6′-Tetramethoxy-Minimumstruktur", "[Wert]", "[Wert]"],
+        ],
+        [8, 4.5, 4.5],
+    )
+    answer("Startstruktur: [gleich ausgerichtete 3D-Ansicht einfügen und beschriften]")
+    p("\n")
+    answer("Minimumstruktur: [gleich ausgerichtete 3D-Ansicht einfügen und beschriften]")
+    p("\n")
+    answer(
+        "Sterischer Einfluss und Vergleich mit unsubstituiertem trans-Azobenzol: [höchstens vier Sätze]"
+    )
+
+    doc.add_page_break()
+    doc.add_heading("Reaktionspfad und Energiebarrieren", 1)
     task("task-analyze-reaction-path")
     p("")
     answer("[Energieprofil einfügen und beschriften]")
@@ -208,40 +232,82 @@ def build():
             "Wellenlänge / nm",
             "UV oder sichtbar",
             "Farbvorhersage",
+            "Lichtdurchlässigkeit / %",
         ],
         [
-            ["cis", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]"],
-            ["trans", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]"],
+            ["cis", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
+            ["trans", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
         ],
-        [3, 3, 3.5, 3.2, 4.3],
+        [2.5, 2.5, 3.0, 2.7, 3.0, 3.3],
     )
     answer(
         "Bevorzugte Anregung und Grenze der Vorhersage: [höchstens drei Sätze]"
     )
+    doc.add_page_break()
+    doc.add_heading("Systematische Substituentenreihe", 1)
     task("task-compare-substituent-spectra")
-    table(
-        ["Name und Substitution der trans-Form", "Maximum / eV", "Wellenlänge / nm"],
-        [
-            [label + " [Name]", "[Wert]", "[Wert]"]
-            for label in [
-                "unsubstituiert",
-                "4-OMe",
-                "4-NMe₂",
-                "4-CF₃",
-                "4-NO₂",
-            ]
-        ],
-        [8, 4, 5],
-    )
+    answer("Zugeordnete Reihe: [4-X, 2-X, 3-X oder 4,4′-X₂]")
     answer(
-        "Stärkste Verschiebung zu kleinerer Energie: [Derivat und Verschiebung in eV]"
+        "Vorhersage: [Substituent mit der erwarteten stärksten Verschiebung zu kleinerer Energie und kurze Begründung]"
+    )
+    table(
+        [
+            "X",
+            "Maximum / eV",
+            "Wellenlänge / nm",
+            "Verschiebung / eV",
+            "UV oder sichtbar",
+            "Farbvorhersage",
+            "Lichtdurchlässigkeit / %",
+        ],
+        [
+            [label, "[Wert]", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"]
+            for label in ["CH₃", "OCH₃", "N(CH₃)₂", "CF₃", "CN", "NO₂"]
+        ],
+        [1.8, 2.3, 2.5, 2.1, 2.2, 3.0, 3.1],
+    )
+    answer("Kleinster Wert von ΔEmax: [Derivat und Wert]")
+    answer("Größter Wert von ΔEmax: [Derivat und Wert]")
+    answer("Spektrum zum kleinsten Wert von ΔEmax: [Abbildung einfügen und beschriften]")
+    p("\n")
+    answer("Spektrum zum größten Wert von ΔEmax: [Abbildung einfügen und beschriften]")
+    p("\n")
+    answer(
+        "Trend, Vergleich mit der Vorhersage und Abweichung: [höchstens vier Sätze]"
     )
 
     doc.add_page_break()
-    doc.add_heading("UV/Vis-Spektrum", 1)
+    doc.add_heading("Vergleich der Substituentenreihen", 1)
+    task("task-compare-substituent-series")
+    table(
+        [
+            "X",
+            "2-X / eV",
+            "3-X / eV",
+            "4-X / eV",
+            "4,4′-X₂ / eV",
+        ],
+        [
+            [label, "[Wert]", "[Wert]", "[Wert]", "[Wert]"]
+            for label in ["CH₃", "OCH₃", "N(CH₃)₂", "CF₃", "CN", "NO₂"]
+        ],
+        [2.0, 3.5, 3.5, 3.5, 4.5],
+    )
+    answer("Übergreifender Trend 1 mit konkreten Werten: [Trend und Belege]")
+    answer("Übergreifender Trend 2 mit konkreten Werten: [Trend und Belege]")
+    answer("Abweichung oder begrenzter Gültigkeitsbereich: [Beobachtung]")
+    answer("Für den Vergleich vollständiger Spektren ausgewählter Substituent: [X]")
+    answer(
+        "Vergleich von Absorptionsmaximum, sichtbaren Banden, Farbvorhersage und Lichtdurchlässigkeit: [Ergebnis]"
+    )
+
+    doc.add_page_break()
+    doc.add_heading("Freie Untersuchung", 1)
     task("task-plan-experiment-series")
     answer(
-        "Name und Substitutionsmuster des eigenen Derivats: [Name]\nErwartete Verschiebung gegenüber den unsubstituierten Formen: [Vorhersage]"
+        "Name und Substitutionsmuster des eigenen Derivats: [Name]\n"
+        "Bezug zur systematischen Reihe und Begründung der Auswahl: [Ergebnis und Begründung]\n"
+        "Vorhersage: [Ihre Vorhersage vor den Rechnungen]"
     )
     table(
         [
@@ -249,21 +315,24 @@ def build():
             "Maximum / eV",
             "Wellenlänge / nm",
             "Farbvorhersage",
+            "Lichtdurchlässigkeit / %",
         ],
         [
-            ["cis", "[Wert]", "[Wert]", "[Farbe]"],
-            ["trans", "[Wert]", "[Wert]", "[Farbe]"],
+            ["cis", "[Wert]", "[Wert]", "[Farbe]", "[Wert]"],
+            ["trans", "[Wert]", "[Wert]", "[Farbe]", "[Wert]"],
         ],
-        [3.5, 4, 5, 4.5],
+        [3.0, 3.0, 3.5, 3.5, 4.0],
     )
     answer("cis: [Spektrum einfügen und beschriften]")
     p("\n\n")
     answer("trans: [Spektrum einfügen und beschriften]")
     p("\n\n")
-    answer("Vorhersage und Ergebnis: [höchstens zwei Sätze]")
+    answer(
+        "Vergleich der vollständigen Spektren und Prüfung der Vorhersage: [Stützt das Ergebnis den Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
+    )
     answer("Längstwelliges Gruppenresultat: [Name und Wellenlänge]")
     answer(
-        "Stärkster vorhergesagter cis/trans-Farbunterschied: [Name und Farben bei Faktor 1,0]"
+        "Stärkster vorhergesagter cis/trans-Farbunterschied: [Name und Farben]"
     )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)

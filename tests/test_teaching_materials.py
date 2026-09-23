@@ -29,9 +29,9 @@ def test_protocol_download_and_tasks_without_starting_a_session():
             guide,
         )
         task_ids = re.findall(r'<details class="task" id="([^"]+)">', guide)
-        assert len(task_ids) == len(set(task_ids)) == len(titles) == 7
+        assert len(task_ids) == len(set(task_ids)) == len(titles) == 9
         assert all(re.fullmatch(r"task-[a-z]+(?:-[a-z]+)*", task_id) for task_id in task_ids)
-        for step, count in (("build", 2), ("optimize", 2), ("spectrum", 3)):
+        for step, count in (("build", 2), ("optimize", 3), ("spectrum", 4)):
             page = re.search(
                 rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
             )
@@ -56,9 +56,24 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         for title in (
             "Reaktionspfad analysieren",
             "Spektren vergleichen",
-            "Derivat untersuchen",
+            "Sterischen Einfluss untersuchen",
+            "Substituentenreihe untersuchen",
+            "Reihenübergreifende Trends prüfen",
+            "Eigenes Derivat untersuchen",
         ):
             assert title in guide and title in text
+        for substituent in ("CH₃", "OCH₃", "N(CH₃)₂", "CF₃", "CN", "NO₂"):
+            assert substituent in guide and substituent in text
+        assert "trans-4,4′-X₂-Azobenzole" in guide
+        assert "gemeinsame Ergebnismatrix" in guide
+        assert "mindestens eine Abweichung" in guide
+        for field in (
+            "Sterischer Einfluss und Vergleich",
+            "Zugeordnete Reihe",
+            "Übergreifender Trend 1",
+            "Bezug zur systematischen Reihe",
+        ):
+            assert field in text
         assert "ILIAS" in text
         assert "elektronische Energiebarriere" in text
         assert "Jupyter Notebook" not in text
