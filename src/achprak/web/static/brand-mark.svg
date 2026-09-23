@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect x="0.5" y="0.5" width="63" height="63" rx="13.5" fill="#1d334e" stroke="#486481"/>
-  <path d="M16 28 26 34v12l-10 6-10-6V34z" fill="none" stroke="#f5f9ff" stroke-linejoin="round" stroke-width="2.8"/>
-  <path d="M48 18 58 24v12l-10 6-10-6V24z" fill="none" stroke="#f5f9ff" stroke-linejoin="round" stroke-width="2.8"/>
-  <path d="m26 34 12-10m-11 15 12-10" fill="none" stroke="#70d4ef" stroke-linecap="round" stroke-width="2.8"/>
-  <path d="M32 6v8m-4-4h8" fill="none" stroke="#ffd06a" stroke-linecap="round" stroke-width="2.6"/>
+  <path d="m21 32-4.5 7.8h-9L3 32l4.5-7.8h9zM43 32l4.5-7.8h9L61 32l-4.5 7.8h-9z" fill="none" stroke="#f5f9ff" stroke-linejoin="round" stroke-width="2.7"/>
+  <circle cx="12" cy="32" r="4.2" fill="none" stroke="#f5f9ff" stroke-width="1.4"/>
+  <circle cx="52" cy="32" r="4.2" fill="none" stroke="#f5f9ff" stroke-width="1.4"/>
+  <path d="M21 32h3m16 0h3" fill="none" stroke="#f5f9ff" stroke-linecap="round" stroke-width="2.5"/>
+  <text x="32" y="35" fill="#70d4ef" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" text-anchor="middle">N=N</text>
 </svg>
