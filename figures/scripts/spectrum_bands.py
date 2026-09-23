@@ -5,10 +5,16 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import FuncFormatter
 
+# Gaussian standard deviation in eV, matching achprak.uvvis.SIGMA.
+SIGMA_EV = 0.15
+
 
 def draw():
     x = np.linspace(1.5, 5.5, 1000)
-    a = 0.5 * np.exp(-(3.5 * (x - 3.0) ** 2)) + 0.3 * np.exp(-(3.5 * (x - 4.0) ** 2))
+    a = sum(
+        strength * np.exp(-0.5 * ((x - energy) / SIGMA_EV) ** 2)
+        for energy, strength in [(3.0, 0.5), (4.0, 0.3)]
+    )
 
     plt.plot(
         [3.0, 3.0],
