@@ -62,37 +62,11 @@ pixi run --locked -e web web --port 8001
 
 Öffnen Sie dann **http://127.0.0.1:8001/**.
 
-## Mit AChPrak arbeiten
+## Anleitung und Grundlagen
 
-1. **Startstruktur erzeugen:** Wählen Sie die cis- oder trans-Konfiguration und
-   das Substitutionsmuster. Betrachten Sie die Struktur als Formel oder im
-   dreidimensionalen Modell.
-2. **Minimumstruktur berechnen:** Führen Sie eine Strukturoptimierung durch. Aus
-   einer konvergierten Minimumstruktur können Sie anschließend eine
-   Übergangsstruktur suchen. Dafür sind höchstens zwei Substituenten außer H über
-   beide Ringe zusammen zulässig.
-3. **Spektrum berechnen:** Berechnen Sie für ein optimiertes Minimum ein
-   Absorptionsspektrum im ultravioletten und sichtbaren Bereich (UV/Vis).
-
-<details>
-<summary>Hinweise zur Interpretation der Berechnungen</summary>
-
-Ein optimiertes Minimum ist ein lokales Minimum und nicht zwangsläufig die
-energieärmste Struktur des Moleküls. Die elektronische Energiebarriere ΔE‡
-enthält keine Nullpunkts-, thermischen oder entropischen Korrekturen; sie ist
-weder eine Arrhenius-Aktivierungsenergie noch eine freie Aktivierungsenthalpie.
-Die Farbansicht veranschaulicht das berechnete Spektrum und ist nicht auf eine
-bestimmte Konzentration oder gemessene Lösungsfarbe kalibriert. Erläuterungen zu
-den Methoden und ihrer Interpretation finden Sie direkt in der Anwendung und
-in der Praktikumsanleitung.
-
-</details>
-
-**Sichern Sie Ihre Ergebnisse vor dem Beenden.** Ergebnisse gehören zur jeweiligen
-Browsersitzung. Sie gehen beim Neustart der Anwendung oder nach 24 Stunden ohne
-Aktivität verloren. Ein Neuladen der Seite innerhalb derselben Sitzung erhält
-die Ergebnisse und verbindet Sie wieder mit einer laufenden Berechnung.
-Strukturabbildungen und Spektren können Sie als Bilddateien herunterladen.
+Die [Praktikumswebsite](https://mvondomaros-lab.github.io/achprak/) enthält die
+theoretischen Grundlagen und organisatorischen Hinweise. Die Aufgaben und
+Erläuterungen zu den Berechnungen finden Sie direkt in der Webapp.
 
 ## Für Lehrende: Bereitstellung über JupyterHub
 
