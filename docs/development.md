@@ -1,175 +1,170 @@
 # Development and verification
 
-Use this guide when adapting the application or teaching materials, or checking a
-code change. For ordinary local use, follow the [project README](../README.md).
-For shared hosting, use the [deployment guide](../deploy/README.md).
+This guide covers changes to the application and teaching materials. For ordinary
+local use, see the [project README](../README.md); for shared hosting, see the
+[deployment guide](../deploy/README.md). The [repository layout](repository-layout.md)
+describes source directories and which generated files belong in version control.
+
+## Development setup
 
 Run commands from the repository root. Pixi's `dev` environment contains the
-application plus development tools; installing it downloads the required packages
-without changing a separately managed JupyterHub.
+application and development tools; dependencies are resolved in `pixi.lock`.
 
 ```sh
 pixi install --locked -e dev
 pixi run --locked -e dev web
 ```
 
-Open `http://127.0.0.1:8000/`. After changing browser code, reload the page. After
-changing server code, restart the application. Calculation code runs in separate
-worker processes; newly submitted jobs load changes to that code.
+Open `http://127.0.0.1:8000/`. Reload the browser after changing browser code and
+restart the application after changing server code. Calculation code runs in
+separate worker processes; newly submitted jobs load changes to that code.
 
-To change the port or calculation limits:
+To use a different port and limit the instance to two concurrent calculations,
+each with a 600-second timeout:
 
 ```sh
 pixi run -e dev web --port 8001 --max-jobs 2 --job-timeout 600
 ```
 
-This example allows two concurrent calculations in that instance and limits each
-to 600 seconds of elapsed time. Open port 8001 in the browser for this example.
+## Running checks
 
-## Teaching materials
-
-The German student documentation lives in `site/`. Preview it locally with:
-
-```sh
-pixi run -e dev site
-```
-
-The preview runs at `http://127.0.0.1:3000/`. Changes to Markdown, templates,
-CSS, JavaScript and figures trigger a rebuild and browser reload. Use
-`pixi run -e dev site --port 3002` if that port is occupied. A failed rebuild
-prints its error and keeps the last successful preview available. Restart the
-preview after editing the Python builder itself.
-
-For website-only work, `pixi run -e site site` uses a lightweight environment
-without the chemistry dependencies. Build and verify production output with:
-
-```sh
-pixi run --locked -e site test-site
-pixi run --locked -e site build-site
-```
-
-The output in `site/_build/` is a self-contained static site. All internal URLs
-are relative, so the same build works at a domain root or a GitHub project path.
-The GitHub Actions workflow tests and builds pull requests and deploys `main`
-to GitHub Pages. Pages must be configured to deploy through GitHub Actions.
-
-Regenerate the SVG teaching figures with:
-
-```sh
-pixi run -e dev python figures/scripts/generate.py
-```
-
-Each figure also has an independently runnable source; see [figure sources](../figures/README.md)
-for individual regeneration and optional PNG export. Review generated images before committing them. The [repository
-layout](repository-layout.md) explains which generated files belong in version
-control.
-
-## Routine tests
+### Routine checks
 
 ```sh
 pixi run -e dev test-web
 node --test tests/*.cjs
 ```
 
-The first command checks the Python application and numerical utilities. The
-second checks browser-side logic and requires Node.js to be installed separately.
-Node.js is a development tool here; it is not needed for local application use.
-These checks do not replace a browser inspection or a login test on a real Hub.
+These check the Python application and numerical utilities, and browser-side
+logic, respectively. Node.js must be installed separately; it is not needed to
+run the application. Inspect changed interfaces in a browser as well. Changes to
+Hub integration also need a login test on a real Hub.
 
-## Optional chemistry calculations
+### Chemistry regression tests
 
-These commands run calculations that can take substantially longer. They are
-excluded from the default suite and must be requested explicitly.
+These longer-running calculations are excluded from routine runs and are run
+explicitly:
 
 | Command | Purpose |
 | --- | --- |
-| `pixi run -e dev test-ts` | Run selected real minimum-to-transition-structure calculations and saved failure cases. |
-| `pixi run -e dev test-science` | Check the parent molecule's planarity and cis/trans energy ordering in the model. |
-| `ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web` | Include the additional chemistry workflow checks enabled by this environment variable. |
+| `pixi run -e dev test-ts` | Real minimum-to-transition-structure calculations and saved failure cases. |
+| `pixi run -e dev test-science` | The parent molecule's planarity and cis/trans energy ordering in the model. |
+| `ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web` | Additional chemistry workflow checks. |
 
-A **regression case** is a fixed input whose result is checked after code changes.
-Whenever investigating or fixing a transition-structure search failure, add a
-reproducible case for the reported molecule and run the complete `test-ts` suite
-before finishing. During debugging, a command such as `pixi run -e dev test-ts -k
-trans-2-Me` selects matching test names only; it does not replace the full run.
-Report any remaining failures.
+For a reported transition-structure search failure, add a reproducible regression
+case and run the complete `test-ts` suite when verifying the fix. During debugging,
+`pixi run -e dev test-ts -k trans-2-Me` selects matching test names.
 
-Tests retain geometries and search diagnostics in pytest's temporary directory.
-The [screening guide](ts-screening.md) describes broader molecule coverage and how
-to collect exact starting geometries. Passing these checks establishes software or
-numerical behavior, not agreement with experiment.
+Tests retain structures and search diagnostics in pytest's temporary directory.
+See the [screening guide](ts-screening.md) for broader coverage and collecting
+exact starting structures. These checks assess numerical behavior within the
+model, not agreement with experiment.
 
-## Text and terminology
+## Editing the website and figures
 
-Student-facing text is German and addresses students as **Sie**. Technical
-identifiers and developer documentation are English. Follow
-[AGENTS.md](../AGENTS.md) for scientific terminology, audience conventions and
-required verification.
+Student-facing material is German, addresses students as **Sie**, and assumes
+first-year chemistry knowledge without prior theoretical chemistry. Developer
+documentation and code identifiers are English. See the
+[scientific documentation](README.md) for the calculation definitions and their
+interpretation.
 
-## Tasks and protocol template
+The fundamentals live in `site/`; exercise instructions live in the app. Keep
+conceptual explanations on the website and implementation-specific method details
+in the app's optional help.
 
-The app bundles its tasks in `src/achprak/web/static/guide.html`. Each
-task contains a title and a `.protocol-output` paragraph. On all three pages,
-`details.task` provides an individually collapsible task inside a plain page section. The task panel
-shows only the current calculation step, with a separate, initially collapsed “Weitere Schritte” section pointing to the
-next page or final protocol submission. Collapsible sections start closed and retain the student’s chosen state.
-Tasks use short German action titles that are unique across all three pages.
-Descriptive English task IDs (for example, `task-compare-configurations`) remain
-stable internal identifiers, independent of page order and title wording. Links
-point to explicit, stable labels in the chapters under `site/theory/` on GitHub Pages.
+### Preview and build
 
-The editable download is
-`src/achprak/web/static/materials/protokollvorlage.docx`. It is included in Python
-packages and served locally under `static/materials/`, including through the Hub
-proxy. Students complete the document outside the app and submit through ILIAS.
-Do not put completed student protocols in this directory.
+```sh
+pixi run -e dev site
+```
 
-During the current task review, leave the Word download unchanged.
-The generator reads titles from `details.task > summary` and uses descriptive task IDs.
-Its task references and answer fields follow the current exercise structure.
-Review all titles, required outputs and answer fields together before regenerating the download.
-At that point, run `python scripts/build_protocol.py` in an authoring
-environment with `python-docx` and `lxml`. The script reuses the app's task titles
-and required outputs; it supplies the corresponding answer fields and tables.
-Update those tables when the required quantities or molecules change. Regeneration
-replaces the DOCX, so make maintained changes in the script and task HTML.
-Render the resulting Word document and inspect every page before release.
-Document-authoring dependencies are not required to run the app.
+The preview runs at `http://127.0.0.1:3000/` and rebuilds and reloads after changes
+to content, styles, scripts, or figures. Use `--port 3002` if needed. A failed
+rebuild prints its error and leaves the last successful preview available.
+Restart the preview after changing the Python builder itself.
 
-`site/assets/teaching.css` uses the app's navy, blue, neutral colours and typography.
-Both interfaces load `src/achprak/web/static/header.css`; the site builder copies it
-into the published assets. Keep header appearance and the shared `--page-inset` there. This inset aligns
-the titles, website navigation text and app workspace across both interfaces.
-`scripts/build_site.py` renders the Markdown pages through `site/template.html`.
-The page order and navigation labels are defined in the builder's `PAGES` constant.
-`site/theory.md` is the chapter overview; the five source files under `site/theory/`
-cover structures, light, models, energies and photoswitching. The sidebar groups
-preparation and practical access, while previous/next links follow the reading order.
-Use source-relative Markdown links between chapters. The builder calculates paths
-for nested routes and source downloads automatically. Existing `/theory/#…` links
-are retained as fallback links on the overview and forwarded to the matching
-chapter by the local script; preserve these anchors when reorganizing content.
-Search results link to chapter sections and prioritize matches in their titles.
-Python-Markdown handles tables, fenced code, explicit heading IDs and Markdown
-inside HTML elements marked `markdown="1"`. Use native `<details>`/`<summary>`
-for optional reading, `<aside class="callout">` for essential caveats, and
-`<figure>`/`<figcaption>` for attributed illustrations. Preserve the stable
-heading IDs referenced by the app. Assets referenced in the content are copied
-into the build automatically; missing files fail the build.
+For website-only work, use the lightweight `site` environment:
 
-Dollar-delimited equations are parsed by Arithmatex and converted to native
-MathML at build time by latex2mathml. Modern browsers render them without a CDN
-or client-side math library. Navigation, equations and disclosures work without
-JavaScript; the small local script adds full-text search.
-The build creates a local search index and Markdown source downloads. The live
-reload script is injected only by the preview server, never into published files.
-Developer dependencies are resolved in `pixi.lock`; CI uses that same environment.
+```sh
+pixi run --locked -e site site
+pixi run --locked -e site test-site
+pixi run --locked -e site build-site
+```
 
-Keep task titles, units, terminology and the protocol's answer fields aligned.
+Production output goes to `site/_build/`. Relative URLs support both domain-root
+and project-path hosting. GitHub Actions tests and builds pull requests and
+deploys `main`; GitHub Pages must be configured to deploy through Actions.
 
-## Substituent display labels
+### Website sources
 
-Student-facing text and structure labels use CH₃, OCH₃ and N(CH₃)₂.
-The API, saved settings and benchmark case identifiers retain `Me`, `OMe`
-and `NMe2` for compatibility. Translate these identifiers at display time;
-do not change chemistry inputs or stored identifiers to Unicode labels.
+| Source | Purpose |
+| --- | --- |
+| `site/theory/*.md` | Fundamentals chapters. |
+| `scripts/build_site.py` | Builder; `PAGES` defines page order and navigation labels. |
+| `site/template.html` | Page template. |
+| `site/assets/teaching.css` | Website styles. |
+| `src/achprak/web/static/header.css` | Shared app/site header styles and `--page-inset`; copied by the site builder. |
+
+Use source-relative Markdown links. The builder supports tables, fenced code,
+explicit heading IDs, and Markdown inside HTML marked `markdown="1"`.
+Use `<details>`/`<summary>` for optional reading and `<figure>`/`<figcaption>`
+for illustrations. Dollar-delimited equations become native MathML at build
+time. Referenced assets are copied automatically; missing files fail the build.
+
+### Figures
+
+```sh
+pixi run -e dev python figures/scripts/generate.py
+```
+
+This regenerates the published SVGs. Each figure also has an independently
+runnable source. See [figure sources](../figures/README.md) for individual exports
+and typography conventions. Inspect changed figures at their published display
+sizes before committing the source and generated SVG together.
+
+## Updating tasks and the protocol
+
+The task source is `src/achprak/web/static/guide.html`. Each `details.task` has a
+stable ID, a title in `summary`, and required deliverables in a `.protocol-output`
+paragraph. `scripts/build_protocol.py` reads those titles and deliverables and
+adds the protocol's answer fields and tables.
+
+When changing an exercise:
+
+1. Update its instructions and required deliverables in `guide.html`.
+2. Update the corresponding answer fields and tables in `scripts/build_protocol.py`
+   when quantities, molecules, or expected responses change. Check that the
+   website's learning goals still match the exercises.
+3. Regenerate the DOCX if its titles, deliverables, or answer fields changed.
+   Make maintained edits in the HTML and generator, not directly in the Word file.
+4. Check that task wording, units, terminology, and protocol fields agree, and
+   inspect the document layout before release.
+
+For generation, activate a separate Python authoring environment with
+`python-docx` and `lxml` installed, then run from the repository root:
+
+```sh
+python scripts/build_protocol.py
+```
+
+The script replaces `src/achprak/web/static/materials/protokollvorlage.docx`.
+This file is bundled with the application and served under `static/materials/`,
+including through the Hub proxy. Commit the regenerated template with its source
+changes; keep completed student protocols outside the repository.
+
+For layout verification, open the generated DOCX in Microsoft Word or LibreOffice
+Writer and export it to PDF. Inspect every page for clipped text, broken tables,
+missing symbols, and awkward page breaks; correct the generator and repeat if
+needed. The repository does not bundle a document renderer. Keep the PDF local;
+the published download remains the editable DOCX. Document-authoring tools are
+not application dependencies.
+
+## Compatibility and source conventions
+
+- Keep descriptive task IDs stable when changing titles or page order: the
+  protocol generator uses them to identify exercises.
+- Preserve chapter heading IDs referenced by the app and the legacy anchors in
+  `site/theory.md`, which forward older `/theory/#…` links to the current chapters.
+- Student-facing substituent labels use CH₃, OCH₃, and N(CH₃)₂. The API, saved
+  settings, and benchmark identifiers retain `Me`, `OMe`, and `NMe2`. Translate
+  these at display time rather than changing stored identifiers or chemistry inputs.
