@@ -35,17 +35,24 @@ $$
 
 ## Strukturoptimierung {#structure-optimization}
 
-Moleküle können viele verschiedene räumliche Strukturen annehmen, die sich in ihren Atompositionen – und damit auch in
-ihrer Energie – unterscheiden.
-Einige dieser Strukturen entsprechen lokalen Energieminima; ihre Energie lässt sich durch kleine Auslenkungen der
-Atomkoordinaten nicht weiter verringern.
-Eine Minimumstruktur entspricht einem lokalen Minimum der Energiefläche.
+Bei einer Strukturoptimierung werden die Atompositionen ausgehend von einer vorgegebenen Struktur verändert.
+Für die Suche nach einer Minimumstruktur berechnet das Programm die Energie und wie sie sich bei kleinen
+Verschiebungen der Atome ändert. Daraus bestimmt es neue Positionen, mit denen eine niedrigere Energie gesucht
+wird. Diese Schritte werden wiederholt, bis die verbleibenden Kräfte auf die Atome unter
+einem vorgegebenen Grenzwert liegen.
+
+Die Abhängigkeit der Energie von allen Atompositionen wird als Energiefläche bezeichnet.
+Eine Minimumstruktur entspricht einem lokalen Minimum dieser Fläche: Ihre Energie lässt sich durch kleine
+Änderungen der inneren Struktur nicht weiter verringern.
 
 Bei Azobenzol und seinen Derivaten gibt es Minima sowohl in der *cis*- als auch in der *trans*-Konfiguration.
 Innerhalb einer Konfiguration können weitere Minima auftreten, etwa mit anders verdrehten Substituenten.
 Eine Minimumsuche findet nicht zwangsläufig die Anordnung mit der insgesamt niedrigsten Energie.
-Eine zentrale Aufgabe der computergestützten Chemie besteht darin, solche Minimumstrukturen zu finden und zu
-charakterisieren – dieser Vorgang wird als Strukturoptimierung bezeichnet.
+Die Ausgangsstruktur beeinflusst, welches dieser Minima bei der Optimierung gefunden wird.
+Die dargestellte Folge der Optimierungsschritte zeigt den Verlauf der rechnerischen Suche,
+nicht die Bewegung eines Moleküls in Echtzeit.
+
+## Reaktionspfade und Energiebarrieren
 
 Ein Reaktionspfad beschreibt eine Folge von Molekülstrukturen, die Ausgangs- und Produktstruktur
 miteinander verbindet. Die Reaktionskoordinate gibt die Position entlang dieses Pfads an,
@@ -56,24 +63,42 @@ nicht die verstrichene Zeit.
 
 <figcaption markdown="1">
 Das schematische Energieprofil zeigt die Energie entlang eines Reaktionspfads. *cis* und *trans* liegen in lokalen Minima.
-Dazwischen liegt ein Maximum entlang des Wegs: die Übergangsstruktur (TS, englisch *transition structure*).
+Der dargestellte Weg führt über eine Übergangsstruktur (TS, englisch *transition structure*),
+die hier am Maximum des Energieprofils liegt.
 </figcaption>
 </figure>
 
-Im vollständigen Raum der Atomkoordinaten entspricht die gesuchte Struktur einem Sattelpunkt erster Ordnung:
-Entlang einer inneren Bewegungsrichtung fällt die Energie auf beiden Seiten ab; in den übrigen inneren Richtungen
-steigt sie bei kleinen Auslenkungen an. Die Webapp prüft diese Eigenschaft näherungsweise mit einer Schwingungsrechnung
-und verfolgt anschließend beide Abwärtsrichtungen zu Minima. Reine Verschiebungen und Drehungen des ganzen Moleküls
-werden bei der Schwingungsprüfung ausgeblendet.
+Eine Übergangsstruktur liegt an einem Sattelpunkt erster Ordnung der Energiefläche.
+Entlang einer Richtung der Strukturänderung fällt die Energie auf beiden Seiten ab;
+in den übrigen unabhängigen Richtungen steigt sie bei kleinen Änderungen an.
+Ein Maximum auf einem beliebig gewählten Pfad reicht deshalb nicht aus, um eine Übergangsstruktur zu erkennen.
+Zusätzlich wird geprüft, welche Minimumstrukturen die beiden abwärtsführenden Wege erreichen.
+
+Die elektronische Energiebarriere gegenüber einem Ausgangsminimum ist
+
+$$
+\Delta E^\ddagger = E_\mathrm{TS} - E_\mathrm{Minimum}.
+$$
+
+Sie charakterisiert den untersuchten Weg. Für Hin- und Rückrichtung wird die Energie derselben
+Übergangsstruktur mit der Energie des jeweiligen Ausgangsminimums verglichen. Liegt ein Minimum tiefer,
+ist die Barriere von dort aus entsprechend größer. Die Barriere beeinflusst die Reaktionsgeschwindigkeit,
+bestimmt sie aber nicht allein.
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Schwingungen und Sattelpunkte</summary>
 
 Eine Schwingungsmode beschreibt ein gemeinsames Auslenkungsmuster der Atome.
 Eine imaginäre Frequenz kennzeichnet eine instabile Mode: Bei kleinen Auslenkungen
 entlang dieser Richtung nimmt die Energie am Sattelpunkt auf beiden Seiten ab.
 Ein Sattelpunkt erster Ordnung besitzt genau eine solche unabhängige innere Mode.
+Mit „inneren“ Bewegungen sind Änderungen der relativen Atompositionen gemeint,
+nicht Verschiebungen oder Drehungen des gesamten Moleküls.
 
+</details>
 
 <details markdown="1">
-<summary markdown="span">Ergänzung: Übergangszustand oder Übergangsstruktur?</summary>
+<summary markdown="span">Ergänzung: Übergangsstruktur und Übergangszustand</summary>
 
 
 Die Übergangsstruktur ist die berechnete Molekülstruktur am Sattelpunkt der
@@ -87,15 +112,6 @@ Siehe die IUPAC-Begriffe [transition state](https://goldbook.iupac.org/terms/vie
 und [transition structure](https://goldbook.iupac.org/terms/view/T06471).
 
 </details>
-
-Die elektronische Energiebarriere gegenüber einem Ausgangsminimum ist
-
-$$
-\Delta E^\ddagger = E_\mathrm{TS} - E_\mathrm{Minimum}.
-$$
-
-Sie charakterisiert den untersuchten Weg. Ein anderes Minimum oder ein anderer Weg kann eine andere Barriere
-liefern. Die Barriere beeinflusst die Reaktionsgeschwindigkeit, bestimmt sie aber nicht allein.
 
 <details markdown="1">
 <summary markdown="span">Ergänzung: Energiebarriere und Aktivierungsenergie</summary>

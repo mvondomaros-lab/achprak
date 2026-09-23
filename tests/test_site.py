@@ -82,10 +82,10 @@ class SiteBuildTests(unittest.TestCase):
         )
         page = Document(text)
         self.assertEqual(
-            page.tags.count("details"), 9
-        )  # Nine optional explanations across five chapters.
+            page.tags.count("details"), 11
+        )  # Eleven optional explanations across five chapters.
         self.assertEqual(page.tags.count("figure"), 18)
-        self.assertEqual(page.tags.count("math"), 22)
+        self.assertEqual(page.tags.count("math"), 23)
         self.assertEqual(text.count('display="block"'), 5)
         for anchor in (
             "molecular-structures",

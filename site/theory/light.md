@@ -67,13 +67,12 @@ Die Linienhöhen zeigen relative Übergangsstärken.
 </figcaption>
 </figure>
 
+UV/Vis bezeichnet den ultravioletten und den sichtbaren Spektralbereich (englisch *visible*).
 UV/Vis-Spektren von Molekülen in Lösung zeigen meist breite Absorptionsbanden. Dazu tragen viele nahe beieinanderliegende
 Übergänge mit unterschiedlichen Schwingungszuständen sowie Wechselwirkungen mit der Umgebung bei.
 Auch die endliche Lebensdauer angeregter Zustände und die Auflösung des Messgeräts beeinflussen die Linienbreite.
-Die Webapp bildet diese Effekte vereinfacht ab: Sie ersetzt jede berechnete Linie durch eine Gaußkurve mit
-vorgegebener Breite und addiert die Beiträge. Die Breite selbst wird nicht aus Molekülbewegungen berechnet.
-
-Es entsteht ein Bandenspektrum.
+Für die Darstellung eines berechneten Bandenspektrums werden die einzelnen Übergänge mit einer
+vorgegebenen Breite dargestellt und überlagert.
 Die Bandenlagen zeigen, welche Anregungsenergien zur Absorption beitragen.
 Ihre relativen Höhen hängen von den Übergangsstärken und der Überlagerung benachbarter Banden ab.
 
@@ -105,7 +104,20 @@ Absorptionsbanden. Eine gemessene Absorbanz lässt sich daraus ohne weitere Anga
 
 </details>
 
-### Einfluss der Substituenten auf die Absorption
+## Lichtabsorption und Lösungsfarbe
+
+Wenn weißes Licht durch eine klare, nicht fluoreszierende Lösung fällt, werden bestimmte Wellenlängen
+stärker absorbiert als andere. Die Farbe beim Blick durch die Lösung entsteht aus dem verbleibenden,
+durchgelassenen Licht. Absorbiert eine Lösung vor allem blaues Licht, kann sie beispielsweise gelb bis
+orange erscheinen. Absorption ausschließlich im UV-Bereich verursacht dagegen keine sichtbare Färbung.
+
+Entscheidend ist die Absorption im gesamten sichtbaren Bereich, ungefähr von 380 bis 780 nm.
+Das stärkste Absorptionsmaximum allein legt die Farbe nicht fest: Es kann im UV-Bereich liegen,
+während schwächere Banden im sichtbaren Bereich den Farbeindruck bestimmen.
+Neben dem Spektrum beeinflussen die Konzentration und die durchstrahlte Schichtdicke, wie viel Licht
+die Lösung durchlässt. Auch die Beleuchtung wirkt sich auf die wahrgenommene Farbe aus.
+
+## Einfluss der Substituenten auf die Absorption
 
 Substituenten verändern die Elektronenverteilung und können Grundzustand und angeregte
 Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz zwischen zwei Zuständen
@@ -114,19 +126,18 @@ Eine größere Energiedifferenz entspricht kürzeren Wellenlängen (hypsochrom).
 Das Absorptionsmaximum hängt zusätzlich von den Oszillatorstärken und der Überlagerung
 der verbreiterten Übergänge ab.
 
-Ein Orbital beschreibt im Modell den räumlichen Zustand eines Elektrons. Daraus lässt
-sich ableiten, mit welcher Wahrscheinlichkeit das Elektron in einem bestimmten Raumbereich
-gefunden wird. Ein π-System entsteht durch die seitliche Überlappung benachbarter
-p-Orbitale. Dabei können Elektronen über mehrere Atome verteilt sein; dies wird als
-Delokalisierung bezeichnet. Sie kann die Anregungsenergie verringern. Substituenten
-können aber auch die räumliche Struktur und damit die Wechselwirkung zwischen den Molekülteilen verändern.
-
 Ein Beispiel ist das auf der Seite zu den [Molekülstrukturen](structures.md#substituenten) gezeigte
 4-Methoxy-4′-nitroazobenzol. Die Methoxygruppe (–OCH₃) an Position 4 wirkt als Elektronendonator,
-die Nitrogruppe (–NO₂) an Position 4′ als Elektronenakzeptor. Dieses Donator-Akzeptor-Muster
+das heißt hier als elektronenschiebender Substituent, der die Elektronendichte im verbundenen
+Azobenzol-Gerüst erhöht. Die Nitrogruppe (–NO₂) an Position 4′ wirkt als Elektronenakzeptor:
+Sie zieht Elektronendichte aus dem Gerüst ab. Dieses Donator-Akzeptor-Muster
 beeinflusst Grundzustand und angeregte Zustände unterschiedlich und kann dadurch die Energiedifferenz
 für einen elektronischen Übergang verkleinern. Bei dieser Verbindung liegen Absorptionsbeiträge deshalb
 bei längeren Wellenlängen als bei unsubstituiertem Azobenzol.
+
+Auch die Position eines Substituenten und die räumliche Anordnung der Molekülteile beeinflussen
+diese Wechselwirkungen. Aus der Einordnung als Donator oder Akzeptor allein ergibt sich deshalb
+keine feste Reihenfolge der Absorptionsmaxima für alle Substitutionsmuster.
 
 <figure markdown="1">
 <img src="../../figures/outputs/substituent_effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
@@ -140,7 +151,24 @@ Gesamtenergien verschiedener Moleküle.
 </figure>
 
 <details markdown="1">
-<summary markdown="span">Ergänzung: Motivation – Das elektromagnetische Fenster der Atmosphäre</summary>
+<summary markdown="span">Ergänzung: Orbitale und Delokalisierung</summary>
+
+Ein Orbital ist eine mathematische Funktion zur Beschreibung des räumlichen Zustands eines Elektrons.
+Aus ihr lässt sich ableiten, mit welcher Wahrscheinlichkeit das Elektron in einem bestimmten Raumbereich
+gefunden wird. Die typische Darstellung eines p-Orbitals zeigt zwei Bereiche hoher Aufenthaltswahrscheinlichkeit
+auf gegenüberliegenden Seiten des Atomkerns.
+Benachbarte, passend ausgerichtete p-Orbitale können seitlich überlappen und ein π-System bilden.
+Die darin beschriebenen Elektronen können über mehrere Atome verteilt sein; dies heißt Delokalisierung.
+
+Eine Veränderung der Delokalisierung beeinflusst die Energien der elektronischen Zustände und damit
+auch die Anregungsenergien. Verdrehen sich benachbarte Molekülteile gegeneinander, kann die Überlappung
+der p-Orbitale geringer werden. Deshalb können Substituenten die Absorption sowohl durch ihre Wirkung
+auf die Elektronenverteilung als auch durch eine Änderung der räumlichen Struktur beeinflussen.
+
+</details>
+
+<details markdown="1">
+<summary markdown="span">Ergänzung: Das elektromagnetische Fenster der Atmosphäre</summary>
 
 
 Absorptionsspektren spielen nicht nur bei der Charakterisierung einzelner Moleküle eine Rolle, sondern sind auch

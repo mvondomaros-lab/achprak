@@ -42,6 +42,9 @@ dass Kohlenstoff insgesamt vier Bindungen eingeht.
 
 ## Konfigurationsisomerie
 
+Moleküle mit gleicher Summenformel, die sich in der Verknüpfung oder der räumlichen Anordnung der Atome
+unterscheiden, bezeichnet man als Isomere. Bei Konfigurationsisomeren bleibt die Verknüpfung gleich.
+
 Durch die Azogruppe kann Azobenzol in zwei unterschiedlichen räumlichen Anordnungen (Konfigurationen) vorliegen.
 Die oben gezeigte Struktur entspricht der *trans*-Form, bei der die beiden Phenylringe auf gegenüberliegenden
 Seiten der Azogruppe stehen.
@@ -63,9 +66,6 @@ Versuch sowie in der Webapp einheitlich verwendet. Dabei entspricht *trans* der 
 
 </details>
 
-Moleküle mit gleicher Summenformel und Molekülmasse, die sich jedoch in der räumlichen Anordnung oder Verknüpfung der
-Atome unterscheiden, bezeichnet man als Isomere.
-
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_cis.svg" alt="Cis-Azobenzol." width="230" loading="lazy">
 
@@ -80,8 +80,6 @@ Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung 
 Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
 
 Die beiden Formen unterscheiden sich darin, bei welchen Wellenlängen und wie stark sie Licht absorbieren.
-Welche Mischung unter Bestrahlung entsteht,
-hängt unter anderem von der Wellenlänge ab; eine vollständige Umwandlung ist nicht garantiert.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
@@ -123,6 +121,21 @@ Durch Substitution, also den Austausch von Wasserstoffatomen gegen andere Atome 
 Abwandlungen des Azobenzols. Die eingeführten Atome oder Atomgruppen heißen Substituenten. Auch substituierte
 Azobenzole können durch Licht zwischen *cis* und *trans* umgeschaltet werden.
 
+### Räumliche Anordnung und sterische Einflüsse
+
+Kommen nicht miteinander gebundene Atome oder Atomgruppen sehr nahe zusammen, können starke abstoßende
+Wechselwirkungen die Energie erhöhen. Solche räumlich bedingten Einflüsse werden als sterische Effekte
+bezeichnet. Eine veränderte Orientierung der Ringe oder Substituenten kann diese enge Nachbarschaft
+verringern. Welche Struktur sich ergibt, hängt zugleich von den übrigen Wechselwirkungen im Molekül ab.
+
+Zum Vergleich der Strukturen dienen im Versuch der C–N=N–C-Diederwinkel und der Ringabstand.
+Der Diederwinkel beschreibt die relative Ausrichtung der beiden N–C-Bindungen beim Blick entlang N=N;
+der Ringabstand erfasst die Entfernung der beiden Ringmittelpunkte. Zusammen mit der 3D-Ansicht helfen
+sie, Strukturänderungen zu beschreiben. Die vollständige Orientierung der Ringebenen lässt sich aus
+diesen beiden Größen allein nicht bestimmen. Die genauen Messdefinitionen finden Sie bei den Größen in der Webapp.
+
+### Substitution und Farbe
+
 Als Feststoff bildet Azobenzol typischerweise orange bis orange-rote Kristalle. Verdünnte Lösungen von
 unsubstituiertem Azobenzol können dagegen nahezu farblos bis blassgelb erscheinen. Der Farbeindruck einer Lösung
 hängt davon ab, welche Anteile des sichtbaren Lichts sie absorbiert. Dabei spielen unter anderem Konzentration,
@@ -141,9 +154,7 @@ Strukturformel von 4-Methoxy-4′-nitroazobenzol.
 </figcaption>
 </figure>
 
-<details markdown="1">
-<summary markdown="span">Ergänzung: Nomenklatur</summary>
-
+## Benennung substituierter Azobenzole
 
 Systematische Namen beschreiben den Aufbau einer Verbindung. Die IUPAC (International Union of Pure and
 Applied Chemistry) legt dafür Regeln fest. Für dieselbe Verbindung können mehrere zulässige Namen gebräuchlich sein.
@@ -163,10 +174,8 @@ Positionsnummer.
 
 Die Eingabemaske der Webapp verwendet aus technischen Gründen feste Ring- und Positionsnummern. Dadurch bezeichnet
 jedes Auswahlfeld stets dieselbe Stelle in der gezeichneten Struktur. Diese Nummern sind Auswahlpositionen und müssen
-nicht mit den Positionsnummern im chemischen Namen übereinstimmen. Beim Erstellen einer Struktur berücksichtigt die
-Webapp die Umkehrung und den Austausch der Ringe, bildet daraus den Namen mit den niedrigsten Positionsnummern und
-erkennt symmetrieäquivalente Eingaben als dasselbe Molekül. Eine bereits vorhandene Startstruktur wird daher nicht
-erneut gespeichert.
+nicht mit den Positionsnummern im chemischen Namen übereinstimmen. Die Webapp erkennt symmetrieäquivalente
+Eingaben als dasselbe Molekül. Die Benennung der Verbindungen ist Teil Ihrer Auswertung.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_numbering.svg" alt="Feste Positionsnummern der Eingabemaske für die beiden Phenylringe des Azobenzols." width="313" loading="lazy">
@@ -203,7 +212,8 @@ eine Methoxy- und eine Nitrogruppe, bleibt die Zahlenfolge 2,6 beim Umkehren der
 *Methoxy* steht alphabetisch vor *Nitro* und erhält deshalb die Position 2. Der Name lautet
 2-Methoxy-6-Nitroazobenzol.
 
-### Übung
+<details markdown="1">
+<summary markdown="span">Ergänzung: Benennung eines mehrfach substituierten Azobenzols</summary>
 
 Mit den festen Positionsnummern können Sie zunächst angeben, an welchen Stellen die Substituenten gebunden sind.
 Bestimmen Sie anschließend für die folgende Verbindung die Nummerierung mit den niedrigsten Positionsnummern und
