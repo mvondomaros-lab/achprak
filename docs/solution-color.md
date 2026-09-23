@@ -3,16 +3,19 @@
 The spectrum panel estimates transmitted color from the existing INDO/S–CIS
 broadened spectrum. This is an illustrative prediction, not an experimentally
 validated solution color or a concentration measurement. No new chemistry
-calculation is required. The control persists while switching structures so
-spectra can be compared at the same relative scale.
+calculation is required. All structures use the same fixed absorbance scale of 1.
 
 ## Interpreting the preview
 
 The color patch represents light transmitted through the selected structure's
-calculated absorption spectrum. Increasing the slider increases the assumed
-absorbance and therefore reduces transmitted light. Keep the same slider value
-when comparing structures. The value is a relative scale, not a concentration; the
-model does not supply calibrated molar absorption coefficients.
+calculated absorption spectrum. For this conversion only, the relative spectral
+intensity is treated as dimensionless absorbance. There is no adjustable density
+control and no per-structure normalization. The model does not supply calibrated
+molar absorption coefficients, concentrations, or path lengths.
+
+The displayed weighted light transmission is 100 times the normalized CIE Y
+value: transmitted light weighted by D65 and the observer's luminance response,
+relative to unattenuated D65. It is not transmission at a single wavelength.
 
 The conversion uses **D65**, a standard daylight spectrum, and the **CIE 1931
 2-degree standard observer**, a tabulated model of human color response. **sRGB**
@@ -32,12 +35,9 @@ and T is the fraction of incident light transmitted.
   hc = 1239.841984 eV nm. No intensity rescaling is applied when changing the horizontal axis from energy
   to wavelength: absorbance is a response at a wavelength, not a probability
   density that must be redistributed between bins.
-- Set dimensionless absorbance A(lambda) = s I(lambda), with slider s in [0, 10].
+- Set dimensionless absorbance A(lambda) = I(lambda), using the fixed scale 1.
   Keep the original relative intensities; do not normalize individual spectra.
-  The single relative scale combines the effects of concentration and optical
-  path length for a fixed spectral shape. No path length is assumed; neither
-  concentration nor path length can be inferred from s without calibrated
-  molar absorption coefficients and knowledge of the other quantity.
+  This display assumption specifies neither concentration nor optical path length.
 - Apply T(lambda) = 10^(-A(lambda)). Integrate T times D65 times the CIE 1931
   2-degree color-matching functions by the trapezoidal rule at 1 nm intervals,
   over 380–780 nm. The very small observer tails outside this range are omitted.
@@ -78,21 +78,23 @@ The adapted data file is CC BY-SA 4.0:
 380 through 780 nm inclusive; retain all published precision. Source checksums
 were verified when generating the bundled table. No runtime network dependency.
 
-## Validation before quantitative claims
+## Evaluation and possible extensions
 
 An [initial experimental comparison](solution-color-validation.md) found large
 band-position errors and strongly underestimated visible-band intensity for
 trans-azobenzene in ethanol. Numerical color integration passes, but quantitative
 solution-color prediction is not validated. No measured spectra are bundled.
-Collect full molar absorption spectra in ethanol with known path length,
+
+A future quantitative model would require full molar absorption spectra in ethanol with known path length,
 concentration, temperature and isomer composition, starting with the parent,
-para-OCH₃, para-N(CH₃)₂ and selected donor–acceptor derivatives. Compare visible band
-positions, integrated intensities and widths before fitting corrections. Reserve
+4-OCH₃, 4-N(CH₃)₂ and selected donor–acceptor derivatives. Such a study should compare visible band
+positions, integrated intensities and widths before fitting corrections, and reserve
 some derivatives for validation rather than fitting all available measurements.
 Measured spectra can use the same transmission/color integration with A(lambda) =
 epsilon(lambda) c l, where epsilon is the molar absorption coefficient, c the
 concentration and l the optical path length, in consistent units. Here c denotes
-concentration, rather than the speed of light used above. Do not infer physical
-concentrations from the current slider.
+concentration, rather than the speed of light used above. This is a possible
+extension, not the implemented calibration.
 
+Implementation: [`solution-color.js`](../src/achprak/web/static/solution-color.js).
 Numerical checks: `node --test tests/test_solution_color.cjs`.

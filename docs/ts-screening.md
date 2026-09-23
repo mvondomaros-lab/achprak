@@ -12,7 +12,7 @@ Independent ring reflections and ring exchange identify equivalent substitution
 patterns; cis and trans remain distinct. RDKit checks the enumeration using
 canonical isomeric SMILES: standardized text representations of molecular
 connectivity and stereochemistry. This check does not require three-dimensional
-geometries.
+structures.
 
 | Substitution pattern | Distinct patterns | Cis/trans starting cases |
 | --- | ---: | ---: |
@@ -23,7 +23,7 @@ geometries.
 
 These are enumeration counts, not successful-calculation counts. The current menu
 and optimizer do not have a completed exhaustive validation recorded here. The
-regression suite covers selected templates and exact failing geometries. Symmetry
+regression suite covers selected templates and exact failing structures. Symmetry
 reduction does not sample every conformer or establish that equivalent starting
 labels reach the same minimum or transition structure.
 
@@ -37,29 +37,26 @@ expensive, so begin with a single case when checking a new installation.
 Case identifiers encode the input rather than a molecule name. For example,
 `trans-r1-2-NMe2_r1-6-CF3` means a trans input with N(CH₃)₂ at position 2 and CF3 at
 position 6 on ring 1. `r2` denotes ring 2. A seed such as 42 makes the initial
-geometry generation reproducible.
+structure generation reproducible.
 
 ```sh
+# Check one template first:
+pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-NMe2_r1-6-CF3 --output results/ts-recheck
+# Run the complete screen:
 MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-course-screen
 # Inspect saved results without launching calculations:
 pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --output results/ts-course-screen --summarize
-# Collect exact failing geometries as opt-in regression fixtures:
+# Collect exact failing structures as opt-in regression fixtures:
 pixi run -e dev python scripts/screen_ts.py --output results/ts-course-screen --collect-failures
-# Recheck one template separately:
-pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-NMe2_r1-6-CF3 --output results/ts-recheck
 ```
 
 Each case uses seed 42, the application's XYZ coordinate-file representation and a
-500-step minimum optimization. The TS search uses the production two-attempt
-policy: a 120° initial bond angle with FIRE optimization first, then reversed
-rotation or a wider 135° angle with L-BFGS optimization according to the failure.
-These are preparation and optimizer choices, described in the method page below.
-Each attempt has a shared 1,500-step budget. Full path, frequency and downhill
-connectivity checks are required. See [the method](transition-state.md).
+500-step minimum optimization. The TS search uses the production attempt policy
+and acceptance checks described in [the method](transition-state.md).
 
 Results and logs are written per case under the git-ignored output directory.
-Results use JSON, a structured text format. Each record is written as a complete
-file before replacing its destination, so an interrupted write does not leave a
+Each JSON record is written as a complete file before replacing its destination,
+so an interrupted write does not leave a
 partially written record. Repeating the command skips completed records, including
 failures. `--unique` prefers a completed representative and records equivalent
 labels without changing atom order or case IDs. Use a new output directory when
@@ -80,16 +77,13 @@ pixi run -e dev test-ts
 
 `tests/test_web.py` covers deterministic cis/trans parent templates and selected
 CH₃, N(CH₃)₂, CF3, CN and NO2 derivatives through the web worker.
-`tests/test_ts_screen.py` runs the exact geometries in `tests/data/ts_failures/`.
+`tests/test_ts_screen.py` runs the exact structures in `tests/data/ts_failures/`.
 Source-minimum failures are distinguished from TS failures. Collected fixtures are
 never overwritten by later runs, even if another conformer succeeds. All real
 chemistry regressions remain disabled in default test runs.
 
-A successful calculation establishes numerical convergence and downhill cis/trans
-connectivity for the chosen model. It does not establish a globally lowest
-electronic energy barrier, an intrinsic reaction coordinate (IRC), or agreement
-with experiment. Electronic energy barriers ΔE‡ are energy differences relative to
-the source minimum, without zero-point, thermal or entropic corrections.
+Interpret a successful result using the method page's
+[acceptance criteria](transition-state.md#what-an-accepted-result-establishes).
 
 ## Compare reliability and cost
 

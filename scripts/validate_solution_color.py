@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+from datetime import datetime, timezone
 from pathlib import Path
 
 import matplotlib
@@ -11,6 +12,26 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+TEST_SCALES = [0, 0.1, 1, 5, 10]
+
+
+def browser_colors(spec):
+    """Exercise the fixed-scale API with independently scaled test inputs."""
+    requests = [
+        {**spec, "absorption": [factor * value for value in spec["absorption"]]}
+        for factor in TEST_SCALES
+    ]
+    node = """
+require('./src/achprak/web/static/vendor/cie-color.js');
+require('./src/achprak/web/static/solution-color.js');
+const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
+console.log(JSON.stringify(input.map(spectrum => SolutionColor.estimate(spectrum))));
+"""
+    return json.loads(subprocess.check_output(
+        ["node", "-e", node], input=json.dumps(requests).encode(), cwd=ROOT,
+    ))
 
 
 def main():
@@ -62,25 +83,14 @@ def main():
 
     energy = np.asarray(spec["energy_ev"])
     absorption = np.asarray(spec["absorption"])
-    requests = []
     references = []
-    for factor in [0, 0.1, 1, 5, 10]:
-        requests.append({"spectrum": spec, "density": factor})
+    for factor in TEST_SCALES:
         references.append(
             color(factor * np.interp(1239.841984 / nm, energy, absorption))
         )
-    node = """
-require('./src/achprak/web/static/vendor/cie-color.js');
-require('./src/achprak/web/static/solution-color.js');
-const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
-console.log(JSON.stringify(input.map(r => SolutionColor.estimate(r.spectrum, r.density))));
-"""
-    actual = json.loads(
-        subprocess.check_output(
-            ["node", "-e", node], input=json.dumps(requests).encode()
-        )
-    )
+    actual = browser_colors(spec)
     for a, b in zip(actual, references):
+        assert a is not None, "Spectrum does not meet the browser's coverage/input checks"
         assert a["rgb"] == b["rgb"]
         assert abs(a["luminance"] - b["luminance"]) < 1e-12
 
@@ -111,7 +121,7 @@ console.log(JSON.stringify(input.map(r => SolutionColor.estimate(r.spectrum, r.d
         sensitivity.append(
             {
                 "sigma_ev": sigma,
-                "density_10": color(10 * np.interp(nm, wavelength, curve)),
+                "test_input_scale_10": color(10 * np.interp(nm, wavelength, curve)),
             }
         )
     model = curves[1]
@@ -119,12 +129,22 @@ console.log(JSON.stringify(input.map(r => SolutionColor.estimate(r.spectrum, r.d
     model_norm = model / model[model_uv].max()
     report = {
         "scope": "One trans-H ethanol spectrum; shape comparison only, no absolute color validation",
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+        "implementation_sha256": {
+            name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+            for name in [
+                "scripts/validate_solution_color.py",
+                "src/achprak/web/static/solution-color.js",
+                "src/achprak/web/static/vendor/cie-color.js",
+            ]
+        },
         "input_sha256": {
             str(p): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in [args.experimental, args.spectrum]
         },
         "independent_numerical_checks": {
             "cases": len(actual),
+            "test_input_scales": TEST_SCALES,
             "rgb_exact_match": True,
             "luminance_tolerance": 1e-12,
         },
@@ -143,7 +163,8 @@ console.log(JSON.stringify(input.map(r => SolutionColor.estimate(r.spectrum, r.d
             "calculated": color(np.interp(nm, wavelength, model_norm)),
         },
         "bandwidth_sensitivity_fixed_integrated_strength": sensitivity,
-        "native_slider_results": actual,
+        "fixed_scale_app_result": actual[TEST_SCALES.index(1)],
+        "scaled_input_test_results": actual,
     }
     (args.output / "metrics.json").write_text(json.dumps(report, indent=2) + "\n")
     from achprak.plot_style import STYLE, PRIMARY, ACCENT, style_axes

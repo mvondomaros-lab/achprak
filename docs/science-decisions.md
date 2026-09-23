@@ -6,9 +6,9 @@ methods so students can run calculations interactively. The [settings
 benchmark](science-benchmark.md) measures sensitivity to numerical and method
 choices; it does not establish agreement with experiment.
 
-## Geometry and electronic energy
+## Structure and electronic energy
 
-**GFN1-xTB** is the approximate electronic-structure method used for geometry
+**GFN1-xTB** is the approximate electronic-structure method used for structure
 optimization and energies. **ALPB** (analytical linearized Poisson–Boltzmann)
 represents ethanol as a surrounding medium rather than as individual solvent
 molecules. Every reported energy difference must compare structures calculated
@@ -20,7 +20,7 @@ gives twisted trans minima and reverses that energy ordering in ALPB ethanol. Th
 is the reason for the teaching default; it does not establish that GFN1-xTB is
 generally more accurate.
 
-The geometry search stops when the largest atomic force is below **0.002 eV/Å**
+The structure search stops when the largest atomic force is below **0.002 eV/Å**
 (electronvolts per ångström). The same threshold is used for ordinary minima,
 reaction-path endpoints and downhill connectivity checks. Flexible substituents
 can still move appreciably at the looser 0.01 eV/Å threshold.
@@ -64,19 +64,12 @@ stick spectrum retains those strengths. The displayed energy range, including it
 broadened curve and transition sticks, determines the plot's vertical scale; this
 is not a concentration calibration.
 
-Output coverage is checked up to four Gaussian standard deviations beyond the
-plot's upper energy limit. Insufficient output is flagged. Passing this check
-means the printed transitions cover the required range, not that the excited-state
-calculation is converged with respect to its configuration cutoff.
+Output coverage and configuration convergence are separate checks. The
+[spectrum implementation](../src/achprak/uvvis.py) defines the output-coverage
+margin and retry logic; printing more states does not increase `MAXCI`.
 
 The [experimental spectral comparison](solution-color-validation.md) documents
 band-position and intensity errors that prevent quantitative solution-color
 predictions. The application applies no empirical correction.
 
-## Checking an installation or a change
-
-The [development guide](development.md) separates routine software tests from
-optional calculations using the chemistry programs. Use `test-science` to check
-the parent molecule's planarity and cis/trans energy ordering, and `test-ts` for
-selected minimum-to-transition-structure calculations. These checks detect changes in
-model behavior; they are not a validation against experiment.
+For verification commands, see the [development guide](development.md#running-checks).

@@ -5,16 +5,16 @@ minima on the chosen electronic energy surface. It requires a converged source
 minimum structure and permits at most two non-H substituents across both rings. The
 [scientific defaults](science-decisions.md) describe the energy and solvent model.
 
-The interface calls the calculated saddle-point geometry a **transition structure**:
-a geometry at which the energy decreases along one internal motion and increases
-along the other internal directions. The fundamentals distinguish this geometry
+The interface calls the calculated saddle-point structure a **transition structure**:
+a structure at which the energy decreases along one internal motion and increases
+along the other internal directions. The fundamentals distinguish this structure
 from the statistical concept of a **transition state** in rate theory.
 
 ## What an accepted result establishes
 
 A result is labeled as a TS only when all three checks pass:
 
-1. The saddle-point geometry meets the force-convergence criterion.
+1. The saddle-point structure meets the force-convergence criterion.
 2. Its vibrational analysis has exactly one imaginary internal frequency with
    magnitude above **20 cm⁻¹** (inverse centimetres). This identifies one
    direction of negative energy curvature. Smaller imaginary frequencies are
@@ -30,19 +30,18 @@ mass-weighted coordinates. Nor does it establish that the search found the
 globally lowest electronic energy barrier or the experimentally dominant reaction
 pathway. A failed check leaves the search unconfirmed.
 
-The reported **electronic energy barrier ΔE‡** is relative to the source minimum structure.
-It excludes zero-point, thermal and entropic corrections and is neither an
-Arrhenius activation energy nor a Gibbs energy of activation.
+The reported barrier uses the [electronic-energy definition](science-decisions.md#transition-structures-and-barriers)
+and the source minimum structure as its reference.
 
 ## Search sequence
 
 The search first prepares an approximate path between the isomers. It then relaxes
-a sequence of molecular geometries along that path and refines a candidate saddle
-point. The geometries along the path are called **images**; they are not frames
+a sequence of molecular structures along that path and refines a candidate saddle
+point. The structures along the path are called **images**; they are not frames
 sampled from a dynamics simulation.
 
 The path method is the **nudged elastic band (NEB)** method. Artificial springs
-maintain the spacing between images while the geometries relax. A climbing-image
+maintain the spacing between images while the structures relax. A climbing-image
 stage drives the highest-energy image toward a saddle point. The [ASE
 documentation](https://docs.ase-lib.org/ase/neb.html) describes this method; ASE
 is the Atomic Simulation Environment used to organize these calculations. Sella
@@ -103,21 +102,24 @@ band and its energy reference.
 Matching an endpoint requires an aligned root-mean-square atomic displacement
 (RMSD) below 0.35 Å and an energy difference below 0.05 eV. A different endpoint
 conformer is reported explicitly: reaching the correct isomer does not establish
-an exact conformer match. Downhill geometries, energies and isomer assignments are
+an exact conformer match. Downhill structures, energies and isomer assignments are
 retained separately from the original path endpoints.
 
 </details>
 
-## Reading the path and playback
+## Output and implementation
 
 During the search, the chart plots image energies against normalized Cartesian
 path length: cumulative displacement along the sequence, rescaled to its total
-length. The horizontal axis is not elapsed time. The preview shows a moving image
-of the active half-band, then the climbing image, and highlights its point on the
-chart.
+length. The horizontal axis is not elapsed time.
 
-After completion, selecting an energy point or playing the sequence displays the
-reaction path once. Both endpoint geometries and energies are retained; the
-opposite endpoint is the final path image. Minimum results instead show the
-history of geometry optimization. Neither playback is molecular dynamics or a
-prediction of how rapidly the molecule moves.
+Both endpoint structures and energies are retained; the opposite endpoint is the
+final path image. Minimum results instead contain the optimization history.
+Neither sequence is molecular dynamics.
+
+The search and acceptance checks are implemented in
+[`transition_state.py`](../src/achprak/transition_state.py); application attempt
+limits are in [`ts_policy.py`](../src/achprak/web/ts_policy.py).
+Worker regressions are in [`test_web.py`](../tests/test_web.py), with saved-input
+cases in [`test_ts_screen.py`](../tests/test_ts_screen.py). See the
+[screening guide](ts-screening.md) for running and extending them.

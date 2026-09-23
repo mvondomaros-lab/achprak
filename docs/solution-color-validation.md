@@ -1,6 +1,13 @@
 # Experimental comparison of spectrum and color
 
-The transmission-to-sRGB implementation passes independent numerical checks. The
+This is a recorded spectral-shape study, first committed as `8021fe5` on
+2026-09-16. That revision documents the earlier adjustable-density interface;
+the exact calculation date and source revision were not recorded separately.
+The numerical results below are retained, not presented as a fresh run of the
+current application. See [the current model](solution-color.md) for the fixed
+absorbance scale and weighted light transmission.
+
+In the recorded study, the transmission-to-sRGB implementation passed independent numerical checks. The
 INDO/S–CIS spectrum does **not** reproduce the measured spectral shape of
 trans-azobenzene in ethanol well enough to validate a quantitative solution color.
 Keep the preview illustrative. One compound does not justify a general correction.
@@ -8,7 +15,7 @@ Keep the preview illustrative. One compound does not justify a general correctio
 Two separate checks are reported here: whether the software converts a spectrum to
 display color correctly, and whether the calculated spectrum resembles an
 experimental spectrum. The first passes; the second reveals substantial errors.
-See the [color model](solution-color.md) for the meaning of the density slider,
+See the [color model](solution-color.md) for the fixed absorbance scale,
 standard daylight (D65), the CIE color-response tables and the sRGB display space.
 Wavelengths below are in nanometres (nm), and photon energies in electronvolts
 (eV).
@@ -41,7 +48,7 @@ treatments are approximations, not additional measurements.
 ## Calculation and results
 
 The normal application workflow generated an unsubstituted trans starting
-structure, optimized a minimum and calculated a spectrum. The geometry converged,
+structure, optimized a minimum and calculated a spectrum. The structure converged,
 and the printed transitions covered the required spectral range. It used seed 42,
 GFN1-xTB/ALPB ethanol, force threshold 0.002 eV/Å, INDO/S–CIS/MAXCI=800, COSMO
 dielectric constant EPS=24.3, and Gaussian standard deviation sigma = 0.15 eV,
@@ -61,36 +68,59 @@ The measured baseline-corrected visible/UV peak-height ratio is 0.0254. The
 calculated first/second oscillator-strength ratio (dimensionless transition
 intensities) is 0.0000968. Equal Gaussian widths make this also the ratio of the
 isolated calculated peak heights. Because the measured bands have different
-shapes, this is **not** a measured oscillator- strength ratio. The comparison
+shapes, this is **not** a measured oscillator-strength ratio. The comparison
 nevertheless shows that visible absorption is strongly underestimated relative to
 the ultraviolet band. Increasing the density factor cannot repair positions or
 relative band shapes.
 
 At equal UV peak height 1, illustrative colors are sRGB (255, 255, 249) for the
 experimental shape and (255, 255, 255) for the calculated shape. These are not
-colors at equal physical concentrations. The native calculation gives (255, 255,
-252) even at the app's maximum density factor 10.
+colors at equal physical concentrations. The native calculation gave (255, 255,
+252) at the former slider's maximum factor 10; that factor is not the current app setting.
 
 Changing sigma from 0.10 to 0.15 to 0.20 eV at **fixed integrated oscillator
 strength** gives (255, 255, 255), (255, 255, 252), and (253, 255, 240) at factor
 10. This is sensitivity to an assumed width, not an uncertainty bound.
 
-## Reproducing the numerical comparison
+## Repeating the comparison with the current implementation
+
+On 2026-09-23, the corrected validator was run with the retained calculated
+spectrum and the original checksum-verified CIE files. All five scaled-input
+checks passed: rounded sRGB matched exactly and luminance differences were below
+10⁻¹². At the app's fixed scale, the retained spectrum gives sRGB (255, 255, 255)
+and weighted light transmission of approximately 99.991%. No chemistry calculation
+was rerun. The tested browser implementation has SHA-256
+`8a3bd4e128190fd3aa511357b1e116821d485bb271774af4ba292d616a2c7192`;
+the retained spectrum has SHA-256
+`fcb3da09e1a252e15901097299de744dd859d0095e82aa473c2afd86feeae530`.
 
 The command below assumes the experimental data, CIE tables and calculated
 spectrum have already been obtained. It does not download the reference files or
 run the electronic-structure calculation. Paths in the example are local input
 locations; adapt them to where those files are stored.
 
-Independent NumPy integration using the original checksum-verified CIE CSVs,
-rather than the bundled browser table, agrees with production JavaScript at five
-density factors (0, 0.1, 1, 5, 10): identical rounded sRGB and luminance
-differences below 10⁻¹². These numerical checks do not verify browser layout.
+The validator compares independent NumPy integration of the original
+checksum-verified CIE CSVs with production JavaScript. It scales copies of the
+input absorption curve by 0, 0.1, 1, 5, and 10 and calls the fixed-scale browser
+API for each. These are numerical test inputs, not available UI settings.
+Acceptance requires identical rounded sRGB and luminance differences below
+10⁻¹². Only the unscaled input represents the current app prediction.
 
 The script, run separately from the web application, takes the published CIE CSVs
 (see [provenance](solution-color.md)), the experimental file, and an application
 spectrum saved as a JSON data file containing `energy_ev`, `absorption`,
-`excitations_ev`, `oscillator_strengths` and `coverage_complete`:
+`excitations_ev`, `oscillator_strengths` and `coverage_complete`.
+
+To obtain that JSON, calculate the required spectrum in the app, then open
+`api/session` relative to the app's base URL in the same browser session (locally,
+`http://127.0.0.1:8000/api/session`). In the `molecules` array, identify the required
+structure and save its complete `spectrum` object as `trans-H.json`, not the
+enclosing session response. Under JupyterHub, retain the app's proxy prefix.
+Image export does not contain these numerical data.
+
+Download the original CIE CSV files from the [documented source](solution-color.md#data-provenance)
+and extract the experimental file from the versioned archive above. Node.js is
+required for the production-JavaScript comparison.
 
 ```sh
 pixi run -e dev python scripts/validate_solution_color.py \
@@ -101,7 +131,9 @@ pixi run -e dev python scripts/validate_solution_color.py \
   --output results/color-validation
 ```
 
-It writes `metrics.json` (including input hashes) and `spectral-comparison.png`.
+It writes `metrics.json` (including input and implementation hashes and a UTC
+timestamp) and `spectral-comparison.png`. The report distinguishes the fixed-scale
+app result from scaled-input tests and bandwidth sensitivity at test scale 10.
 Run the script explicitly when reproducing this comparison; it is not part of the
 default test suite.
 
