@@ -70,11 +70,12 @@ bevor das betreffende Molekül hergestellt und vermessen wurde. Dafür müssen d
 die berechnete Größe und die Annahmen der Rechnung angegeben werden.
 
 <figure markdown="1">
-<img src="../../figures/outputs/prediction_cycle.svg" alt="Schematischer Ablauf von der chemischen Fragestellung über Rechenmodell und Vorhersage zur Prüfung durch Experiment oder Referenzrechnung." width="800" loading="lazy">
+<img src="../../figures/outputs/prediction_cycle.svg" alt="Zwei Prüfungen einer vorhergesagten Bandenverschiebung: Messwerte prüfen die Übereinstimmung mit dem Experiment; Referenzrechnungen mit belegter Genauigkeit helfen, die Näherungen zu beurteilen." width="800" loading="lazy">
 
 <figcaption markdown="1">
-Der Vergleich mit Messwerten prüft die Übereinstimmung mit dem Experiment. Referenzrechnungen mit Verfahren,
-deren Genauigkeit für die untersuchte Größe gut belegt ist, helfen, die gewählten Näherungen zu beurteilen.
+Zwei sich ergänzende Prüfungen am Beispiel einer Bandenverschiebung. Eine Übereinstimmung mit einer
+Referenzrechnung ist noch keine experimentelle Bestätigung. In beiden Vergleichen müssen sich die Ergebnisse
+auf dieselben Moleküle und dieselbe untersuchte Größe beziehen.
 </figcaption>
 </figure>
 
