@@ -46,12 +46,13 @@ Nicht jeder energetisch passende Übergang ist gleich wahrscheinlich: Manche tra
 Schematisch lässt sich dieser Prozess wie folgt darstellen:
 
 <figure markdown="1">
-<img src="../../figures/outputs/energy_levels.svg" alt="Vereinfachtes Energieniveauschema eines Absorptionsprozesses." width="600" loading="lazy">
+<img src="../../figures/outputs/energy_levels.svg" alt="Zwei alternative Absorptionsübergänge vom Grundzustand: Ein Photon mit 3,0 eV führt in den ersten, eines mit 4,0 eV in den zweiten angeregten Zustand." width="600" loading="lazy">
 
 <figcaption markdown="1">
-Vereinfachtes Energieniveauschema eines Absorptionsprozesses.
-Das (fiktive) Molekül kann entweder Licht mit 3,0 eV oder 4,0 eV absorbieren, um in den ersten bzw. zweiten angeregten
-Zustand versetzt zu werden.
+Zwei mögliche Absorptionsübergänge eines fiktiven Moleküls. Jeder Pfeil steht für die Aufnahme eines Photons,
+dessen Energie dem Abstand zwischen Grundzustand und dem jeweiligen angeregten Zustand entspricht.
+Beide Übergänge beginnen im Grundzustand; die Pfeile zeigen keine aufeinanderfolgenden Schritte.
+Die Energie des Grundzustands ist als Nullpunkt gewählt.
 </figcaption>
 </figure>
 
@@ -140,12 +141,12 @@ diese Wechselwirkungen. Aus der Einordnung als Donator oder Akzeptor allein ergi
 keine feste Reihenfolge der Absorptionsmaxima für alle Substitutionsmuster.
 
 <figure markdown="1">
-<img src="../../figures/outputs/substituent_effects.svg" alt="Drei schematische Energieniveausysteme: Eine kleinere Anregungsenergie als im unsubstituierten Vergleichssystem entspricht einer längeren Wellenlänge, eine größere einer kürzeren. Die Pfeile verbinden jeweils Grundzustand und angeregten Zustand." width="700" loading="lazy">
+<img src="../../figures/outputs/substituent_effects.svg" alt="Drei schematische Energieniveausysteme: Nach Substitution kann der Energieabstand zum angeregten Zustand kleiner oder größer sein als im unsubstituierten Vergleichssystem. Die Pfeile zeigen die jeweilige Anregungsenergie." width="700" loading="lazy">
 
 <figcaption markdown="1">
 Mögliche Verschiebungen eines elektronischen Übergangs durch Substitution.
-Die Pfeillänge zeigt die Anregungsenergie: Ein kleinerer Abstand zwischen Grundzustand und angeregtem
-Zustand entspricht einer längeren Wellenlänge, ein größerer einer kürzeren.
+Die Pfeillänge zeigt die Anregungsenergie: Links ist der Energieabstand zwischen Grundzustand und angeregtem
+Zustand kleiner als beim unsubstituierten Vergleichssystem in der Mitte, rechts ist er größer.
 Für jedes Molekül ist die Energie seines eigenen Grundzustands als Nullpunkt gewählt;
 verglichen werden die Energieabstände, nicht die Gesamtenergien der Moleküle.
 </figcaption>

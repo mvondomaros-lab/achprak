@@ -7,16 +7,16 @@ from matplotlib.patches import FancyArrowPatch
 
 def draw():
     ax = plt.gca()
-    ax.set(xlim=(-0.6, 5.6), ylim=(-0.65, 2.35))
+    ax.set(xlim=(-0.6, 5.6), ylim=(-0.25, 2.35))
     ax.set_axis_off()
 
     # Each system has its own ground-state energy zero. Only gaps are compared.
     cases = [
-        (0.5, 0.8, "Kleinere\nAnregungsenergie", "Längere Wellenlänge\n(bathochrom)"),
-        (2.5, 1.2, "Unsubstituiertes\nVergleichssystem", "Wellenlänge\ndes Vergleichssystems"),
-        (4.5, 1.6, "Größere\nAnregungsenergie", "Kürzere Wellenlänge\n(hypsochrom)"),
+        (0.5, 0.8, "Nach Substitution:\nkleinere Anregungsenergie"),
+        (2.5, 1.2, "Unsubstituiertes\nVergleichssystem"),
+        (4.5, 1.6, "Nach Substitution:\ngrößere Anregungsenergie"),
     ]
-    for center, gap, heading, wavelength in cases:
+    for center, gap, heading in cases:
         ax.text(center, 2.12, heading, ha="center", va="center", weight="bold")
         ax.plot([center - 0.8, center + 0.8], [0, 0], color="C0")
         ax.plot([center - 0.8, center + 0.8], [gap, gap], color="C1")
@@ -26,7 +26,6 @@ def draw():
             (center, 0), (center, gap), arrowstyle="->",
             linewidth=1.5, color=TEXT, mutation_scale=10,
         ))
-        ax.text(center, -0.4, wavelength, ha="center", va="center")
 
 
 def render(output_dir=None, formats=("svg",)):
