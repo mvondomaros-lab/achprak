@@ -29,11 +29,12 @@ elektronischer Zustände ermöglicht außerdem die Berechnung der Lichtabsorptio
 werden dadurch über dieselben physikalischen Grundlagen miteinander verknüpft.
 
 <figure markdown="1">
-<img src="../../figures/outputs/theoretical_quantities.svg" alt="Schematische Übersicht: Im Rechenmodell werden Atomkerne und Elektronen beschrieben. Daraus werden Molekülstrukturen, elektronische Energien und elektronische Anregungen berechnet." width="800" loading="lazy">
+<img src="../../figures/outputs/theoretical_quantities.svg" alt="Die näherungsweise Beschreibung der Wechselwirkungen von Atomkernen und Elektronen bildet die gemeinsame Grundlage: Strukturoptimierung liefert Molekülstrukturen, der Vergleich berechneter Energien liefert Energieunterschiede, und elektronische Anregungen bilden die Grundlage von Absorptionsspektren." width="800" loading="lazy">
 
 <figcaption markdown="1">
-Die Beschreibung von Atomkernen und Elektronen verbindet den molekularen Aufbau mit den im Versuch berechneten
-Größen.
+Gemeinsame physikalische Grundlagen verbinden drei Rechenaufgaben. Die Pfeile zeigen, welche Berechnungen zu
+welchen Ergebnissen führen. Die Zweige sind keine zeitliche Abfolge; für die einzelnen Aufgaben können
+unterschiedliche Näherungsverfahren eingesetzt werden.
 </figcaption>
 </figure>
 

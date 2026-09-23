@@ -1,4 +1,4 @@
-"""Schematic relationships between a molecular model and calculated quantities."""
+"""Connect the shared physical description to three distinct calculation tasks."""
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
@@ -8,13 +8,13 @@ from style import TEXT, export, run
 
 def draw():
     fig = plt.gcf()
-    fig.set_size_inches(9, 5)
+    fig.set_size_inches(10, 5)
     ax = plt.gca()
-    ax.set(xlim=(0, 12), ylim=(0, 7))
+    ax.set(xlim=(0, 15), ylim=(0, 7))
     ax.set_axis_off()
-    blue, ochre = plt.rcParams["axes.prop_cycle"].by_key()["color"]
+    blue = plt.rcParams["axes.prop_cycle"].by_key()["color"][0]
 
-    def box(x, y, width, height, title, detail, color):
+    def box(x, y, width, height, title, detail):
         ax.add_patch(
             FancyBboxPatch(
                 (x, y),
@@ -22,7 +22,7 @@ def draw():
                 height,
                 boxstyle="round,pad=0.08,rounding_size=0.12",
                 facecolor="white",
-                edgecolor=color,
+                edgecolor=blue,
                 linewidth=1.5,
             )
         )
@@ -47,45 +47,47 @@ def draw():
         )
 
     ax.text(
-        6,
+        7.5,
         6.65,
-        "Molekülbeschreibung im Rechenmodell",
+        "Struktur, Energie und Spektrum im Rechenmodell",
         ha="center",
         va="center",
         weight="bold",
         color=TEXT,
         fontsize=14,
     )
-    box(1.5, 4.65, 4.1, 1.35, "Atomkerne", "Atomsorten und Positionen", blue)
-    box(6.4, 4.65, 4.1, 1.35, "Elektronen", "Verteilung und Energie", ochre)
+    box(
+        2.5, 4.65, 10, 1.25,
+        "Atomkerne und Elektronen",
+        "Ihre Wechselwirkungen werden näherungsweise beschrieben.",
+    )
 
-    for start_x in (3.55, 8.45):
+    # One common foundation; the branches denote tasks, not particle categories.
+    ax.plot([7.5, 7.5], [4.55, 4.05], color=blue, linewidth=1.5)
+    ax.plot([2.5, 12.5], [4.05, 4.05], color=blue, linewidth=1.5)
+    for x in (2.5, 7.5, 12.5):
         ax.add_patch(
             FancyArrowPatch(
-                (start_x, 4.55),
-                (6.0, 3.65),
-                arrowstyle="-",
-                linewidth=1.5,
-                color=TEXT,
-                connectionstyle="arc3,rad=0",
-            )
-        )
-    for end_x in (2.0, 6.0, 10.0):
-        ax.add_patch(
-            FancyArrowPatch(
-                (6.0, 3.65),
-                (end_x, 2.35),
+                (x, 4.05),
+                (x, 3.6),
                 arrowstyle="-|>",
                 mutation_scale=12,
                 linewidth=1.5,
-                color=TEXT,
+                color=blue,
                 connectionstyle="arc3,rad=0",
             )
         )
 
-    box(0.45, 0.65, 3.1, 1.6, "Molekülstruktur", "berechnete Atompositionen", blue)
-    box(4.45, 0.65, 3.1, 1.6, "Elektronische Energie", "Unterschiede und Barrieren", blue)
-    box(8.45, 0.65, 3.1, 1.6, "Elektronische Anregungen", "Lage und relative Stärke", ochre)
+    tasks = (
+        (2.5, "Strukturen optimieren", "Atompositionen verändern,\num die Energie zu verringern", "Molekülstrukturen", "Bindungslängen und Winkel"),
+        (7.5, "Energien vergleichen", "Energien für verschiedene\nStrukturen berechnen", "Energieunterschiede", "z. B. zwischen cis und trans"),
+        (12.5, "Anregungen berechnen", "Energien und Stärken\nelektronischer Anregungen bestimmen", "Absorptionsspektren", "Lage und relative Stärke der Banden"),
+    )
+    for x, task, description, result, detail in tasks:
+        ax.text(x, 3.28, task, ha="center", va="center", weight="bold", color=TEXT, fontsize=12.5)
+        ax.text(x, 2.62, description, ha="center", va="center", color=TEXT, fontsize=10.5, linespacing=1.4)
+        ax.add_patch(FancyArrowPatch((x, 2.12), (x, 1.7), arrowstyle="-|>", mutation_scale=12, linewidth=1.5, color=blue))
+        box(x - 2.25, 0.3, 4.5, 1.25, result, detail)
 
 
 def render(output_dir=None, formats=("svg",)):
