@@ -131,7 +131,7 @@ Lösungsmittel und das Mengenverhältnis der *cis*- und *trans*-Form eine Rolle.
 Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Substituenten
 können verändern, bei welchen Wellenlängen und wie stark ein Molekül Licht absorbiert. Ein Beispiel ist
 4-Methoxy-4′-nitroazobenzol, das in Lösung deutlich gefärbt erscheinen kann. Den Zusammenhang zwischen
-Lichtabsorption und Farbe erläutert das nächste Kapitel [Licht und Absorption](light.md).
+Lichtabsorption und Farbe erläutert das nächste Kapitel.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_4_methoxy_4_prime_nitro.svg" alt="Strukturformel von 4-Methoxy-4′-nitroazobenzol." width="463" loading="lazy">
