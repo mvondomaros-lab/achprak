@@ -35,9 +35,6 @@ any failures. Keep these expensive tests disabled in default test runs.
   Keep developer documentation and code identifiers in English.
 - Describe UI actions naturally instead of quoting control labels. Refer to the
   structure list, image export, or unit converter by function when guidance is needed.
-- Naming the molecules is a student exercise. Generated structure labels should
-  show configuration and substitution pattern (for example, “trans · 4-OMe”),
-  not the full molecule name. Show calculation status separately as a badge.
 - Describe calculations and quantities directly. Avoid playful metaphors,
   anthropomorphizing molecules or algorithms, and rhetorical questions used as
   entertainment. Questions that guide an exercise or identify a help topic are
