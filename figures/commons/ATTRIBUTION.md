@@ -5,15 +5,6 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 
 ---
 
-## azobenzene_trans.png
-
-- **T (Title):** *Azobenzene-trans-3D-balls.png* (ball-and-stick model of trans-azobenzene)
-- **A (Author):** Benjah-bmm27
-- **S (Source):** https://commons.wikimedia.org/wiki/File:Azobenzene-trans-3D-balls.png
-- **L (License):** Public Domain (released into the public domain by the author)
-
----
-
 ## electromagnetic_spectrum.svg
 
 - **T (Title):** *Spectre.svg* (electromagnetic spectrum overview)
@@ -29,15 +20,3 @@ For each file, we record **TASL**: **T**itle, **A**uthor, **S**ource, **L**icens
 - **A (Author):** Herbertweidner (PNG original) and Cepheiden (SVG adaptation)
 - **S (Source):** https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg
 - **L (License):** Public Domain (released into the public domain by the copyright holder)
-
----
-
-## black_box.png
-
-- **T (Title):** *Blackbox3D.png* (black-box diagram with input/output)
-- **A (Author):** Krauss
-- **S (Source):** https://commons.wikimedia.org/wiki/File:Blackbox3D.png
-- **L (License):** Creative Commons Attribution–ShareAlike 4.0 International (CC BY-SA 4.0)  
-  https://creativecommons.org/licenses/by-sa/4.0/
-
----

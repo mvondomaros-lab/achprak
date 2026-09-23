@@ -110,7 +110,7 @@ Das Drehen der Ansicht verändert die Molekülstruktur nicht.
 </div>
 <p class="structure-viewer-instruction" data-viewer-instruction hidden>Ziehen zum Drehen, scrollen zum Zoomen.</p>
 <div class="structure-viewer-fallback" data-viewer-fallback>
-<img src="../../figures/commons/azobenzene_trans.png" alt="Kugel-Stab-Modell von trans-Azobenzol als statische Ersatzdarstellung." width="512" loading="lazy">
+<img src="../../figures/drawings/azobenzene.svg" alt="Skelettformel von trans-Azobenzol als statische Ersatzdarstellung." width="300" loading="lazy">
 </div>
 </figure>
 

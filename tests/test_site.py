@@ -150,10 +150,11 @@ class SiteBuildTests(unittest.TestCase):
         fallback = [
             image
             for image in document.images
-            if "azobenzene_trans.png" in image.get("src", "")
+            if "statische Ersatzdarstellung" in image.get("alt", "")
         ]
         self.assertEqual(len(fallback), 1)
-        self.assertIn("statische Ersatzdarstellung", fallback[0]["alt"])
+        self.assertIn("Skelettformel", fallback[0]["alt"])
+        self.assertTrue(fallback[0]["src"].endswith("figures/drawings/azobenzene.svg"))
 
         for asset in (
             "assets/structure-viewer.js",

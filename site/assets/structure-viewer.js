@@ -21,7 +21,7 @@
   function showFallback(viewer, error) {
     viewer.dataset.viewerState = 'failed';
     const status = viewer.querySelector('[data-viewer-status]');
-    status.textContent = 'Das interaktive 3D-Modell ist nicht verfügbar. Die statische Darstellung bleibt sichtbar.';
+    status.textContent = 'Das interaktive 3D-Modell ist nicht verfügbar. Die Skelettformel bleibt als Ersatzdarstellung sichtbar.';
     console.error(error);
   }
 

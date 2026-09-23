@@ -39,7 +39,7 @@ pixi run -e dev python figures/scripts/generate.py
 
 Both commands accept `--format svg|png|both` (default: `svg`) and
 `--output-dir PATH`. PNG exports are optional previews, ignored in `outputs/`.
-The website uses the six SVGs in `outputs/`; the web app bundles `dihedral.svg`
+The website uses the SVGs in `outputs/`; the web app bundles `dihedral.svg`
 in its static package data. Neither needs a plotting runtime to display figures.
 `dihedral.py` is the editable source for the C–N=N–C dihedral illustration.
 Its default output directory is the app's static directory; an explicit
