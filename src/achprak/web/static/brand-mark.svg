@@ -1,8 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect x="0.5" y="0.5" width="63" height="63" rx="13.5" fill="#1d334e" stroke="#486481"/>
-  <path d="m21 32-4.5 7.8h-9L3 32l4.5-7.8h9zM43 32l4.5-7.8h9L61 32l-4.5 7.8h-9z" fill="none" stroke="#f5f9ff" stroke-linejoin="round" stroke-width="2.7"/>
-  <circle cx="12" cy="32" r="4.2" fill="none" stroke="#f5f9ff" stroke-width="1.4"/>
-  <circle cx="52" cy="32" r="4.2" fill="none" stroke="#f5f9ff" stroke-width="1.4"/>
-  <path d="M21 32h3m16 0h3" fill="none" stroke="#f5f9ff" stroke-linecap="round" stroke-width="2.5"/>
-  <text x="32" y="35" fill="#70d4ef" font-family="Arial, Helvetica, sans-serif" font-size="9" font-weight="700" text-anchor="middle">N=N</text>
+  <g transform="rotate(-25 32 32)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m21 32-4.5 7.8h-9L3 32l4.5-7.8h9zM43 32l4.5-7.8h9L61 32l-4.5 7.8h-9z" stroke="#f5f9ff" stroke-width="2.7"/>
+    <circle cx="12" cy="32" r="4.2" stroke="#f5f9ff" stroke-width="1.4"/>
+    <circle cx="52" cy="32" r="4.2" stroke="#f5f9ff" stroke-width="1.4"/>
+    <path d="M21 32h1m20 0h1" stroke="#f5f9ff" stroke-width="2.5"/>
+    <path d="M25 36v-8l3 8v-8m8 8v-8l3 8v-8M31 30.5h2m-2 3h2" stroke="#70d4ef" stroke-width="1.7"/>
+  </g>
 </svg>
