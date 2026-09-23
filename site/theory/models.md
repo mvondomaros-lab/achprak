@@ -14,14 +14,16 @@ begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
 
 ## Mathematische Beschreibung
 
-Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Aus ihr folgen jedoch nicht unmittelbar die
-genauen Atompositionen, die elektronische Energie oder das Absorptionsspektrum. Die theoretische Chemie beschreibt
-Zusammenhänge zwischen dem Aufbau eines Moleküls und solchen Größen mathematisch.
+Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Um Bindungslängen, Energien oder
+Absorptionsspektren zu berechnen, braucht man zusätzlich eine physikalische Beschreibung des Moleküls.
+Für die hier untersuchten Eigenschaften bildet die Quantenmechanik die Grundlage. Sie beschreibt die möglichen
+Zustände der Elektronen und Atomkerne sowie deren Energien und Wechselwirkungen.
 
-Dabei werden die Atomkerne durch ihre Atomsorten und Positionen beschrieben. Die Elektronen bestimmen wesentlich
-die chemischen Bindungen, die elektronische Energie und die Wechselwirkung mit Licht. Für Moleküle mit vielen
-Elektronen lassen sich diese Zusammenhänge nicht ohne Näherungen berechnen. Das Ergebnis einer Rechnung ist daher
-keine vollständige Beschreibung des Moleküls, sondern eine Aussage innerhalb eines festgelegten Modells.
+Die quantenchemischen Rechnungen dieses Versuchs beschreiben die Elektronen bei vorgegebenen Positionen der
+Atomkerne. Ändert sich deren Anordnung, ändern sich auch die Wechselwirkungen und die berechnete Energie.
+So lassen sich verschiedene räumliche Strukturen desselben Moleküls miteinander vergleichen. Die Beschreibung
+elektronischer Zustände ermöglicht außerdem die Berechnung der Lichtabsorption. Struktur, Energie und Spektrum
+werden dadurch über dieselben physikalischen Grundlagen miteinander verknüpft.
 
 <figure markdown="1">
 <img src="../../figures/outputs/theoretical_quantities.svg" alt="Schematische Übersicht: Im Rechenmodell werden Atomkerne und Elektronen beschrieben. Daraus werden Molekülstrukturen, elektronische Energien und elektronische Anregungen berechnet." width="800" loading="lazy">
@@ -32,50 +34,52 @@ Größen.
 </figcaption>
 </figure>
 
-## Berechnete Größen im Versuch
-
-Die Rechnungen dieses Versuchs liefern mehrere miteinander verbundene Größen. Eine berechnete Molekülstruktur gibt die
-Positionen der Atomkerne an. Elektronische Energien ermöglichen den Vergleich verschiedener Anordnungen desselben
-Moleküls. Eine Folge von Strukturen und Energien beschreibt einen untersuchten Reaktionspfad. Berechnete Energien und
-relative Stärken elektronischer Anregungen bilden die Grundlage des dargestellten Absorptionsspektrums.
-
-Diese Ergebnisse beantworten unterschiedliche chemische Fragestellungen. Eine Struktur mit niedrigerer elektronischer Energie ist
-nicht automatisch stärker gefärbt, und ein Absorptionsspektrum bestimmt keine Reaktionsgeschwindigkeit. Für jede
-Aussage muss deshalb die dafür berechnete Größe verwendet werden.
-
 ## Rechenmodelle
 
-Ein Rechenmodell bildet gezielt diejenigen Eigenschaften eines Moleküls ab, die für eine bestimmte Fragestellung
-benötigt werden. Andere Eigenschaften werden vereinfacht oder nicht berücksichtigt. Ein Modell ist daher keine
-vollständige Kopie des untersuchten Moleküls, sondern eine festgelegte Beschreibung mit bekannten Annahmen.
+Für Moleküle wie Azobenzol lassen sich die quantenmechanischen Gleichungen nicht exakt lösen. Für praktisch
+durchführbare Rechnungen werden deshalb Näherungen benötigt. Ein Rechenmodell legt fest, wie das Molekül und
+gegebenenfalls seine Umgebung beschrieben werden und welche Vereinfachungen dabei gelten. Ein Rechenverfahren
+bestimmt daraus näherungsweise die gesuchten Größen.
 
-Das Modell legt fest, welche physikalischen Beiträge berücksichtigt werden. Ein numerisches Verfahren wertet die
-daraus entstehenden Gleichungen näherungsweise aus. Dasselbe Molekül kann deshalb je nach gesuchter Größe mit
-unterschiedlichen Modellen und Verfahren untersucht werden. Die optionalen Methodenabschnitte in der Webapp
-dokumentieren die im Versuch eingesetzten Programme, Algorithmen, Prüfungen und Darstellungsannahmen.
+Die Wahl des Modells richtet sich nach der Fragestellung. Eine Beschreibung, die Bindungslängen gut wiedergibt,
+muss nicht ebenso genaue Absorptionsenergien liefern. Im Versuch werden deshalb für Strukturen und Spektren
+unterschiedliche Näherungsverfahren eingesetzt. Die Programme und ihre konkreten Annahmen werden in den optionalen
+Methodenabschnitten der Webapp erläutert.
+
+## Berechnete Größen im Versuch
+
+An Azobenzol untersuchen Sie drei zusammenhängende Aspekte: Die Strukturoptimierung sucht eine räumliche Anordnung
+mit lokal niedriger elektronischer Energie. Der Vergleich der cis- und trans-Minimumstrukturen zeigt, welche von
+beiden im verwendeten Modell die niedrigere elektronische Energie besitzt. Die Untersuchung eines Reaktionspfads
+ergänzt diesen Vergleich um die elektronische Energiebarriere zwischen den beiden Konfigurationen.
+
+Die Spektrenrechnung untersucht dagegen die Aufnahme von Licht. Sie liefert Energien und relative Stärken
+elektronischer Anregungen, aus denen ein Absorptionsspektrum dargestellt wird. Durch den Vergleich unterschiedlich
+substituierter Azobenzole untersuchen Sie, wie Veränderungen des molekularen Aufbaus mit Veränderungen der
+Absorption zusammenhängen. Die folgenden Kapitel erläutern die dafür benötigten Begriffe und Größen.
 
 ## Vorhersagen und Prüfung
 
-Ein Rechenmodell kann Werte oder Trends für Moleküle liefern, die noch nicht experimentell untersucht wurden. Eine
-solche Vorhersage ist wissenschaftlich prüfbar, wenn die berechnete Größe, das verwendete Modell und der betrachtete
-Anwendungsbereich klar angegeben werden. Ein Modell kann für den Vergleich ähnlicher Moleküle nützlich sein, auch
-wenn einzelne berechnete Werte vom Experiment abweichen.
+Theoretische Rechnungen helfen, experimentelle Beobachtungen zu erklären und neue Untersuchungen zu planen.
+Sie können beispielsweise vorhersagen, wie sich eine Absorptionsbande durch eine Substitution verschiebt,
+bevor das betreffende Molekül hergestellt und vermessen wurde. Dafür müssen die verglichenen Moleküle,
+die berechnete Größe und die Annahmen der Rechnung angegeben werden.
 
 <figure markdown="1">
 <img src="../../figures/outputs/prediction_cycle.svg" alt="Schematischer Ablauf von der chemischen Fragestellung über Rechenmodell und Vorhersage zur Prüfung durch Experiment oder Referenzrechnung." width="800" loading="lazy">
 
 <figcaption markdown="1">
-Berechnete Vorhersagen werden durch Experimente oder geeignete Referenzrechnungen geprüft. Der Vergleich zeigt, für
-welche Fragestellungen ein Modell geeignet ist.
+Der Vergleich mit Messwerten prüft die Übereinstimmung mit dem Experiment. Referenzrechnungen mit Verfahren,
+deren Genauigkeit für die untersuchte Größe gut belegt ist, helfen, die gewählten Näherungen zu beurteilen.
 </figcaption>
 </figure>
 
-Wie genau ein konkretes Ergebnis ist, hängt vom Modell, von der untersuchten Größe und vom Molekül ab. Aufwendigere
-Verfahren können zusätzliche Wechselwirkungen berücksichtigen, liefern aber nicht automatisch genauere Ergebnisse.
-Numerische Konvergenz zeigt nur, dass ein Rechenverfahren sein festgelegtes Abbruchkriterium erreicht hat; sie belegt
-nicht die Genauigkeit des Modells.
+Die Genauigkeit muss für die jeweilige Größe und die untersuchten Moleküle beurteilt werden. Ein Modell kann
+beispielsweise die Verschiebung einer Absorptionsbande gut wiedergeben, obwohl die berechneten Bandenlagen von
+den gemessenen abweichen. Ob es einen solchen Trend zuverlässig beschreibt, lässt sich erst durch Vergleiche
+für mehrere Moleküle beurteilen.
 
-In diesem Versuch vergleichen Sie systematische Reihen substituierter Azobenzole. Wiederholt sich ein berechneter
-Trend in mehreren Reihen, können Sie daraus eine begründete Vermutung für ein weiteres Derivat entwickeln. Die
-anschließende Rechnung prüft, ob diese Vermutung innerhalb desselben Modells zutrifft. Ob der Zusammenhang auch das
-Verhalten realer Moleküle beschreibt, muss durch Experimente oder geeignete Referenzrechnungen geprüft werden.
+Im Versuch entwickeln Sie aus Ihren berechneten Spektrenreihen eine begründete Vermutung für ein weiteres
+Derivat und prüfen sie mit einer neuen Rechnung. Damit untersuchen Sie, ob sich der beobachtete Zusammenhang
+innerhalb des verwendeten Modells auf dieses Derivat übertragen lässt. Die Übereinstimmung mit einer solchen
+Vermutung ist noch keine experimentelle Bestätigung des Trends.
