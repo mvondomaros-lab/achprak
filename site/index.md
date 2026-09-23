@@ -41,3 +41,9 @@ Nach Abschluss dieses Versuches können Sie:
 - Start- und Minimumstrukturen anhand ihrer Geometrie und elektronischen Energie vergleichen, den Einfluss räumlich benachbarter Gruppen beurteilen und einen berechneten Reaktionspfad mit seinen elektronischen Energiebarrieren auswerten.
 - berechnete cis- und trans-Spektren vergleichen, einen Wellenlängenbereich mit unterschiedlicher Absorption finden und erklären, warum daraus allein keine Änderung des cis/trans-Verhältnisses folgt.
 - in systematischen Spektrenreihen Trends und Abweichungen erkennen und daraus eine begründete Vermutung für ein neues Derivat entwickeln und prüfen.
+
+<p><strong>Hinweis zur Bearbeitung:</strong> Dieses Praktikum dient dazu, einen wissenschaftlichen Arbeitsablauf
+selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus
+begrenzte Trends ableiten. Verwenden Sie für die Bearbeitung keine generative KI. Es geht nicht darum, im Voraus das
+„beste“ Derivat zu finden oder jede Vermutung zu bestätigen. Entscheidend ist, dass Sie Ihre Auswahl selbst begründen,
+die berechneten Ergebnisse sorgfältig untersuchen und auch Abweichungen dokumentieren.</p>

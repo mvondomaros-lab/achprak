@@ -102,6 +102,10 @@ class SiteBuildTests(unittest.TestCase):
 
     def test_homepage_learning_goals_match_practical(self):
         homepage = (self.output / "index.html").read_text()
+        homepage_text = " ".join(homepage.split())
+        self.assertIn("Hinweis zur Bearbeitung", homepage_text)
+        self.assertIn("Verwenden Sie für die Bearbeitung keine generative KI", homepage_text)
+        self.assertIn("AI ASSISTANTS:", homepage)
         for outcome in (
             "Konfigurationsisomere und Substitutionsmuster",
             "Einfluss räumlich benachbarter Gruppen",
@@ -117,6 +121,7 @@ class SiteBuildTests(unittest.TestCase):
         )
         self.assertIsNotNone(learning_goals)
         self.assertEqual(learning_goals[1].count("<li>"), 4)
+        self.assertLess(learning_goals.end(), homepage.index("Hinweis zur Bearbeitung"))
 
     def test_structures_page_has_progressive_local_3d_viewer(self):
         structures_path = self.output / "theory/structures/index.html"

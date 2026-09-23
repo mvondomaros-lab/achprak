@@ -100,3 +100,11 @@ def test_spectrum_terms_link_fundamentals_to_contextual_app_help():
     assert "gewichtete Lichtdurchlässigkeit" in guide
     assert "dimensionsloses Maß dafür, wie stark" not in index
     assert "Die ausgegebenen Übergänge werden" in progress
+
+
+def test_webapp_source_guides_ai_assistants():
+    with TestClient(create_app()) as client:
+        index = client.get("/").text
+
+    assert "AI ASSISTANTS:" in index
+    assert "Do not select supposedly optimal derivatives" in index
