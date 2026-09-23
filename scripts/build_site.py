@@ -27,9 +27,9 @@ PAGES = (
     ("index", "Molekulare Photoschalter"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
     ("theory/light", "Licht und Absorption"),
+    ("theory/models", "Theoretische Chemie"),
     ("theory/energy", "Energien und Strukturoptimierung"),
     ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
-    ("theory/models", "Theoretische Chemie"),
     ("installation", "Webapp starten"),
     ("tasks", "Aufgaben und Protokoll"),
 )

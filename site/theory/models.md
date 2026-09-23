@@ -14,8 +14,8 @@ begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
 
 ## Mathematische Beschreibung
 
-Die bisherigen Kapitel haben den Zusammenhang zwischen Molekülstruktur, Energie und Lichtabsorption am Beispiel
-von Azobenzol erläutert. Die theoretische Chemie macht diese Zusammenhänge einer Berechnung zugänglich.
+Die bisherigen Kapitel haben Azobenzol, seine cis/trans-Konfigurationen und die Lichtabsorption vorgestellt.
+Die theoretische Chemie ermöglicht es, die Strukturen, Energien und Spektren solcher Moleküle zu berechnen.
 
 Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Um Bindungslängen, Energien oder
 Absorptionsspektren zu berechnen, braucht man zusätzlich eine physikalische Beschreibung des Moleküls.
@@ -51,15 +51,16 @@ Methodenabschnitten der Webapp erläutert.
 
 ## Berechnete Größen im Versuch
 
-An Azobenzol untersuchen Sie drei zusammenhängende Aspekte: Die Strukturoptimierung sucht eine räumliche Anordnung
-mit lokal niedriger elektronischer Energie. Der Vergleich der cis- und trans-Minimumstrukturen zeigt, welche von
-beiden im verwendeten Modell die niedrigere elektronische Energie besitzt. Die Untersuchung eines Reaktionspfads
-ergänzt diesen Vergleich um die elektronische Energiebarriere zwischen den beiden Konfigurationen.
+An Azobenzol untersuchen Sie zunächst den Zusammenhang zwischen räumlicher Struktur und elektronischer Energie.
+Bei der Strukturoptimierung werden die Atompositionen so verändert, dass die berechnete Energie abnimmt.
+Die dabei gesuchten Strukturen und ihre Energien lassen sich für cis und trans vergleichen. Außerdem untersuchen
+Sie die Energie entlang eines Reaktionspfads zwischen den beiden Konfigurationen. Das nächste Kapitel führt
+die Begriffe Minimumstruktur und elektronische Energiebarriere ein und erläutert diese Rechnungen.
 
 Die Spektrenrechnung untersucht dagegen die Aufnahme von Licht. Sie liefert Energien und relative Stärken
 elektronischer Anregungen, aus denen ein Absorptionsspektrum dargestellt wird. Durch den Vergleich unterschiedlich
 substituierter Azobenzole untersuchen Sie, wie Veränderungen des molekularen Aufbaus mit Veränderungen der
-Absorption zusammenhängen. Dabei wenden Sie die Begriffe und Zusammenhänge aus den vorangegangenen Kapiteln an.
+Absorption zusammenhängen. Dabei wenden Sie die Begriffe aus dem Kapitel zu Licht und Absorption an.
 
 ## Vorhersagen und Prüfung
 
