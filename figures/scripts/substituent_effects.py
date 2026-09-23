@@ -1,90 +1,32 @@
 """Source for substituent_effects.svg; run directly to regenerate this figure."""
 
-from style import TEXT, REFERENCE, export, run
+from style import TEXT, export, run
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+from matplotlib.patches import FancyArrowPatch
 
 
 def draw():
-    w = 1.0
-    d = 0.5
+    ax = plt.gca()
+    ax.set(xlim=(-0.6, 5.6), ylim=(-0.65, 2.35))
+    ax.set_axis_off()
 
-    plt.axhline(0.0, **REFERENCE)
-    plt.axhline(1.0, **REFERENCE)
-
-    plt.plot([0, w], [0, 0], color="C0")
-    plt.plot([0, w], [1, 1], color="C1")
-    arrow_vert = patches.FancyArrowPatch(
-        (0.5 * w, 0),
-        (0.5 * w, 1),
-        arrowstyle="->",
-        connectionstyle="arc3,rad=0",
-        linewidth=1.5,
-        edgecolor=TEXT,
-        mutation_scale=10,
-    )
-    plt.gca().add_patch(arrow_vert)
-    plt.text(0.5 * w, 1.32, "A", weight="bold", ha="center")
-
-    plt.plot([w + d, 2 * w + d], [0, 0], color="C0")
-    plt.plot([w + d, 2 * w + d], [0.8, 0.8], color="C1")
-    arrow_vert = patches.FancyArrowPatch(
-        (1.5 * w + d, 0),
-        (1.5 * w + d, 0.8),
-        arrowstyle="->",
-        connectionstyle="arc3,rad=0",
-        linewidth=1.5,
-        edgecolor=TEXT,
-        mutation_scale=10,
-    )
-    plt.gca().add_patch(arrow_vert)
-    plt.text(1.5 * w + d, 1.32, "B.1", weight="bold", ha="center")
-
-    plt.plot([2 * w + 2 * d, 3 * w + 2 * d], [0.2, 0.2], color="C0")
-    plt.plot([2 * w + 2 * d, 3 * w + 2 * d], [1.0, 1.0], color="C1")
-    arrow_vert = patches.FancyArrowPatch(
-        (2.5 * w + 2 * d, 0.2),
-        (2.5 * w + 2 * d, 1.0),
-        arrowstyle="->",
-        connectionstyle="arc3,rad=0",
-        linewidth=1.5,
-        edgecolor=TEXT,
-        mutation_scale=10,
-    )
-    plt.gca().add_patch(arrow_vert)
-    plt.text(2.5 * w + 2 * d, 1.32, "B.2", weight="bold", ha="center")
-
-    plt.plot([3 * w + 3 * d, 4 * w + 3 * d], [0.0, 0.0], color="C0")
-    plt.plot([3 * w + 3 * d, 4 * w + 3 * d], [1.2, 1.2], color="C1")
-    arrow_vert = patches.FancyArrowPatch(
-        (3.5 * w + 3 * d, 0.0),
-        (3.5 * w + 3 * d, 1.2),
-        arrowstyle="->",
-        connectionstyle="arc3,rad=0",
-        linewidth=1.5,
-        edgecolor=TEXT,
-        mutation_scale=10,
-    )
-    plt.gca().add_patch(arrow_vert)
-    plt.text(3.5 * w + 3 * d, 1.32, "C.1", weight="bold", ha="center")
-
-    plt.plot([4 * w + 4 * d, 5 * w + 4 * d], [-0.2, -0.2], color="C0")
-    plt.plot([4 * w + 4 * d, 5 * w + 4 * d], [1.0, 1.0], color="C1")
-    arrow_vert = patches.FancyArrowPatch(
-        (4.5 * w + 4 * d, -0.2),
-        (4.5 * w + 4 * d, 1.0),
-        arrowstyle="->",
-        connectionstyle="arc3,rad=0",
-        linewidth=1.5,
-        edgecolor=TEXT,
-        mutation_scale=10,
-    )
-    plt.gca().add_patch(arrow_vert)
-    plt.text(4.5 * w + 4 * d, 1.32, "C.2", weight="bold", ha="center")
-
-    plt.grid(False)
-    plt.xticks([])
-    plt.yticks([])
+    # Each system has its own ground-state energy zero. Only gaps are compared.
+    cases = [
+        (0.5, 0.8, "Kleinere\nAnregungsenergie", "Längere Wellenlänge\n(bathochrom)"),
+        (2.5, 1.2, "Unsubstituiertes\nVergleichssystem", "Wellenlänge\ndes Vergleichssystems"),
+        (4.5, 1.6, "Größere\nAnregungsenergie", "Kürzere Wellenlänge\n(hypsochrom)"),
+    ]
+    for center, gap, heading, wavelength in cases:
+        ax.text(center, 2.12, heading, ha="center", va="center", weight="bold")
+        ax.plot([center - 0.8, center + 0.8], [0, 0], color="C0")
+        ax.plot([center - 0.8, center + 0.8], [gap, gap], color="C1")
+        ax.text(center, -0.08, "Grundzustand", ha="center", va="top", color="C0")
+        ax.text(center, gap + 0.06, "Angeregter Zustand", ha="center", va="bottom", color="C1")
+        ax.add_patch(FancyArrowPatch(
+            (center, 0), (center, gap), arrowstyle="->",
+            linewidth=1.5, color=TEXT, mutation_scale=10,
+        ))
+        ax.text(center, -0.4, wavelength, ha="center", va="center")
 
 
 def render(output_dir=None, formats=("svg",)):

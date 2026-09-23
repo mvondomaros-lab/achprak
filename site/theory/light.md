@@ -140,13 +140,14 @@ diese Wechselwirkungen. Aus der Einordnung als Donator oder Akzeptor allein ergi
 keine feste Reihenfolge der Absorptionsmaxima für alle Substitutionsmuster.
 
 <figure markdown="1">
-<img src="../../figures/outputs/substituent_effects.svg" alt="Schematische Energieniveaus mit kleineren und größeren Anregungsenergien gegenüber einem Vergleichssystem." width="700" loading="lazy">
+<img src="../../figures/outputs/substituent_effects.svg" alt="Drei schematische Energieniveausysteme: Eine kleinere Anregungsenergie als im unsubstituierten Vergleichssystem entspricht einer längeren Wellenlänge, eine größere einer kürzeren. Die Pfeile verbinden jeweils Grundzustand und angeregten Zustand." width="700" loading="lazy">
 
 <figcaption markdown="1">
-Einfluss von Substituenten auf die Anregungsenergie: A zeigt das Vergleichssystem,
-B.1 und B.2 kleinere, C.1 und C.2 größere Energiedifferenzen. Die vertikalen Pfeile
-stehen für die Anregungsenergien. Die Höhen der Niveaus sind keine direkt vergleichbaren
-Gesamtenergien verschiedener Moleküle.
+Mögliche Verschiebungen eines elektronischen Übergangs durch Substitution.
+Die Pfeillänge zeigt die Anregungsenergie: Ein kleinerer Abstand zwischen Grundzustand und angeregtem
+Zustand entspricht einer längeren Wellenlänge, ein größerer einer kürzeren.
+Für jedes Molekül ist die Energie seines eigenen Grundzustands als Nullpunkt gewählt;
+verglichen werden die Energieabstände, nicht die Gesamtenergien der Moleküle.
 </figcaption>
 </figure>
 
