@@ -30,23 +30,34 @@ def draw():
     span = 0.1 * xrange  # 10% of total width
 
     def potential_arrow(center):
-        # Follow the same potential, translated vertically by a constant gap.
+        # Offset along screen-space normals: a vertical offset narrows on slopes.
+        ax = plt.gca()
         arrow_x = np.linspace(center - span / 2, center + span / 2, 101)
         arrow_y = (
             2.7 * arrow_x**4 - 1.6 * arrow_x**2 + 0.2 * arrow_x
-            - np.min(y0) + 0.045
+            - np.min(y0)
         )
+        points = ax.transData.transform(np.column_stack((arrow_x, arrow_y)))
+        slopes = 10.8 * arrow_x**3 - 3.2 * arrow_x + 0.2
+        # Transform analytical tangents using the finalized axes aspect ratio.
+        tangents = (
+            ax.transData.transform(np.column_stack((arrow_x + 1, arrow_y + slopes)))
+            - points
+        )
+        normals = np.column_stack((-tangents[:, 1], tangents[:, 0]))
+        normals /= np.linalg.norm(normals, axis=1, keepdims=True)
+        gap_pixels = 10 * plt.gcf().dpi / 72  # 10 typographic points.
+        offset = ax.transData.inverted().transform(points + gap_pixels * normals)
         arrow = patches.FancyArrowPatch(
-            path=Path(np.column_stack((arrow_x, arrow_y))),
+            path=Path(offset),
             arrowstyle="<->",
             linewidth=1.5,
             edgecolor=TEXT,
             mutation_scale=10,
         )
-        plt.gca().add_patch(arrow)
+        ax.add_patch(arrow)
 
     for (xm, ym), conf in zip(min_positions, ["trans", "cis"]):
-        potential_arrow(xm)
         plt.text(xm, ym + 0.12, conf, ha="center", va="bottom")
 
     # indices of local maxima
@@ -55,7 +66,6 @@ def draw():
     imax = max_indices[np.argmax(y[max_indices])]
     x_ts, y_ts = x[imax], y[imax]
 
-    potential_arrow(x_ts)
     plt.text(x_ts, y_ts + 0.10, "TS", ha="center", va="bottom")
 
     plt.plot([-0.7, 0.0], [0.0, 0.0], **REFERENCE)
@@ -76,6 +86,12 @@ def draw():
     plt.yticks([])
     plt.xlabel("Reaktionskoordinate")
     plt.ylabel("Energie")
+
+    # Resolve constrained layout before constructing equal-distance offsets.
+    plt.gcf().canvas.draw()
+    for xm, _ in min_positions:
+        potential_arrow(xm)
+    potential_arrow(x_ts)
 
 
 def render(output_dir=None, formats=("svg",)):
