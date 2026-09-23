@@ -25,10 +25,20 @@ DIAGRAM_HEADING = 13.5
 DIAGRAM_TITLE = 15
 
 
-def export(draw, name, output_dir=None, formats=("svg",)):
+def export(draw, name, output_dir=None, formats=("svg",), *, display_width=600):
     output_dir = Path(output_dir or Path(__file__).resolve().parents[1] / "outputs")
     output_dir.mkdir(parents=True, exist_ok=True)
-    with plt.rc_context(STYLE):
+    # Keep the existing canvas/layout while compensating for its published width.
+    # Match body labels, ticks and axis titles to the larger teaching diagrams.
+    label_size = DIAGRAM_BODY * 760 / display_width
+    figure_style = {
+        **STYLE,
+        "font.size": label_size,
+        "axes.labelsize": label_size,
+        "xtick.labelsize": label_size,
+        "ytick.labelsize": label_size,
+    }
+    with plt.rc_context(figure_style):
         fig, ax = plt.subplots(figsize=(8, 4.8), layout="constrained")
         style_axes(ax)
         try:

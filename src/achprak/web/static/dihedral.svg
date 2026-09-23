@@ -133,14 +133,14 @@ z
     <path d="M 17.130628 125.811693 
 Q 83.348308 125.811693 147.888938 125.811693 
 " style="fill: none; stroke: #c77825; stroke-width: 1.5; stroke-linecap: round"/>
-    <path d="M 143.088938 123.411693 
+    <path d="M 141.808938 122.771693 
 L 147.888938 125.811693 
-L 143.088938 128.211693 
+L 141.808938 128.851693 
 " style="fill: none; stroke: #c77825; stroke-width: 1.5; stroke-linecap: round"/>
    </g>
    <g id="text_1">
     <!-- Blickrichtung -->
-    <g style="fill: #c77825" transform="translate(15.127889 110.652131) scale(0.13 -0.13)">
+    <g style="fill: #c77825" transform="translate(15.127889 110.652131) scale(0.15 -0.15)">
      <defs>
       <path id="ArialMT-42" d="M 469 0 
 L 469 4581 
@@ -432,7 +432,7 @@ z
    </g>
    <g id="text_2">
     <!-- φ -->
-    <g style="fill: #c77825" transform="translate(466.138059 131.240521) scale(0.21 -0.21)">
+    <g style="fill: #c77825" transform="translate(467.434934 130.206459) scale(0.17 -0.17)">
      <defs>
       <path id="ArialMT-3c6" d="M 1559 3384 
 L 1450 2897 
@@ -473,7 +473,7 @@ z
    </g>
    <g id="text_3">
     <!-- Blick entlang N=N -->
-    <g style="fill: #192d43" transform="translate(381.688199 31.822411) scale(0.13 -0.13)">
+    <g style="fill: #192d43" transform="translate(373.712261 31.822411) scale(0.15 -0.15)">
      <defs>
       <path id="ArialMT-20" transform="scale(0.015625)"/>
       <path id="ArialMT-65" d="M 2694 1069 
@@ -591,7 +591,7 @@ z
    </g>
    <g id="text_4">
     <!-- N-Atome hintereinander -->
-    <g style="fill: #586b80" transform="translate(369.836167 213.737151) scale(0.12 -0.12)">
+    <g style="fill: #586b80" transform="translate(353.912261 213.737151) scale(0.15 -0.15)">
      <defs>
       <path id="ArialMT-2d" d="M 203 1375 
 L 203 1941 

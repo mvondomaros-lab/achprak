@@ -6,6 +6,11 @@ from style import TEXT, export, run
 import matplotlib.pyplot as plt
 from matplotlib.patches import Arc, Circle
 
+# The popover's 538 px content width renders 15 pt labels at 14 CSS px,
+# matching its explanatory text. Atom/angle symbols are slightly larger.
+LABEL_SIZE = 15
+SYMBOL_SIZE = 17
+
 
 def draw():
     # Schematic views, not calculated coordinates or a measured angle.
@@ -42,7 +47,7 @@ def draw():
             element,
             ha="center",
             va="center",
-            fontsize=17,
+            fontsize=SYMBOL_SIZE,
             color=TEXT,
             zorder=4,
         )
@@ -63,7 +68,7 @@ def draw():
         xytext=(0, 0),
         arrowprops={"arrowstyle": "->", "color": ochre, "lw": 1.5},
     )
-    ax.text(0, 0.25, "Blickrichtung", fontsize=13, color=ochre)
+    ax.text(0, 0.25, "Blickrichtung", fontsize=LABEL_SIZE, color=ochre)
 
     # End-on projection: the N atoms coincide, and the N–C projections define φ.
     center, lower, upper = (6.7, 0), (7.7, -1), (7.7, 1)
@@ -80,14 +85,14 @@ def draw():
     ax.add_patch(
         Arc(center, 1.3, 1.3, theta1=-45, theta2=45, color=ochre, linewidth=1.5)
     )
-    ax.text(7.55, 0, "φ", color=ochre, fontsize=21, ha="center", va="center")
-    ax.text(6.9, 1.55, "Blick entlang N=N", ha="center", fontsize=13, color=TEXT)
+    ax.text(7.55, 0, "φ", color=ochre, fontsize=SYMBOL_SIZE, ha="center", va="center")
+    ax.text(6.9, 1.55, "Blick entlang N=N", ha="center", fontsize=LABEL_SIZE, color=TEXT)
     ax.text(
         6.9,
         -1.45,
         "N-Atome hintereinander",
         ha="center",
-        fontsize=12,
+        fontsize=LABEL_SIZE,
         color=plt.rcParams["axes.labelcolor"],
     )
 

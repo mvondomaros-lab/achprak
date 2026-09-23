@@ -88,7 +88,7 @@ def draw():
 
 
 def render(output_dir=None, formats=("svg",)):
-    export(draw, "substituent_effects", output_dir, formats)
+    export(draw, "substituent_effects", output_dir, formats, display_width=700)
 
 
 if __name__ == "__main__":

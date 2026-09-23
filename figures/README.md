@@ -49,6 +49,12 @@ Review rendered figures before committing regenerated artwork.
 `src/achprak/plot_style.py` defines the shared Matplotlib palette, typography,
 line weights, markers and axes for teaching figures, app exports and the spectral
 validation plot. `scripts/style.py` adds the teaching-figure export setup.
+Its `display_width` matches the published desktop image width (600 px by default,
+700 px for the substituent diagram, 760 px for full-width diagrams). Labels,
+axis titles and ticks render at about 16 CSS px regardless of that width;
+diagram headings retain their shared larger type scale. The angle popover uses
+14 px labels to match the app's help text. Narrow screens scale each SVG as a
+whole. When changing a published image width, update its export setting too.
 The app's Chart.js `plotStyle` uses the same colors and point-to-pixel equivalents.
 Figure-specific data and
 annotations belong in the individual source files. Schematic diagrams retain
