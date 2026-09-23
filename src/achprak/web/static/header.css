@@ -18,6 +18,9 @@
   border-bottom: 3px solid #2673f2;
 }
 .header .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   flex-shrink: 1;
   min-width: 0;
   max-width: 100%;
@@ -28,6 +31,8 @@
   letter-spacing: -0.5px;
   text-decoration: none;
 }
+.header .brand-mark { display: block; width: 44px; height: 44px; flex: none; }
+.header .brand-text { min-width: 0; }
 .header .brand small { display: block; margin-top: 2px; color: #b7c9df; font-size: 13px; font-weight: 400; line-height: 1.3; letter-spacing: 0; }
 .header :is(button, .quiet) {
   display: inline-flex;
@@ -48,4 +53,5 @@
 @media (max-width: 720px) {
   .header { position: static; flex-wrap: wrap; gap: 12px; }
   .header .brand { font-size: 18px; }
+  .header .brand-mark { width: 40px; height: 40px; }
 }

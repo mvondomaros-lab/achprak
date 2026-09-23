@@ -69,6 +69,9 @@ def build(output: Path = OUTPUT) -> None:
         shutil.copy2(
             ROOT / "src/achprak/web/static/header.css", stage / "assets/header.css"
         )
+        shutil.copy2(
+            ROOT / "src/achprak/web/static/brand-mark.svg", stage / "assets/brand-mark.svg"
+        )
         vendor = stage / "assets/vendor"
         vendor.mkdir(parents=True, exist_ok=True)
         for name in ("ngl.js", "NGL-LICENSE"):
