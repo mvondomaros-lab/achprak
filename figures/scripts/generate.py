@@ -18,6 +18,8 @@ FIGURES = (
     "energy_profile",
     "photoswitch",
     "substituent_effects",
+    "theoretical_quantities",
+    "prediction_cycle",
 )
 
 

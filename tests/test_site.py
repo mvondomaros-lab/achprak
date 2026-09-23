@@ -84,7 +84,7 @@ class SiteBuildTests(unittest.TestCase):
         self.assertEqual(
             page.tags.count("details"), 9
         )  # Nine optional explanations across five chapters.
-        self.assertEqual(page.tags.count("figure"), 17)
+        self.assertEqual(page.tags.count("figure"), 18)
         self.assertEqual(page.tags.count("math"), 22)
         self.assertEqual(text.count('display="block"'), 5)
         for anchor in (
@@ -122,6 +122,19 @@ class SiteBuildTests(unittest.TestCase):
         self.assertIsNotNone(learning_goals)
         self.assertEqual(learning_goals[1].count("<li>"), 4)
         self.assertLess(learning_goals.end(), homepage.index("Hinweis zur Bearbeitung"))
+
+    def test_theoretical_chemistry_is_conceptual_without_black_box(self):
+        models = (self.output / "theory/models/index.html").read_text()
+        for heading in (
+            "Mathematische Beschreibung",
+            "Berechnete Größen im Versuch",
+            "Rechenmodelle",
+            "Vorhersagen und Prüfung",
+        ):
+            self.assertIn(heading, models)
+        self.assertNotIn("black_box.png", models)
+        self.assertIn("theoretical_quantities.svg", models)
+        self.assertIn("prediction_cycle.svg", models)
 
     def test_structures_page_has_progressive_local_3d_viewer(self):
         structures_path = self.output / "theory/structures/index.html"

@@ -12,42 +12,70 @@ weiteren Studium der theoretischen Chemie vertieft: im 3. oder 4. Semester sowie
 5. oder 6. Semester. Die Zuordnung richtet sich jeweils danach, ob das Studium im Winter- oder Sommersemester
 begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
 
+## Mathematische Beschreibung
+
+Eine Strukturformel zeigt, welche Atome miteinander verbunden sind. Aus ihr folgen jedoch nicht unmittelbar die
+genauen Atompositionen, die elektronische Energie oder das Absorptionsspektrum. Die theoretische Chemie beschreibt
+Zusammenhänge zwischen dem Aufbau eines Moleküls und solchen Größen mathematisch.
+
+Dabei werden die Atomkerne durch ihre Atomsorten und Positionen beschrieben. Die Elektronen bestimmen wesentlich
+die chemischen Bindungen, die elektronische Energie und die Wechselwirkung mit Licht. Für Moleküle mit vielen
+Elektronen lassen sich diese Zusammenhänge nicht ohne Näherungen berechnen. Das Ergebnis einer Rechnung ist daher
+keine vollständige Beschreibung des Moleküls, sondern eine Aussage innerhalb eines festgelegten Modells.
+
+<figure markdown="1">
+<img src="../../figures/outputs/theoretical_quantities.svg" alt="Schematische Übersicht: Im Rechenmodell werden Atomkerne und Elektronen beschrieben. Daraus werden Geometrien, elektronische Energien und elektronische Anregungen berechnet." width="800" loading="lazy">
+
+<figcaption markdown="1">
+Die Beschreibung von Atomkernen und Elektronen verbindet den molekularen Aufbau mit den im Versuch berechneten
+Größen.
+</figcaption>
+</figure>
+
+## Berechnete Größen im Versuch
+
+Die Rechnungen dieses Versuchs liefern mehrere miteinander verbundene Größen. Eine Geometrie gibt die berechneten
+Positionen der Atomkerne an. Elektronische Energien ermöglichen den Vergleich verschiedener Anordnungen desselben
+Moleküls. Eine Folge von Geometrien und Energien beschreibt einen untersuchten Reaktionspfad. Berechnete Energien und
+relative Stärken elektronischer Anregungen bilden die Grundlage des dargestellten Absorptionsspektrums.
+
+Diese Ergebnisse beantworten unterschiedliche chemische Fragestellungen. Eine energetisch günstigere Geometrie ist
+nicht automatisch stärker gefärbt, und ein Absorptionsspektrum bestimmt keine Reaktionsgeschwindigkeit. Für jede
+Aussage muss deshalb die dafür berechnete Größe verwendet werden.
+
 ## Rechenmodelle
 
 Ein Rechenmodell bildet gezielt diejenigen Eigenschaften eines Moleküls ab, die für eine bestimmte Fragestellung
 benötigt werden. Andere Eigenschaften werden vereinfacht oder nicht berücksichtigt. Ein Modell ist daher keine
 vollständige Kopie des untersuchten Moleküls, sondern eine festgelegte Beschreibung mit bekannten Annahmen.
 
-Jede Rechnung verwendet definierte Eingaben, etwa eine Molekülstruktur, und liefert bestimmte Ergebnisse wie
-eine optimierte Geometrie, eine Energiedifferenz oder ein Spektrum. Die folgende Abbildung stellt diesen
-Zusammenhang als *Blackbox* dar: Das Rechenverfahren zwischen Eingabe und Ausgabe ist darin nicht im Detail gezeigt.
+Das Modell legt fest, welche physikalischen Beiträge berücksichtigt werden. Ein numerisches Verfahren wertet die
+daraus entstehenden Gleichungen näherungsweise aus. Dasselbe Molekül kann deshalb je nach gesuchter Größe mit
+unterschiedlichen Modellen und Verfahren untersucht werden. Die optionalen Methodenabschnitte in der Webapp
+dokumentieren die im Versuch eingesetzten Programme, Algorithmen, Prüfungen und Darstellungsannahmen.
+
+## Vorhersagen und Prüfung
+
+Ein Rechenmodell kann Werte oder Trends für Moleküle liefern, die noch nicht experimentell untersucht wurden. Eine
+solche Vorhersage ist wissenschaftlich prüfbar, wenn die berechnete Größe, das verwendete Modell und der betrachtete
+Anwendungsbereich klar angegeben werden. Ein Modell kann für den Vergleich ähnlicher Moleküle nützlich sein, auch
+wenn einzelne berechnete Werte vom Experiment abweichen.
 
 <figure markdown="1">
-<img src="../../figures/commons/black_box.png" alt="Schematische Darstellung einer Blackbox mit Eingabe und Ausgabe." loading="lazy">
+<img src="../../figures/outputs/prediction_cycle.svg" alt="Schematischer Ablauf von der chemischen Fragestellung über Rechenmodell und Vorhersage zur Prüfung durch Experiment oder Referenzrechnung." width="800" loading="lazy">
 
 <figcaption markdown="1">
-Krauss, Lizenz: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Blackbox3D.png).
+Berechnete Vorhersagen werden durch Experimente oder geeignete Referenzrechnungen geprüft. Der Vergleich zeigt, für
+welche Fragestellungen ein Modell geeignet ist.
 </figcaption>
 </figure>
 
-Dasselbe Molekül kann je nach gesuchter Größe mit unterschiedlichen Modellen untersucht werden. Die optionalen
-Methodenabschnitte in der Webapp erläutern, wie die jeweiligen Programme aus den Eingaben Ergebnisse erzeugen,
-welche numerischen Prüfungen sie ausführen und welche Annahmen für die Darstellung gelten.
+Wie genau ein konkretes Ergebnis ist, hängt vom Modell, von der untersuchten Größe und vom Molekül ab. Aufwendigere
+Verfahren können zusätzliche Wechselwirkungen berücksichtigen, liefern aber nicht automatisch genauere Ergebnisse.
+Numerische Konvergenz zeigt nur, dass ein Rechenverfahren sein festgelegtes Abbruchkriterium erreicht hat; sie belegt
+nicht die Genauigkeit des Modells.
 
-## Aussagekraft
-
-Wie genau ein konkretes Ergebnis ist, hängt von der Methode, der untersuchten Eigenschaft und dem Molekül ab.
-Aufwendigere Verfahren können zusätzliche Wechselwirkungen berücksichtigen, benötigen aber meist mehr Rechenzeit.
-Sie liefern für eine bestimmte Fragestellung nicht automatisch genauere Ergebnisse; eine längere Rechenzeit allein
-belegt keine höhere Genauigkeit.
-
-Viele Rechenverfahren bestimmen ein Ergebnis schrittweise. Numerische Konvergenz bedeutet, dass sich die berechneten
-Werte innerhalb festgelegter Kriterien nicht mehr wesentlich ändern. Sie zeigt, dass das Verfahren ein numerisch
-stabiles Ergebnis erreicht hat. Daraus folgt jedoch nicht, dass das verwendete Modell alle relevanten physikalischen
-Effekte erfasst oder dass das Ergebnis mit einem Experiment übereinstimmt.
-
-Dieser Versuch verwendet schnelle Näherungsverfahren. Berechnete Energieunterschiede und Bandenlagen können
-deshalb merklich vom Experiment abweichen. Auch relative Verschiebungen der Absorptionsmaxima innerhalb einer
-Reihe unterschiedlich substituierter Azobenzole sind Vorhersagen des verwendeten Modells. Ob ein berechneter
-Trend das Verhalten der untersuchten Moleküle wiedergibt, muss durch Experimente oder geeignete
-Referenzrechnungen geprüft werden.
+In diesem Versuch vergleichen Sie systematische Reihen substituierter Azobenzole. Wiederholt sich ein berechneter
+Trend in mehreren Reihen, können Sie daraus eine begründete Vermutung für ein weiteres Derivat entwickeln. Die
+anschließende Rechnung prüft, ob diese Vermutung innerhalb desselben Modells zutrifft. Ob der Zusammenhang auch das
+Verhalten realer Moleküle beschreibt, muss durch Experimente oder geeignete Referenzrechnungen geprüft werden.

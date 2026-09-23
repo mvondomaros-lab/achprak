@@ -15,6 +15,8 @@ Each generated illustration has its own executable source in `scripts/`:
 | `energy_profile.py` | `outputs/energy_profile.svg` |
 | `photoswitch.py` | `outputs/photoswitch.svg` |
 | `substituent_effects.py` | `outputs/substituent_effects.svg` |
+| `theoretical_quantities.py` | `outputs/theoretical_quantities.svg` |
+| `prediction_cycle.py` | `outputs/prediction_cycle.svg` |
 | `azobenzene.py` | `drawings/azobenzene.svg` |
 | `azobenzene_4_methoxy_4_prime_nitro.py` | `drawings/azobenzene_4_methoxy_4_prime_nitro.svg` |
 | `azobenzene_cis.py` | `drawings/azobenzene_cis.svg` |

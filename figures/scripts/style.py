@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from achprak.plot_style import (
     STYLE,
     TEXT,
+    MUTED,
     REFERENCE,
     STICK_WIDTH,
     MARKER_SIZE,

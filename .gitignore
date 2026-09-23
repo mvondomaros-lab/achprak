@@ -29,6 +29,8 @@ __pycache__/
 !/figures/outputs/energy_profile.svg
 !/figures/outputs/photoswitch.svg
 !/figures/outputs/substituent_effects.svg
+!/figures/outputs/theoretical_quantities.svg
+!/figures/outputs/prediction_cycle.svg
 
 # System files.
 .DS_Store
