@@ -299,7 +299,7 @@ def build():
     doc.add_heading("Freie Untersuchung", 1)
     task("task-plan-experiment-series")
     answer(
-        "Name und Substitutionsmuster des eigenen Derivats: [Name]\n"
+        "Auswahlpositionen und Substituenten des eigenen Derivats: [Positionen und Gruppen]\n"
         "Bezug zur systematischen Reihe und Begründung der Auswahl: [Ergebnis und Begründung]\n"
         "Vermutung: [Ihre Vermutung vor den Rechnungen]"
     )
@@ -323,9 +323,9 @@ def build():
     answer(
         "Vergleich der vollständigen Spektren und Prüfung der Vermutung: [Stützt das Ergebnis den zugrunde gelegten Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
     )
-    answer("Gruppenresultat mit der kleinsten Energie des Absorptionsmaximums: [Name und Energie]")
+    answer("Gruppenresultat mit der kleinsten Energie des Absorptionsmaximums: [Positionen, Gruppen und Energie]")
     answer(
-        "Stärkster vorhergesagter cis/trans-Farbunterschied: [Name und Farben]"
+        "Stärkster vorhergesagter cis/trans-Farbunterschied: [Positionen, Gruppen und Farben]"
     )
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc.save(OUTPUT)

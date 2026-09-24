@@ -23,9 +23,7 @@ suchen in den Spektren nach einem Energiebereich, in dem eine Konfiguration stä
 
 In der Gruppe untersuchen Sie systematische Substituentenreihen, vergleichen Positions- und Mehrfachsubstitution und
 prüfen, welche Trends und Abweichungen in den berechneten Spektren auftreten. Aus diesen Ergebnissen entwickeln Sie
-eine begründete Vermutung für ein selbst gewähltes Derivat und prüfen sie an dessen cis- und trans-Konfiguration.
-Die Rechnungen simulieren nicht den Ablauf nach der Lichtabsorption: Aus den Spektren lässt sich eine bevorzugte
-Anregung, aber keine Ausbeute der Photoisomerisierung ableiten.
+eine begründete Vermutung für das Design eines selbst gewählten Derivats.
 
 Der Versuch findet ausschließlich am Computer statt. Sie arbeiten mit digitalen Molekülmodellen und nicht mit
 Laborchemikalien. Das bedeutet:
@@ -39,16 +37,15 @@ Laborchemikalien. Das bedeutet:
 Nach Abschluss dieses Versuches können Sie:
 
 - Konfigurationsisomere und Substitutionsmuster in Strukturformeln und 3D-Modellen unterscheiden.
-- Start- und Minimumstrukturen anhand von Diederwinkel, Ringabstand und elektronischer Energie vergleichen, den
-  Einfluss räumlich benachbarter Gruppen beurteilen und einen berechneten Reaktionspfad mit seinen elektronischen
-  Energiebarrieren auswerten.
-- berechnete Spektren vergleichen, einen Energiebereich mit unterschiedlicher Absorption finden und erklären, warum
-  daraus allein keine Änderung des cis/trans-Verhältnisses folgt.
-- in systematischen Spektrenreihen Trends und Abweichungen erkennen, eine begründete Vermutung für ein neues Derivat
-  entwickeln und prüfen.
+- Start- und Minimumstrukturen anhand geometrischer Kriterien und der elektronischen Energie vergleichen und einen
+  berechneten Reaktionspfad mit seinen elektronischen Energiebarrieren auswerten.
+- berechnete Spektren vergleichen und einen Bereich von Anregungsenergien mit unterschiedlicher Absorption finden.
+- in systematischen Spektrenreihen Trends und Abweichungen erkennen und daraus eine begründete Vermutung für ein neues
+  Derivat entwickeln und prüfen.
 
 <p><strong>Hinweis zur Bearbeitung:</strong> Dieses Praktikum dient dazu, einen wissenschaftlichen Arbeitsablauf
 selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus
 begrenzte Trends ableiten. Verwenden Sie für die Bearbeitung keine generative KI. Es geht nicht darum, im Voraus das
-„beste“ Derivat zu finden. Ihre Vermutung muss sich nicht bestätigen. Entscheidend ist, dass Sie Ihre Auswahl selbst begründen,
+„beste“ Derivat zu finden. Vermutungen dürfen sich auch als falsch erweisen. Entscheidend ist, dass Sie Ihre Auswahl
+selbst begründen,
 die berechneten Ergebnisse sorgfältig untersuchen und auch Abweichungen dokumentieren.</p>

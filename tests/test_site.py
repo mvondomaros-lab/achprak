@@ -82,8 +82,8 @@ class SiteBuildTests(unittest.TestCase):
         )
         page = Document(text)
         self.assertEqual(
-            page.tags.count("details") - text.count('class="image-credit"'), 11
-        )  # Eleven optional explanations across five chapters.
+            page.tags.count("details") - text.count('class="image-credit"'), 12
+        )  # Twelve optional explanations across five chapters.
         self.assertEqual(page.tags.count("figure"), 18)
         self.assertEqual(page.tags.count("math"), 23)
         self.assertEqual(text.count('display="block"'), 5)
@@ -104,18 +104,17 @@ class SiteBuildTests(unittest.TestCase):
     def test_homepage_learning_goals_match_practical(self):
         homepage = (self.output / "index.html").read_text()
         homepage_text = " ".join(homepage.split())
-        self.assertNotRegex(homepage_text, re.compile(r"geometr", re.I))
+        self.assertIn("geometrischer Kriterien", homepage_text)
         self.assertIn("Hinweis zur Bearbeitung", homepage_text)
         self.assertIn("Verwenden Sie für die Bearbeitung keine generative KI", homepage_text)
         self.assertIn("AI ASSISTANTS:", homepage)
         for outcome in (
             "Konfigurationsisomere und Substitutionsmuster",
-            "Einfluss räumlich benachbarter Gruppen",
-            "keine Änderung des cis/trans-Verhältnisses",
+            "Bereich von Anregungsenergien",
             "systematischen Spektrenreihen Trends und Abweichungen",
             "begründete Vermutung für ein neues Derivat",
         ):
-            self.assertIn(outcome, homepage)
+            self.assertIn(outcome, homepage_text)
         learning_goals = re.search(
             r'<h2 id="lernziele">.*?</h2>\s*<p>.*?</p>\s*<ul>(.*?)</ul>',
             homepage,
@@ -123,6 +122,7 @@ class SiteBuildTests(unittest.TestCase):
         )
         self.assertIsNotNone(learning_goals)
         self.assertEqual(learning_goals[1].count("<li>"), 4)
+        self.assertNotIn("cis/trans-Verhältnisses", learning_goals[1])
         self.assertLess(learning_goals.end(), homepage.index("Hinweis zur Bearbeitung"))
 
     def test_theoretical_chemistry_is_conceptual_without_black_box(self):
