@@ -78,7 +78,10 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "ortho-, meta- und para-Substitution" not in guide_text
         assert "trans-Push–Pull-Systeme" in guide_text
         assert "welcher Substituent das Absorptionsmaximum" not in guide_text
-        assert "keine Änderung des cis/trans-Verhältnisses ableiten lässt" in guide_text
+        prediction_limit = (
+            "nicht vorhersagen lässt, wie sich das cis/trans-Verhältnis unter Bestrahlung verändert"
+        )
+        assert prediction_limit in guide_text and prediction_limit in text
         for field in (
             "Sterischer Einfluss und Vergleich",
             "Zugeordnete Reihe",
