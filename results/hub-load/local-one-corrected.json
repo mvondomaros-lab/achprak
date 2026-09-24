@@ -1,0 +1,239 @@
+{
+  "started_utc": "2026-09-24T09:39:27.664232+00:00",
+  "client_platform": "macOS-27.0-arm64-arm-64bit",
+  "transport": "local Unix socket, no Hub or network proxy",
+  "cases": [
+    {
+      "case": "trans-H",
+      "settings": {
+        "configuration": "trans",
+        "substituents": [
+          "H",
+          "H",
+          "H",
+          "H",
+          "H",
+          "H",
+          "H",
+          "H",
+          "H",
+          "H"
+        ]
+      },
+      "jobs": [
+        {
+          "kind": "template",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.002,
+          "queue_observed_s": 1.005,
+          "total_s": 2.009,
+          "server_elapsed_s": 1.8,
+          "polls": 3,
+          "converged": null,
+          "atom_count": 24
+        },
+        {
+          "kind": "minimum",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.002,
+          "queue_observed_s": 1.004,
+          "total_s": 3.014,
+          "server_elapsed_s": 2.3,
+          "polls": 4,
+          "converged": true,
+          "atom_count": 24
+        },
+        {
+          "kind": "uvvis",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.003,
+          "queue_observed_s": 1.004,
+          "total_s": 6.025,
+          "server_elapsed_s": 5.8,
+          "polls": 7,
+          "converged": null,
+          "atom_count": null
+        }
+      ],
+      "workflow_s": 11.047,
+      "http_requests": 18
+    },
+    {
+      "case": "trans-NMe2-NMe2",
+      "settings": {
+        "configuration": "trans",
+        "substituents": [
+          "NMe2",
+          "H",
+          "H",
+          "H",
+          "H",
+          "NMe2",
+          "H",
+          "H",
+          "H",
+          "H"
+        ]
+      },
+      "jobs": [
+        {
+          "kind": "template",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.002,
+          "queue_observed_s": 1.004,
+          "total_s": 2.013,
+          "server_elapsed_s": 1.8,
+          "polls": 3,
+          "converged": null,
+          "atom_count": 40
+        },
+        {
+          "kind": "minimum",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.004,
+          "queue_observed_s": 1.005,
+          "total_s": 5.044,
+          "server_elapsed_s": 4.0,
+          "polls": 6,
+          "converged": true,
+          "atom_count": 40
+        },
+        {
+          "kind": "uvvis",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.008,
+          "queue_observed_s": 1.005,
+          "total_s": 9.047,
+          "server_elapsed_s": 8.3,
+          "polls": 10,
+          "converged": null,
+          "atom_count": null
+        }
+      ],
+      "workflow_s": 16.105,
+      "http_requests": 23
+    },
+    {
+      "case": "trans-NMe2-CF3",
+      "settings": {
+        "configuration": "trans",
+        "substituents": [
+          "NMe2",
+          "H",
+          "H",
+          "H",
+          "H",
+          "CF3",
+          "H",
+          "H",
+          "H",
+          "H"
+        ]
+      },
+      "jobs": [
+        {
+          "kind": "template",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.004,
+          "queue_observed_s": 1.005,
+          "total_s": 2.015,
+          "server_elapsed_s": 1.5,
+          "polls": 3,
+          "converged": null,
+          "atom_count": 35
+        },
+        {
+          "kind": "minimum",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.005,
+          "queue_observed_s": 1.005,
+          "total_s": 4.029,
+          "server_elapsed_s": 3.3,
+          "polls": 5,
+          "converged": true,
+          "atom_count": 35
+        },
+        {
+          "kind": "uvvis",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.005,
+          "queue_observed_s": 1.005,
+          "total_s": 9.041,
+          "server_elapsed_s": 8.3,
+          "polls": 10,
+          "converged": null,
+          "atom_count": null
+        }
+      ],
+      "workflow_s": 15.085,
+      "http_requests": 22
+    },
+    {
+      "case": "cis-CF3-CF3",
+      "settings": {
+        "configuration": "cis",
+        "substituents": [
+          "CF3",
+          "H",
+          "H",
+          "H",
+          "H",
+          "CF3",
+          "H",
+          "H",
+          "H",
+          "H"
+        ]
+      },
+      "jobs": [
+        {
+          "kind": "template",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.002,
+          "queue_observed_s": 1.005,
+          "total_s": 2.011,
+          "server_elapsed_s": 1.8,
+          "polls": 3,
+          "converged": null,
+          "atom_count": 30
+        },
+        {
+          "kind": "minimum",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.003,
+          "queue_observed_s": 1.005,
+          "total_s": 4.034,
+          "server_elapsed_s": 3.5,
+          "polls": 5,
+          "converged": true,
+          "atom_count": 30
+        },
+        {
+          "kind": "uvvis",
+          "status": "complete",
+          "error": null,
+          "submit_s": 0.01,
+          "queue_observed_s": 1.005,
+          "total_s": 9.047,
+          "server_elapsed_s": 8.0,
+          "polls": 10,
+          "converged": null,
+          "atom_count": null
+        }
+      ],
+      "workflow_s": 15.092,
+      "http_requests": 22
+    }
+  ]
+}

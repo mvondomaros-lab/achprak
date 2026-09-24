@@ -1,0 +1,602 @@
+{
+  "started_utc": "2026-09-24T09:31:29.259197+00:00",
+  "origin": "https://lserver.chemie.uni-marburg.de",
+  "hub_prefix": "/jhub",
+  "client_platform": "macOS-27.0-arm64-arm-64bit",
+  "scenario_settings": [
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    }
+  ],
+  "measurement": "Client-side HTTP timings; no host CPU or memory sampling",
+  "phase": {
+    "scenario": "baseline",
+    "users": 12,
+    "preparation_s": 3.958,
+    "workload_s": 16.02,
+    "ready_users": 4,
+    "http_requests": 118,
+    "http_latency_p50_s": 0.06,
+    "http_latency_p95_s": 2.403,
+    "http_latency_max_s": 2.436,
+    "students": [
+      {
+        "user": "test1",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.033,
+            "queue_observed_s": 1.065,
+            "total_s": 3.194,
+            "server_elapsed_s": 2.5,
+            "polls": 4,
+            "converged": null,
+            "atom_count": 24
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.034,
+            "queue_observed_s": 0.029,
+            "total_s": 4.285,
+            "server_elapsed_s": 3.5,
+            "polls": 5,
+            "converged": true,
+            "atom_count": 24
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 1.059,
+            "total_s": 6.451,
+            "server_elapsed_s": 5.5,
+            "polls": 7,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 2.7,
+        "ready": true
+      },
+      {
+        "user": "test2",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test2/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test3",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test3/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test4",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.034,
+            "queue_observed_s": 0.03,
+            "total_s": 4.233,
+            "server_elapsed_s": 3.8,
+            "polls": 5,
+            "converged": null,
+            "atom_count": 24
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.031,
+            "queue_observed_s": 1.062,
+            "total_s": 5.299,
+            "server_elapsed_s": 5.0,
+            "polls": 6,
+            "converged": true,
+            "atom_count": 24
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.034,
+            "queue_observed_s": 1.062,
+            "total_s": 6.48,
+            "server_elapsed_s": 5.3,
+            "polls": 7,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 3.803,
+        "ready": true
+      },
+      {
+        "user": "test5",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test5/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test6",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test6/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test7",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test7/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test8",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test8/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test9",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.033,
+            "queue_observed_s": 1.066,
+            "total_s": 4.239,
+            "server_elapsed_s": 3.8,
+            "polls": 5,
+            "converged": null,
+            "atom_count": 24
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.029,
+            "queue_observed_s": 1.061,
+            "total_s": 5.295,
+            "server_elapsed_s": 5.0,
+            "polls": 6,
+            "converged": true,
+            "atom_count": 24
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.033,
+            "queue_observed_s": 1.072,
+            "total_s": 6.485,
+            "server_elapsed_s": 5.3,
+            "polls": 7,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 3.88,
+        "ready": true
+      },
+      {
+        "user": "test10",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test10/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      },
+      {
+        "user": "test11",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.034,
+            "queue_observed_s": 0.03,
+            "total_s": 4.234,
+            "server_elapsed_s": 3.8,
+            "polls": 5,
+            "converged": null,
+            "atom_count": 24
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.032,
+            "queue_observed_s": 0.029,
+            "total_s": 5.292,
+            "server_elapsed_s": 5.0,
+            "polls": 6,
+            "converged": true,
+            "atom_count": 24
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.035,
+            "queue_observed_s": 1.065,
+            "total_s": 6.475,
+            "server_elapsed_s": 5.3,
+            "polls": 7,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 3.756,
+        "ready": true
+      },
+      {
+        "user": "test12",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [],
+        "ready": false,
+        "error": "HTTPStatusError: Client error '424 Failed Dependency' for url 'https://lserver.chemie.uni-marburg.de/jhub/hub/user/test12/api/session'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/424"
+      }
+    ]
+  }
+}

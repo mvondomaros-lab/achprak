@@ -1,0 +1,95 @@
+{
+  "started_utc": "2026-09-24T09:30:50.395977+00:00",
+  "origin": "https://lserver.chemie.uni-marburg.de",
+  "hub_prefix": "/jhub",
+  "client_platform": "macOS-27.0-arm64-arm-64bit",
+  "scenario_settings": [
+    {
+      "configuration": "trans",
+      "substituents": [
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    }
+  ],
+  "measurement": "Client-side HTTP timings; no host CPU or memory sampling",
+  "phase": {
+    "scenario": "baseline",
+    "users": 1,
+    "preparation_s": 0.547,
+    "workload_s": 14.969,
+    "ready_users": 1,
+    "http_requests": 23,
+    "http_latency_p50_s": 0.035,
+    "http_latency_p95_s": 0.125,
+    "http_latency_max_s": 0.364,
+    "students": [
+      {
+        "user": "test1",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.032,
+            "queue_observed_s": 1.067,
+            "total_s": 4.23,
+            "server_elapsed_s": 3.5,
+            "polls": 5,
+            "converged": null,
+            "atom_count": 24
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.037,
+            "queue_observed_s": 1.066,
+            "total_s": 5.342,
+            "server_elapsed_s": 4.3,
+            "polls": 6,
+            "converged": true,
+            "atom_count": 24
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.036,
+            "queue_observed_s": 1.068,
+            "total_s": 5.396,
+            "server_elapsed_s": 5.0,
+            "polls": 6,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 0.504,
+        "ready": true
+      }
+    ]
+  }
+}

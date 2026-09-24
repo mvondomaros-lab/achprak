@@ -15,6 +15,8 @@ or assessing its calculations. Student-facing explanations are on the
 
 ## Recorded evaluations
 
+- [JupyterHub load test](hub-load-test-2026-09-24.md): 12 concurrent student
+  workflows, host load, and a local single-user comparison.
 - [Scientific settings benchmark](science-benchmark.md): sensitivity to numerical
   settings, methods, and starting structures.
 - [Experimental spectral comparison](solution-color-validation.md): a recorded

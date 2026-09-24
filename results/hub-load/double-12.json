@@ -1,0 +1,910 @@
+{
+  "started_utc": "2026-09-24T09:34:10.019607+00:00",
+  "origin": "https://lserver.chemie.uni-marburg.de",
+  "hub_prefix": "/jhub",
+  "client_platform": "macOS-27.0-arm64-arm-64bit",
+  "scenario_settings": [
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "trans",
+      "substituents": [
+        "NMe2",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "cis",
+      "substituents": [
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "cis",
+      "substituents": [
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "cis",
+      "substituents": [
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    },
+    {
+      "configuration": "cis",
+      "substituents": [
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H",
+        "CF3",
+        "H",
+        "H",
+        "H",
+        "H"
+      ]
+    }
+  ],
+  "measurement": "Client-side HTTP timings; no host CPU or memory sampling",
+  "phase": {
+    "scenario": "double",
+    "users": 12,
+    "preparation_s": 2.163,
+    "workload_s": 32.299,
+    "ready_users": 12,
+    "http_requests": 463,
+    "http_latency_p50_s": 0.051,
+    "http_latency_p95_s": 0.166,
+    "http_latency_max_s": 1.734,
+    "students": [
+      {
+        "user": "test1",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.044,
+            "queue_observed_s": 1.088,
+            "total_s": 5.335,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 40
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.037,
+            "queue_observed_s": 1.072,
+            "total_s": 13.946,
+            "server_elapsed_s": 13.5,
+            "polls": 14,
+            "converged": true,
+            "atom_count": 40
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.042,
+            "queue_observed_s": 1.074,
+            "total_s": 12.953,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.59,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test2",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.043,
+            "queue_observed_s": 1.081,
+            "total_s": 5.313,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 40
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.035,
+            "queue_observed_s": 0.035,
+            "total_s": 13.999,
+            "server_elapsed_s": 13.3,
+            "polls": 14,
+            "converged": true,
+            "atom_count": 40
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.037,
+            "queue_observed_s": 1.073,
+            "total_s": 12.938,
+            "server_elapsed_s": 12.8,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 2.112,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test3",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.044,
+            "queue_observed_s": 1.087,
+            "total_s": 5.325,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 40
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.033,
+            "queue_observed_s": 1.068,
+            "total_s": 13.977,
+            "server_elapsed_s": 13.0,
+            "polls": 14,
+            "converged": true,
+            "atom_count": 40
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 1.069,
+            "total_s": 12.959,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.131,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test4",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 1.084,
+            "total_s": 5.317,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 40
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.031,
+            "queue_observed_s": 1.074,
+            "total_s": 14.013,
+            "server_elapsed_s": 13.5,
+            "polls": 14,
+            "converged": true,
+            "atom_count": 40
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.039,
+            "queue_observed_s": 1.075,
+            "total_s": 12.921,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.647,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test5",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.049,
+            "queue_observed_s": 1.087,
+            "total_s": 5.34,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 35
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 0.035,
+            "total_s": 12.87,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 35
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.036,
+            "queue_observed_s": 1.08,
+            "total_s": 14.088,
+            "server_elapsed_s": 12.8,
+            "polls": 14,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.596,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test6",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.046,
+            "queue_observed_s": 1.083,
+            "total_s": 5.342,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 35
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.037,
+            "queue_observed_s": 1.076,
+            "total_s": 13.944,
+            "server_elapsed_s": 12.5,
+            "polls": 14,
+            "converged": true,
+            "atom_count": 35
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 1.064,
+            "total_s": 12.961,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.15,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test7",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 1.087,
+            "total_s": 5.323,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 35
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.034,
+            "queue_observed_s": 1.067,
+            "total_s": 12.872,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 35
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 0.032,
+            "total_s": 13.975,
+            "server_elapsed_s": 13.0,
+            "polls": 14,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.532,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test8",
+        "settings": {
+          "configuration": "trans",
+          "substituents": [
+            "NMe2",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 1.088,
+            "total_s": 5.336,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 35
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.04,
+            "queue_observed_s": 1.077,
+            "total_s": 12.866,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 35
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.041,
+            "queue_observed_s": 1.087,
+            "total_s": 12.99,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.589,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test9",
+        "settings": {
+          "configuration": "cis",
+          "substituents": [
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.046,
+            "queue_observed_s": 1.089,
+            "total_s": 5.341,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 30
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.039,
+            "queue_observed_s": 1.074,
+            "total_s": 12.857,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 30
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.044,
+            "queue_observed_s": 1.082,
+            "total_s": 12.988,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.823,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test10",
+        "settings": {
+          "configuration": "cis",
+          "substituents": [
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.048,
+            "queue_observed_s": 1.088,
+            "total_s": 5.34,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 30
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 1.076,
+            "total_s": 12.849,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 30
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.041,
+            "queue_observed_s": 1.071,
+            "total_s": 12.994,
+            "server_elapsed_s": 12.3,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.178,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test11",
+        "settings": {
+          "configuration": "cis",
+          "substituents": [
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.047,
+            "queue_observed_s": 1.089,
+            "total_s": 5.333,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 30
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 1.069,
+            "total_s": 12.882,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 30
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.032,
+            "queue_observed_s": 1.083,
+            "total_s": 13.008,
+            "server_elapsed_s": 12.8,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.142,
+        "startup_retries": 0,
+        "ready": true
+      },
+      {
+        "user": "test12",
+        "settings": {
+          "configuration": "cis",
+          "substituents": [
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H",
+            "CF3",
+            "H",
+            "H",
+            "H",
+            "H"
+          ]
+        },
+        "jobs": [
+          {
+            "kind": "template",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.048,
+            "queue_observed_s": 1.088,
+            "total_s": 5.336,
+            "server_elapsed_s": 4.8,
+            "polls": 6,
+            "converged": null,
+            "atom_count": 30
+          },
+          {
+            "kind": "minimum",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.039,
+            "queue_observed_s": 0.036,
+            "total_s": 12.867,
+            "server_elapsed_s": 12.0,
+            "polls": 13,
+            "converged": true,
+            "atom_count": 30
+          },
+          {
+            "kind": "uvvis",
+            "status": "complete",
+            "error": null,
+            "submit_s": 0.038,
+            "queue_observed_s": 1.081,
+            "total_s": 12.989,
+            "server_elapsed_s": 12.5,
+            "polls": 13,
+            "converged": null,
+            "atom_count": null
+          }
+        ],
+        "login_spawn_s": 1.155,
+        "startup_retries": 0,
+        "ready": true
+      }
+    ]
+  }
+}
