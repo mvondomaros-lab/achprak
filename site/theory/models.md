@@ -33,8 +33,7 @@ werden dadurch über dieselben physikalischen Grundlagen miteinander verknüpft.
 
 <figcaption markdown="1">
 Gemeinsame physikalische Grundlagen verbinden drei Rechenaufgaben. Die Pfeile zeigen, welche Berechnungen zu
-welchen Ergebnissen führen. Die Zweige sind keine zeitliche Abfolge; für die einzelnen Aufgaben können
-unterschiedliche Näherungsverfahren eingesetzt werden.
+welchen Ergebnissen führen.
 </figcaption>
 </figure>
 
