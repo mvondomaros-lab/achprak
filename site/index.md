@@ -12,13 +12,14 @@ bestimmten Ort eingesetzt werden kann.
 
 Solche Systeme werden beispielsweise für lichtsteuerbare Wirkstoffe und für Materialien erforscht, deren
 Eigenschaften sich durch Bestrahlung gezielt verändern lassen. Azobenzol ist ein klassisches Beispiel: Seine beiden
-Konfigurationen unterscheiden sich deutlich in ihrer räumlichen Struktur und zeigen unterschiedliche Absorptionsspektren.
+Konfigurationen unterscheiden sich deutlich in ihrer räumlichen Struktur und zeigen unterschiedliche
+Absorptionsspektren.
 
 ## Computerexperiment
 
 In diesem Computerexperiment verfolgen Sie Azobenzol von der Strukturformel bis zum berechneten UV/Vis-Spektrum.
-Sie vergleichen Strukturen und elektronische Energien, untersuchen einen Reaktionspfad über eine Übergangsstruktur und suchen in
-den Spektren nach einem Wellenlängenbereich für die bevorzugte Anregung einer Konfiguration.
+Sie vergleichen Strukturen und elektronische Energien, untersuchen einen Reaktionspfad über eine Übergangsstruktur und
+suchen in den Spektren nach einem Energiebereich, in dem eine Konfiguration stärker absorbiert.
 
 In der Gruppe untersuchen Sie systematische Substituentenreihen, vergleichen Positions- und Mehrfachsubstitution und
 prüfen, welche Trends und Abweichungen in den berechneten Spektren auftreten. Aus diesen Ergebnissen entwickeln Sie
@@ -37,13 +38,17 @@ Laborchemikalien. Das bedeutet:
 
 Nach Abschluss dieses Versuches können Sie:
 
-- Konfigurationsisomere und Substitutionsmuster in Strukturformeln und 3D-Modellen unterscheiden und substituierte Azobenzole benennen.
-- Start- und Minimumstrukturen anhand des C–N=N–C-Diederwinkels, des Ringabstands und der elektronischen Energie vergleichen, den Einfluss räumlich benachbarter Gruppen beurteilen und einen berechneten Reaktionspfad mit seinen elektronischen Energiebarrieren auswerten.
-- berechnete cis- und trans-Spektren vergleichen, einen Wellenlängenbereich mit unterschiedlicher Absorption finden und erklären, warum daraus allein keine Änderung des cis/trans-Verhältnisses folgt.
-- in systematischen Spektrenreihen Trends und Abweichungen erkennen und daraus eine begründete Vermutung für ein neues Derivat entwickeln und prüfen.
+- Konfigurationsisomere und Substitutionsmuster in Strukturformeln und 3D-Modellen unterscheiden.
+- Start- und Minimumstrukturen anhand von Diederwinkel, Ringabstand und elektronischer Energie vergleichen, den
+  Einfluss räumlich benachbarter Gruppen beurteilen und einen berechneten Reaktionspfad mit seinen elektronischen
+  Energiebarrieren auswerten.
+- berechnete Spektren vergleichen, einen Energiebereich mit unterschiedlicher Absorption finden und erklären, warum
+  daraus allein keine Änderung des cis/trans-Verhältnisses folgt.
+- in systematischen Spektrenreihen Trends und Abweichungen erkennen, eine begründete Vermutung für ein neues Derivat
+  entwickeln und prüfen.
 
 <p><strong>Hinweis zur Bearbeitung:</strong> Dieses Praktikum dient dazu, einen wissenschaftlichen Arbeitsablauf
 selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus
 begrenzte Trends ableiten. Verwenden Sie für die Bearbeitung keine generative KI. Es geht nicht darum, im Voraus das
-„beste“ Derivat zu finden oder jede Vermutung zu bestätigen. Entscheidend ist, dass Sie Ihre Auswahl selbst begründen,
+„beste“ Derivat zu finden. Ihre Vermutung muss sich nicht bestätigen. Entscheidend ist, dass Sie Ihre Auswahl selbst begründen,
 die berechneten Ergebnisse sorgfältig untersuchen und auch Abweichungen dokumentieren.</p>

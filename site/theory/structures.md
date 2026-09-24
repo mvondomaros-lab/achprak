@@ -76,10 +76,10 @@ Versuch sowie in der Webapp einheitlich verwendet. Dabei entspricht *trans* der 
 
 Bei Azobenzol liegt die *trans*-Form energetisch tiefer als die *cis*-Form.
 Ohne Bestrahlung überwiegt sie im thermischen Gleichgewicht bei Raumtemperatur.
-Durch Bestrahlung mit Licht geeigneter Wellenlänge kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
+Durch Bestrahlung mit Licht geeigneter Photonenenergie kann jedoch eine Umwandlung in die *cis*-Form ausgelöst werden.
 Diese lichtinduzierte Isomerisierung bildet die Grundlage für die photoschaltbaren Eigenschaften des Moleküls.
 
-Die beiden Formen unterscheiden sich darin, bei welchen Wellenlängen und wie stark sie Licht absorbieren.
+Die beiden Formen unterscheiden sich darin, bei welchen Photonenenergien und wie stark sie Licht absorbieren.
 
 <figure markdown="1">
 <img src="../../figures/drawings/azobenzene_isomerism.svg" alt="Die lichtinduzierte Isomerisierung des Azobenzols." width="800" loading="lazy">
@@ -142,7 +142,7 @@ hängt davon ab, welche Anteile des sichtbaren Lichts sie absorbiert. Dabei spie
 Lösungsmittel und das Mengenverhältnis der *cis*- und *trans*-Form eine Rolle.
 
 Azobenzol bildet jedoch das Grundgerüst vieler Azofarbstoffe, die auch in Lösung intensiv gefärbt sein können. Substituenten
-können verändern, bei welchen Wellenlängen und wie stark ein Molekül Licht absorbiert. Ein Beispiel ist
+können verändern, bei welchen Photonenenergien und wie stark ein Molekül Licht absorbiert. Ein Beispiel ist
 4-Methoxy-4′-nitroazobenzol, das in Lösung deutlich gefärbt erscheinen kann. Den Zusammenhang zwischen
 Lichtabsorption und Farbe erläutert das nächste Kapitel.
 

@@ -122,8 +122,8 @@ die Lösung durchlässt. Auch die Beleuchtung wirkt sich auf die wahrgenommene F
 
 Substituenten verändern die Elektronenverteilung und können Grundzustand und angeregte
 Zustände unterschiedlich beeinflussen. Wird die Energiedifferenz zwischen zwei Zuständen
-kleiner, verschiebt sich der zugehörige Übergang zu längeren Wellenlängen (bathochrom).
-Eine größere Energiedifferenz entspricht kürzeren Wellenlängen (hypsochrom).
+kleiner, verschiebt sich der zugehörige Übergang zu kleinerer Anregungsenergie und längerer Wellenlänge (bathochrom).
+Eine größere Energiedifferenz entspricht höherer Anregungsenergie und kürzerer Wellenlänge (hypsochrom).
 Das Absorptionsmaximum hängt zusätzlich von den Oszillatorstärken und der Überlagerung
 der verbreiterten Übergänge ab.
 
@@ -134,7 +134,7 @@ Azobenzol-Gerüst erhöht. Die Nitrogruppe (–NO₂) an Position 4′ wirkt als
 Sie zieht Elektronendichte aus dem Gerüst ab. Dieses Donator-Akzeptor-Muster
 beeinflusst Grundzustand und angeregte Zustände unterschiedlich und kann dadurch die Energiedifferenz
 für einen elektronischen Übergang verkleinern. Bei dieser Verbindung liegen Absorptionsbeiträge deshalb
-bei längeren Wellenlängen als bei unsubstituiertem Azobenzol.
+bei kleineren Anregungsenergien als bei unsubstituiertem Azobenzol.
 
 Auch die Position eines Substituenten und die räumliche Anordnung der Molekülteile beeinflussen
 diese Wechselwirkungen. Aus der Einordnung als Donator oder Akzeptor allein ergibt sich deshalb

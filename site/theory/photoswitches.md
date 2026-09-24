@@ -41,7 +41,7 @@ nicht an, wie schnell eine Probe zur *trans*-Form zurückkehrt.
 ## Zusammensetzung unter Bestrahlung
 
 In einer Mischung können sowohl *cis*- als auch *trans*-Moleküle Licht absorbieren.
-Die Wellenlänge beeinflusst, welche Form bei gleicher Molekülzahl stärker angeregt wird.
+Die Photonenenergie beeinflusst, welche Form bei gleicher Molekülzahl stärker angeregt wird.
 Wie häufig daraus eine Umwandlung entsteht, hängt zusätzlich davon ab, welcher Anteil der
 angeregten Moleküle die jeweils andere Konfiguration erreicht. Gleichzeitig kann die thermische
 Rückreaktion zur *trans*-Form beitragen.

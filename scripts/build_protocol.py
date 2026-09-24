@@ -230,19 +230,18 @@ def build():
         [
             "Minimumstruktur",
             "Maximum / eV",
-            "Wellenlänge / nm",
             "UV oder sichtbar",
             "Farbvorhersage",
             "Lichtdurchlässigkeit / %",
         ],
         [
-            ["cis", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
-            ["trans", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
+            ["cis", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
+            ["trans", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"],
         ],
-        [2.5, 2.5, 3.0, 2.7, 3.0, 3.3],
+        [2.8, 3.0, 3.1, 3.8, 4.3],
     )
     answer(
-        "Wellenlängenbereich, stärker absorbierende Konfiguration und Grenze der Aussage: [höchstens drei Sätze]"
+        "Energiebereich, stärker absorbierende Konfiguration und Grenze der Aussage: [höchstens drei Sätze]"
     )
     doc.add_page_break()
     doc.add_heading("Systematische Substituentenreihe", 1)
@@ -252,17 +251,16 @@ def build():
         [
             "X",
             "Maximum / eV",
-            "Wellenlänge / nm",
             "Verschiebung / eV",
             "UV oder sichtbar",
             "Farbvorhersage",
             "Lichtdurchlässigkeit / %",
         ],
         [
-            [label, "[Wert]", "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"]
+            [label, "[Wert]", "[Wert]", "[Bereich]", "[Farbe]", "[Wert]"]
             for label in ["CH₃", "OCH₃", "N(CH₃)₂", "CF₃", "CN", "NO₂"]
         ],
-        [1.8, 2.3, 2.5, 2.1, 2.2, 3.0, 3.1],
+        [2.0, 2.7, 2.8, 2.7, 3.2, 3.6],
     )
     answer("Kleinster Wert von ΔEmax: [Derivat und Wert]")
     answer("Größter Wert von ΔEmax: [Derivat und Wert]")
@@ -309,15 +307,14 @@ def build():
         [
             "Konfiguration",
             "Maximum / eV",
-            "Wellenlänge / nm",
             "Farbvorhersage",
             "Lichtdurchlässigkeit / %",
         ],
         [
-            ["cis", "[Wert]", "[Wert]", "[Farbe]", "[Wert]"],
-            ["trans", "[Wert]", "[Wert]", "[Farbe]", "[Wert]"],
+            ["cis", "[Wert]", "[Farbe]", "[Wert]"],
+            ["trans", "[Wert]", "[Farbe]", "[Wert]"],
         ],
-        [3.0, 3.0, 3.5, 3.5, 4.0],
+        [3.5, 4.0, 4.5, 5.0],
     )
     answer("cis: [Spektrum einfügen und beschriften]")
     p("\n\n")
@@ -326,7 +323,7 @@ def build():
     answer(
         "Vergleich der vollständigen Spektren und Prüfung der Vermutung: [Stützt das Ergebnis den zugrunde gelegten Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
     )
-    answer("Längstwelliges Gruppenresultat: [Name und Wellenlänge]")
+    answer("Gruppenresultat mit der kleinsten Energie des Absorptionsmaximums: [Name und Energie]")
     answer(
         "Stärkster vorhergesagter cis/trans-Farbunterschied: [Name und Farben]"
     )
