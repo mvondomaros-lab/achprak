@@ -32,7 +32,10 @@ lassen sich die hier betrachteten Photonenenergien und Wellenlängen ohne sehr k
 Das elektromagnetische Spektrum. Die obere Reihe zeigt (von links nach rechts) stilisierte Darstellungen von
 Gammastrahlen, Röntgenstrahlen, UV-Strahlung, sichtbarem Licht, Infrarotstrahlung, Mikrowellen und Radiowellen.
 Die untere Reihe vergrößert den sichtbaren Teil des Spektrums.
-Tatoute und Phrood~commonswiki, Lizenz: [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). Quelle: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Spectre.svg).
+<details class="image-credit">
+<summary>Bildnachweis</summary>
+<p>Tatoute und Phrood~commonswiki · <a href="https://commons.wikimedia.org/wiki/File:Spectre.svg">Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></p>
+</details>
 </figcaption>
 </figure>
 
@@ -184,7 +187,11 @@ Bereiche mit hoher Durchlässigkeit heißen atmosphärische Fenster. Sonnenlicht
 <img src="../../figures/commons/atmospheric_transmission.svg" alt="Diagramm der atmosphärischen Transmission; markiert ist das elektromagnetische Fenster." width="1024" loading="lazy">
 
 <figcaption markdown="1">
-Atmosphärische Durchlässigkeit. PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden. Quelle/Lizenz: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg).
+Atmosphärische Durchlässigkeit.
+<details class="image-credit">
+<summary>Bildnachweis</summary>
+<p>PNG-Version: Herbertweidner; SVG-Umsetzung: Cepheiden · <a href="https://commons.wikimedia.org/wiki/File:Atmosph%C3%A4rische_Durchl%C3%A4ssigkeit_DE.svg">Wikimedia Commons</a> · gemeinfrei</p>
+</details>
 </figcaption>
 </figure>
 

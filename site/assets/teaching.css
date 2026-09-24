@@ -53,6 +53,11 @@ figure { margin: 1.75rem 0; }
 figure img { display: block; max-width: 100%; height: auto; background: #fff; border-radius: 4px; }
 figcaption { color: var(--muted); font-size: .9rem; line-height: 1.5; margin-top: .7rem; }
 figcaption p { margin: 0; }
+figcaption .image-credit { margin: .35rem 0 0; padding: 0; border: 0; background: none; font-size: .8rem; }
+figcaption .image-credit summary { display: inline-block; margin: 0; padding: 0; color: var(--muted); font-weight: 400; line-height: 1.5; text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: .2em; }
+figcaption .image-credit summary:hover { color: var(--blue); background: none; }
+figcaption .image-credit[open] > summary { border: 0; }
+figcaption .image-credit p { margin: .2rem 0 0; }
 .structure-viewer {
   position: relative;
   width: min(100%, 640px);
