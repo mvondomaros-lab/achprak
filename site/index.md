@@ -43,10 +43,11 @@ Nach Abschluss dieses Versuches können Sie:
 
 ## Einstieg
 
-Für die selbstständige Nutzung können Sie die [Webapp über Binder oder auf Ihrem
-eigenen Rechner starten](installation.md) und die [Aufgaben](tasks.md) bearbeiten.
 Für die Teilnahme am Allgemeinen Chemiepraktikum der Universität Marburg finden
 Sie die Hinweise unter [Praktikum in Marburg](kurse/marburg.md).
+Für [externe Studierende](installation.md) stehen Hinweise zum Start über Binder
+oder auf dem eigenen Rechner bereit. Anschließend können Sie die
+[Aufgaben](tasks.md) bearbeiten.
 
 <p><strong>Hinweis zur Bearbeitung:</strong> Dieses Computerexperiment dient dazu, einen wissenschaftlichen Arbeitsablauf
 selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus

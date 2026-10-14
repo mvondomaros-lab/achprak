@@ -1,7 +1,8 @@
-# Webapp starten
+# Externe Studierende
 
-Sie können PhotoSwitchLab im Browser über Binder oder auf Ihrem eigenen Rechner
-ausführen. Die [Aufgaben](tasks.md) stehen in der Webapp.
+Wenn Sie außerhalb des Marburger Praktikums arbeiten, können Sie PhotoSwitchLab
+im Browser über Binder oder auf Ihrem eigenen Rechner ausführen.
+Die [Aufgaben](tasks.md) stehen in der Webapp.
 
 ## Über Binder starten
 
