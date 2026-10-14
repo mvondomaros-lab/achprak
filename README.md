@@ -51,8 +51,6 @@ pixi run --locked -e web web --course marburg
 
 Die [Website](https://mvondomaros-lab.github.io/photoswitchlab/) erklärt die
 Grundlagen. Die wissenschaftlichen Aufgaben stehen in der Webapp.
-[Zugang, Protokoll und Abgabe für das Marburger Praktikum](https://mvondomaros-lab.github.io/photoswitchlab/kurse/marburg/)
-sind getrennt beschrieben.
 
 Für einen eigenen JupyterHub folgen Sie der [Deployment-Anleitung](deploy/README.md).
 Technische Dokumentation ist auf Englisch:
