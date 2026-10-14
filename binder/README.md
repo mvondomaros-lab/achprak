@@ -12,12 +12,25 @@ This directory installs the locked Pixi `web` environment and launches the app
 through Jupyter Server Proxy at `photoswitchlab/`. Use a commit SHA or release
 tag instead of `main` to share a fixed version.
 
-To test locally with Docker and [repo2docker](https://repo2docker.readthedocs.io/),
-run from the repository root on x86-64 Linux:
+To test locally on macOS (including Apple Silicon) or x86-64 Linux, install and
+start Docker. [repo2docker](https://repo2docker.readthedocs.io/) is included in
+Pixi's `dev` environment. From the repository root:
 
 ```sh
-jupyter-repo2docker --image-name photoswitchlab-binder .
+pixi install --locked -e dev
 ```
+
+Then build and run the Binder environment:
+
+```sh
+pixi run --locked -e dev jupyter-repo2docker \
+    --Repo2Docker.platform=linux/amd64 \
+    --image-name photoswitchlab-binder \
+    .
+```
+
+The Linux x86-64 target matches Binder. On Apple Silicon, Docker uses emulation,
+so builds and calculations can be slower.
 
 Open the printed URL, then navigate to `photoswitchlab/`. After configuration
 changes, verify calculations, cancellation and exports locally and on Binder.
