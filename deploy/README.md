@@ -73,6 +73,11 @@ after 24 hours of inactivity. Export results before stopping a server.
 For updates, reinstall the locked environment, review and recopy the integration
 fragment, then restart user servers and repeat the checks.
 
+For optional capacity checks, [load_test_hub.py](../scripts/load_test_hub.py)
+simulates concurrent users (`--help` lists the options).
+[monitor_hub.py](../scripts/monitor_hub.py) records CPU, memory and process samples
+on the Linux host. Save output under `results/`; it remains local and untracked.
+
 ## Local proxy check
 
 To test URL prefixes, sockets, assets and cookies before connecting to the Hub:

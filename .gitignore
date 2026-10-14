@@ -1,4 +1,5 @@
-# Calculation and benchmark output (keep curated fixtures in tests/data).
+# All raw calculation and benchmark output stays local.
+# Keep selected reports in docs/ and regression fixtures in tests/data/.
 /results/
 
 # Local Python environments, packaging and tool caches.

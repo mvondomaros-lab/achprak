@@ -84,28 +84,3 @@ chemistry regressions remain disabled in default test runs.
 
 Interpret a successful result using the method page's
 [acceptance criteria](transition-state.md#what-an-accepted-result-establishes).
-
-## Compare reliability and cost
-
-`scripts/benchmark_ts_strategy.py` compares production searches with experimental
-band optimizers and seed choices using saved source minima. It includes saved
-failures and passing controls selected reproducibly from their case identifiers,
-balanced by configuration and substitution pattern. Each candidate must produce a
-full path and pass frequency and connectivity checks.
-
-```sh
-pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-course-screen
-pixi run -e dev python scripts/benchmark_ts_strategy.py --screen results/ts-course-screen --output results/ts-open150-comparison --workers 4 --strategy current --strategy open150_lbfgs
-```
-
-`open150_lbfgs` makes one direct 150°/L-BFGS attempt with a 1,500-step budget.
-`lbfgs_neb` changes the band optimizer. `dynamic_neb` skips updates to converged
-images with a uniform 0.05 eV/Å band-force threshold. These comparisons run
-separately from the application and do not add retries to the student workflow.
-
-Workers run paired methods consecutively and alternate their order across
-molecules. Reports include elapsed wall-clock time, processor time (CPU time), and
-the number of energy/force evaluations (calculator calls). Compare failures
-separately from speed ratios for successful pairs; calculator calls are less
-sensitive to competition between simultaneous calculations for hardware resources
-than elapsed time.

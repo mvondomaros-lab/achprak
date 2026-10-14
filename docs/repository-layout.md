@@ -39,9 +39,9 @@ not disposable calculation output.
 
 ## Local outputs
 
-Keep raw calculations, logs, downloaded reference data, and benchmark outputs
-under `results/`. Commit selected reports in `docs/` and reproducible fixtures
-in `tests/data/`, rather than entire calculation directories.
+All of `results/` is local and ignored by Git. Use it for raw calculations, logs,
+downloaded reference data and benchmark outputs. Commit selected reports in
+`docs/` and regression fixtures in `tests/data/`.
 
 Installed environments, caches, IDE settings, unpublished figure previews, and
 `site/_build/` remain local. The root and site `.gitignore` files define the

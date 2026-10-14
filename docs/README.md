@@ -10,7 +10,6 @@ For student guidance, see the [website](https://mvondomaros-lab.github.io/photos
 
 ## Evaluations
 
-- [JupyterHub load test](hub-load-test-2026-09-24.md)
 - [Sensitivity to calculation settings](science-benchmark.md)
 - [Comparison with experimental spectra](solution-color-validation.md)
 
