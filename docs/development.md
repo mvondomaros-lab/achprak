@@ -49,7 +49,7 @@ explicitly:
 | --- | --- |
 | `pixi run -e dev test-ts` | Real minimum-to-transition-structure calculations and saved failure cases. |
 | `pixi run -e dev test-science` | The parent molecule's planarity and cis/trans energy ordering in the model. |
-| `ACHPRAK_CHEMISTRY_TESTS=1 pixi run -e dev test-web` | Additional chemistry workflow checks. |
+| `PHOTOSWITCHLAB_CHEMISTRY_TESTS=1 pixi run -e dev test-web` | Additional chemistry workflow checks. |
 
 For a reported transition-structure search failure, add a reproducible regression
 case and run the complete `test-ts` suite when verifying the fix. During debugging,
@@ -91,9 +91,11 @@ for a local website build. `PHOTOSWITCHLAB_COURSE=marburg` also selects this bra
 the app and website CLI; explicit `--course` arguments take precedence. The
 public teaching website is built with the default branding. The app's guide link
 opens the public introduction or the Marburg course page according to this setting.
-The course page contains university access, protocol and submission requirements;
-the fundamentals remain shared. Course-specific app tasks and protocol content
-will be separated in a later change.
+The course page contains university access, protocol and submission requirements.
+Blocks marked `<!-- course:marburg -->` through `<!-- /course -->` in app HTML
+are rendered only for that course. Shared exercises remain in `guide.html`;
+protocol requirements and group assignments are additions. The public app has
+no protocol download. The fundamentals remain shared.
 
 For website-only work, use the lightweight `site` environment:
 

@@ -68,10 +68,10 @@ infrastructure log streaming and session startup failures.
 The project name is **PhotoSwitchLab**. The German app and website retain the
 title **Molekulare Photoschalter**, subtitle **Computerexperiment**, and optional
 local suffix ** · ACh-PR · Marburg**. Public branding is the default; the Marburg
-branding can be selected explicitly. The course setting currently selects
-branding and the website guide entry point.
+branding can be selected explicitly. The course setting selects branding,
+documentation and Marburg's additions to the shared exercises.
 
-- [ ] Separate shared exercises from Marburg's protocol-specific assignments,
+- [x] Separate shared exercises from Marburg's protocol-specific assignments,
       required deliverables, group allocation and submission instructions. Keep
       shared task content in one source with course-specific additions.
 - [x] Make the public website explain the app for independent learners, with
@@ -85,6 +85,6 @@ branding and the website guide entry point.
       HTTP/progress identifiers and installed Hub paths are retained for
       deployment compatibility. Binder uses the `photoswitchlab/` route and
       `PHOTOSWITCHLAB_BINDER_ROOT`.
-- [ ] Refresh the local protocol template's printed website URL and branding
+- [x] Refresh the local protocol template's printed website URL and branding
       when revising the Marburg materials; its generator already uses the new
       website URL. Render and inspect the DOCX before publishing that update.

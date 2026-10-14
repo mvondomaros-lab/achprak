@@ -16,7 +16,7 @@ from photoswitchlab import azobenzene, common, nomenclature, optimization, uvvis
 from photoswitchlab.transition_state import OptTS
 from photoswitchlab.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
-PROGRESS_PREFIX = "ACHPRAK_PROGRESS "
+PROGRESS_PREFIX = "PHOTOSWITCHLAB_PROGRESS "
 
 
 def spectrum_progress(phase):

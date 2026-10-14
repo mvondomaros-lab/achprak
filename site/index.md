@@ -48,7 +48,7 @@ Nach Abschluss dieses Versuches können Sie:
 Für die selbstständige Nutzung können Sie die [Webapp über Binder oder auf Ihrem
 eigenen Rechner starten](installation.md) und die [Aufgaben](tasks.md) bearbeiten.
 Für die Teilnahme am Allgemeinen Chemiepraktikum der Universität Marburg finden
-Sie Zugang, Protokollanforderungen und Abgabe unter [Praktikum in Marburg](kurse/marburg.md).
+Sie die Hinweise unter [Praktikum in Marburg](kurse/marburg.md).
 
 <p><strong>Hinweis zur Bearbeitung:</strong> Dieses Computerexperiment dient dazu, einen wissenschaftlichen Arbeitsablauf
 selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus

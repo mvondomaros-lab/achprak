@@ -30,8 +30,8 @@ von Ihrer Betreuung.
 
 ## Protokoll führen
 
-Laden Sie die Protokollvorlage im DOCX-Format aus der Webapp herunter und
-bearbeiten Sie sie mit Word oder LibreOffice Writer. Die Überschriften entsprechen
+Laden Sie die [Protokollvorlage im DOCX-Format](../../src/photoswitchlab/web/static/materials/protokollvorlage.docx)
+herunter und bearbeiten Sie sie mit Word oder LibreOffice Writer. Die Überschriften entsprechen
 den Aufgaben. Tragen Sie berechnete Werte mit Einheiten ein und fügen Sie die
 geforderten Strukturansichten, Energieprofile und Spektren ein. Kennzeichnen Sie
 Modellvorhersagen, wo die Aufgaben es verlangen.

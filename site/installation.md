@@ -22,5 +22,4 @@ und Linux-Computer mit x86-64-Prozessor.
 ## Teilnahme am Marburger Praktikum
 
 Für Studierende im Allgemeinen Chemiepraktikum der Universität Marburg gelten die
-[Hinweise zum Marburger Praktikum](kurse/marburg.md). Dort finden Sie den Zugang
-zum Universitätsserver sowie die Anforderungen an Protokoll und Abgabe.
+[Hinweise zum Marburger Praktikum](kurse/marburg.md).

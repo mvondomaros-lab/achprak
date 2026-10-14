@@ -113,7 +113,7 @@ class UVVis:
     def calculate(self, observer=None):
         # pymopac otherwise creates persistent /tmp/pymopac_* directories.
         # Keep both output passes until parsing finishes, then remove all files.
-        with tempfile.TemporaryDirectory(prefix="achprak-mopac-") as folder:
+        with tempfile.TemporaryDirectory(prefix="photoswitchlab-mopac-") as folder:
             self._workdir = folder
             self.mopac = self._input(min(PRINTED_STATES, self.maxci))
             self._calculate(observer)

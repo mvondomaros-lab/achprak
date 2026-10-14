@@ -1,91 +1,33 @@
 # Teaching figures
 
-Use short English `snake_case` names throughout `figures/`. Generated sources and
-exports share the same stem; molecular drawings start with `azobenzene`.
-Original external titles and source URLs remain unchanged in the attribution file.
-
-Each generated illustration has its own executable source in `scripts/`:
-
-| Source | Published SVG |
-| --- | --- |
-| `dihedral.py` | `../src/photoswitchlab/web/static/dihedral.svg` |
-| `energy_levels.py` | `outputs/energy_levels.svg` |
-| `spectrum_lines.py` | `outputs/spectrum_lines.svg` |
-| `spectrum_bands.py` | `outputs/spectrum_bands.svg` |
-| `energy_profile.py` | `outputs/energy_profile.svg` |
-| `photoswitch.py` | `outputs/photoswitch.svg` |
-| `substituent_effects.py` | `outputs/substituent_effects.svg` |
-| `theoretical_quantities.py` | `outputs/theoretical_quantities.svg` |
-| `prediction_cycle.py` | `outputs/prediction_cycle.svg` |
-| `azobenzene.py` | `drawings/azobenzene.svg` |
-| `azobenzene_4_methoxy_4_prime_nitro.py` | `drawings/azobenzene_4_methoxy_4_prime_nitro.svg` |
-| `azobenzene_cis.py` | `drawings/azobenzene_cis.svg` |
-| `azobenzene_derivative.py` | `drawings/azobenzene_derivative.svg` |
-| `azobenzene_explicit.py` | `drawings/azobenzene_explicit.svg` |
-| `azobenzene_isomerism.py` | `drawings/azobenzene_isomerism.svg` |
-| `azobenzene_numbering.py` | `drawings/azobenzene_numbering.svg` |
-
-Regenerate one figure from the repository root:
+Regenerate one figure or the complete set from the repository root:
 
 ```sh
 pixi run -e dev python figures/scripts/spectrum_bands.py
-```
-
-Regenerate all figures using the small batch runner:
-
-```sh
 pixi run -e dev python figures/scripts/generate.py
 ```
 
 Both commands accept `--format svg|png|both` (default: `svg`) and
-`--output-dir PATH`. PNG exports are optional previews, ignored in `outputs/`.
-The website uses the SVGs in `outputs/`; the web app bundles `dihedral.svg`
-in its static package data. Neither needs a plotting runtime to display figures.
-`dihedral.py` is the editable source for the C–N=N–C dihedral illustration.
-Its default output directory is the app's static directory; an explicit
-`--output-dir` sends previews elsewhere, just as for the other scripts.
-Review rendered figures before committing regenerated artwork.
+`--output-dir PATH`. Review regenerated figures before committing them.
 
-`src/photoswitchlab/plot_style.py` defines the shared Matplotlib palette, typography,
-line weights, markers and axes for teaching figures, app exports and the spectral
-validation plot. `scripts/style.py` adds the teaching-figure export setup.
-Its `display_width` matches the published desktop image width (600 px by default,
-700 px for the substituent diagram, 760 px for full-width diagrams). Labels,
-axis titles and ticks render at about 16 CSS px regardless of that width;
-diagram headings retain their shared larger type scale. The angle popover uses
-14 px labels to match the app's help text. Narrow screens scale each SVG as a
-whole. When changing a published image width, update its export setting too.
-The app's Chart.js `plotStyle` uses the same colors and point-to-pixel equivalents.
-Figure-specific data and
-annotations belong in the individual source files. Schematic diagrams retain
-their unnumbered axes; they do not represent calculated energy surfaces.
+## Sources and output
 
-- Blue (`#165de1`): primary curves, ground-state levels and molecular bonds.
-- Ochre (`#c77825`): secondary data, excited-state levels and angle highlights.
-  Selected structures and spectral transitions use darker ochre (`#995511`).
-- Solid curves: 1.5 pt / 2 px. Transition sticks: 1.125 pt / 1.5 px,
-  with filled circular endpoints of diameter 4.5 pt / 6 px.
-- Reference guides: muted slate, 0.75 pt, dashed. A schematic excited-state
-  guide retains ochre; measured comparison spectra use dashed ochre to distinguish
-  them from calculated solid blue spectra.
-- White backgrounds, light horizontal grids, muted axes, no top/right frame,
-  Arial/Helvetica with DejaVu Sans fallback. German plots use decimal commas.
+- `scripts/`: executable figure sources. Sources and exports share the same stem.
+- `outputs/`: published diagrams; PNG previews are ignored.
+- `drawings/`: molecular illustrations from the `azobenzene*.py` sources.
+- `commons/`: external illustrations; preserve [attribution](commons/ATTRIBUTION.md).
+- `dihedral.py`: generates the app's [dihedral illustration](../src/photoswitchlab/web/static/dihedral.svg).
 
-Externally sourced illustrations and chemical element/spectrum colors retain
-their scientific meaning and original attribution.
+The website uses SVGs; keep published exports in version control.
 
-SVG keeps lines and labels sharp at any display size. Glyphs are outlined to
-preserve typography on machines without the generation font; accessible
-descriptions remain in the website's image alt text and captions. Stable SVG
-IDs and omitted timestamps avoid incidental regeneration changes. Arial is
-preferred, with Helvetica and DejaVu Sans as fallbacks, so font availability
-can still affect regeneration on a different machine.
+## Editing
 
-Molecular illustrations in `drawings/` are generated by the individual
-`azobenzene*.py` sources using `src/photoswitchlab/structure_drawing.py`, the same RDKit
-renderer and coordinate scaffold as the web app. Backgrounds are transparent.
-Explicit C/H labels and ring numbering are retained where required by the
-exercise. The isomerization scheme uses the same bond scale for both molecules.
-`structures.py` supplies their export helper; an explicit `--output-dir` also
-redirects these exports. `commons/` contains external illustrations with
-attribution and is not regenerated.
+[plot_style.py](../src/photoswitchlab/plot_style.py) defines the shared plot style;
+[scripts/style.py](scripts/style.py) handles figure export. Put figure data and
+annotations in the individual sources. If you change a published image's display
+width, update its export setting so text retains its intended size. Use decimal
+commas in German labels.
+
+Molecular drawings use the app's [RDKit renderer](../src/photoswitchlab/structure_drawing.py).
+Preserve labels and numbering required by the exercises. External illustrations
+and chemical element colors retain their attribution and scientific meaning.

@@ -7,6 +7,7 @@ import html
 import json
 import os
 from pathlib import Path
+import re
 import secrets
 import shutil
 import signal
@@ -18,7 +19,7 @@ import time
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -29,6 +30,16 @@ from .ts_policy import with_ts_policy
 STATIC = Path(__file__).parent / "static"
 SUBSTITUENTS = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]
 ACTIVE = {"queued", "running"}
+
+
+def course_content(source, course):
+    """Keep course additions in one source without exposing them in public pages."""
+    return re.sub(
+        r"<!-- course:marburg -->(.*?)<!-- /course -->",
+        lambda match: match[1] if course == "marburg" else "",
+        source,
+        flags=re.S,
+    )
 
 
 def template_identity(settings):
@@ -116,7 +127,7 @@ class JobManager:
     def __init__(self, max_jobs=2, timeout=600, session_ttl=86400):
         self.sessions = {}
         self.max_jobs, self.timeout, self.session_ttl = max_jobs, timeout, session_ttl
-        self._temporary = tempfile.TemporaryDirectory(prefix="achprak-web-")
+        self._temporary = tempfile.TemporaryDirectory(prefix="photoswitchlab-web-")
         self.root = Path(self._temporary.name)
         self.tasks = {}
 
@@ -310,7 +321,7 @@ def create_app(
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     cookie_path = "/" + cookie_path.strip("/") + "/" if cookie_path.strip("/") else "/"
     manager = JobManager(max_jobs, timeout)
-    cookie_name = "achprak_" + secrets.token_hex(5)
+    cookie_name = "photoswitchlab_" + secrets.token_hex(5)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -341,6 +352,7 @@ def create_app(
             # No CORS permission is granted by this app.
             if (
                 request.method not in {"GET", "HEAD"}
+                and request.headers.get("x-photoswitchlab-request") != "1"
                 and request.headers.get("x-achprak-request") != "1"
             ):
                 return JSONResponse({"detail": "Ungültige Anfrage."}, status_code=403)
@@ -486,7 +498,9 @@ def create_app(
     @app.get("/")
     async def index():
         # Revalidate the HTML so its asset versions cannot lag behind the API.
-        document = Template((STATIC / "index.html").read_text()).substitute(
+        document = Template(
+            course_content((STATIC / "index.html").read_text(), course)
+        ).substitute(
             project_name=html.escape(branding["project_name"]),
             brand_title=html.escape(brand_title),
             brand_subtitle=html.escape(brand_subtitle),
@@ -494,6 +508,17 @@ def create_app(
             + ("kurse/marburg/" if course == "marburg" else ""),
         )
         return HTMLResponse(document, headers={"Cache-Control": "no-cache"})
+
+    @app.get("/static/guide.html")
+    async def guide():
+        document = course_content((STATIC / "guide.html").read_text(), course)
+        return HTMLResponse(document, headers={"Cache-Control": "no-cache"})
+
+    @app.get("/static/materials/protokollvorlage.docx")
+    async def protocol():
+        if course != "marburg":
+            raise HTTPException(404, "Datei nicht gefunden.")
+        return FileResponse(STATIC / "materials/protokollvorlage.docx")
 
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
     return app

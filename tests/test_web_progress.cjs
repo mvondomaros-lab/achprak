@@ -22,13 +22,13 @@ const record = (step, phase = "optimization") => ({
   energy_ev: -10 - step / 10,
   fmax_ev_angstrom: 1 / (step + 1),
 });
-const line = (r) => "ACHPRAK_PROGRESS " + JSON.stringify(r);
+const line = (r) => "PHOTOSWITCHLAB_PROGRESS " + JSON.stringify(r);
 
 test("all steps between polls are collected, partial writes retried, duplicate polls deduplicated", () => {
   const log =
     "Sella: 0\n" +
     [0, 1, 2].map((s) => line(record(s))).join("\n") +
-    '\nACHPRAK_PROGRESS {"step":3';
+    '\nPHOTOSWITCHLAB_PROGRESS {"step":3';
   const parsed = progress.parse(log);
   assert.deepEqual(
     parsed.records.map((r) => r.step),
@@ -254,7 +254,7 @@ test("NEB snapshots survive polling and reaction-path playback remains separate 
   }));
   const r = { ...record(12, "neb_climb"), neb_path: path };
   const parsed = progress.parse(
-    "ACHPRAK_PROGRESS " + JSON.stringify(r) + "\n",
+    "PHOTOSWITCHLAB_PROGRESS " + JSON.stringify(r) + "\n",
   ).records;
   assert.deepEqual(parsed, [r]);
   const molecule = {

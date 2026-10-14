@@ -16,8 +16,8 @@ FAILURES = sorted((Path(__file__).parent / "data/ts_failures").glob("*.json"))
 
 @pytest.mark.ts_optimization
 @pytest.mark.skipif(
-    os.environ.get("ACHPRAK_TS_TESTS") != "1"
-    and os.environ.get("ACHPRAK_CHEMISTRY_TESTS") != "1",
+    os.environ.get("PHOTOSWITCHLAB_TS_TESTS") != "1"
+    and os.environ.get("PHOTOSWITCHLAB_CHEMISTRY_TESTS") != "1",
     reason="Opt-in exhaustive-screen regressions",
 )
 @pytest.mark.parametrize(

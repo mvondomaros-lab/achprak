@@ -39,7 +39,7 @@ def test_deployment_branding_is_rendered_without_a_session(course, subtitle):
 
 
 def test_protocol_download_and_tasks_without_starting_a_session():
-    with TestClient(create_app()) as client:
+    with TestClient(create_app(course="marburg")) as client:
         response = client.get("/static/materials/protokollvorlage.docx")
         assert response.status_code == 200
         assert response.headers["content-type"].startswith(
@@ -123,6 +123,27 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "elektronische Energiebarriere" in text
         assert "Jupyter Notebook" not in text
         assert "Azobenzol farblos" not in text
+
+
+def test_public_tasks_have_no_course_deliverables_or_protocol_download():
+    with TestClient(create_app()) as client:
+        index = client.get("/").text
+        guide = client.get("/static/guide.html").text
+        assert client.get("/static/materials/protokollvorlage.docx").status_code == 404
+    for document in (index, guide):
+        for local_term in (
+            "Protokoll",
+            "ILIAS",
+            "Pflicht",
+            "bewertet",
+            "abgeben",
+            "protocol-output",
+            "course:marburg",
+        ):
+            assert local_term not in document
+    assert guide.count('<details class="task"') == 9
+    assert "Substituentenreihe untersuchen" in guide
+    assert "Beschränken Sie Ihre Aussagen" in guide
 
 
 def test_spectrum_terms_link_fundamentals_to_contextual_app_help():

@@ -3,7 +3,7 @@
 ## Scope and environment
 
 Twelve disposable accounts (`test1`–`test12`) used the deployed PhotoSwitchLab
-(then named AChPrak) at
+at
 `https://lserver.chemie.uni-marburg.de/jhub/`. Each account had a separate Hub
 server and browser session. The Hub reported version 6.0.1. The deployment and
 local checkout were both at Git revision `f63f2b1`. The Linux host had an AMD

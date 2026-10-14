@@ -95,7 +95,7 @@ globalThis.OptimizationProgress = {
     );
   },
   parse(log) {
-    const prefix = "ACHPRAK_PROGRESS ";
+    const prefix = "PHOTOSWITCHLAB_PROGRESS ";
     const records = [],
       output = [];
     for (const line of log.split("\n")) {

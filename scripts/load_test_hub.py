@@ -1,7 +1,7 @@
 """Run the PhotoSwitchLab student workflow through an authenticated JupyterHub.
 
 Example (test accounts only):
-    ACHPRAK_LOAD_PASSWORD_TEMPLATE='<password pattern with {n}>' \
+    PHOTOSWITCHLAB_LOAD_PASSWORD_TEMPLATE='<password pattern with {n}>' \
         pixi run -e dev python \
         scripts/load_test_hub.py --origin https://hub.example.edu \
         --hub-prefix /jhub --output results/hub-load/run.json
@@ -126,7 +126,7 @@ async def job(
         "POST",
         app_url + "/api/jobs",
         latencies,
-        headers={"X-AChPrak-Request": "1"},
+        headers={"X-PhotoSwitchLab-Request": "1"},
         json=payload,
     )
     if response.status_code != 202:
@@ -264,9 +264,9 @@ async def main():
     parser.add_argument("--users", type=int, choices=[1, 12], default=12)
     parser.add_argument("--timeout", type=int, default=600)
     args = parser.parse_args()
-    password_template = os.environ.get("ACHPRAK_LOAD_PASSWORD_TEMPLATE")
+    password_template = os.environ.get("PHOTOSWITCHLAB_LOAD_PASSWORD_TEMPLATE")
     if not password_template or "{n}" not in password_template:
-        parser.error("ACHPRAK_LOAD_PASSWORD_TEMPLATE must contain {n}")
+        parser.error("PHOTOSWITCHLAB_LOAD_PASSWORD_TEMPLATE must contain {n}")
     usernames = [f"test{n}" for n in range(1, args.users + 1)]
     result = {
         "started_utc": datetime.now(timezone.utc).isoformat(),

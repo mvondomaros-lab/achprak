@@ -1,19 +1,17 @@
 # Deploying with JupyterHub
 
-PhotoSwitchLab runs one application instance per user behind JupyterHub's
-authenticated standalone proxy. For local use or Binder, see the
-[project README](../README.md).
+Run one PhotoSwitchLab instance per user on an existing JupyterHub.
 
 ## Requirements
 
-- A working, independently managed JupyterHub with authentication and user spawning.
-- x86-64 Linux with LocalProcessSpawner or SystemdSpawner, separate Unix accounts
-  and writable user home directories. Container spawners need the app installed
-  in the user image and the paths below adapted.
+- A working JupyterHub with authentication and user spawning.
+- x86-64 Linux, separate Unix accounts and writable home directories with
+  LocalProcessSpawner or SystemdSpawner. For container spawners, install the app
+  in the user image and adapt the paths.
 - HTTPS, with the reverse proxy forwarding Host and X-Forwarded-Proto headers
   and supporting WebSocket upgrades.
-- Pixi and a central Hub version compatible with the pinned `jupyterhub-base`
-  version, currently **6.0.1**. See the [JupyterHub upgrade guide](https://jupyterhub.readthedocs.io/en/stable/howto/upgrading.html).
+- Pixi and a Hub compatible with the pinned `jupyterhub-base` **6.0.1**.
+  See the [JupyterHub upgrade guide](https://jupyterhub.readthedocs.io/en/stable/howto/upgrading.html).
 
 ## Install
 
@@ -51,13 +49,12 @@ Hub service's environment**:
 | `PHOTOSWITCHLAB_ENV` | Absolute app environment path; defaults to `/opt/photoswitchlab/.pixi/envs/web-hub`. |
 | `PHOTOSWITCHLAB_COURSE=marburg` | Selects the Marburg branding and course guide. Omit for public branding. |
 
-The fragment sets the app command, paths and startup limits. It uses a private
-Unix socket, Secure cookies and `PYTHONNOUSERSITE=1`. Authentication, account
-permissions and resource limits remain your Hub's responsibility. Check any
-spawn hooks or profiles that also override the app command.
+The fragment launches the app through an authenticated proxy and private Unix
+socket. Keep authentication, account permissions and resource controls in your
+Hub configuration; check spawn hooks that override the app command.
 
-The course setting currently selects branding and documentation; app exercises
-and protocol materials are still shared.
+The course setting adds Marburg's protocol download, required deliverables and
+submission instructions to the shared exercises.
 
 ## Start and verify
 
@@ -91,5 +88,3 @@ pixi run --locked -e web-hub jupyter-standaloneproxy \
 Open `http://127.0.0.1:8001/user/test/`. This loopback check does not test Hub
 authentication or separate user accounts. Keep `--no-authentication` restricted
 to loopback.
-
-For proxy details, see [Jupyter Server Proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/standalone.html).

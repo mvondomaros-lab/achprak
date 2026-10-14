@@ -9,7 +9,7 @@ from photoswitchlab import azobenzene, optimization
 
 
 @pytest.mark.skipif(
-    os.environ.get("ACHPRAK_SCIENCE_TESTS") != "1",
+    os.environ.get("PHOTOSWITCHLAB_SCIENCE_TESTS") != "1",
     reason="Opt-in real chemistry model checks",
 )
 def test_parent_trans_is_nearly_planar_and_lower_than_cis():

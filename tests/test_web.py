@@ -11,7 +11,7 @@ from fastapi.testclient import TestClient
 
 from photoswitchlab.web.server import create_app
 
-HEADERS = {"X-AChPrak-Request": "1"}
+HEADERS = {"X-PhotoSwitchLab-Request": "1"}
 
 
 @pytest.fixture
@@ -181,7 +181,7 @@ def test_template_names_follow_configuration_and_substituents(client):
 
 
 @pytest.mark.skipif(
-    os.environ.get("ACHPRAK_CHEMISTRY_TESTS") != "1",
+    os.environ.get("PHOTOSWITCHLAB_CHEMISTRY_TESTS") != "1",
     reason="Opt-in full scientific stack smoke test",
 )
 def test_minimum_spectrum_and_transition_state(client):
@@ -245,7 +245,11 @@ def test_minimum_spectrum_and_transition_state(client):
     assert all(len(p["positions"]) == ts["atom_count"] * 3 for p in history)
     assert np.isfinite(np.array(ts["frames"])).all()
     assert np.ptp(np.array(ts["frames"]), axis=0).max() > 0.01
-    output = Path(os.environ.get("ACHPRAK_TEST_OUTPUT", "/tmp/achprak-web-smoke.json"))
+    output = Path(
+        os.environ.get(
+            "PHOTOSWITCHLAB_TEST_OUTPUT", "/tmp/photoswitchlab-web-smoke.json"
+        )
+    )
     output.write_text(
         json.dumps({"initial": initial, "minimum": minimum, "spectrum": spec, "ts": ts})
     )
@@ -310,8 +314,8 @@ def test_live_optimization_records(client):
 
 
 @pytest.mark.skipif(
-    os.environ.get("ACHPRAK_CHEMISTRY_TESTS") != "1"
-    and os.environ.get("ACHPRAK_TS_TESTS") != "1",
+    os.environ.get("PHOTOSWITCHLAB_CHEMISTRY_TESTS") != "1"
+    and os.environ.get("PHOTOSWITCHLAB_TS_TESTS") != "1",
     reason="Opt-in minimum-to-TS path checks",
 )
 @pytest.mark.ts_optimization

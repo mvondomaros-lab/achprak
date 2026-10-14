@@ -39,7 +39,7 @@ STYLE = {
     "axes.prop_cycle": cycler(color=[PRIMARY, ACCENT]),
     # Outline glyphs so the website does not depend on installed viewer fonts.
     "svg.fonttype": "path",
-    "svg.hashsalt": "achprak-teaching",
+    "svg.hashsalt": "photoswitchlab-teaching",
 }
 
 

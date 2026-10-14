@@ -43,7 +43,7 @@ structure generation reproducible.
 # Check one template first:
 pixi run -e dev python scripts/screen_ts.py --case trans-r1-2-NMe2_r1-6-CF3 --output results/ts-recheck
 # Run the complete screen:
-MPLCONFIGDIR=/tmp/achprak-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-course-screen
+MPLCONFIGDIR=/tmp/photoswitchlab-mpl pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --workers 4 --output results/ts-course-screen
 # Inspect saved results without launching calculations:
 pixi run -e dev python scripts/screen_ts.py --scope both-rings --unique --output results/ts-course-screen --summarize
 # Collect exact failing structures as opt-in regression fixtures:

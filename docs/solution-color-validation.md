@@ -126,8 +126,8 @@ required for the production-JavaScript comparison.
 pixi run -e dev python scripts/validate_solution_color.py \
   --experimental results/color-validation/experimental-ethanol.txt \
   --spectrum results/color-validation/trans-H.json \
-  --cie-xyz /tmp/achprak-cie-xyz.csv \
-  --cie-d65 /tmp/achprak-cie-d65.csv \
+  --cie-xyz /tmp/photoswitchlab-cie-xyz.csv \
+  --cie-d65 /tmp/photoswitchlab-cie-d65.csv \
   --output results/color-validation
 ```
 

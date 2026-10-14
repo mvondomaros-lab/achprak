@@ -52,7 +52,7 @@ class SiteBuildTests(unittest.TestCase):
         cls.tmp.cleanup()
 
     def test_internal_links_and_assets_at_root_and_project_subpath(self):
-        for prefix in ("/", "/achprak/"):
+        for prefix in ("/", "/photoswitchlab/"):
             for file in self.output.rglob("*.html"):
                 document = Document(file.read_text())
                 self.assertEqual(len(document.ids), len(set(document.ids)))
@@ -198,7 +198,7 @@ class SiteBuildTests(unittest.TestCase):
         self.assertIn("0.002", sdf)
         self.assertTrue(sdf.endswith("$$$$\n"))
 
-        for prefix in ("/", "/AChPrak/"):
+        for prefix in ("/", "/PhotoSwitchLab/"):
             page_url = "https://example.org" + prefix + "theory/structures/"
             script_url = urljoin(page_url, "../../assets/structure-viewer.js")
             asset_root = urljoin(script_url, "../")
@@ -249,7 +249,10 @@ class SiteBuildTests(unittest.TestCase):
             article = re.search(r"<article>(.*?)</article>", text, re.S)[1]
             self.assertNotIn("lserver.chemie.uni-marburg.de", article)
             self.assertNotIn("ilias.uni-marburg.de", article)
-            self.assertIn("kurse/marburg/", article)
+            if slug == "installation":
+                self.assertIn("kurse/marburg/", article)
+            for local_term in ("Protokoll", "Abgabe", "Pflichtaufgaben"):
+                self.assertNotIn(local_term, article)
         access = (self.output / "installation/index.html").read_text()
         self.assertIn("urlpath=photoswitchlab%2F", access)
         tasks = (self.output / "tasks/index.html").read_text()
@@ -263,6 +266,13 @@ class SiteBuildTests(unittest.TestCase):
             "Protokoll führen",
         ):
             self.assertIn(requirement, course)
+        self.assertIn("materials/protokollvorlage.docx", course)
+        self.assertTrue(
+            (
+                self.output
+                / "media/src/photoswitchlab/web/static/materials/protokollvorlage.docx"
+            ).is_file()
+        )
         entries = json.loads((self.output / "assets/search.json").read_text())
         self.assertTrue(
             any(

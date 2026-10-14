@@ -14,8 +14,3 @@ Begründungen fest und kennzeichnen Sie berechnete Werte als Modellvorhersagen.
 
 Exportieren Sie Strukturen und Abbildungen während der Arbeit auf Ihren Rechner.
 Die Webapp speichert Ihre Ergebnisse nicht dauerhaft.
-
-Die Protokollvorlage und Hinweise zur Abgabe in der Webapp gehören zum
-[Marburger Praktikum](kurse/marburg.md). Bei einer selbstständigen Nutzung gibt es
-keine Abgabe an die Universität Marburg. Wenn Sie PhotoSwitchLab in einer anderen
-Lehrveranstaltung verwenden, gelten die Anforderungen Ihrer Betreuung.

@@ -7,7 +7,7 @@ from photoswitchlab.web.server import create_app
 from photoswitchlab.web.ts_policy import ts_restriction
 from photoswitchlab.web.worker import calculate
 
-HEADERS = {"X-AChPrak-Request": "1"}
+HEADERS = {"X-PhotoSwitchLab-Request": "1"}
 
 
 def settings(*pairs):

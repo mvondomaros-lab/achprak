@@ -5,6 +5,7 @@ Render and visually inspect the DOCX after running this script; see docs/develop
 """
 
 from pathlib import Path
+import json
 import re
 
 from docx import Document
@@ -19,6 +20,8 @@ OUTPUT = STATIC / "materials/protokollvorlage.docx"
 
 
 def build():
+    branding = json.loads((STATIC / "branding.json").read_text())
+    course_subtitle = branding["subtitle"] + branding["course_suffixes"]["marburg"]
     source = html.fromstring((STATIC / "guide.html").read_text())
     tasks = {el.get("id"): el for el in source.xpath('.//details[@class="task"]')}
     doc = Document()
@@ -44,13 +47,13 @@ def build():
     for border in doc.styles.element.xpath(".//w:pBdr"):
         border.getparent().remove(border)
     doc.core_properties.title = "Molekulare Photoschalter"
-    doc.core_properties.subject = "ACh-Pr · TC Versuch · Praktikumsprotokoll"
-    doc.core_properties.author = "ACh-Pr"
+    doc.core_properties.subject = course_subtitle + " · Praktikumsprotokoll"
+    doc.core_properties.author = branding["project_name"] + " · Universität Marburg"
     lang = OxmlElement("w:lang")
     lang.set(qn("w:val"), "de-DE")
     normal.element.get_or_add_rPr().append(lang)
     footer = sec.footer.paragraphs[0]
-    footer.add_run("ACh-Pr · TC Versuch    |    ")
+    footer.add_run("PhotoSwitchLab · Marburg    |    ")
     field = OxmlElement("w:fldSimple")
     field.set(qn("w:instr"), "PAGE")
     footer._p.append(field)
@@ -141,8 +144,7 @@ def build():
         p("")
 
     doc.add_heading("Molekulare Photoschalter", 0)
-    doc.add_paragraph("Struktur, Energie und Absorption im Vergleich", "Subtitle")
-    p("ACh-Pr · TC Versuch")
+    doc.add_paragraph(course_subtitle, "Subtitle")
     p("Praktikumsprotokoll")
     p("Name: [Name]    Gruppe: [Gruppe]    Datum: [Datum]")
     p(
@@ -230,7 +232,7 @@ def build():
     task("task-compare-isomer-spectra")
     table(
         [
-            "Minimumstruktur",
+            "Konfiguration",
             "Maximum / eV",
             "UV oder sichtbar",
             "Farbvorhersage",

@@ -136,7 +136,7 @@ async function api(path, options = {}) {
     ...options,
     headers: {
       "Content-Type": "application/json",
-      "X-AChPrak-Request": "1",
+      "X-PhotoSwitchLab-Request": "1",
       ...options.headers,
     },
   });
