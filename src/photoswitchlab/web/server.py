@@ -22,7 +22,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
-from achprak import nomenclature
+from photoswitchlab import nomenclature
 
 from .ts_policy import with_ts_policy
 
@@ -268,7 +268,12 @@ class JobManager:
                 env["PYTHONPATH"] = str(Path(__file__).resolve().parents[2])
                 with (folder / "output.log").open("wb") as log:
                     proc = subprocess.Popen(
-                        [sys.executable, "-m", "achprak.web.worker", str(folder)],
+                        [
+                            sys.executable,
+                            "-m",
+                            "photoswitchlab.web.worker",
+                            str(folder),
+                        ],
                         cwd=folder,
                         env=env,
                         stdout=log,

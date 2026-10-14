@@ -24,14 +24,18 @@ def browser_colors(spec):
         for factor in TEST_SCALES
     ]
     node = """
-require('./src/achprak/web/static/vendor/cie-color.js');
-require('./src/achprak/web/static/solution-color.js');
+require('./src/photoswitchlab/web/static/vendor/cie-color.js');
+require('./src/photoswitchlab/web/static/solution-color.js');
 const input = JSON.parse(require('fs').readFileSync(0, 'utf8'));
 console.log(JSON.stringify(input.map(spectrum => SolutionColor.estimate(spectrum))));
 """
-    return json.loads(subprocess.check_output(
-        ["node", "-e", node], input=json.dumps(requests).encode(), cwd=ROOT,
-    ))
+    return json.loads(
+        subprocess.check_output(
+            ["node", "-e", node],
+            input=json.dumps(requests).encode(),
+            cwd=ROOT,
+        )
+    )
 
 
 def main():
@@ -90,7 +94,9 @@ def main():
         )
     actual = browser_colors(spec)
     for a, b in zip(actual, references):
-        assert a is not None, "Spectrum does not meet the browser's coverage/input checks"
+        assert a is not None, (
+            "Spectrum does not meet the browser's coverage/input checks"
+        )
         assert a["rgb"] == b["rgb"]
         assert abs(a["luminance"] - b["luminance"]) < 1e-12
 
@@ -134,8 +140,8 @@ def main():
             name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
             for name in [
                 "scripts/validate_solution_color.py",
-                "src/achprak/web/static/solution-color.js",
-                "src/achprak/web/static/vendor/cie-color.js",
+                "src/photoswitchlab/web/static/solution-color.js",
+                "src/photoswitchlab/web/static/vendor/cie-color.js",
             ]
         },
         "input_sha256": {
@@ -167,7 +173,7 @@ def main():
         "scaled_input_test_results": actual,
     }
     (args.output / "metrics.json").write_text(json.dumps(report, indent=2) + "\n")
-    from achprak.plot_style import STYLE, PRIMARY, ACCENT, style_axes
+    from photoswitchlab.plot_style import STYLE, PRIMARY, ACCENT, style_axes
 
     with plt.rc_context(STYLE):
         fig, axes = plt.subplots(1, 2, figsize=(10, 4), layout="constrained")

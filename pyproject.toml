@@ -1,6 +1,5 @@
 [project]
-# Keep the distribution/package identifier until the separate naming migration.
-name = "achprak"
+name = "photoswitchlab"
 version = "0.5.0"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
 description = "PhotoSwitchLab: a web-based computer experiment introducing theoretical chemistry to first-year chemistry students"
@@ -8,7 +7,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 
 [tool.setuptools.package-data]
-"achprak.web" = ["static/*", "static/vendor/*", "static/materials/*"]
+"photoswitchlab.web" = ["static/*", "static/vendor/*", "static/materials/*"]
 
 [tool.pixi.workspace]
 channels = ["https://prefix.dev/conda-forge"]
@@ -27,7 +26,7 @@ tblite-python = ">=0.5.0,<0.6"
 mopac = ">=23.2.4,<24"
 
 [tool.pixi.pypi-dependencies]
-achprak = { path = ".", editable = true }
+photoswitchlab = { path = ".", editable = true }
 sella = ">=2.4.2, <3"
 pymopac = ">=1.1, <2"
 
@@ -42,7 +41,7 @@ fastapi = ">=0.115,<1"
 uvicorn = ">=0.34,<1"
 
 [tool.pixi.feature.web.tasks]
-web = "python -m achprak.web"
+web = "python -m photoswitchlab.web"
 
 [tool.pixi.feature.web-hub.dependencies]
 # Python API required by the standalone proxy; the central Hub is external.

@@ -11116,7 +11116,7 @@ packages:
   size: 433687
   timestamp: 1786599629846
 - pypi: ./
-  name: achprak
+  name: photoswitchlab
 - pypi: https://files.pythonhosted.org/packages/05/41/07c259ea10a5eeb100a66222507e2ce3a01474fa8f13c250bf1a3559a5bb/jaxlib-0.11.1-cp312-cp312-manylinux_2_27_x86_64.whl
   name: jaxlib
   version: 0.11.1

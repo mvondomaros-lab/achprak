@@ -2,7 +2,7 @@
 
 These pages support contributors, scientists, and educators maintaining PhotoSwitchLab
 or assessing its calculations. Student-facing explanations are on the
-[practicum website](https://mvondomaros-lab.github.io/achprak/).
+[practicum website](https://mvondomaros-lab.github.io/photoswitchlab/).
 
 ## Current methods
 

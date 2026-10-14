@@ -6,19 +6,20 @@ session. Binder's Jupyter server authenticates browser access, and
 starts PhotoSwitchLab on demand under `achprak/`. The application listens on a private
 Unix socket. No notebook is required.
 
-## Launch the branch
+## Launch the application
 
-The `binder-support` branch is available on GitHub. Open:
+Open the public deployment from `main`:
 
-<https://mybinder.org/v2/gh/mvondomaros-lab/achprak/binder-support?urlpath=achprak%2F>
+<https://mybinder.org/v2/gh/mvondomaros-lab/photoswitchlab/main?urlpath=achprak%2F>
 
-New changes must be pushed before this URL can build them. After merging, replace
-`binder-support` with `main`, or use a commit SHA for a fixed repository version.
+New changes must be pushed before this URL can build them. Use a commit SHA or
+release tag instead of `main` for a fixed repository version.
 Use `?urlpath=lab` to open JupyterLab instead; its launcher also offers
 **Molekulare Photoschalter**. The project is named **PhotoSwitchLab**, while the
 app and website retain their German title and the subtitle **Computerexperiment**.
-The current repository, package and proxy route still use `achprak`; a future
-repository rename to `photoswitchlab` is a separate migration.
+The repository and Python package are named `photoswitchlab`. The proxy route
+`achprak/` and the `ACHPRAK_BINDER_ROOT` environment variable are retained for
+compatibility with existing deployment configuration.
 
 ## Environment and startup
 

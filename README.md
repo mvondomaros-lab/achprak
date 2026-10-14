@@ -5,7 +5,7 @@
 PhotoSwitchLab ist eine deutschsprachige Browser-Anwendung für Chemiestudierende im
 ersten Studienjahr. Sie können Molekülstrukturen erzeugen, Strukturoptimierungen
 durchführen, Übergangsstrukturen suchen und Spektren berechnen. Die
-[Praktikumsanleitung](https://mvondomaros-lab.github.io/achprak/) erklärt die
+[Praktikumsanleitung](https://mvondomaros-lab.github.io/photoswitchlab/) erklärt die
 Grundlagen und führt durch die Aufgaben.
 
 Studierende und Lehrende können PhotoSwitchLab auf dem eigenen Rechner ausführen.
@@ -13,10 +13,8 @@ Für Lehrveranstaltungen ist auch die Bereitstellung über einen eigenen
 JupyterHub möglich.
 
 Die Webapp und die Website tragen den Titel „Molekulare Photoschalter“ mit dem
-Untertitel „Computerexperiment“. Der Projektname ist PhotoSwitchLab; als künftiger
-Repositoryname ist `photoswitchlab` vorgesehen. Das Repository, die veröffentlichten
-Links und das Python-Paket heißen bis zu einer separaten Migration weiterhin
-`achprak`. Die folgenden Installationsbefehle verwenden diesen bestehenden Namen.
+Untertitel „Computerexperiment“. Das Projekt, das Repository und das Python-Paket
+heißen PhotoSwitchLab beziehungsweise `photoswitchlab`.
 
 ## Auf dem eigenen Rechner starten
 
@@ -34,13 +32,13 @@ ist für den lokalen Betrieb nicht nötig.
 2. Laden Sie das Projekt herunter:
 
    ```sh
-   git clone https://github.com/mvondomaros-lab/achprak.git
+   git clone https://github.com/mvondomaros-lab/photoswitchlab.git
    ```
 
 3. Wechseln Sie in den Projektordner:
 
    ```sh
-   cd achprak
+   cd photoswitchlab
    ```
 
 4. Installieren Sie die Anwendung und ihre Abhängigkeiten:
@@ -82,7 +80,7 @@ Ohne diese Einstellung lautet der Untertitel „Computerexperiment“. Die Einst
 
 ## Anleitung und Grundlagen
 
-Die [Praktikumswebsite](https://mvondomaros-lab.github.io/achprak/) enthält die
+Die [Praktikumswebsite](https://mvondomaros-lab.github.io/photoswitchlab/) enthält die
 theoretischen Grundlagen und organisatorischen Hinweise. Die Aufgaben und
 Erläuterungen zu den Berechnungen finden Sie direkt in der Webapp.
 

@@ -7,7 +7,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-from achprak.plot_style import (
+from photoswitchlab.plot_style import (
     STYLE,
     TEXT,
     MUTED,

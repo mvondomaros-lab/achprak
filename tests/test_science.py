@@ -5,7 +5,7 @@ import os
 import numpy as np
 import pytest
 
-from achprak import azobenzene, optimization
+from photoswitchlab import azobenzene, optimization
 
 
 @pytest.mark.skipif(

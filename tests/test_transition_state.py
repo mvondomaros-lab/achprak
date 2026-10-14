@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from ase import Atoms
 
-from achprak.transition_state import internal_modes
+from photoswitchlab.transition_state import internal_modes
 
 
 def test_rigid_motion_projection_and_coordinate_invariance():
@@ -36,7 +36,7 @@ def test_rigid_motion_projection_and_coordinate_invariance():
 
 
 def test_ts_worker_rejects_start_structures_before_search():
-    from achprak.web.worker import calculate
+    from photoswitchlab.web.worker import calculate
 
     with pytest.raises(ValueError, match="Minimumstruktur"):
         calculate({"kind": "ts", "molecule": {"kind": "initial", "converged": False}})
@@ -44,7 +44,7 @@ def test_ts_worker_rejects_start_structures_before_search():
 
 def test_path_records_use_cumulative_distance_and_preserve_atom_order():
     from ase.calculators.singlepoint import SinglePointCalculator
-    from achprak.transition_state import OptTS
+    from photoswitchlab.transition_state import OptTS
 
     images = []
     for x, energy in [(0, -2), (1, -1), (3, -1.5)]:
@@ -59,7 +59,7 @@ def test_path_records_use_cumulative_distance_and_preserve_atom_order():
 
 def test_bond_graph_does_not_replace_the_energy_calculator():
     from ase.calculators.singlepoint import SinglePointCalculator
-    from achprak.transition_state import OptTS
+    from photoswitchlab.transition_state import OptTS
 
     atoms = Atoms("HH", positions=[[0, 0, 0], [0, 0, 0.74]])
     calculator = SinglePointCalculator(atoms, energy=-1.0)
@@ -75,7 +75,7 @@ def test_bond_graph_does_not_replace_the_energy_calculator():
 def test_seed_retries_restore_source_and_account_for_all_work(
     monkeypatch, failure_kind, succeed_on, max_attempts
 ):
-    from achprak.transition_state import OptTS
+    from photoswitchlab.transition_state import OptTS
 
     search = object.__new__(OptTS)
     search.atoms = Atoms("HH", positions=[[0, 0, 0], [0, 0, 0.74]])

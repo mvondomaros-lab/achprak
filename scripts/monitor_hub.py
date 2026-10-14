@@ -39,9 +39,9 @@ def read_processes():
             continue
         if "jupyter-standaloneproxy" in command:
             key = "proxy"
-        elif "-m achprak.web.worker" in command:
+        elif "-m photoswitchlab.web.worker" in command:
             key = "worker"
-        elif "-m achprak.web" in command:
+        elif "-m photoswitchlab.web" in command:
             key = "app"
         elif "mopac" in command.lower() and "grep" not in command:
             key = "mopac"

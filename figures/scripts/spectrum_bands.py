@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import FuncFormatter
 
-# Gaussian standard deviation in eV, matching achprak.uvvis.SIGMA.
+# Gaussian standard deviation in eV, matching photoswitchlab.uvvis.SIGMA.
 SIGMA_EV = 0.15
 
 

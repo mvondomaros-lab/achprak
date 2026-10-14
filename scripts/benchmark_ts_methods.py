@@ -9,8 +9,8 @@ import json
 import time
 from pathlib import Path
 
-from achprak import common
-from achprak.transition_state import OptTS
+from photoswitchlab import common
+from photoswitchlab.transition_state import OptTS
 
 
 def main():

@@ -12,9 +12,9 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 
-from achprak import azobenzene, common, nomenclature, optimization, uvvis
-from achprak.transition_state import OptTS
-from achprak.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
+from photoswitchlab import azobenzene, common, nomenclature, optimization, uvvis
+from photoswitchlab.transition_state import OptTS
+from photoswitchlab.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
 PROGRESS_PREFIX = "ACHPRAK_PROGRESS "
 
@@ -72,7 +72,7 @@ def read_atoms(xyz):
 
 def molecule(atoms, name, kind="initial", mol=None, parent_id=None):
     mol = mol if mol is not None else common.atoms_to_mol(atoms)
-    from achprak.structure_drawing import draw_structure
+    from photoswitchlab.structure_drawing import draw_structure
 
     svg = draw_structure(mol)
     geometry = azobenzene.Properties(atoms.copy(), mol=mol)
@@ -215,7 +215,7 @@ def calculate(data):
         energies, absorption = spec.spectrum()
         import matplotlib.pyplot as plt
         from matplotlib.ticker import FuncFormatter
-        from achprak.plot_style import (
+        from photoswitchlab.plot_style import (
             STYLE,
             PRIMARY,
             ACCENT,

@@ -11,7 +11,7 @@ Sie unter [Aufgaben und Protokoll](tasks.md).
 
 Sie können die Webapp auch zu Hause auf Ihrem eigenen Computer installieren und
 weitere Strukturen und Rechnungen in Ihrem eigenen Tempo ausprobieren. Die
-[Installationsanleitung](https://github.com/mvondomaros-lab/achprak#auf-dem-eigenen-rechner-starten)
+[Installationsanleitung](https://github.com/mvondomaros-lab/photoswitchlab#auf-dem-eigenen-rechner-starten)
 führt Sie Schritt für Schritt durch die Einrichtung und den Start. Der lokale
 Betrieb wird derzeit für Macs mit Apple Silicon und Linux-Computer mit
 x86-64-Prozessor unterstützt.

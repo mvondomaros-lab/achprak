@@ -14,7 +14,7 @@ from docx.oxml.ns import qn
 from lxml import html
 
 ROOT = Path(__file__).resolve().parents[1]
-STATIC = ROOT / "src/achprak/web/static"
+STATIC = ROOT / "src/photoswitchlab/web/static"
 OUTPUT = STATIC / "materials/protokollvorlage.docx"
 
 
@@ -149,7 +149,7 @@ def build():
         "Dokumentieren Sie Ihre Berechnungen und deren Interpretation. Bearbeiten Sie die Aufgaben in der Webapp. Ersetzen Sie die Angaben in eckigen Klammern und fügen Sie gespeicherte Abbildungen mit Beschriftungen ein. Die Überschriften entsprechen den Aufgaben in der Webapp. Die Felder erweitern sich beim Schreiben."
     )
     p(
-        "Speichern Sie die Datei regelmäßig. Laden Sie das ausgefüllte Protokoll in ILIAS hoch. Die Grundlagen finden Sie unter https://mvondomaros-lab.github.io/achprak/theory/."
+        "Speichern Sie die Datei regelmäßig. Laden Sie das ausgefüllte Protokoll in ILIAS hoch. Die Grundlagen finden Sie unter https://mvondomaros-lab.github.io/photoswitchlab/theory/."
     )
     doc.add_heading("Strukturen erstellen", 1)
     task("task-compare-configurations")
@@ -202,7 +202,9 @@ def build():
     )
     answer("Startstruktur: [gleich ausgerichtete 3D-Ansicht einfügen und beschriften]")
     p("\n")
-    answer("Minimumstruktur: [gleich ausgerichtete 3D-Ansicht einfügen und beschriften]")
+    answer(
+        "Minimumstruktur: [gleich ausgerichtete 3D-Ansicht einfügen und beschriften]"
+    )
     p("\n")
     answer(
         "Sterischer Einfluss und Vergleich mit unsubstituiertem trans-Azobenzol: [höchstens vier Sätze]"
@@ -264,7 +266,9 @@ def build():
     )
     answer("Kleinster Wert von ΔEmax: [Derivat und Wert]")
     answer("Größter Wert von ΔEmax: [Derivat und Wert]")
-    answer("Spektrum zum kleinsten Wert von ΔEmax: [Abbildung einfügen und beschriften]")
+    answer(
+        "Spektrum zum kleinsten Wert von ΔEmax: [Abbildung einfügen und beschriften]"
+    )
     p("\n")
     answer("Spektrum zum größten Wert von ΔEmax: [Abbildung einfügen und beschriften]")
     p("\n")
@@ -323,7 +327,9 @@ def build():
     answer(
         "Vergleich der vollständigen Spektren und Prüfung der Vermutung: [Stützt das Ergebnis den zugrunde gelegten Trend, widerspricht es ihm oder ist keine eindeutige Aussage möglich?]"
     )
-    answer("Gruppenresultat mit der kleinsten Energie des Absorptionsmaximums: [Positionen, Gruppen und Energie]")
+    answer(
+        "Gruppenresultat mit der kleinsten Energie des Absorptionsmaximums: [Positionen, Gruppen und Energie]"
+    )
     answer(
         "Stärkster vorhergesagter cis/trans-Farbunterschied: [Positionen, Gruppen und Farben]"
     )

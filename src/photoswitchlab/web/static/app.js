@@ -543,7 +543,7 @@ async function refresh(selected, finishCalculation = false) {
 }
 let energyChart = null;
 let spectrumChart = null;
-// Keep aligned with achprak/plot_style.py (1 pt = 4/3 CSS px).
+// Keep aligned with photoswitchlab/plot_style.py (1 pt = 4/3 CSS px).
 const plotStyle = {
   font: { family: "Arial, Helvetica, sans-serif", size: 16 },
   titleFont: { family: "Arial, Helvetica, sans-serif", size: 17 },

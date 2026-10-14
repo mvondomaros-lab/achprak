@@ -8,16 +8,18 @@ from pydantic import ValidationError
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
 
-from achprak.azobenzene import Template
-from achprak import common
-from achprak.web.server import Settings, SUBSTITUENTS
-from achprak.web.ts_policy import ts_restriction
+from photoswitchlab.azobenzene import Template
+from photoswitchlab import common
+from photoswitchlab.web.server import Settings, SUBSTITUENTS
+from photoswitchlab.web.ts_policy import ts_restriction
 
 
 def test_course_menu_is_consistent():
     expected = ["H", "Me", "OMe", "NMe2", "CF3", "CN", "NO2"]
     assert list(Template.substituent_smiles) == SUBSTITUENTS == expected
-    app = (Path(__file__).parents[1] / "src/achprak/web/static/app.js").read_text()
+    app = (
+        Path(__file__).parents[1] / "src/photoswitchlab/web/static/app.js"
+    ).read_text()
     assert re.search(r"const SUBS = (.*);", app)[1] == str(expected).replace("'", '"')
     for group in expected:
         values = [group] + ["H"] * 9

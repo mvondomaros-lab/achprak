@@ -16,7 +16,7 @@ tar -xzf "$archive" -C "$pixi_dir" pixi
 
 # Fail the build if the chemistry backends or application cannot load.
 "$pixi_dir/pixi" run --manifest-path "$repo_root/pyproject.toml" --locked -e web \
-    python -c 'import achprak.web.server, rdkit, tblite, sella, pymopac; import shutil; assert shutil.which("mopac"), "MOPAC executable missing"'
+    python -c 'import photoswitchlab.web.server, rdkit, tblite, sella, pymopac; import shutil; assert shutil.which("mopac"), "MOPAC executable missing"'
 
 config_dir="$(jupyter --config-dir)"
 mkdir -p "$config_dir"

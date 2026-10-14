@@ -1,5 +1,5 @@
 # The sella/ase/tblite stack does not parallelize well for these systems.
-# Force serial execution before importing achprak or any dependency that may
+# Force serial execution before importing photoswitchlab or any dependency that may
 # initialize BLAS/OpenMP runtimes.
 
 import os

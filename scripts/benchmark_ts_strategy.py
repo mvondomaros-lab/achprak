@@ -30,7 +30,7 @@ for variable in (
 
 from ase.mep import DyNEB
 from ase.optimize import LBFGS
-from achprak import common
+from photoswitchlab import common
 
 
 def run(record, strategy, source):
@@ -51,7 +51,9 @@ def run(record, strategy, source):
         nonlocal phase
         phase = name
 
-    spec = importlib.util.spec_from_file_location("achprak._strategy_benchmark", source)
+    spec = importlib.util.spec_from_file_location(
+        "photoswitchlab._strategy_benchmark", source
+    )
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     if strategy == "dynamic_neb":
@@ -243,15 +245,15 @@ def main():
     records.sort(key=lambda r: r["id"])
     for record in records:
         record["cohort"] = "saved_failure" if record["id"] in failure_ids else "control"
-    source = Path("src/achprak/transition_state.py")
+    source = Path("src/photoswitchlab/transition_state.py")
     strategies = args.strategy or ["current", "open150_lbfgs"]
     manifest = {
         "source_sha256": {
             str(p): hashlib.sha256(p.read_bytes()).hexdigest()
             for p in (
                 source,
-                Path("src/achprak/common.py"),
-                Path("src/achprak/azobenzene.py"),
+                Path("src/photoswitchlab/common.py"),
+                Path("src/photoswitchlab/azobenzene.py"),
                 Path(__file__),
             )
         },

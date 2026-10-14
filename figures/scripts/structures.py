@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from rdkit import Chem
-from achprak.structure_drawing import draw_structure
+from photoswitchlab.structure_drawing import draw_structure
 
 TRANS = "c1ccccc1/N=N/c1ccccc1"
 CIS = "c1ccccc1/N=N\\c1ccccc1"

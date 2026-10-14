@@ -3,7 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const vm = require("node:vm");
 function loadSelectionFunctions(context) {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(
     app.slice(
       app.indexOf("function selectableMolecules()"),
@@ -12,7 +12,7 @@ function loadSelectionFunctions(context) {
     context,
   );
 }
-require("../src/achprak/web/static/progress.js");
+require("../src/photoswitchlab/web/static/progress.js");
 const progress = globalThis.OptimizationProgress;
 const record = (step, phase = "optimization") => ({
   source_id: "source",
@@ -62,7 +62,7 @@ test("terminal full history restores steps dropped by the bounded log; vibration
 });
 
 test("short optimizations load the result directly without automatic playback", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   for (const kind of ["minimum", "ts"]) {
     const events = [];
     const records = [record(0), record(1)];
@@ -150,7 +150,7 @@ test("Play resumes paused and selected steps, synchronizes geometry and energy, 
     },
     clearInterval: (id) => timers.delete(id),
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(
     app.slice(
       app.indexOf("function stopAnimation()"),
@@ -315,7 +315,7 @@ test("energy chart shows only reaction coordinates and describes the path", () =
       update() {}
     },
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(
     app.slice(
       app.indexOf("let energyChart = null;"),
@@ -403,7 +403,7 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
       return elements.get(id);
     },
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(
     app.slice(
       app.indexOf("function applyLiveGeometry()"),
@@ -445,7 +445,7 @@ test("live NEB coordinates reach the 3D viewer and identify the displayed image"
 });
 
 test("same molecule reuses its viewer and restores result positions without resetting the camera", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   const positions = [];
   let loads = 0,
@@ -516,7 +516,7 @@ test("same molecule reuses its viewer and restores result positions without rese
 });
 
 test("both playback buttons appear only when frames exist", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   let frames = [];
   const context = vm.createContext({
@@ -591,7 +591,7 @@ test("minimum energy history appears live and remains available after completion
       update() {}
     },
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(
     app.slice(
       app.indexOf("let energyChart = null;"),
@@ -639,7 +639,7 @@ test("minimum energy history appears live and remains available after completion
 });
 
 test("plot clicks select the matching structure, including reaction paths, and ignore unavailable interactions", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const selected = [];
   let pathSelected = false;
   const context = vm.createContext({
@@ -733,7 +733,7 @@ test("intermediate geometry properties use the shown positions and mass-weighted
 });
 
 test("result tools appear only when useful and spectrum prerequisites remain enforced", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   let molecule;
   let target = "minimum";
@@ -822,7 +822,7 @@ test("result tools appear only when useful and spectrum prerequisites remain enf
 });
 
 test("structure step defaults to 2D and remembers optional 3D without calculation tools", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   const context = vm.createContext({
     state: {
@@ -907,7 +907,7 @@ test("structure step defaults to 2D and remembers optional 3D without calculatio
 });
 
 test("image export pauses playback and captures the displayed intermediate geometry", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const button = {};
   const calls = [];
   const context = vm.createContext({
@@ -943,7 +943,7 @@ test("image export pauses playback and captures the displayed intermediate geome
 });
 
 test("structure picker groups chemical identities and keeps variants individually selectable", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const context = vm.createContext({
     KIND: {
       initial: "Startstruktur",
@@ -1036,7 +1036,7 @@ function selectionLab(molecules) {
     api: async () => ({ molecules: context.state.molecules }),
   });
   loadSelectionFunctions(context);
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(app.slice(app.indexOf("function updateGuide("), app.indexOf("async function guide(")), context);
   vm.runInContext(
     app.slice(
@@ -1177,7 +1177,7 @@ test("clear structures confirms the full scope and resets selection only after s
       return elements.get(id);
     },
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const start = app.indexOf('$("clear-structures").onclick');
   vm.runInContext(
     app.slice(start, app.indexOf("\ndocument\n", start)),
@@ -1210,7 +1210,7 @@ test("clear structures confirms the full scope and resets selection only after s
 });
 
 test("completion keeps the live view until the result is loaded, then switches atomically", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   let resolveSession;
   const elements = new Map();
   const source = { id: "source" };
@@ -1244,7 +1244,7 @@ test("completion keeps the live view until the result is loaded, then switches a
 
 
 test("minimum playback uses its optimization history without a mode toggle", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const records = [record(0), record(1), record(2)];
   let molecule = { id: "minimum", kind: "minimum" };
   const context = vm.createContext({
@@ -1261,7 +1261,7 @@ test("minimum playback uses its optimization history without a mode toggle", () 
 });
 
 test("spectrum preserves bands and stick strengths with reciprocal wavelength ticks", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   let chart;
   const elements = new Map();
   const context = vm.createContext({
@@ -1318,7 +1318,7 @@ test("spectrum notes rotate without inventing stage changes", () => {
 });
 
 test("spectrum stage descriptions only appear for a running spectrum job", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   const context = vm.createContext({
     state: { step: "spectrum", busy: true },
@@ -1347,7 +1347,7 @@ test("spectrum stage descriptions only appear for a running spectrum job", () =>
 });
 
 test("picker groups by starting configuration and substitution without redundant origin text", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const element = () => ({
     children: [], attributes: {}, classList: { toggle() {} }, textContent: "", value: "",
     append(...children) { this.children.push(...children); },
@@ -1399,7 +1399,7 @@ test("picker groups by starting configuration and substitution without redundant
 });
 
 test("Logout uses the public Hub URL and disappears in local mode", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   let session = {
     molecules: [], user: "student",
@@ -1446,7 +1446,7 @@ test("tasks follow navigation without opening collapsible sections", () => {
 });
 
 test("task loading can retry and opens the current step without trapping focus", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   let focused = null;
   let succeeds = false;
@@ -1483,7 +1483,7 @@ test("task loading can retry and opens the current step without trapping focus",
 
 
 test("new structures reset the build view to 2D while failed builds and calculations preserve it", async () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   for (const [kind, result, expected] of [
     ["template", { molecule: { id: "new" } }, "2d"],
     ["template", undefined, "3d"],
@@ -1505,7 +1505,7 @@ test("new structures reset the build view to 2D while failed builds and calculat
 });
 
 test("builder disables existing starting structures and updates when settings change", () => {
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   const elements = new Map();
   let configuration = "trans";
   const molecule = {

@@ -10,8 +10,8 @@ import numpy as np
 import pytest
 from ase import Atoms
 
-from achprak import uvvis
-from achprak.web.server import JobManager, Session
+from photoswitchlab import uvvis
+from photoswitchlab.web.server import JobManager, Session
 
 
 @pytest.fixture

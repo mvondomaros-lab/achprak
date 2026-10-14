@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 from fastapi.testclient import TestClient
 
-from achprak.web.server import create_app
+from photoswitchlab.web.server import create_app
 
 HEADERS = {"X-AChPrak-Request": "1"}
 
@@ -115,7 +115,7 @@ def test_validation_and_csrf(client):
     assert "no-store" in client.get("/api/session").headers["cache-control"]
     index = client.get("/")
     assert "no-cache" in index.headers["cache-control"]
-    assert 'static/app.js?v=ui-93' in index.text
+    assert "static/app.js?v=ui-93" in index.text
     client.cookies.clear()
     assert (
         client.post("/api/jobs", headers=HEADERS, json={"kind": "template"}).status_code
@@ -200,7 +200,7 @@ def test_minimum_spectrum_and_transition_state(client):
     assert ts["name"] == initial["name"] + " · Übergangsstruktur"
     ts_job = client.get("/api/session").json()["jobs"][-1]
     output_log = client.get(f"/api/jobs/{ts_job['id']}").json()["log"]
-    from achprak.web.worker import PROGRESS_PREFIX
+    from photoswitchlab.web.worker import PROGRESS_PREFIX
 
     progress = [
         json.loads(line.removeprefix(PROGRESS_PREFIX))
@@ -252,7 +252,7 @@ def test_minimum_spectrum_and_transition_state(client):
 
 
 def test_live_optimization_records(client):
-    from achprak.web.worker import PROGRESS_PREFIX
+    from photoswitchlab.web.worker import PROGRESS_PREFIX
 
     initial = run(client, "template")["molecule"]
     response = client.post(
@@ -413,7 +413,7 @@ def test_ts_paths_from_cis_and_substituted_minima(
 @pytest.mark.parametrize("kind", ["minimum", "ts"])
 @pytest.mark.parametrize("ok", [True, False])
 def test_repeated_search_replaces_only_its_previous_result(kind, ok):
-    from achprak.web.server import JobManager, Session
+    from photoswitchlab.web.server import JobManager, Session
 
     manager = JobManager()
     source = {"id": "start", "kind": "initial", "base_name": "cis-Azobenzol"}
@@ -489,7 +489,7 @@ def test_clear_structures_is_session_scoped_and_blocked_during_jobs(client, app)
 def test_spectrum_progress_survives_log_truncation_and_is_session_scoped(
     client, app, monkeypatch
 ):
-    from achprak.web.worker import spectrum_progress
+    from photoswitchlab.web.worker import spectrum_progress
 
     session = next(iter(app.state.manager.sessions.values()))
     session.jobs["spectrum"] = {"id": "spectrum", "kind": "uvvis", "status": "running"}
@@ -539,7 +539,7 @@ def test_existing_spectrum_is_preserved_and_missing_spectrum_can_be_requested(
 
 
 def test_minimization_of_transition_state_is_rejected(client, app):
-    from achprak.web.worker import calculate
+    from photoswitchlab.web.worker import calculate
 
     session = next(iter(app.state.manager.sessions.values()))
     ts = {"id": "ts-result", "kind": "ts", "converged": True}

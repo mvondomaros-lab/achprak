@@ -86,7 +86,9 @@ def draw():
         Arc(center, 1.3, 1.3, theta1=-45, theta2=45, color=ochre, linewidth=1.5)
     )
     ax.text(7.55, 0, "φ", color=ochre, fontsize=SYMBOL_SIZE, ha="center", va="center")
-    ax.text(6.9, 1.55, "Blick entlang N=N", ha="center", fontsize=LABEL_SIZE, color=TEXT)
+    ax.text(
+        6.9, 1.55, "Blick entlang N=N", ha="center", fontsize=LABEL_SIZE, color=TEXT
+    )
     ax.text(
         6.9,
         -1.45,
@@ -100,7 +102,9 @@ def draw():
 def render(output_dir=None, formats=("svg",)):
     # Keep the canonical asset inside package data so installed/offline apps work.
     if output_dir is None:
-        output_dir = Path(__file__).resolve().parents[2] / "src/achprak/web/static"
+        output_dir = (
+            Path(__file__).resolve().parents[2] / "src/photoswitchlab/web/static"
+        )
     export(draw, "dihedral", output_dir, formats)
 
 

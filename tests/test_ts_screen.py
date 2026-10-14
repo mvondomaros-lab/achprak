@@ -7,9 +7,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from achprak import azobenzene, common, optimization
-from achprak.transition_state import OptTS
-from achprak.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
+from photoswitchlab import azobenzene, common, optimization
+from photoswitchlab.transition_state import OptTS
+from photoswitchlab.web.ts_policy import MAX_TS_ATTEMPTS, ts_restriction
 
 FAILURES = sorted((Path(__file__).parent / "data/ts_failures").glob("*.json"))
 

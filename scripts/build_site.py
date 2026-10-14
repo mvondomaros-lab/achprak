@@ -23,7 +23,9 @@ from latex2mathml.converter import convert
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 OUTPUT = SITE / "_build"
-BRANDING = json.loads((ROOT / "src/achprak/web/static/branding.json").read_text())
+BRANDING = json.loads(
+    (ROOT / "src/photoswitchlab/web/static/branding.json").read_text()
+)
 PAGES = (
     ("index", "Molekulare Photoschalter"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
@@ -62,7 +64,9 @@ def page_url(slug: str) -> str:
 
 def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     """Render everything before replacing output, leaving the last build on errors."""
-    branding = json.loads((ROOT / "src/achprak/web/static/branding.json").read_text())
+    branding = json.loads(
+        (ROOT / "src/photoswitchlab/web/static/branding.json").read_text()
+    )
     brand_title = branding["title"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     output = output.resolve()
@@ -71,16 +75,19 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
         stage = Path(tmp)
         shutil.copytree(SITE / "assets", stage / "assets")
         shutil.copy2(
-            ROOT / "src/achprak/web/static/header.css", stage / "assets/header.css"
+            ROOT / "src/photoswitchlab/web/static/header.css",
+            stage / "assets/header.css",
         )
         shutil.copy2(
-            ROOT / "src/achprak/web/static/brand-mark.svg",
+            ROOT / "src/photoswitchlab/web/static/brand-mark.svg",
             stage / "assets/brand-mark.svg",
         )
         vendor = stage / "assets/vendor"
         vendor.mkdir(parents=True, exist_ok=True)
         for name in ("ngl.js", "NGL-LICENSE"):
-            shutil.copy2(ROOT / "src/achprak/web/static/vendor" / name, vendor / name)
+            shutil.copy2(
+                ROOT / "src/photoswitchlab/web/static/vendor" / name, vendor / name
+            )
         template = Template((SITE / "template.html").read_text())
         search = []
         for index, (slug, label) in enumerate(
@@ -257,7 +264,7 @@ setInterval(async () => {
 
 
 def snapshot():
-    paths = [SITE, ROOT / "figures", ROOT / "src/achprak/web/static"]
+    paths = [SITE, ROOT / "figures", ROOT / "src/photoswitchlab/web/static"]
     files = []
     for path in paths:
         files.extend(

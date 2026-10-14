@@ -8,8 +8,8 @@ import numpy as np
 from ase.optimize import BFGS
 from ase.vibrations import Vibrations
 
-from achprak import azobenzene, common
-from achprak.transition_state import internal_modes
+from photoswitchlab import azobenzene, common
+from photoswitchlab.transition_state import internal_modes
 
 
 def geometry_metrics(atoms):

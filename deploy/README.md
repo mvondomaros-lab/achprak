@@ -41,6 +41,12 @@ examples; adapt them to your installation.
 
 ## Install the application
 
+After the package rename, reinstall the locked environment before restarting
+user servers: the application entry point is now `python -m photoswitchlab.web`.
+The example installation directory `/opt/achprak`, `ACHPRAK_ENV` and other
+`ACHPRAK_*` settings remain supported. Do not move an installed Pixi environment
+solely to match the new project name.
+
 1. Put the checkout at its final location, for example `/opt/achprak`. Keep the
    source and shared environment administrator-owned. Participants need read and
    execute access, but no write access.
@@ -164,7 +170,7 @@ authentication or root privileges:
 pixi run -e web-hub jupyter-standaloneproxy \
   --no-authentication --address=127.0.0.1 --port=8001 \
   --base-url=/user/test/ --unix-socket=True --timeout=60 -- \
-  python -m achprak.web --unix-socket='{unix_socket}' \
+  python -m photoswitchlab.web --unix-socket='{unix_socket}' \
   --cookie-path='{base_url}' --max-jobs=1
 ```
 

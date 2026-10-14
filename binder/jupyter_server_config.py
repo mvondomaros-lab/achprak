@@ -8,11 +8,11 @@ repo_root = Path(os.environ["ACHPRAK_BINDER_ROOT"])
 app_bin = repo_root / ".pixi/envs/web/bin"
 
 
-def achprak_command(unix_socket, base_url):
+def photoswitchlab_command(unix_socket, base_url):
     command = [
         str(app_bin / "python"),
         "-m",
-        "achprak.web",
+        "photoswitchlab.web",
         f"--unix-socket={unix_socket}",
         f"--cookie-path={base_url.rstrip('/')}/achprak/",
         "--max-jobs=1",
@@ -26,7 +26,7 @@ def achprak_command(unix_socket, base_url):
 
 c.ServerProxy.servers = {
     "achprak": {
-        "command": achprak_command,
+        "command": photoswitchlab_command,
         "unix_socket": True,
         "timeout": 60,
         "absolute_url": False,

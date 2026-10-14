@@ -20,7 +20,7 @@ c.Spawner.args = [
     "--",
     str(achprak_bin / "python"),
     "-m",
-    "achprak.web",
+    "photoswitchlab.web",
     "--unix-socket={unix_socket}",
     "--cookie-path={base_url}",
     "--max-jobs=1",

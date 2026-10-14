@@ -4,8 +4,8 @@ from pathlib import Path
 
 from rdkit import Chem
 from rdkit.Geometry import Point2D
-from achprak.conformation import draw_coordinates
-from achprak.structure_drawing import structure_drawer
+from photoswitchlab.conformation import draw_coordinates
+from photoswitchlab.structure_drawing import structure_drawer
 from structures import TRANS, CIS
 from style import run
 

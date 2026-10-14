@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from ase import Atoms
 
-from achprak import uvvis
+from photoswitchlab import uvvis
 
 
 @pytest.mark.parametrize(
@@ -65,7 +65,8 @@ def test_mopac_progress_handles_split_lines_and_ignores_keyword_echoes():
     stream = uvvis.MopacProgressStream(output, phases.append)
     chunks = [
         " * CIS - C.I. USES 1 ELECTRON EXCITATIONS ONLY\n",
-        "RHF CALC", "ULATION, NO. OF DOUBLY OCCUPIED LEVELS = 48\n",
+        "RHF CALC",
+        "ULATION, NO. OF DOUBLY OCCUPIED LEVELS = 48\n",
         "MOLECULAR ORBITALS\nROOT NO. 1 2 3\n",
         "CI excitations= 800: =800\n",
         "CI excitations= 800: =800\n",
@@ -94,16 +95,26 @@ def test_progress_reports_expanded_output_and_restores_stdout(monkeypatch):
             print("CI excitations= 800: =800")
 
     monkeypatch.setattr(uvvis.pymopac, "MopacInput", Mopac)
-    monkeypatch.setattr(uvvis, "parse_mopac_excitations", lambda index: (
-        np.linspace(2, 5 if index == 0 else 8, 99), np.ones(99),
-    ))
+    monkeypatch.setattr(
+        uvvis,
+        "parse_mopac_excitations",
+        lambda index: (
+            np.linspace(2, 5 if index == 0 else 8, 99),
+            np.ones(99),
+        ),
+    )
     original = sys.stdout
     phases = []
     spec = uvvis.UVVis(Atoms("H", positions=[[0, 0, 0]]))
     spec.calculate(observer=phases.append)
     assert sys.stdout is original
-    assert phases == ["electrons", "excited_states", "read_transitions",
-                      "expanded_output", "read_transitions"]
+    assert phases == [
+        "electrons",
+        "excited_states",
+        "read_transitions",
+        "expanded_output",
+        "read_transitions",
+    ]
     assert spec.coverage_complete
 
 
@@ -114,7 +125,9 @@ def test_progress_restores_stdout_on_mopac_failure(monkeypatch):
     def fail():
         raise RuntimeError("MOPAC failed")
 
-    monkeypatch.setattr(uvvis.pymopac, "MopacInput", lambda *args, **kwargs: SimpleNamespace(run=fail))
+    monkeypatch.setattr(
+        uvvis.pymopac, "MopacInput", lambda *args, **kwargs: SimpleNamespace(run=fail)
+    )
     spec = uvvis.UVVis(Atoms("H", positions=[[0, 0, 0]]))
     original = sys.stdout
     with pytest.raises(RuntimeError, match="MOPAC failed"):

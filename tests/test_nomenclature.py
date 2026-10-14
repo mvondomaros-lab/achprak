@@ -1,6 +1,6 @@
 import pytest
 
-from achprak.nomenclature import azobenzene_name, canonical_substitution
+from photoswitchlab.nomenclature import azobenzene_name, canonical_substitution
 
 
 def substitutions(**positions):

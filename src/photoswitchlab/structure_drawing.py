@@ -3,21 +3,33 @@
 from rdkit import Chem
 from rdkit.Chem.Draw import rdMolDraw2D
 
-from achprak.conformation import draw_coordinates, scaffold
+from photoswitchlab.conformation import draw_coordinates, scaffold
 
 
 def structure_drawer(width, height, format="svg", panel_width=-1, panel_height=-1):
     if format not in ("svg", "png"):
         raise ValueError(f"Unsupported drawing format: {format}")
-    renderer = rdMolDraw2D.MolDraw2DSVG if format == "svg" else rdMolDraw2D.MolDraw2DCairo
+    renderer = (
+        rdMolDraw2D.MolDraw2DSVG if format == "svg" else rdMolDraw2D.MolDraw2DCairo
+    )
     drawer = renderer(width, height, panel_width, panel_height)
     drawer.drawOptions().clearBackground = False
     return drawer
 
 
-def draw_structure(mol, *, width=700, height=340, explicit=False,
-                   numbered=False, aromatic=False, format="svg", rotate=0,
-                   scale_bond_width=False, bond_line_width=2):
+def draw_structure(
+    mol,
+    *,
+    width=700,
+    height=340,
+    explicit=False,
+    numbered=False,
+    aromatic=False,
+    format="svg",
+    rotate=0,
+    scale_bond_width=False,
+    bond_line_width=2,
+):
     mol = Chem.AddHs(Chem.Mol(mol)) if explicit else Chem.RemoveHs(Chem.Mol(mol))
     draw_coordinates(mol)
     drawer = structure_drawer(width, height, format)

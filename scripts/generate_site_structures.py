@@ -4,7 +4,7 @@ from pathlib import Path
 
 from rdkit import Chem
 
-from achprak import azobenzene, common, optimization
+from photoswitchlab import azobenzene, common, optimization
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -15,7 +15,9 @@ def main() -> None:
     template = azobenzene.Template(configuration="trans")
     minimum = optimization.OptMin(template.atoms)
     if not minimum.run():
-        raise RuntimeError("Die Minimumsuche für trans-Azobenzol ist nicht konvergiert.")
+        raise RuntimeError(
+            "Die Minimumsuche für trans-Azobenzol ist nicht konvergiert."
+        )
 
     # Match the app's minimum-structure path, including bond perception from
     # the optimized coordinates, before publishing the result as an SDF.

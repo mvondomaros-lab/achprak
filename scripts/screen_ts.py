@@ -29,8 +29,8 @@ for variable in (
 ):
     os.environ[variable] = "1"
 
-from achprak import azobenzene, common, optimization
-from achprak.transition_state import OptTS
+from photoswitchlab import azobenzene, common, optimization
+from photoswitchlab.transition_state import OptTS
 
 
 def cases(scope):
@@ -89,7 +89,7 @@ def run_case(case, output, implementation=None):
     search_class = OptTS
     if implementation:
         spec = importlib.util.spec_from_file_location(
-            "achprak._screen_ts", implementation
+            "photoswitchlab._screen_ts", implementation
         )
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -285,9 +285,9 @@ def main():
         "source_sha256": {
             name: hashlib.sha256(Path(name).read_bytes()).hexdigest()
             for name in (
-                implementation or "src/achprak/transition_state.py",
-                "src/achprak/optimization.py",
-                "src/achprak/azobenzene.py",
+                implementation or "src/photoswitchlab/transition_state.py",
+                "src/photoswitchlab/optimization.py",
+                "src/photoswitchlab/azobenzene.py",
             )
         },
         "cases": selected,

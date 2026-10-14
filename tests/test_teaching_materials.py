@@ -8,7 +8,7 @@ from zipfile import ZipFile
 
 from fastapi.testclient import TestClient
 
-from achprak.web.server import create_app
+from photoswitchlab.web.server import create_app
 
 
 @pytest.mark.parametrize(

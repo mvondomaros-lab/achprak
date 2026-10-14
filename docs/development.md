@@ -84,7 +84,7 @@ rebuild prints its error and leaves the last successful preview available.
 Restart the preview after changing the Python builder itself.
 
 Branding is shared with the app through
-`src/achprak/web/static/branding.json`. The default subtitle is
+`src/photoswitchlab/web/static/branding.json`. The default subtitle is
 **Computerexperiment**. Use `pixi run -e dev site --course marburg` to preview the
 local suffix ** · ACh-PR · Marburg**, or `pixi run -e site build-site --course marburg`
 for a local website build. `ACHPRAK_COURSE=marburg` also selects this branding for
@@ -112,7 +112,7 @@ deploys `main`; GitHub Pages must be configured to deploy through Actions.
 | `scripts/build_site.py` | Builder; `PAGES` defines page order and navigation labels. |
 | `site/template.html` | Page template. |
 | `site/assets/teaching.css` | Website styles. |
-| `src/achprak/web/static/header.css` | Shared app/site header styles and `--page-inset`; copied by the site builder. |
+| `src/photoswitchlab/web/static/header.css` | Shared app/site header styles and `--page-inset`; copied by the site builder. |
 
 Use source-relative Markdown links. The builder supports tables, fenced code,
 explicit heading IDs, and Markdown inside HTML marked `markdown="1"`.
@@ -133,7 +133,7 @@ sizes before committing the source and generated SVG together.
 
 ## Updating tasks and the protocol
 
-The task source is `src/achprak/web/static/guide.html`. Each `details.task` has a
+The task source is `src/photoswitchlab/web/static/guide.html`. Each `details.task` has a
 stable ID, a title in `summary`, and required deliverables in a `.protocol-output`
 paragraph. `scripts/build_protocol.py` reads those titles and deliverables and
 adds the protocol's answer fields and tables.
@@ -156,7 +156,7 @@ For generation, activate a separate Python authoring environment with
 python scripts/build_protocol.py
 ```
 
-The script replaces `src/achprak/web/static/materials/protokollvorlage.docx`.
+The script replaces `src/photoswitchlab/web/static/materials/protokollvorlage.docx`.
 This file is bundled with the application and served under `static/materials/`,
 including through the Hub proxy. Commit the regenerated template with its source
 changes; keep completed student protocols outside the repository.

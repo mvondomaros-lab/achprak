@@ -65,7 +65,7 @@ broadened curve and transition sticks, determines the plot's vertical scale; thi
 is not a concentration calibration.
 
 Output coverage and configuration convergence are separate checks. The
-[spectrum implementation](../src/achprak/uvvis.py) defines the output-coverage
+[spectrum implementation](../src/photoswitchlab/uvvis.py) defines the output-coverage
 margin and retry logic; printing more states does not increase `MAXCI`.
 
 The [experimental spectral comparison](solution-color-validation.md) documents

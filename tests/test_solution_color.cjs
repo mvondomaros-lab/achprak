@@ -1,7 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
-require("../src/achprak/web/static/vendor/cie-color.js");
-require("../src/achprak/web/static/solution-color.js");
+require("../src/photoswitchlab/web/static/vendor/cie-color.js");
+require("../src/photoswitchlab/web/static/solution-color.js");
 const estimate = globalThis.SolutionColor.estimate;
 const flat = (a) => ({ energy_ev: [1.5, 5.5], absorption: [a, a], coverage_complete: true });
 
@@ -47,7 +47,7 @@ test("structure changes refresh the swatch and clear unavailable results", () =>
     structureLabel: (m) => m.label,
     fmt: (v, n) => v.toFixed(n).replace(".", ","),
   });
-  const app = fs.readFileSync("src/achprak/web/static/app.js", "utf8");
+  const app = fs.readFileSync("src/photoswitchlab/web/static/app.js", "utf8");
   vm.runInContext(app.slice(app.indexOf("function renderSolutionColor()"), app.indexOf("function renderState()")), context);
   context.renderSolutionColor();
   assert.equal(get("solution-color-swatch").style.backgroundColor, "rgb(255, 255, 255)");

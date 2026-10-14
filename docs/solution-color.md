@@ -60,7 +60,7 @@ widths can differ, and screen viewing conditions affect perceived appearance.
 
 ## Data provenance
 
-[`cie-color.js`](../src/achprak/web/static/vendor/cie-color.js) contains a joined,
+[`cie-color.js`](../src/photoswitchlab/web/static/vendor/cie-color.js) contains a joined,
 cropped adaptation of:
 
 - CIE (2019), *Colour-matching functions of CIE 1931 standard colorimetric
@@ -96,5 +96,5 @@ concentration and l the optical path length, in consistent units. Here c denotes
 concentration, rather than the speed of light used above. This is a possible
 extension, not the implemented calibration.
 
-Implementation: [`solution-color.js`](../src/achprak/web/static/solution-color.js).
+Implementation: [`solution-color.js`](../src/photoswitchlab/web/static/solution-color.js).
 Numerical checks: `node --test tests/test_solution_color.cjs`.

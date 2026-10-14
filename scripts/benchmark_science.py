@@ -17,7 +17,7 @@ import pymopac
 import sella
 from rdkit.Chem import AllChem
 
-from achprak import azobenzene, common, uvvis
+from photoswitchlab import azobenzene, common, uvvis
 
 
 class BenchmarkTemplate(azobenzene.Template):

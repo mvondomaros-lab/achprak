@@ -5,7 +5,7 @@ from pathlib import Path
 
 from rdkit import Chem
 
-from achprak.azobenzene import Template
+from photoswitchlab.azobenzene import Template
 
 spec = importlib.util.spec_from_file_location(
     "screen_ts", Path(__file__).resolve().parents[1] / "scripts/screen_ts.py"

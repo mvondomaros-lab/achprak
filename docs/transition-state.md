@@ -118,8 +118,8 @@ final path image. Minimum results instead contain the optimization history.
 Neither sequence is molecular dynamics.
 
 The search and acceptance checks are implemented in
-[`transition_state.py`](../src/achprak/transition_state.py); application attempt
-limits are in [`ts_policy.py`](../src/achprak/web/ts_policy.py).
+[`transition_state.py`](../src/photoswitchlab/transition_state.py); application attempt
+limits are in [`ts_policy.py`](../src/photoswitchlab/web/ts_policy.py).
 Worker regressions are in [`test_web.py`](../tests/test_web.py), with saved-input
 cases in [`test_ts_screen.py`](../tests/test_ts_screen.py). See the
 [screening guide](ts-screening.md) for running and extending them.

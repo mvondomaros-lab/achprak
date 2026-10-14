@@ -79,10 +79,11 @@ branding only.
       organisation and ILIAS guidance into a clearly labelled course section.
       The university Hub remains at `lserver.chemie.uni-marburg.de`, accessible
       only from the university network.
-- [ ] Plan the repository/package naming migration separately. The future
-      GitHub repository name is `photoswitchlab`; do not rename the repository
-      as part of the branding change. Inventory package imports, distribution
-      metadata, environment variables, lockfiles, deployment paths, Binder
-      routes, GitHub Pages links, workflows and document links before deciding
-      which technical identifiers to migrate and how to preserve compatibility.
-      Current commands and URLs continue to use `achprak`.
+- [x] Rename the GitHub repository and Python distribution/package to
+      `photoswitchlab`; update imports, commands, static asset paths, lockfile,
+      repository links and Git remotes. Existing `ACHPRAK_*` environment variables,
+      HTTP/progress identifiers, Binder route `achprak/` and installed Hub paths
+      are retained for deployment compatibility.
+- [ ] Refresh the local protocol template's printed website URL and branding
+      when revising the Marburg materials; its generator already uses the new
+      website URL. Render and inspect the DOCX before publishing that update.

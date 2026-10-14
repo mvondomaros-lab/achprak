@@ -3,9 +3,9 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from achprak.web.server import create_app
-from achprak.web.ts_policy import ts_restriction
-from achprak.web.worker import calculate
+from photoswitchlab.web.server import create_app
+from photoswitchlab.web.ts_policy import ts_restriction
+from photoswitchlab.web.worker import calculate
 
 HEADERS = {"X-AChPrak-Request": "1"}
 
