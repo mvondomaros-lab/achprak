@@ -7,10 +7,11 @@ that the public Binder session launches and the application works. This confirms
 a live launch, but does not establish that all chemistry workflows fit Binder's
 resource limits.
 
-The current configuration installs the locked Pixi `web` environment during
-image construction and opens PhotoSwitchLab directly through Jupyter Server Proxy via
-`?urlpath=photoswitchlab%2F`. JupyterLab also has a launcher entry for the app. No custom
-loading page has been added.
+The configuration installs the locked Pixi `web` environment during image
+construction and opens PhotoSwitchLab through Jupyter Server Proxy. The website
+provides a German launch display and uses the fixed commit in `binder/launch.json`.
+JupyterLab also has an app launcher entry. Binder's native launch page remains
+available as a fallback.
 
 - [ ] Measure image size and timings for a first build and subsequent launches
       of the same commit. Separate build, registry upload, image pull, session
@@ -20,27 +21,27 @@ loading page has been added.
       Exclude local environments and outputs from repo2docker's build context.
       Local image size and chemistry imports have been checked; public launch
       validation remains below.
-- [ ] Use a fixed commit or release link for teaching and launch it before a
-      session to populate caches. Avoid rebuilding because of unrelated changes
-      to the moving branch.
-- [ ] Evaluate image prebuilding in CI if first-launch delays remain excessive.
-      Check current Binder support and registry requirements before choosing an
-      approach.
-- [ ] Consider separating the environment from frequently changing content if
-      rebuilds become a recurring problem. Assess whether the extra maintenance
-      is justified for an application whose code and environment must remain
-      compatible.
-- [ ] Review the student launch experience. Explore a German loading page or
-      launch wrapper with understandable progress stages, an explanation of
-      first-build delays, and retry guidance. Check which parts can be customized
-      on public Binder and which require a separate page or an owned BinderHub.
-      Keep developer details out of the student flow.
+- [x] Pin the teaching launch to a fixed commit, independent of website-only
+      changes to `main`. Update `binder/launch.json` when publishing app or
+      environment changes. Warm the link before a course; live validation of the
+      current pinned commit is pending its publication.
+- [x] Evaluate CI prebuilding and separate environment/content repositories.
+      Neither is introduced: a fixed application commit provides reuse without
+      another repository or registry workflow. Public Binder still has to pull
+      its image and start a session. Prebuilding is supported through a registry
+      image referenced by a Binder Dockerfile; defer that extra publishing
+      workflow until repeated live measurements justify it.
+- [x] Add a German launch display to the existing installation page using
+      Binder's public event stream. Explain first-build delays, show actual
+      stages and elapsed waiting time, and offer explicit retry and a native
+      Binder fallback. No automatic reconnect creates extra sessions.
 - [ ] Verify representative chemistry calculations, cancellation, exports and
       session isolation on Binder. Record memory use and runtimes, especially
       for transition-structure searches, before claiming support for every
       exercise.
-- [ ] Update `binder/README.md` to reflect live validation and any performance or
-      launch experience changes.
+- [x] Update `binder/README.md` for the build cleanup, fixed teaching reference
+      and German launch display. Keep live validation distinguished from local
+      Docker and browser checks.
 
 ### Evidence from the initial public launch
 
@@ -74,11 +75,20 @@ minimum optimization, UV/Vis calculation, structure exports, cancellation and
 separate browser sessions. The three calculations took approximately 3, 9 and
 8 seconds under emulation. This is local validation, not a Binder resource test.
 
+The launch display passed six lifecycle tests and browser checks at desktop and
+phone widths, including explicit retry and the no-JavaScript native link. The
+combined Binder, deployment, teaching-material and website checks passed (22 tests).
+The build fix is committed as `41b5346`; publication and public launch measurements
+are pending SSH authentication. The public API's `launching` stage combines image
+pull and server startup, so it cannot isolate those two timings on its own.
+
 ### References
 
 - [Binder startup speed guide](https://mybinder.readthedocs.io/en/latest/howto/speed.html)
 - [Startup optimization discussion linked by the guide](https://discourse.jupyter.org/t/how-to-reduce-mybinder-org-repository-startup-time/4956)
 - [Binder interface configuration](https://mybinder.readthedocs.io/en/latest/howto/user_interface.html)
+- [Binder launch events](https://binderhub.readthedocs.io/en/latest/api.html)
+- [repo2docker CI image prebuilding](https://github.com/jupyterhub/repo2docker-action)
 - [Binder startup stages and resource limits](https://mybinder.readthedocs.io/en/latest/about/user-guidelines.html)
 - [Reported BIDS file-watcher issue](https://github.com/jupyterhub/mybinder.org-deploy/issues/3654)
 - [Binder operations guidance for file-watcher limits](https://mybinder-sre.readthedocs.io/en/latest/deployment/k3s.html#increase-some-fs-limits)

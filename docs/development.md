@@ -98,6 +98,11 @@ are rendered only for that course. Shared exercises remain in `guide.html`;
 protocol requirements and group assignments are additions. The public app has
 no protocol download. The fundamentals remain shared.
 
+The website's Binder launch is pinned in `binder/launch.json`. Update its `ref`
+after publishing app or environment changes. The launch display uses Binder's
+public event stream and opens `photoswitchlab/` when the session is ready;
+without JavaScript, its link opens Binder's own launch page.
+
 For website-only work, use the lightweight `site` environment:
 
 ```sh

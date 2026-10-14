@@ -40,6 +40,10 @@ PAGE_GROUPS = (
     ("Durchführung", ("kurse/marburg", "installation", "tasks")),
 )
 PAGES = ("index", *(slug for _, slugs in PAGE_GROUPS for slug in slugs))
+PAGE_SCRIPTS = {
+    "theory/structures": "structure-viewer.js",
+    "installation": "binder-launch.js",
+}
 
 
 def render(source: str) -> tuple[str, str]:
@@ -73,6 +77,13 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     )
     brand_title = branding["project_name"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
+    launch = json.loads((ROOT / "binder/launch.json").read_text())
+    if not re.fullmatch(r"[0-9a-f]{40}", launch["ref"]):
+        raise ValueError("Binder launches must use a fixed commit SHA")
+    binder_url = (
+        f"https://mybinder.org/v2/gh/{launch['repository']}/{launch['ref']}"
+        "?urlpath=photoswitchlab%2F"
+    )
     sources = {
         slug: (SITE / f"{slug}.md").read_text().split("\n", 1)
         for slug in (*PAGES, "theory")
@@ -101,9 +112,9 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
             )
         template = Template((SITE / "template.html").read_text())
         search = []
-        for index, slug in enumerate((*PAGES, "theory")):
+        for slug in (*PAGES, "theory"):
             title = titles[slug]
-            body = sources[slug][1]
+            body = sources[slug][1].replace("binder:photoswitchlab", binder_url)
             content, outline = render(body)
             root = "./" if slug == "index" else "../" * len(Path(slug).parts)
 
@@ -159,12 +170,14 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
             # Course requirements are a separate entry point, not the next
             # required step in the public learning sequence.
             public_pages = [key for key in PAGES if not key.startswith("kurse/")]
-            for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
-                if not slug.startswith("kurse/") and 0 <= other < len(public_pages):
-                    key = public_pages[other]
-                    pagination.append(
-                        f'<a href="{root}{page_url(key)}"><span>{direction}</span>{html.escape(titles[key])}</a>'
-                    )
+            if slug in public_pages:
+                index = public_pages.index(slug)
+                for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
+                    if 0 <= other < len(public_pages):
+                        key = public_pages[other]
+                        pagination.append(
+                            f'<a href="{root}{page_url(key)}"><span>{direction}</span>{html.escape(titles[key])}</a>'
+                        )
             document = template.substitute(
                 project_name=html.escape(branding["project_name"]),
                 brand_title=html.escape(brand_title),
@@ -184,8 +197,8 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                     else ""
                 ),
                 page_scripts=(
-                    f'<script src="{root}assets/structure-viewer.js" defer></script>'
-                    if slug == "theory/structures"
+                    f'<script src="{root}assets/{PAGE_SCRIPTS[slug]}" defer></script>'
+                    if slug in PAGE_SCRIPTS
                     else ""
                 ),
             )
@@ -247,7 +260,12 @@ setInterval(async () => {
 
 
 def snapshot():
-    paths = [SITE, ROOT / "figures", ROOT / "src/photoswitchlab/web/static"]
+    paths = [
+        SITE,
+        ROOT / "figures",
+        ROOT / "src/photoswitchlab/web/static",
+        ROOT / "binder",
+    ]
     files = []
     for path in paths:
         files.extend(

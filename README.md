@@ -8,7 +8,7 @@ Studienjahr. Sie können Molekülstrukturen erzeugen, Minimumstrukturen optimier
 
 ## Über Binder starten
 
-[![Mit Binder starten](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/photoswitchlab/main?urlpath=photoswitchlab%2F)
+[![Mit Binder starten](https://mybinder.org/badge_logo.svg)](https://mvondomaros-lab.github.io/photoswitchlab/installation/?binder=1#uber-binder-starten)
 
 Der Start kann einige Minuten dauern; Berechnungen können langsamer sein als auf
 Ihrem eigenen Rechner. Exportieren Sie Ihre Ergebnisse vor dem Ende der Sitzung.

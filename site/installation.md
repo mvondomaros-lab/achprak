@@ -6,9 +6,25 @@ Die [Aufgaben](tasks.md) stehen in der Webapp.
 
 ## Über Binder starten
 
-[![Mit Binder starten](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/photoswitchlab/main?urlpath=photoswitchlab%2F)
+<div class="binder-launch" data-binder-launch>
+  <a data-binder-start href="binder:photoswitchlab"><img src="https://mybinder.org/badge_logo.svg" alt="Mit Binder starten"></a>
+  <div class="binder-progress" hidden>
+    <ol class="binder-stages" aria-label="Startschritte">
+      <li>Start vorbereiten</li>
+      <li>Programme bereitstellen</li>
+      <li>Sitzung starten</li>
+      <li>Webapp öffnen</li>
+    </ol>
+    <p class="binder-status" role="status" aria-live="polite" tabindex="-1"></p>
+    <p class="binder-elapsed"></p>
+    <button type="button" data-binder-retry hidden>Erneut versuchen</button>
+    <p><a href="binder:photoswitchlab">Binder-Startseite öffnen</a></p>
+  </div>
+</div>
 
-Der Start kann einige Minuten dauern. Berechnungen können langsamer sein als auf
+Beim ersten Start einer Version richtet Binder die Programme ein; dies kann
+mehrere Minuten dauern. Spätere Starts können die vorbereitete Umgebung nutzen.
+Lassen Sie die Startseite geöffnet. Berechnungen können langsamer sein als auf
 Ihrem eigenen Rechner. Exportieren Sie Ihre Ergebnisse, bevor die zeitlich
 begrenzte Sitzung endet. Aufwendige Berechnungen, insbesondere die Suche nach
 Übergangsstrukturen, können die Laufzeitgrenzen von Binder erreichen.

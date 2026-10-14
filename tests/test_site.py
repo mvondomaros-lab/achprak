@@ -236,6 +236,14 @@ class SiteBuildTests(unittest.TestCase):
             self.assertEqual(len(title), 1)
             self.assertEqual(active_link, title)
             self.assertNotRegex(text, r'class="(?:breadcrumbs|eyebrow|subtitle)"')
+            navigation = re.search(
+                r'<nav class="page-navigation".*?</nav>', text, re.S
+            )[0]
+            page_url = "https://example.org/" + site.page_url(slug)
+            for link in Document(navigation).links:
+                self.assertNotEqual(
+                    urlsplit(urljoin(page_url, link)).path, urlsplit(page_url).path
+                )
         entries = json.loads((self.output / "assets/search.json").read_text())
         for entry in entries:
             self.assertTrue(entry["text"].strip())
@@ -265,6 +273,11 @@ class SiteBuildTests(unittest.TestCase):
                 self.assertNotIn(local_term, article)
         access = (self.output / "installation/index.html").read_text()
         self.assertIn("urlpath=photoswitchlab%2F", access)
+        launch = json.loads((ROOT / "binder/launch.json").read_text())
+        self.assertRegex(launch["ref"], r"^[0-9a-f]{40}$")
+        self.assertIn(f"/v2/gh/{launch['repository']}/{launch['ref']}?", access)
+        self.assertIn("assets/binder-launch.js", access)
+        self.assertNotIn("binder:photoswitchlab", access)
         tasks = (self.output / "tasks/index.html").read_text()
         pagination = re.search(r'<nav class="page-navigation".*?</nav>', tasks, re.S)[0]
         self.assertNotIn("kurse/marburg/", pagination)

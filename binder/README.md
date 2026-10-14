@@ -1,6 +1,6 @@
 # Binder
 
-[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/photoswitchlab/main?urlpath=photoswitchlab%2F)
+[![Launch Binder](https://mybinder.org/badge_logo.svg)](https://mvondomaros-lab.github.io/photoswitchlab/installation/?binder=1#uber-binder-starten)
 
 The first launch builds the environment; later launches can reuse it. Sessions
 are temporary, so export results. Long calculations may reach Binder's
@@ -9,8 +9,10 @@ are temporary, so export results. Long calculations may reach Binder's
 ## Development
 
 This directory installs the locked Pixi `web` environment and launches the app
-through Jupyter Server Proxy at `photoswitchlab/`. Use a commit SHA or release
-tag instead of `main` to share a fixed version.
+through Jupyter Server Proxy at `photoswitchlab/`. The website's German launch
+display uses the fixed commit in `launch.json`, with Binder's own launch page as
+a fallback. After app or environment changes, update that reference to a published
+commit and open the launch link once before teaching to populate Binder's caches.
 
 Build tools and writable package caches are temporary and removed in `postBuild`.
 `.dockerignore` excludes local environments, caches and results from local builds.
@@ -37,3 +39,4 @@ so builds and calculations can be slower.
 
 Open the printed URL, then navigate to `photoswitchlab/`. After configuration
 changes, verify calculations, cancellation and exports locally and on Binder.
+Use a new image name when retesting changes; repo2docker reuses existing named images.
