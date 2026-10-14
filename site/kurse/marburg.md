@@ -1,7 +1,5 @@
 # Praktikum in Marburg
 
-<p class="subtitle">Allgemeines Chemiepraktikum · Universität Marburg</p>
-
 Diese Hinweise gelten für Studierende im Allgemeinen Chemiepraktikum der
 Universität Marburg. Die [Grundlagen](../theory.md) und die wissenschaftlichen
 Aufgaben in der Webapp sind auch für die selbstständige Nutzung zugänglich.

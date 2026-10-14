@@ -1,6 +1,4 @@
-# Molekulare Photoschalter
-
-<p class="subtitle">Computerexperiment</p>
+# Überblick
 
 ## Motivation
 

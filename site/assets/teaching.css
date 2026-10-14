@@ -26,7 +26,6 @@ button, summary { cursor: pointer; }
 .sidebar a[aria-current] { color: var(--blue); background: var(--tint); box-shadow: inset 3px 0 var(--blue); font-weight: 650; }
 main { min-width: 0; padding: 2.7rem 0 2rem; }
 .page-title { border-bottom: 3px solid var(--blue); padding-bottom: 1.5rem; margin-bottom: 2rem; }
-.eyebrow { color: var(--muted); font-size: .8rem; letter-spacing: .06em; margin: 0 0 .7rem; }
 h1, h2, h3 { font-weight: 650; letter-spacing: -.03em; line-height: 1.25; text-wrap: balance; }
 h1 { font-size: clamp(2rem, 3.2vw, 3rem); margin: 0; letter-spacing: -.04em; }
 h2 { font-size: 1.65rem; margin: 2.5rem 0 1rem; }
@@ -130,8 +129,6 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
 .nav-group ul { list-style: none; padding: 0; margin: .4rem 0; }
 .nav-group li { margin: 0; }
 .nav-group li a { display: flex; gap: .65rem; align-items: baseline; font-size: .9rem; }
-.breadcrumbs { font-size: .8rem; color: var(--muted); margin-bottom: 1.2rem; }
-.breadcrumbs a { color: var(--muted); }
 .legacy-links { display: none; }
 .legacy-links:has(:target) { display: block; }
 .legacy-links a { display: block; padding: .4rem 0; }
@@ -147,5 +144,3 @@ dialog input { width: 100%; padding: .5rem; border: 1px solid var(--line); borde
 @media (max-width: 700px) {
   .site-menu > summary { display: list-item; padding: .4rem .55rem; font-weight: 600; }
 }
-
-.page-title .subtitle { margin: .65rem 0 0; color: var(--muted); font-size: clamp(1.15rem, 2vw, 1.5rem); line-height: 1.4; text-wrap: balance; }

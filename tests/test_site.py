@@ -226,12 +226,18 @@ class SiteBuildTests(unittest.TestCase):
         overview = (self.output / "theory/index.html").read_text()
         aliases = re.findall(r"<a[^>]+data-legacy-anchor[^>]*>", overview)
         self.assertEqual(len(aliases), 8)
-        chapters = [key for key, _ in site.PAGES if key.startswith("theory/")]
+        chapters = [key for key in site.PAGES if key.startswith("theory/")]
         self.assertEqual(len(chapters), 5)
         for chapter in chapters:
             text = (self.output / chapter / "index.html").read_text()
             self.assertEqual(text.count('aria-current="page"'), 1)
-            self.assertIn('class="breadcrumbs"', text)
+        for slug in site.PAGES:
+            text = (self.output / site.page_url(slug) / "index.html").read_text()
+            title = re.findall(r"<h1>(.*?)</h1>", text)
+            active_link = re.findall(r'<a[^>]+aria-current="page"[^>]*>(.*?)</a>', text)
+            self.assertEqual(len(title), 1)
+            self.assertEqual(active_link, title)
+            self.assertNotRegex(text, r'class="(?:breadcrumbs|eyebrow|subtitle)"')
         entries = json.loads((self.output / "assets/search.json").read_text())
         for entry in entries:
             self.assertTrue(entry["text"].strip())

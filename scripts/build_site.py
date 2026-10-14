@@ -26,17 +26,21 @@ OUTPUT = SITE / "_build"
 BRANDING = json.loads(
     (ROOT / "src/photoswitchlab/web/static/branding.json").read_text()
 )
-PAGES = (
-    ("index", "Molekulare Photoschalter"),
-    ("theory/structures", "Molekülstruktur und Isomerie"),
-    ("theory/light", "Licht und Absorption"),
-    ("theory/models", "Theoretische Chemie"),
-    ("theory/energy", "Energien und Strukturoptimierung"),
-    ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
-    ("installation", "Webapp starten"),
-    ("tasks", "Aufgaben bearbeiten"),
-    ("kurse/marburg", "Praktikum in Marburg"),
+PAGE_GROUPS = (
+    (
+        "Grundlagen",
+        (
+            "theory/structures",
+            "theory/light",
+            "theory/models",
+            "theory/energy",
+            "theory/photoswitches",
+        ),
+    ),
+    ("Durchführung", ("installation", "tasks")),
+    ("Lehrveranstaltungen", ("kurse/marburg",)),
 )
+PAGES = ("index", *(slug for _, slugs in PAGE_GROUPS for slug in slugs))
 
 
 def render(source: str) -> tuple[str, str]:
@@ -70,6 +74,13 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     )
     brand_title = branding["site_title"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
+    sources = {
+        slug: (SITE / f"{slug}.md").read_text().split("\n", 1)
+        for slug in (*PAGES, "theory")
+    }
+    titles = {
+        slug: heading.removeprefix("# ") for slug, (heading, _) in sources.items()
+    }
     output = output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".site-build-", dir=output.parent) as tmp:
@@ -91,17 +102,9 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
             )
         template = Template((SITE / "template.html").read_text())
         search = []
-        for index, (slug, label) in enumerate(
-            (*PAGES, ("theory", "Theoretische Grundlagen"))
-        ):
-            source = (SITE / f"{slug}.md").read_text()
-            title, body = source.split("\n", 1)
-            title = title.removeprefix("# ")
-            subtitle = ""
-            subtitle_match = re.search(r'<p class="subtitle">(.*?)</p>', body)
-            if subtitle_match:
-                subtitle = subtitle_match[0]
-                body = body.replace(subtitle, "", 1)
+        for index, slug in enumerate((*PAGES, "theory")):
+            title = titles[slug]
+            body = sources[slug][1]
             content, outline = render(body)
             root = "./" if slug == "index" else "../" * len(Path(slug).parts)
 
@@ -139,58 +142,35 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                 )
                 continue
 
-            def nav_link(key, text):
+            def nav_link(key):
                 return (
                     f'<a href="{root}{page_url(key)}"'
                     + (' aria-current="page"' if key == slug else "")
-                    + f">{html.escape(text)}</a>"
+                    + f">{html.escape(titles[key])}</a>"
                 )
 
-            navigation = nav_link("index", "Versuchsüberblick")
-            navigation += '<section class="nav-group"><h2>Grundlagen</h2>'
-            navigation += "<ul>"
-            for key, text in PAGES:
-                if key.startswith("theory/"):
-                    navigation += "<li>" + nav_link(key, text) + "</li>"
-            navigation += (
-                '</ul></section><section class="nav-group"><h2>Durchführung</h2><ul>'
-            )
-            navigation += "<li>" + nav_link("installation", "Webapp starten") + "</li>"
-            navigation += (
-                "<li>" + nav_link("tasks", "Aufgaben bearbeiten") + "</li>"
-                "</ul></section>"
-            )
-            navigation += (
-                '<section class="nav-group"><h2>Lehrveranstaltungen</h2><ul><li>'
-                + nav_link("kurse/marburg", "Praktikum in Marburg")
-                + "</li></ul></section>"
-            )
-            chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
-            if slug in chapter_keys:
-                eyebrow = "Grundlagen"
-            else:
-                eyebrow = {
-                    "index": "Überblick",
-                    "installation": "Durchführung",
-                    "tasks": "Durchführung",
-                    "kurse/marburg": "Lehrveranstaltung",
-                }[slug]
+            navigation = nav_link("index")
+            for group, slugs in PAGE_GROUPS:
+                navigation += (
+                    f'<section class="nav-group"><h2>{html.escape(group)}</h2><ul>'
+                    + "".join("<li>" + nav_link(key) + "</li>" for key in slugs)
+                    + "</ul></section>"
+                )
             pagination = []
             # Course requirements are a separate entry point, not the next
             # required step in the public learning sequence.
-            public_pages = [page for page in PAGES if not page[0].startswith("kurse/")]
+            public_pages = [key for key in PAGES if not key.startswith("kurse/")]
             for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
                 if not slug.startswith("kurse/") and 0 <= other < len(public_pages):
-                    key, text = public_pages[other]
+                    key = public_pages[other]
                     pagination.append(
-                        f'<a href="{root}{page_url(key)}"><span>{direction}</span>{text}</a>'
+                        f'<a href="{root}{page_url(key)}"><span>{direction}</span>{html.escape(titles[key])}</a>'
                     )
             document = template.substitute(
                 project_name=html.escape(branding["project_name"]),
                 brand_title=html.escape(brand_title),
                 brand_subtitle=html.escape(brand_subtitle),
                 title=html.escape(title),
-                subtitle=subtitle,
                 tab_title=html.escape(brand_title)
                 if slug == "index"
                 else html.escape(title + " · " + brand_title),
@@ -204,15 +184,9 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                     if outline.count("<a ") >= 2
                     else ""
                 ),
-                eyebrow=eyebrow,
                 page_scripts=(
                     f'<script src="{root}assets/structure-viewer.js" defer></script>'
                     if slug == "theory/structures"
-                    else ""
-                ),
-                breadcrumbs=(
-                    f'<nav class="breadcrumbs" aria-label="Pfad"><span>Grundlagen</span><span aria-hidden="true"> / </span><span>{html.escape(label)}</span></nav>'
-                    if slug in chapter_keys
                     else ""
                 ),
             )
@@ -230,7 +204,7 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                     continue
                 search.append(
                     {
-                        "title": label
+                        "title": title
                         + (
                             " · " + re.sub("<[^>]+>", "", heading[2]) if heading else ""
                         ),

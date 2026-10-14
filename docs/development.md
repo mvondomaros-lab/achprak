@@ -116,7 +116,7 @@ deploys `main`; GitHub Pages must be configured to deploy through Actions.
 | Source | Purpose |
 | --- | --- |
 | `site/theory/*.md` | Fundamentals chapters. |
-| `scripts/build_site.py` | Builder; `PAGES` defines page order and navigation labels. |
+| `scripts/build_site.py` | Builder; `PAGE_GROUPS` defines navigation groups and page order. Labels come from each page's Markdown title. |
 | `site/template.html` | Page template. |
 | `site/assets/teaching.css` | Website styles. |
 | `src/photoswitchlab/web/static/header.css` | Shared app/site header styles and `--page-inset`; copied by the site builder. |
