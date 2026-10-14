@@ -2,5 +2,5 @@
 set -euo pipefail
 
 # Resolve the checkout independently of the initial working directory.
-export ACHPRAK_BINDER_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+export PHOTOSWITCHLAB_BINDER_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 exec "$@"

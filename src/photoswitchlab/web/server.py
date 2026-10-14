@@ -490,6 +490,8 @@ def create_app(
             project_name=html.escape(branding["project_name"]),
             brand_title=html.escape(brand_title),
             brand_subtitle=html.escape(brand_subtitle),
+            guide_url="https://mvondomaros-lab.github.io/photoswitchlab/"
+            + ("kurse/marburg/" if course == "marburg" else ""),
         )
         return HTMLResponse(document, headers={"Cache-Control": "no-cache"})
 

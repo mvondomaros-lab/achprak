@@ -26,6 +26,11 @@ def test_deployment_branding_is_rendered_without_a_session(course, subtitle):
     assert '<meta name="application-name" content="PhotoSwitchLab"' in response.text
     assert f"<small>{subtitle}</small>" in response.text
     assert "$brand_" not in response.text
+    assert "$guide_url" not in response.text
+    guide_url = "https://mvondomaros-lab.github.io/photoswitchlab/"
+    if course == "marburg":
+        guide_url += "kurse/marburg/"
+    assert f'href="{guide_url}"' in response.text
     assert "ACh-Pr · TC Versuch" not in response.text
     assert "set-cookie" not in response.headers
     assert response.headers["cache-control"] == "no-cache"

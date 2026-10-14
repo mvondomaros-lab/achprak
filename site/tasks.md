@@ -1,22 +1,21 @@
-# Aufgaben und Protokoll
+# Aufgaben bearbeiten
 
-Bearbeiten Sie die Pflichtaufgaben in allen drei Versuchsschritten der Webapp.
+Die Aufgaben stehen direkt in der Webapp und führen Sie durch drei Schritte:
+
+- Molekülstrukturen erzeugen und vergleichen.
+- Minimumstrukturen optimieren und einen Reaktionspfad über eine Übergangsstruktur untersuchen.
+- Spektren berechnen und den Einfluss von Substituenten vergleichen.
+
+Lesen Sie vor der Bearbeitung die [theoretischen Grundlagen](theory.md).
 Hinweise zum Zugang finden Sie unter [Webapp starten](installation.md).
-Im Aufgabenbereich steht für jeden Schritt, was Sie untersuchen und welche
-Ergebnisse Sie im Protokoll festhalten sollen. Freiwillige
-Vertiefungen gehören nicht zum Pflichtteil.
+Für das Selbststudium können Sie die Aufgaben in Ihrem eigenen Tempo bearbeiten
+und die Vertiefungen nach Interesse auswählen. Halten Sie Ihre Ergebnisse und
+Begründungen fest und kennzeichnen Sie berechnete Werte als Modellvorhersagen.
 
-## Protokoll führen
+Exportieren Sie Strukturen und Abbildungen während der Arbeit auf Ihren Rechner.
+Die Webapp speichert Ihre Ergebnisse nicht dauerhaft.
 
-Laden Sie die Protokollvorlage im DOCX-Format aus der Webapp herunter und
-bearbeiten Sie sie mit Word oder LibreOffice Writer. Die Überschriften entsprechen
-den Aufgaben. Tragen Sie berechnete Werte mit Einheiten ein und fügen Sie die
-geforderten Strukturansichten, Energieprofile und Spektren ein. Kennzeichnen Sie
-Modellvorhersagen, wo die Aufgaben es verlangen.
-
-Speichern Sie die Vorlage und exportierte Abbildungen während der Arbeit auf
-Ihrem Computer. Ergebnisse in der Webapp bleiben nur bis zum nächsten
-Serverneustart oder bis zu 24 Stunden Inaktivität erhalten.
-
-Besprechen Sie das ausgefüllte Protokoll anschließend mit Ihrer Betreuung und
-laden Sie es danach in [ILIAS](https://ilias.uni-marburg.de/) hoch.
+Die Protokollvorlage und Hinweise zur Abgabe in der Webapp gehören zum
+[Marburger Praktikum](kurse/marburg.md). Bei einer selbstständigen Nutzung gibt es
+keine Abgabe an die Universität Marburg. Wenn Sie PhotoSwitchLab in einer anderen
+Lehrveranstaltung verwenden, gelten die Anforderungen Ihrer Betreuung.

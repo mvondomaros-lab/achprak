@@ -87,10 +87,13 @@ Branding is shared with the app through
 `src/photoswitchlab/web/static/branding.json`. The default subtitle is
 **Computerexperiment**. Use `pixi run -e dev site --course marburg` to preview the
 local suffix ** · ACh-PR · Marburg**, or `pixi run -e site build-site --course marburg`
-for a local website build. `ACHPRAK_COURSE=marburg` also selects this branding for
+for a local website build. `PHOTOSWITCHLAB_COURSE=marburg` also selects this branding for
 the app and website CLI; explicit `--course` arguments take precedence. The
-public teaching website is built with the default branding. Course-specific
-tasks and protocol content will be separated in a later change.
+public teaching website is built with the default branding. The app's guide link
+opens the public introduction or the Marburg course page according to this setting.
+The course page contains university access, protocol and submission requirements;
+the fundamentals remain shared. Course-specific app tasks and protocol content
+will be separated in a later change.
 
 For website-only work, use the lightweight `site` environment:
 

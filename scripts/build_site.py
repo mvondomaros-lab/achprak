@@ -34,7 +34,8 @@ PAGES = (
     ("theory/energy", "Energien und Strukturoptimierung"),
     ("theory/photoswitches", "Funktionsweise von Photoschaltern"),
     ("installation", "Webapp starten"),
-    ("tasks", "Aufgaben und Protokoll"),
+    ("tasks", "Aufgaben bearbeiten"),
+    ("kurse/marburg", "Praktikum in Marburg"),
 )
 
 
@@ -156,8 +157,13 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
             )
             navigation += "<li>" + nav_link("installation", "Webapp starten") + "</li>"
             navigation += (
-                "<li>" + nav_link("tasks", "Aufgaben und Protokoll") + "</li>"
+                "<li>" + nav_link("tasks", "Aufgaben bearbeiten") + "</li>"
                 "</ul></section>"
+            )
+            navigation += (
+                '<section class="nav-group"><h2>Lehrveranstaltungen</h2><ul><li>'
+                + nav_link("kurse/marburg", "Praktikum in Marburg")
+                + "</li></ul></section>"
             )
             chapter_keys = [key for key, _ in PAGES if key.startswith("theory/")]
             if slug in chapter_keys:
@@ -167,11 +173,15 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                     "index": "Überblick",
                     "installation": "Durchführung",
                     "tasks": "Durchführung",
+                    "kurse/marburg": "Lehrveranstaltung",
                 }[slug]
             pagination = []
+            # Course requirements are a separate entry point, not the next
+            # required step in the public learning sequence.
+            public_pages = [page for page in PAGES if not page[0].startswith("kurse/")]
             for other, direction in ((index - 1, "Zurück"), (index + 1, "Weiter")):
-                if 0 <= other < len(PAGES):
-                    key, text = PAGES[other]
+                if not slug.startswith("kurse/") and 0 <= other < len(public_pages):
+                    key, text = public_pages[other]
                     pagination.append(
                         f'<a href="{root}{page_url(key)}"><span>{direction}</span>{text}</a>'
                     )
@@ -361,8 +371,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--course",
         choices=tuple(BRANDING["course_suffixes"]),
-        default=os.environ.get("ACHPRAK_COURSE", "public"),
-        help="Branding context (default: public, or ACHPRAK_COURSE)",
+        default=os.environ.get(
+            "PHOTOSWITCHLAB_COURSE", os.environ.get("ACHPRAK_COURSE", "public")
+        ),
+        help="Course context (default: public, or PHOTOSWITCHLAB_COURSE)",
     )
     args = parser.parse_args()
     serve(args.port, course=args.course) if args.serve else build(course=args.course)

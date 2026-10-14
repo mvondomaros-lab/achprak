@@ -9,7 +9,7 @@ resource limits.
 
 The current configuration installs the locked Pixi `web` environment during
 image construction and opens PhotoSwitchLab directly through Jupyter Server Proxy via
-`?urlpath=achprak%2F`. JupyterLab also has a launcher entry for the app. No custom
+`?urlpath=photoswitchlab%2F`. JupyterLab also has a launcher entry for the app. No custom
 loading page has been added.
 
 - [ ] Measure image size and timings for a first build and subsequent launches
@@ -68,13 +68,13 @@ infrastructure log streaming and session startup failures.
 The project name is **PhotoSwitchLab**. The German app and website retain the
 title **Molekulare Photoschalter**, subtitle **Computerexperiment**, and optional
 local suffix ** · ACh-PR · Marburg**. Public branding is the default; the Marburg
-branding can be selected explicitly. The course setting currently changes
-branding only.
+branding can be selected explicitly. The course setting currently selects
+branding and the website guide entry point.
 
 - [ ] Separate shared exercises from Marburg's protocol-specific assignments,
       required deliverables, group allocation and submission instructions. Keep
       shared task content in one source with course-specific additions.
-- [ ] Make the public website explain the app for independent learners, with
+- [x] Make the public website explain the app for independent learners, with
       Binder and local installation as public entry points. Move Marburg access,
       organisation and ILIAS guidance into a clearly labelled course section.
       The university Hub remains at `lserver.chemie.uni-marburg.de`, accessible
@@ -82,8 +82,9 @@ branding only.
 - [x] Rename the GitHub repository and Python distribution/package to
       `photoswitchlab`; update imports, commands, static asset paths, lockfile,
       repository links and Git remotes. Existing `ACHPRAK_*` environment variables,
-      HTTP/progress identifiers, Binder route `achprak/` and installed Hub paths
-      are retained for deployment compatibility.
+      HTTP/progress identifiers and installed Hub paths are retained for
+      deployment compatibility. Binder uses the `photoswitchlab/` route and
+      `PHOTOSWITCHLAB_BINDER_ROOT`.
 - [ ] Refresh the local protocol template's printed website URL and branding
       when revising the Marburg materials; its generator already uses the new
       website URL. Render and inspect the DOCX before publishing that update.

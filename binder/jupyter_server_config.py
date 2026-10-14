@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 c = get_config()  # noqa: F821 -- supplied by Jupyter/traitlets
-repo_root = Path(os.environ["ACHPRAK_BINDER_ROOT"])
+repo_root = Path(os.environ["PHOTOSWITCHLAB_BINDER_ROOT"])
 app_bin = repo_root / ".pixi/envs/web/bin"
 
 
@@ -14,7 +14,7 @@ def photoswitchlab_command(unix_socket, base_url):
         "-m",
         "photoswitchlab.web",
         f"--unix-socket={unix_socket}",
-        f"--cookie-path={base_url.rstrip('/')}/achprak/",
+        f"--cookie-path={base_url.rstrip('/')}/photoswitchlab/",
         "--max-jobs=1",
         "--job-timeout=600",
     ]
@@ -25,7 +25,7 @@ def photoswitchlab_command(unix_socket, base_url):
 
 
 c.ServerProxy.servers = {
-    "achprak": {
+    "photoswitchlab": {
         "command": photoswitchlab_command,
         "unix_socket": True,
         "timeout": 60,

@@ -18,8 +18,10 @@ def main():
     parser.add_argument(
         "--course",
         choices=("public", "marburg"),
-        default=os.environ.get("ACHPRAK_COURSE", "public"),
-        help="Branding context (default: public, or ACHPRAK_COURSE)",
+        default=os.environ.get(
+            "PHOTOSWITCHLAB_COURSE", os.environ.get("ACHPRAK_COURSE", "public")
+        ),
+        help="Course context (default: public, or PHOTOSWITCHLAB_COURSE)",
     )
     args = parser.parse_args()
     if args.max_jobs < 1 or args.job_timeout < 1:

@@ -21,7 +21,7 @@ In diesem Computerexperiment verfolgen Sie Azobenzol von der Strukturformel bis 
 Sie vergleichen Strukturen und elektronische Energien, untersuchen einen Reaktionspfad über eine Übergangsstruktur und
 suchen in den Spektren nach einem Energiebereich, in dem eine Konfiguration stärker absorbiert.
 
-In der Gruppe untersuchen Sie systematische Substituentenreihen, vergleichen Positions- und Mehrfachsubstitution und
+Sie untersuchen systematische Substituentenreihen, vergleichen Positions- und Mehrfachsubstitution und
 prüfen, welche Trends und Abweichungen in den berechneten Spektren auftreten. Aus diesen Ergebnissen entwickeln Sie
 eine begründete Vermutung für das Design eines selbst gewählten Derivats.
 
@@ -43,7 +43,14 @@ Nach Abschluss dieses Versuches können Sie:
 - in systematischen Spektrenreihen Trends und Abweichungen erkennen und daraus eine begründete Vermutung für ein neues
   Derivat entwickeln und prüfen.
 
-<p><strong>Hinweis zur Bearbeitung:</strong> Dieses Praktikum dient dazu, einen wissenschaftlichen Arbeitsablauf
+## Einstieg
+
+Für die selbstständige Nutzung können Sie die [Webapp über Binder oder auf Ihrem
+eigenen Rechner starten](installation.md) und die [Aufgaben](tasks.md) bearbeiten.
+Für die Teilnahme am Allgemeinen Chemiepraktikum der Universität Marburg finden
+Sie Zugang, Protokollanforderungen und Abgabe unter [Praktikum in Marburg](kurse/marburg.md).
+
+<p><strong>Hinweis zur Bearbeitung:</strong> Dieses Computerexperiment dient dazu, einen wissenschaftlichen Arbeitsablauf
 selbstständig kennenzulernen: Strukturen auswählen, Rechnungen durchführen, Ergebnisse vergleichen und daraus
 begrenzte Trends ableiten. Verwenden Sie für die Bearbeitung keine generative KI. Es geht nicht darum, im Voraus das
 „beste“ Derivat zu finden. Vermutungen dürfen sich auch als falsch erweisen. Entscheidend ist, dass Sie Ihre Auswahl

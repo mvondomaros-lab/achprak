@@ -1,9 +1,10 @@
 # Repository layout
 
 The project is named **PhotoSwitchLab**; its repository, Python distribution and
-package are named `photoswitchlab`. Existing `ACHPRAK_*` environment variables,
-the Binder route `achprak/` and the example Hub installation path `/opt/achprak`
-are retained for deployment compatibility. They are not package identifiers.
+package and Binder route are named `photoswitchlab`. Existing `ACHPRAK_*`
+application environment variables and the example Hub installation path
+`/opt/achprak` are retained for deployment compatibility. They are not package
+identifiers.
 
 ## Source directories
 

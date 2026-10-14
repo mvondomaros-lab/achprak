@@ -1,17 +1,26 @@
 # Webapp starten
 
-Öffnen Sie [https://lserver.chemie.uni-marburg.de](https://lserver.chemie.uni-marburg.de) im Browser.
-Sie ist nur aus dem Universitätsnetz erreichbar. Die Zugangsdaten erhalten Sie
-vor Ort von Ihrer Betreuung.
+Sie können PhotoSwitchLab im Browser über Binder oder auf Ihrem eigenen Rechner
+ausführen. Die [Aufgaben](tasks.md) stehen in der Webapp.
 
-Die Aufgaben stehen in der Webapp. Hinweise zur Bearbeitung und Abgabe finden
-Sie unter [Aufgaben und Protokoll](tasks.md).
+## Über Binder starten
 
-## Zu Hause ausprobieren
+[![Mit Binder starten](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/mvondomaros-lab/photoswitchlab/main?urlpath=photoswitchlab%2F)
 
-Sie können die Webapp auch zu Hause auf Ihrem eigenen Computer installieren und
-weitere Strukturen und Rechnungen in Ihrem eigenen Tempo ausprobieren. Die
+Der Start kann einige Minuten dauern. Berechnungen können langsamer sein als auf
+Ihrem eigenen Rechner. Exportieren Sie Ihre Ergebnisse, bevor die zeitlich
+begrenzte Sitzung endet. Aufwendige Berechnungen, insbesondere die Suche nach
+Übergangsstrukturen, können die Laufzeitgrenzen von Binder erreichen.
+
+## Auf dem eigenen Rechner starten
+
+Die
 [Installationsanleitung](https://github.com/mvondomaros-lab/photoswitchlab#auf-dem-eigenen-rechner-starten)
-führt Sie Schritt für Schritt durch die Einrichtung und den Start. Der lokale
-Betrieb wird derzeit für Macs mit Apple Silicon und Linux-Computer mit
-x86-64-Prozessor unterstützt.
+führt Sie durch Einrichtung und Start. Unterstützt werden Macs mit Apple Silicon
+und Linux-Computer mit x86-64-Prozessor.
+
+## Teilnahme am Marburger Praktikum
+
+Für Studierende im Allgemeinen Chemiepraktikum der Universität Marburg gelten die
+[Hinweise zum Marburger Praktikum](kurse/marburg.md). Dort finden Sie den Zugang
+zum Universitätsserver sowie die Anforderungen an Protokoll und Abgabe.

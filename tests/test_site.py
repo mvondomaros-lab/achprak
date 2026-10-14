@@ -243,6 +243,35 @@ class SiteBuildTests(unittest.TestCase):
             any(entry["url"].startswith("theory/energy/") for entry in barrier)
         )
 
+    def test_marburg_requirements_are_separate_from_public_guidance(self):
+        for slug in ("installation", "tasks"):
+            text = (self.output / slug / "index.html").read_text()
+            article = re.search(r"<article>(.*?)</article>", text, re.S)[1]
+            self.assertNotIn("lserver.chemie.uni-marburg.de", article)
+            self.assertNotIn("ilias.uni-marburg.de", article)
+            self.assertIn("kurse/marburg/", article)
+        access = (self.output / "installation/index.html").read_text()
+        self.assertIn("urlpath=photoswitchlab%2F", access)
+        tasks = (self.output / "tasks/index.html").read_text()
+        pagination = re.search(r'<nav class="page-navigation".*?</nav>', tasks, re.S)[0]
+        self.assertNotIn("kurse/marburg/", pagination)
+        course = (self.output / "kurse/marburg/index.html").read_text()
+        for requirement in (
+            "Universitätsnetz",
+            "lserver.chemie.uni-marburg.de",
+            "ILIAS",
+            "Protokoll führen",
+        ):
+            self.assertIn(requirement, course)
+        entries = json.loads((self.output / "assets/search.json").read_text())
+        self.assertTrue(
+            any(
+                entry["url"].startswith("kurse/marburg/")
+                and entry["title"].startswith("Praktikum in Marburg")
+                for entry in entries
+            )
+        )
+
     def test_math_does_not_consume_code(self):
         content, _ = site.render('Inline $E=hc/\\lambda$.\n\n```sh\necho "$HOME"\n```')
         self.assertIn("<math", content)
