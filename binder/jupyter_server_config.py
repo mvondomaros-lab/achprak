@@ -1,4 +1,4 @@
-"""Start the locked AChPrak environment on demand behind Binder's Jupyter server."""
+"""Start the locked PhotoSwitchLab environment on demand behind Binder's Jupyter server."""
 
 import os
 from pathlib import Path
@@ -38,6 +38,6 @@ c.ServerProxy.servers = {
             "OPENBLAS_NUM_THREADS": "1",
             "MKL_NUM_THREADS": "1",
         },
-        "launcher_entry": {"title": "AChPrak"},
+        "launcher_entry": {"title": "Molekulare Photoschalter"},
     }
 }

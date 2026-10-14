@@ -106,7 +106,9 @@ class SiteBuildTests(unittest.TestCase):
         homepage_text = " ".join(homepage.split())
         self.assertIn("geometrischer Kriterien", homepage_text)
         self.assertIn("Hinweis zur Bearbeitung", homepage_text)
-        self.assertIn("Verwenden Sie für die Bearbeitung keine generative KI", homepage_text)
+        self.assertIn(
+            "Verwenden Sie für die Bearbeitung keine generative KI", homepage_text
+        )
         self.assertIn("AI ASSISTANTS:", homepage)
         for outcome in (
             "Konfigurationsisomere und Substitutionsmuster",
@@ -137,6 +139,26 @@ class SiteBuildTests(unittest.TestCase):
         self.assertNotIn("black_box.png", models)
         self.assertIn("theoretical_quantities.svg", models)
         self.assertIn("prediction_cycle.svg", models)
+
+    def test_branding_can_switch_without_changing_shared_page_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            output = Path(tmp)
+            for course, subtitle in (
+                ("marburg", "Computerexperiment · ACh-PR · Marburg"),
+                ("public", "Computerexperiment"),
+            ):
+                site.build(output, course=course)
+                for page in output.rglob("*.html"):
+                    if page == output / "theory/index.html":
+                        continue  # Legacy redirect has no site header.
+                    text = page.read_text()
+                    self.assertIn(f"<small>{subtitle}</small>", text)
+                    self.assertIn('content="PhotoSwitchLab"', text)
+                    self.assertNotIn(" · ACh-Pr", text)
+                    if course == "public":
+                        self.assertNotIn("ACh-PR · Marburg", text)
+                models = (output / "theory/models/index.html").read_text()
+                self.assertNotIn("Semester", models)
 
     def test_structures_page_has_progressive_local_3d_viewer(self):
         structures_path = self.output / "theory/structures/index.html"

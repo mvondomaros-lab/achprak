@@ -1,14 +1,22 @@
-# AChPrak: Theoretische Chemie im Praktikum
+# PhotoSwitchLab
 
-AChPrak ist eine deutschsprachige Browser-Anwendung für Chemiestudierende im
+**Molekulare Photoschalter · Computerexperiment**
+
+PhotoSwitchLab ist eine deutschsprachige Browser-Anwendung für Chemiestudierende im
 ersten Studienjahr. Sie können Molekülstrukturen erzeugen, Strukturoptimierungen
 durchführen, Übergangsstrukturen suchen und Spektren berechnen. Die
 [Praktikumsanleitung](https://mvondomaros-lab.github.io/achprak/) erklärt die
 Grundlagen und führt durch die Aufgaben.
 
-Studierende und Lehrende können AChPrak auf dem eigenen Rechner ausführen.
+Studierende und Lehrende können PhotoSwitchLab auf dem eigenen Rechner ausführen.
 Für Lehrveranstaltungen ist auch die Bereitstellung über einen eigenen
 JupyterHub möglich.
+
+Die Webapp und die Website tragen den Titel „Molekulare Photoschalter“ mit dem
+Untertitel „Computerexperiment“. Der Projektname ist PhotoSwitchLab; als künftiger
+Repositoryname ist `photoswitchlab` vorgesehen. Das Repository, die veröffentlichten
+Links und das Python-Paket heißen bis zu einer separaten Migration weiterhin
+`achprak`. Die folgenden Installationsbefehle verwenden diesen bestehenden Namen.
 
 ## Auf dem eigenen Rechner starten
 
@@ -62,6 +70,16 @@ pixi run --locked -e web web --port 8001
 
 Öffnen Sie dann **http://127.0.0.1:8001/**.
 
+Für die lokale Marburger Lehrveranstaltung können Sie den Zusatz
+„ · ACh-PR · Marburg“ im Untertitel aktivieren:
+
+```sh
+pixi run --locked -e web web --course marburg
+```
+
+Ohne diese Einstellung lautet der Untertitel „Computerexperiment“. Die Einstellung
+ändert derzeit nur die Kennzeichnung; Aufgaben und Protokoll sind noch gemeinsam.
+
 ## Anleitung und Grundlagen
 
 Die [Praktikumswebsite](https://mvondomaros-lab.github.io/achprak/) enthält die
@@ -84,7 +102,7 @@ Für den gemeinsamen Zugang in einer Lehrveranstaltung verwenden Sie die
 [Deployment-Anleitung](deploy/README.md) (englisch).
 
 Die Integration setzt einen unabhängig verwalteten JupyterHub voraus. Dieser
-übernimmt die Anmeldung und startet für jede Person eine eigene AChPrak-Instanz.
+übernimmt die Anmeldung und startet für jede Person eine eigene PhotoSwitchLab-Instanz.
 Die Umgebung `web-hub` enthält die Anwendung und den dafür nötigen Proxy.
 Die Anleitung beschreibt Installation, Hub-Konfiguration, Funktionsprüfung und
 Ressourcenplanung. Der lokale Start allein stellt keine Anmeldung für einen

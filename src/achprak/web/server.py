@@ -3,12 +3,14 @@
 import asyncio
 from contextlib import asynccontextmanager
 from dataclasses import dataclass, field
+import html
 import json
 import os
 from pathlib import Path
 import secrets
 import shutil
 import signal
+from string import Template
 import subprocess
 import sys
 import tempfile
@@ -16,7 +18,7 @@ import time
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Request
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -293,7 +295,14 @@ class JobManager:
         self._temporary.cleanup()
 
 
-def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
+def create_app(
+    max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False, *, course="public"
+):
+    branding = json.loads((STATIC / "branding.json").read_text())
+    if course not in branding["course_suffixes"]:
+        raise ValueError(f"Unknown course: {course}")
+    brand_title = branding["title"]
+    brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     cookie_path = "/" + cookie_path.strip("/") + "/" if cookie_path.strip("/") else "/"
     manager = JobManager(max_jobs, timeout)
     cookie_name = "achprak_" + secrets.token_hex(5)
@@ -472,7 +481,12 @@ def create_app(max_jobs=2, timeout=600, cookie_path="/", secure_cookie=False):
     @app.get("/")
     async def index():
         # Revalidate the HTML so its asset versions cannot lag behind the API.
-        return FileResponse(STATIC / "index.html", headers={"Cache-Control": "no-cache"})
+        document = Template((STATIC / "index.html").read_text()).substitute(
+            project_name=html.escape(branding["project_name"]),
+            brand_title=html.escape(brand_title),
+            brand_subtitle=html.escape(brand_subtitle),
+        )
+        return HTMLResponse(document, headers={"Cache-Control": "no-cache"})
 
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
     return app

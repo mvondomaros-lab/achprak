@@ -2,12 +2,35 @@
 
 import io
 import re
+import pytest
 import xml.etree.ElementTree as ET
 from zipfile import ZipFile
 
 from fastapi.testclient import TestClient
 
 from achprak.web.server import create_app
+
+
+@pytest.mark.parametrize(
+    "course, subtitle",
+    [
+        ("public", "Computerexperiment"),
+        ("marburg", "Computerexperiment · ACh-PR · Marburg"),
+    ],
+)
+def test_deployment_branding_is_rendered_without_a_session(course, subtitle):
+    with TestClient(create_app(course=course)) as client:
+        response = client.get("/")
+    assert response.status_code == 200
+    assert "<title>Molekulare Photoschalter</title>" in response.text
+    assert '<meta name="application-name" content="PhotoSwitchLab"' in response.text
+    assert f"<small>{subtitle}</small>" in response.text
+    assert "$brand_" not in response.text
+    assert "ACh-Pr · TC Versuch" not in response.text
+    assert "set-cookie" not in response.headers
+    assert response.headers["cache-control"] == "no-cache"
+    if course == "public":
+        assert "ACh-PR · Marburg" not in response.text
 
 
 def test_protocol_download_and_tasks_without_starting_a_session():
@@ -34,7 +57,9 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         )
         task_ids = re.findall(r'<details class="task" id="([^"]+)">', guide)
         assert len(task_ids) == len(set(task_ids)) == len(titles) == 9
-        assert all(re.fullmatch(r"task-[a-z]+(?:-[a-z]+)*", task_id) for task_id in task_ids)
+        assert all(
+            re.fullmatch(r"task-[a-z]+(?:-[a-z]+)*", task_id) for task_id in task_ids
+        )
         for step, count in (("build", 2), ("optimize", 3), ("spectrum", 4)):
             page = re.search(
                 rf'<section id="guide-{step}">(.*?)</section>', guide, re.S
@@ -42,7 +67,7 @@ def test_protocol_download_and_tasks_without_starting_a_session():
             assert page is not None
             assert len(re.findall(r'<details class="task"', page[1])) == count
             # A topic may recur in another step, but headings within a step are distinct.
-            page_titles = re.findall(r'<summary>([^<]+)</summary>', page[1])
+            page_titles = re.findall(r"<summary>([^<]+)</summary>", page[1])
             assert len(page_titles) == len(set(page_titles))
 
         assert not re.search(r"Aufgabe \d|<details[^>]*\bopen\b", guide)
@@ -78,9 +103,7 @@ def test_protocol_download_and_tasks_without_starting_a_session():
         assert "ortho-, meta- und para-Substitution" not in guide_text
         assert "trans-Push–Pull-Systeme" in guide_text
         assert "welcher Substituent das Absorptionsmaximum" not in guide_text
-        prediction_limit = (
-            "nicht vorhersagen lässt, wie sich das cis/trans-Verhältnis unter Bestrahlung verändert"
-        )
+        prediction_limit = "nicht vorhersagen lässt, wie sich das cis/trans-Verhältnis unter Bestrahlung verändert"
         assert prediction_limit in guide_text and prediction_limit in text
         for field in (
             "Sterischer Einfluss und Vergleich",

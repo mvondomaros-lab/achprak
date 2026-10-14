@@ -1,5 +1,10 @@
 # Repository layout
 
+The project is named **PhotoSwitchLab**. The future repository name is
+`photoswitchlab`; the current repository, Python distribution and package remain
+`achprak` until a separate migration. Existing paths, commands and published
+URLs intentionally retain their current identifiers.
+
 ## Source directories
 
 | Path | Contents |

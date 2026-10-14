@@ -4,13 +4,13 @@ For a temporary session without managing a Hub, see the experimental
 [Binder configuration](../binder/README.md).
 
 Run the central JupyterHub in its own administrator-managed environment, separate
-from the AChPrak checkout. The Hub owns authentication, accounts, its database and
+from the PhotoSwitchLab checkout. The Hub owns authentication, accounts, its database and
 cookie secret, HTTPS routing, the central HTTP proxy and spawner resource limits.
 For a new Hub, follow the [JupyterHub installation
 guide](https://jupyterhub.readthedocs.io/en/stable/tutorial/quickstart.html) and
-establish working login and user spawning before integrating AChPrak.
+establish working login and user spawning before integrating PhotoSwitchLab.
 
-AChPrak provides two deployment environments:
+PhotoSwitchLab provides two deployment environments:
 
 | Environment | Purpose |
 | --- | --- |
@@ -21,10 +21,10 @@ AChPrak provides two deployment environments:
 standalone proxy. It does not include `configurable-http-proxy` or a central Hub
 service. A **proxy** forwards browser requests to another process. The central
 proxy routes requests to each user's server; the standalone application proxy
-launches and forwards requests to AChPrak. It checks Hub authorization before
+launches and forwards requests to PhotoSwitchLab. It checks Hub authorization before
 forwarding requests to a private Unix socket. A **Unix socket** is a local
 communication endpoint represented by a filesystem path. Its private directory
-limits access to the owning user. In this setup, AChPrak does not expose an
+limits access to the owning user. In this setup, PhotoSwitchLab does not expose an
 unauthenticated network port.
 
 ## Requirements
@@ -94,10 +94,16 @@ The fragment sets `PYTHONNOUSERSITE=1` for the proxy, application and its worker
 This prevents packages in a participant's personal Python site directory (such as
 `~/.local/lib/python3.12/site-packages`) from overriding the locked environment.
 
+Branding defaults to the public title **Molekulare Photoschalter** and subtitle
+**Computerexperiment**. For the Marburg course, set `ACHPRAK_COURSE=marburg` in
+the central Hub service's environment. The fragment passes it to the application,
+which adds ** · ACh-PR · Marburg** to the subtitle. This setting currently controls
+branding only; it does not yet select different tasks or protocol materials.
+
 By default it uses `/opt/achprak/.pixi/envs/web-hub`. For another install
 location, set `ACHPRAK_ENV` to the absolute environment path in the **central Hub
 service's** environment, or edit the default in your copied fragment. The proxy
-and Python paths must point into AChPrak's environment. Review and copy fragment
+and Python paths must point into PhotoSwitchLab's environment. Review and copy fragment
 updates explicitly when updating the application.
 
 The fragment enables Secure cookies. Configure your HTTPS reverse proxy to forward
@@ -108,7 +114,7 @@ base URL. Each user's process also separates browser sessions.
 ## Start and verify
 
 During a maintenance window, stop running user servers through the Hub and restart
-the Hub using your service manager. New user servers will launch AChPrak.
+the Hub using your service manager. New user servers will launch PhotoSwitchLab.
 
 Verify the deployment through its public HTTPS endpoint:
 

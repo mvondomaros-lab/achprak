@@ -1,1 +1,1 @@
-"""Browser application and isolated calculation workers for AChPrak."""
+"""Browser application and isolated calculation workers for PhotoSwitchLab."""

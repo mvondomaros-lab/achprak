@@ -6,11 +6,9 @@ Molekülstrukturen, Energien, Spektren oder Reaktionswege beschreibt und überpr
 Zum Fachgebiet gehören grundlegende Theorien wie die Quantenmechanik und die statistische Mechanik,
 quantitative Berechnungen und Simulationen sowie vereinfachte qualitative Modelle.
 
-Dieser Praktikumsversuch bietet einen ersten anwendungsbezogenen Einblick in das Fachgebiet. Die mathematischen
-Grundlagen und die Herleitung der verwendeten Verfahren sind nicht Bestandteil des Versuchs. Sie werden im
-weiteren Studium der theoretischen Chemie vertieft: im 3. oder 4. Semester sowie in einem optionalen Modul im
-5. oder 6. Semester. Die Zuordnung richtet sich jeweils danach, ob das Studium im Winter- oder Sommersemester
-begonnen wurde. Weitere Lehrveranstaltungen folgen im Masterstudium.
+Dieses Computerexperiment bietet einen ersten anwendungsbezogenen Einblick in das Fachgebiet. Die mathematischen
+Grundlagen und die Herleitung der verwendeten Verfahren sind nicht Bestandteil des Computerexperiments.
+Weiterführende Lehrveranstaltungen zur theoretischen Chemie vertiefen diese Themen.
 
 ## Mathematische Beschreibung
 

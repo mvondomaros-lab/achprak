@@ -23,6 +23,7 @@ from latex2mathml.converter import convert
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
 OUTPUT = SITE / "_build"
+BRANDING = json.loads((ROOT / "src/achprak/web/static/branding.json").read_text())
 PAGES = (
     ("index", "Molekulare Photoschalter"),
     ("theory/structures", "Molekülstruktur und Isomerie"),
@@ -59,8 +60,11 @@ def page_url(slug: str) -> str:
     return "" if slug == "index" else slug + "/"
 
 
-def build(output: Path = OUTPUT) -> None:
+def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     """Render everything before replacing output, leaving the last build on errors."""
+    branding = json.loads((ROOT / "src/achprak/web/static/branding.json").read_text())
+    brand_title = branding["title"]
+    brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     output = output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".site-build-", dir=output.parent) as tmp:
@@ -70,7 +74,8 @@ def build(output: Path = OUTPUT) -> None:
             ROOT / "src/achprak/web/static/header.css", stage / "assets/header.css"
         )
         shutil.copy2(
-            ROOT / "src/achprak/web/static/brand-mark.svg", stage / "assets/brand-mark.svg"
+            ROOT / "src/achprak/web/static/brand-mark.svg",
+            stage / "assets/brand-mark.svg",
         )
         vendor = stage / "assets/vendor"
         vendor.mkdir(parents=True, exist_ok=True)
@@ -140,8 +145,7 @@ def build(output: Path = OUTPUT) -> None:
                 if key.startswith("theory/"):
                     navigation += "<li>" + nav_link(key, text) + "</li>"
             navigation += (
-                '</ul></section><section class="nav-group"><h2>Durchführung</h2>'
-                "<ul>"
+                '</ul></section><section class="nav-group"><h2>Durchführung</h2><ul>'
             )
             navigation += "<li>" + nav_link("installation", "Webapp starten") + "</li>"
             navigation += (
@@ -153,7 +157,7 @@ def build(output: Path = OUTPUT) -> None:
                 eyebrow = "Grundlagen"
             else:
                 eyebrow = {
-                    "index": "ACh-Pr · TC Versuch",
+                    "index": "Überblick",
                     "installation": "Durchführung",
                     "tasks": "Durchführung",
                 }[slug]
@@ -165,11 +169,14 @@ def build(output: Path = OUTPUT) -> None:
                         f'<a href="{root}{page_url(key)}"><span>{direction}</span>{text}</a>'
                     )
             document = template.substitute(
+                project_name=html.escape(branding["project_name"]),
+                brand_title=html.escape(brand_title),
+                brand_subtitle=html.escape(brand_subtitle),
                 title=html.escape(title),
                 subtitle=subtitle,
-                tab_title="Molekulare Photoschalter"
+                tab_title=html.escape(brand_title)
                 if slug == "index"
-                else html.escape(title) + " · ACh-Pr",
+                else html.escape(title + " · " + brand_title),
                 root=root,
                 slug=slug,
                 content=content,
@@ -268,8 +275,8 @@ def snapshot():
     return tuple(state)
 
 
-def serve(port: int):
-    build()
+def serve(port: int, *, course: str = "public"):
+    build(course=course)
     revision = str(time.time_ns())
     lock = threading.RLock()
     stopped = threading.Event()
@@ -318,7 +325,7 @@ def serve(port: int):
             previous = current
             try:
                 with lock:
-                    build()
+                    build(course=course)
                     revision = str(time.time_ns())
             except Exception as error:
                 print(
@@ -344,5 +351,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--serve", action="store_true")
     parser.add_argument("--port", type=int, default=3000)
+    parser.add_argument(
+        "--course",
+        choices=tuple(BRANDING["course_suffixes"]),
+        default=os.environ.get("ACHPRAK_COURSE", "public"),
+        help="Branding context (default: public, or ACHPRAK_COURSE)",
+    )
     args = parser.parse_args()
-    serve(args.port) if args.serve else build()
+    serve(args.port, course=args.course) if args.serve else build(course=args.course)

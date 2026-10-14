@@ -1,4 +1,4 @@
-"""Run the AChPrak student workflow through an authenticated JupyterHub.
+"""Run the PhotoSwitchLab student workflow through an authenticated JupyterHub.
 
 Example (test accounts only):
     ACHPRAK_LOAD_PASSWORD_TEMPLATE='<password pattern with {n}>' \
@@ -62,7 +62,9 @@ def percentile(values, percent):
     index = (len(ordered) - 1) * percent / 100
     lower = int(index)
     upper = min(lower + 1, len(ordered) - 1)
-    return round(ordered[lower] + (ordered[upper] - ordered[lower]) * (index - lower), 3)
+    return round(
+        ordered[lower] + (ordered[upper] - ordered[lower]) * (index - lower), 3
+    )
 
 
 async def request(client, method, url, latencies, **kwargs):
@@ -102,13 +104,17 @@ async def open_session(client, origin, prefix, username, password, latencies):
                 raise RuntimeError("The application returned the wrong Hub identity")
             return app_url, round(time.monotonic() - start, 3), retries
         if response.status_code not in {200, 404, 424, 502, 503}:
-            raise RuntimeError(f"Application startup failed: HTTP {response.status_code}")
+            raise RuntimeError(
+                f"Application startup failed: HTTP {response.status_code}"
+            )
         retries += 1
         await asyncio.sleep(1)
     raise TimeoutError("Application did not become ready within 120 seconds")
 
 
-async def job(client, app_url, kind, molecule_id, molecule_settings, latencies, timeout):
+async def job(
+    client, app_url, kind, molecule_id, molecule_settings, latencies, timeout
+):
     payload = {"kind": kind}
     if kind == "template":
         payload["settings"] = molecule_settings
@@ -130,7 +136,9 @@ async def job(client, app_url, kind, molecule_id, molecule_settings, latencies, 
     first_running = None
     polls = 0
     while time.monotonic() - start < timeout + 30:
-        response = await request(client, "GET", app_url + f"/api/jobs/{job_id}", latencies)
+        response = await request(
+            client, "GET", app_url + f"/api/jobs/{job_id}", latencies
+        )
         response.raise_for_status()
         polls += 1
         state = response.json()
@@ -163,7 +171,11 @@ async def student(origin, prefix, username, password, molecule_settings, gate, t
     output = {"user": username, "settings": molecule_settings, "jobs": []}
     async with httpx.AsyncClient(timeout=120, follow_redirects=True) as client:
         try:
-            app_url, output["login_spawn_s"], output["startup_retries"] = await open_session(
+            (
+                app_url,
+                output["login_spawn_s"],
+                output["startup_retries"],
+            ) = await open_session(
                 client, origin, prefix, username, password, latencies
             )
             output["ready"] = True
@@ -179,7 +191,13 @@ async def student(origin, prefix, username, password, molecule_settings, gate, t
         for kind in ("template", "minimum", "uvvis"):
             try:
                 metrics, result = await job(
-                    client, app_url, kind, molecule_id, molecule_settings, latencies, timeout
+                    client,
+                    app_url,
+                    kind,
+                    molecule_id,
+                    molecule_settings,
+                    latencies,
+                    timeout,
                 )
                 output["jobs"].append(metrics)
                 if metrics["status"] != "complete":
@@ -237,7 +255,9 @@ async def phase(origin, prefix, usernames, password_template, scenario, timeout)
 
 async def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--origin", required=True, help="HTTPS origin of the JupyterHub")
+    parser.add_argument(
+        "--origin", required=True, help="HTTPS origin of the JupyterHub"
+    )
     parser.add_argument("--hub-prefix", default="/jhub")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--scenario", choices=["baseline", "double"], required=True)
@@ -266,7 +286,11 @@ async def main():
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + "\n")
-    print(json.dumps({k: v for k, v in result["phase"].items() if k != "students"}, indent=2))
+    print(
+        json.dumps(
+            {k: v for k, v in result["phase"].items() if k != "students"}, indent=2
+        )
+    )
     print("results:", args.output)
 
 

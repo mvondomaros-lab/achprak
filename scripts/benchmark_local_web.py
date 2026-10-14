@@ -1,4 +1,4 @@
-"""Time one local AChPrak user through the same jobs as the Hub load test."""
+"""Time one local PhotoSwitchLab user through the same jobs as the Hub load test."""
 
 import argparse
 import asyncio

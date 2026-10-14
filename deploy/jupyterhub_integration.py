@@ -34,6 +34,7 @@ c.Spawner.environment.update(
         # Personal pip installs must not override the locked app dependencies.
         # Inherited by the proxy, application and calculation workers.
         "PYTHONNOUSERSITE": "1",
+        "ACHPRAK_COURSE": os.environ.get("ACHPRAK_COURSE", "public"),
         "MPLBACKEND": "Agg",
         "OMP_NUM_THREADS": "1",
         "OPENBLAS_NUM_THREADS": "1",

@@ -1,6 +1,6 @@
 # Molekulare Photoschalter
 
-<p class="subtitle">Struktur, Energie und Absorption im Vergleich</p>
+<p class="subtitle">Computerexperiment</p>
 
 ## Motivation
 

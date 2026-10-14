@@ -3,7 +3,7 @@ import os
 
 
 def main():
-    parser = argparse.ArgumentParser(description="AChPrak web application")
+    parser = argparse.ArgumentParser(description="PhotoSwitchLab web application")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument(
@@ -15,6 +15,12 @@ def main():
         "--cookie-path", default=os.environ.get("JUPYTERHUB_SERVICE_PREFIX", "/")
     )
     parser.add_argument("--secure-cookie", action="store_true")
+    parser.add_argument(
+        "--course",
+        choices=("public", "marburg"),
+        default=os.environ.get("ACHPRAK_COURSE", "public"),
+        help="Branding context (default: public, or ACHPRAK_COURSE)",
+    )
     args = parser.parse_args()
     if args.max_jobs < 1 or args.job_timeout < 1:
         parser.error("--max-jobs and --job-timeout must be positive")
@@ -23,7 +29,11 @@ def main():
     from .server import create_app
 
     app = create_app(
-        args.max_jobs, args.job_timeout, args.cookie_path, args.secure_cookie
+        args.max_jobs,
+        args.job_timeout,
+        args.cookie_path,
+        args.secure_cookie,
+        course=args.course,
     )
     uvicorn.run(
         app, host=args.host, port=args.port, uds=args.unix_socket, proxy_headers=False

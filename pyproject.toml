@@ -1,8 +1,9 @@
 [project]
+# Keep the distribution/package identifier until the separate naming migration.
 name = "achprak"
 version = "0.5.0"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
-description = "Web-based practical introducing theoretical chemistry to first-year chemistry students"
+description = "PhotoSwitchLab: a web-based computer experiment introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
 license = { file = "LICENSE" }
 

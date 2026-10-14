@@ -1,4 +1,4 @@
-"""Print one-second Linux host and AChPrak process samples as CSV.
+"""Print one-second Linux host and PhotoSwitchLab process samples as CSV.
 
 Run on the Hub host through SSH. RSS is the sum of process resident sets and may
 double-count shared memory; MemAvailable and swap are host-wide kernel values.
@@ -85,7 +85,10 @@ def main():
                 round(memory["MemAvailable"] / 1024, 1),
                 round((memory["SwapTotal"] - memory["SwapFree"]) / 1024, 1),
                 *(counts[key] for key in ("proxy", "app", "worker", "mopac")),
-                *(round(rss[key] / 1024, 1) for key in ("proxy", "app", "worker", "mopac")),
+                *(
+                    round(rss[key] / 1024, 1)
+                    for key in ("proxy", "app", "worker", "mopac")
+                ),
             ]
         )
         sys.stdout.flush()

@@ -1,6 +1,6 @@
 # Scientific defaults and limitations
 
-AChPrak supports qualitative comparisons of azobenzene structures, electronic
+PhotoSwitchLab supports qualitative comparisons of azobenzene structures, electronic
 energy barriers and absorption spectra. It uses approximate electronic-structure
 methods so students can run calculations interactively. The [settings
 benchmark](science-benchmark.md) measures sensitivity to numerical and method

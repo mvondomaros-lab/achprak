@@ -83,6 +83,15 @@ to content, styles, scripts, or figures. Use `--port 3002` if needed. A failed
 rebuild prints its error and leaves the last successful preview available.
 Restart the preview after changing the Python builder itself.
 
+Branding is shared with the app through
+`src/achprak/web/static/branding.json`. The default subtitle is
+**Computerexperiment**. Use `pixi run -e dev site --course marburg` to preview the
+local suffix ** · ACh-PR · Marburg**, or `pixi run -e site build-site --course marburg`
+for a local website build. `ACHPRAK_COURSE=marburg` also selects this branding for
+the app and website CLI; explicit `--course` arguments take precedence. The
+public teaching website is built with the default branding. Course-specific
+tasks and protocol content will be separated in a later change.
+
 For website-only work, use the lightweight `site` environment:
 
 ```sh

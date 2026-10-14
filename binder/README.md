@@ -1,20 +1,24 @@
 # Experimental Binder deployment
 
-This configuration runs AChPrak as a web application in a temporary Binder
+This configuration runs PhotoSwitchLab as a web application in a temporary Binder
 session. Binder's Jupyter server authenticates browser access, and
 [Jupyter Server Proxy](https://jupyter-server-proxy.readthedocs.io/en/latest/server-process.html)
-starts AChPrak on demand under `achprak/`. The application listens on a private
+starts PhotoSwitchLab on demand under `achprak/`. The application listens on a private
 Unix socket. No notebook is required.
 
 ## Launch the branch
 
-Once `binder-support` is available on GitHub, open:
+The `binder-support` branch is available on GitHub. Open:
 
 <https://mybinder.org/v2/gh/mvondomaros-lab/achprak/binder-support?urlpath=achprak%2F>
 
-The branch must be pushed before this URL can build it. After merging, replace
+New changes must be pushed before this URL can build them. After merging, replace
 `binder-support` with `main`, or use a commit SHA for a fixed repository version.
-Use `?urlpath=lab` to open JupyterLab instead; its launcher also offers AChPrak.
+Use `?urlpath=lab` to open JupyterLab instead; its launcher also offers
+**Molekulare Photoschalter**. The project is named **PhotoSwitchLab**, while the
+app and website retain their German title and the subtitle **Computerexperiment**.
+The current repository, package and proxy route still use `achprak`; a future
+repository rename to `photoswitchlab` is a separate migration.
 
 ## Environment and startup
 
@@ -48,7 +52,7 @@ jupyter-repo2docker --image-name achprak-binder .
 ```
 
 Open the token-bearing URL printed by repo2docker, then navigate to `achprak/`
-under that server's base URL, or launch AChPrak from JupyterLab. An ARM host
+under that server's base URL, or launch PhotoSwitchLab from JupyterLab. An ARM host
 requires an x86-64 Docker runtime/emulation; a native ARM build is not supported
 by this configuration.
 
@@ -76,7 +80,7 @@ Verified on macOS with Apple Silicon on 2026-10-14:
 - Installation of the locked `web` environment and the build's backend import
   and MOPAC executable checks.
 - A real Jupyter Server 2.21.1 / Jupyter Server Proxy 4.6.0 launch through
-  `binder/start`, with AChPrak running on the configured Unix socket. Checked a
+  `binder/start`, with PhotoSwitchLab running on the configured Unix socket. Checked a
   nested user prefix, application assets, guide and protocol downloads, cookie
   scope, structure generation through a chemistry worker, session reload and
   browser-session isolation. The HTTPS command's Secure cookie option was
@@ -85,15 +89,19 @@ Verified on macOS with Apple Silicon on 2026-10-14:
   chemistry regressions remained disabled; no calculation code changed.
 - Shell syntax and Git whitespace checks.
 
-The Linux repo2docker image build and live mybinder.org launch remain unverified.
-Docker was unavailable on the verification host. The local smoke check does not
-measure Binder memory consumption or transition-structure search runtimes.
+The user subsequently confirmed a successful public mybinder.org launch of
+commit `e1cc489`. The supplied Linux build log showed the whole `postBuild` step
+completing in 29 seconds and image export in 66 seconds. The log intermittently
+reported a file-watcher limit error before the session eventually launched.
+This confirms the initial image build and launch; it does not verify all
+chemistry workflows or measure Binder memory consumption and transition-structure
+search runtimes. Later changes still need live verification.
 
 ## Suitability and limits
 
 Binder is useful for trying the app without installing its chemistry software.
 It provides temporary compute sessions, rather than persistent hosting. Results
-must be exported before a session ends; AChPrak stores session results in memory,
+must be exported before a session ends; PhotoSwitchLab stores session results in memory,
 and Binder does not provide persistent storage.
 
 The public service currently guarantees at least 1 GB RAM, permits up to 2 GB,

@@ -8,8 +8,8 @@ a live launch, but does not establish that all chemistry workflows fit Binder's
 resource limits.
 
 The current configuration installs the locked Pixi `web` environment during
-image construction and opens AChPrak directly through Jupyter Server Proxy via
-`?urlpath=achprak%2F`. JupyterLab also has an AChPrak launcher entry. No custom
+image construction and opens PhotoSwitchLab directly through Jupyter Server Proxy via
+`?urlpath=achprak%2F`. JupyterLab also has a launcher entry for the app. No custom
 loading page has been added.
 
 - [ ] Measure image size and timings for a first build and subsequent launches
@@ -62,3 +62,27 @@ infrastructure log streaming and session startup failures.
 - [Binder startup stages and resource limits](https://mybinder.readthedocs.io/en/latest/about/user-guidelines.html)
 - [Reported BIDS file-watcher issue](https://github.com/jupyterhub/mybinder.org-deploy/issues/3654)
 - [Binder operations guidance for file-watcher limits](https://mybinder-sre.readthedocs.io/en/latest/deployment/k3s.html#increase-some-fs-limits)
+
+## OER content and naming migration
+
+The project name is **PhotoSwitchLab**. The German app and website retain the
+title **Molekulare Photoschalter**, subtitle **Computerexperiment**, and optional
+local suffix ** · ACh-PR · Marburg**. Public branding is the default; the Marburg
+branding can be selected explicitly. The course setting currently changes
+branding only.
+
+- [ ] Separate shared exercises from Marburg's protocol-specific assignments,
+      required deliverables, group allocation and submission instructions. Keep
+      shared task content in one source with course-specific additions.
+- [ ] Make the public website explain the app for independent learners, with
+      Binder and local installation as public entry points. Move Marburg access,
+      organisation and ILIAS guidance into a clearly labelled course section.
+      The university Hub remains at `lserver.chemie.uni-marburg.de`, accessible
+      only from the university network.
+- [ ] Plan the repository/package naming migration separately. The future
+      GitHub repository name is `photoswitchlab`; do not rename the repository
+      as part of the branding change. Inventory package imports, distribution
+      metadata, environment variables, lockfiles, deployment paths, Binder
+      routes, GitHub Pages links, workflows and document links before deciding
+      which technical identifiers to migrate and how to preserve compatibility.
+      Current commands and URLs continue to use `achprak`.
