@@ -1,0 +1,2 @@
+# Install the proxy in Binder's Jupyter environment, separate from Pixi's app.
+jupyter-server-proxy==4.6.0

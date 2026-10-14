@@ -1,5 +1,8 @@
 # Deploying with JupyterHub
 
+For a temporary session without managing a Hub, see the experimental
+[Binder configuration](../binder/README.md).
+
 Run the central JupyterHub in its own administrator-managed environment, separate
 from the AChPrak checkout. The Hub owns authentication, accounts, its database and
 cookie secret, HTTPS routing, the central HTTP proxy and spawner resource limits.

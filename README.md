@@ -68,6 +68,15 @@ Die [Praktikumswebsite](https://mvondomaros-lab.github.io/achprak/) enthält die
 theoretischen Grundlagen und organisatorischen Hinweise. Die Aufgaben und
 Erläuterungen zu den Berechnungen finden Sie direkt in der Webapp.
 
+## Experimenteller Start über Binder
+
+Für einen Start im Browser ohne lokale Installation enthält das Projekt eine
+experimentelle [Binder-Konfiguration](binder/README.md) (englisch). Die Prüfung
+auf dem öffentlichen Binder-Dienst steht noch aus. Eine Sitzung ist zeitlich
+begrenzt; exportieren Sie Ihre Ergebnisse, bevor sie endet. Für aufwendige
+Berechnungen, insbesondere die Suche nach Übergangsstrukturen, können die
+verfügbaren Rechenressourcen nicht ausreichen.
+
 ## Für Lehrende: Bereitstellung über JupyterHub
 
 Für die Nutzung auf einem einzelnen Rechner gelten dieselben Schritte wie oben.

@@ -3,6 +3,7 @@
 
 # Local Python environments, packaging and tool caches.
 /.pixi/
+/.binder-tools/
 /.venv/
 /build/
 /dist/
