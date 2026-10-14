@@ -42,8 +42,14 @@ function launchPage(query = '', supported = true) {
     document: {querySelector: () => panel}, window, URL,
     setInterval: () => 1, clearInterval() {}, Date,
   });
+  const messages = [];
+  let text = nodes['.binder-status'].textContent;
+  Object.defineProperty(nodes['.binder-status'], 'textContent', {
+    get: () => text,
+    set: value => { text = value; messages.push(value); },
+  });
   const click = () => nodes['[data-binder-start]'].listeners.click({preventDefault() {}});
-  return {nodes, stages, connections, redirects, click, retry: () => nodes['[data-binder-retry]'].listeners.click(), windowEvents, history: () => history};
+  return {nodes, stages, connections, redirects, messages, click, retry: () => nodes['[data-binder-retry]'].listeners.click(), windowEvents, history: () => history};
 }
 
 test('cached launch opens the app directly, encodes its token and closes the stream', () => {
@@ -64,7 +70,8 @@ test('cached launch opens the app directly, encodes its token and closes the str
 test('build failure allows one explicit retry and ignores late events from the old stream', () => {
   const p = launchPage(); p.click();
   const old = p.connections[0];
-  for (const phase of ['waiting', 'fetching', 'building', 'pushing']) old.emit({phase});
+  for (const phase of ['waiting', 'fetching', 'building', 'building', 'pushing']) old.emit({phase});
+  assert.equal(p.messages.filter(message => message.includes('eingerichtet')).length, 1);
   assert.equal(p.stages[1].attrs['aria-current'], 'step');
   old.emit({phase: 'failed', message: '<script>unsafe developer log</script>'});
   assert.equal(old.closed, true);

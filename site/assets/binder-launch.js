@@ -32,7 +32,7 @@
 
   function fail(message) {
     stop();
-    status.textContent = message;
+    if (status.textContent !== message) status.textContent = message;
     retry.hidden = false;
   }
 
@@ -43,7 +43,7 @@
       if (index === activeStage) item.setAttribute('aria-current', 'step');
       else item.removeAttribute('aria-current');
     }
-    status.textContent = message;
+    if (status.textContent !== message) status.textContent = message;
   }
 
   function run() {

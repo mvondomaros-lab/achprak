@@ -22,6 +22,8 @@ jobs:
           environments: site
       - name: Test static site builder
         run: pixi run --locked -e site test-site
+      - name: Test Binder launch display
+        run: node --test tests/test_binder_launch.cjs
       - name: Build website
         run: pixi run --locked -e site build-site
       - uses: actions/upload-pages-artifact@v3
