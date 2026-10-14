@@ -84,9 +84,8 @@ rebuild prints its error and leaves the last successful preview available.
 Restart the preview after changing the Python builder itself.
 
 Branding is shared with the app through
-`src/photoswitchlab/web/static/branding.json`: the app uses `project_name`
-(**PhotoSwitchLab**), and the website uses `site_title`
-(**Molekulare Photoschalter**). Both use the default subtitle
+`src/photoswitchlab/web/static/branding.json`: the app and website use
+`project_name` (**PhotoSwitchLab**) and the default subtitle
 **Computerexperiment**. Use `pixi run -e dev site --course marburg` to preview the
 local suffix ** · ACh-PR · Marburg**, or `pixi run -e site build-site --course marburg`
 for a local website build. `PHOTOSWITCHLAB_COURSE=marburg` also selects this branding for

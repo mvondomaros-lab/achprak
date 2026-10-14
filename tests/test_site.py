@@ -152,15 +152,13 @@ class SiteBuildTests(unittest.TestCase):
                     if page == output / "theory/index.html":
                         continue  # Legacy redirect has no site header.
                     text = page.read_text()
-                    self.assertIn(
-                        f"Molekulare Photoschalter<small>{subtitle}</small>", text
-                    )
+                    self.assertIn(f"PhotoSwitchLab<small>{subtitle}</small>", text)
                     self.assertIn('content="PhotoSwitchLab"', text)
                     self.assertNotIn(" · ACh-Pr", text)
                     if course == "public":
                         self.assertNotIn("ACh-PR · Marburg", text)
                 self.assertIn(
-                    "<title>Molekulare Photoschalter</title>",
+                    "<title>PhotoSwitchLab</title>",
                     (output / "index.html").read_text(),
                 )
                 models = (output / "theory/models/index.html").read_text()

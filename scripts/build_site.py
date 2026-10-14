@@ -72,7 +72,7 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     branding = json.loads(
         (ROOT / "src/photoswitchlab/web/static/branding.json").read_text()
     )
-    brand_title = branding["site_title"]
+    brand_title = branding["project_name"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     sources = {
         slug: (SITE / f"{slug}.md").read_text().split("\n", 1)

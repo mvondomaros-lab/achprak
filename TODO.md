@@ -65,9 +65,9 @@ infrastructure log streaming and session startup failures.
 
 ## OER content and naming migration
 
-The project and app are named **PhotoSwitchLab**. The website title is
-**Molekulare Photoschalter**. Both use the subtitle **Computerexperiment** and
-optional local suffix ** · ACh-PR · Marburg**. Public branding is the default;
+The project, app and website are named **PhotoSwitchLab**. The app and website
+use the subtitle **Computerexperiment** and optional local suffix
+** · ACh-PR · Marburg**. Public branding is the default;
 Marburg branding can be selected explicitly. The course setting selects branding,
 documentation and Marburg's additions to the shared exercises.
 
