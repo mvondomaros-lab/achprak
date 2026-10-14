@@ -12,6 +12,9 @@ This directory installs the locked Pixi `web` environment and launches the app
 through Jupyter Server Proxy at `photoswitchlab/`. Use a commit SHA or release
 tag instead of `main` to share a fixed version.
 
+Build tools and writable package caches are temporary and removed in `postBuild`.
+`.dockerignore` excludes local environments, caches and results from local builds.
+
 To test locally on macOS (including Apple Silicon) or x86-64 Linux, install and
 start Docker. [repo2docker](https://repo2docker.readthedocs.io/) is included in
 Pixi's `dev` environment. From the repository root:

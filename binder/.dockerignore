@@ -1,0 +1,21 @@
+# Local environments and outputs must not enter the Binder build context.
+.git
+.pixi
+.binder-tools
+.venv
+results
+build
+dist
+site/_build
+**/*.egg-info
+**/__pycache__
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.idea
+.codex
+.agents
+.aws
+.ssh
+**/.ipynb_checkpoints
+**/.DS_Store

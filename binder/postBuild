@@ -2,22 +2,28 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-pixi_dir="$repo_root/.binder-tools"
-archive="$(mktemp)"
-trap 'rm -f "$archive"' EXIT
+build_dir="$(mktemp -d)"
+trap 'rm -rf "$build_dir"' EXIT
+
+# Explicit writable caches avoid permission errors in the base image.
+# Everything here is build-only and removed before this image layer is saved.
+export PIXI_CACHE_DIR="$build_dir/pixi-cache"
+export UV_CACHE_DIR="$build_dir/uv-cache"
+archive="$build_dir/pixi.tar.gz"
 
 # Use the same Pixi release used to verify this configuration and lockfile.
-mkdir -p "$pixi_dir"
 curl --fail --location --retry 3 \
     https://github.com/prefix-dev/pixi/releases/download/v0.81.0/pixi-x86_64-unknown-linux-musl.tar.gz \
     --output "$archive"
-tar -xzf "$archive" -C "$pixi_dir" pixi
-"$pixi_dir/pixi" install --manifest-path "$repo_root/pyproject.toml" --locked -e web
+tar -xzf "$archive" -C "$build_dir" pixi
+"$build_dir/pixi" install --manifest-path "$repo_root/pyproject.toml" --locked -e web
 
 # Fail the build if the chemistry backends or application cannot load.
-"$pixi_dir/pixi" run --manifest-path "$repo_root/pyproject.toml" --locked -e web \
+"$build_dir/pixi" run --manifest-path "$repo_root/pyproject.toml" --locked -e web \
     python -c 'import photoswitchlab.web.server, rdkit, tblite, sella, pymopac; import shutil; assert shutil.which("mopac"), "MOPAC executable missing"'
 
 config_dir="$(jupyter --config-dir)"
 mkdir -p "$config_dir"
 cp "$repo_root/binder/jupyter_server_config.py" "$config_dir/jupyter_server_config.py"
+
+echo "Removing build-only installer and caches: $(du -sh "$build_dir" | cut -f1)"
