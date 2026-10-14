@@ -38,6 +38,6 @@ c.ServerProxy.servers = {
             "OPENBLAS_NUM_THREADS": "1",
             "MKL_NUM_THREADS": "1",
         },
-        "launcher_entry": {"title": "Molekulare Photoschalter"},
+        "launcher_entry": {"title": "PhotoSwitchLab"},
     }
 }

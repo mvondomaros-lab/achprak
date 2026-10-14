@@ -317,7 +317,7 @@ def create_app(
     branding = json.loads((STATIC / "branding.json").read_text())
     if course not in branding["course_suffixes"]:
         raise ValueError(f"Unknown course: {course}")
-    brand_title = branding["title"]
+    brand_title = branding["project_name"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     cookie_path = "/" + cookie_path.strip("/") + "/" if cookie_path.strip("/") else "/"
     manager = JobManager(max_jobs, timeout)

@@ -1,6 +1,6 @@
 # PhotoSwitchLab
 
-**Molekulare Photoschalter · Computerexperiment**
+**Computerexperiment**
 
 PhotoSwitchLab ist eine deutschsprachige Webapp für Chemiestudierende im ersten
 Studienjahr. Sie können Molekülstrukturen erzeugen, Minimumstrukturen optimieren,

@@ -68,7 +68,7 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
     branding = json.loads(
         (ROOT / "src/photoswitchlab/web/static/branding.json").read_text()
     )
-    brand_title = branding["title"]
+    brand_title = branding["site_title"]
     brand_subtitle = branding["subtitle"] + branding["course_suffixes"][course]
     output = output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)

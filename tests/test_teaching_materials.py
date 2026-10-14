@@ -22,9 +22,9 @@ def test_deployment_branding_is_rendered_without_a_session(course, subtitle):
     with TestClient(create_app(course=course)) as client:
         response = client.get("/")
     assert response.status_code == 200
-    assert "<title>Molekulare Photoschalter</title>" in response.text
+    assert "<title>PhotoSwitchLab</title>" in response.text
     assert '<meta name="application-name" content="PhotoSwitchLab"' in response.text
-    assert f"<small>{subtitle}</small>" in response.text
+    assert f"PhotoSwitchLab<small>{subtitle}</small>" in response.text
     assert "$brand_" not in response.text
     assert "$guide_url" not in response.text
     guide_url = "https://mvondomaros-lab.github.io/photoswitchlab/"
