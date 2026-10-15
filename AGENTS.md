@@ -21,14 +21,6 @@ including algorithms, numerical checks, display processing, and implementation-s
 assumptions and limitations. Keep general conceptual explanations on the website;
 a short reminder is sufficient when needed to understand a computational detail.
 
-# Verification
-
-When investigating or fixing a transition-structure search failure, run
-`pixi run -e dev test-ts`, the opt-in real chemistry regression set. Add a
-deterministic case for any newly reported failing molecule. A focused case is
-useful during debugging, but run the complete set before finishing and report
-any failures. Keep these expensive tests disabled in default test runs.
-
 # Language and terminology
 
 - Use German for student-facing text and address students consistently as “Sie”.
