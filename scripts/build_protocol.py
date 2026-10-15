@@ -61,7 +61,7 @@ def build():
         run.font.size = Pt(9)
         run.font.color.rgb = RGBColor.from_string("586B80")
     notice = sec.footer.add_paragraph(
-        "Vorlage: PhotoSwitchLab · mvondomaros-lab · CC BY-SA 4.0\n"
+        "Vorlage: PhotoSwitchLab · Michael von Domaros · CC BY-SA 4.0\n"
         "https://mvondomaros-lab.github.io/photoswitchlab/lizenz/"
     )
     notice.paragraph_format.space_after = Pt(0)

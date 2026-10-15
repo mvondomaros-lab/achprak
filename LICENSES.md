@@ -30,7 +30,7 @@ In mixed files, the educational text and illustrations use CC BY-SA 4.0; the
 implementation uses MIT. Figure-generation code uses MIT; original teaching
 illustrations produced by it use CC BY-SA 4.0.
 
-Suggested attribution: “PhotoSwitchLab, mvondomaros-lab,
+Suggested attribution: “PhotoSwitchLab, Michael von Domaros,
 https://github.com/mvondomaros-lab/photoswitchlab, CC BY-SA 4.0.” Include a
 license link and identify changes when sharing adaptations. Shared adaptations
 must use CC BY-SA 4.0 or a license permitted by its ShareAlike terms. Commercial
