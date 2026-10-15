@@ -13,18 +13,19 @@ provides a German launch display and uses the fixed commit in `binder/launch.jso
 JupyterLab also has an app launcher entry. Binder's native launch page remains
 available as a fallback.
 
-- [ ] Measure image size and timings for a first build and subsequent launches
-      of the same commit. Separate build, registry upload, image pull, session
-      startup and application startup times.
+- [x] Measure two cached public launches of the same commit and application
+      startup separately. Results are recorded below.
+- [ ] Measure a complete cold build, registry upload and public image size;
+      repeat cached launches to assess variability. The public API combines
+      image pull and session startup in one stage.
 - [x] Use writable build caches and remove the installer, archive and caches
       in the same image layer, preserving the installed chemistry environment.
       Exclude local environments and outputs from repo2docker's build context.
-      Local image size and chemistry imports have been checked; public launch
-      validation remains below.
+      Local image size, chemistry imports and public launch have been checked.
 - [x] Pin the teaching launch to a fixed commit, independent of website-only
       changes to `main`. Update `binder/launch.json` when publishing app or
-      environment changes. Warm the link before a course; live validation of the
-      current pinned commit is pending its publication.
+      environment changes. The published reference has passed a live check;
+      warm the link again before a course.
 - [x] Evaluate CI prebuilding and separate environment/content repositories.
       Neither is introduced: a fixed application commit provides reuse without
       another repository or registry workflow. Public Binder still has to pull
@@ -35,10 +36,12 @@ available as a fallback.
       Binder's public event stream. Explain first-build delays, show actual
       stages and elapsed waiting time, and offer explicit retry and a native
       Binder fallback. No automatic reconnect creates extra sessions.
-- [ ] Verify representative chemistry calculations, cancellation, exports and
-      session isolation on Binder. Record memory use and runtimes, especially
-      for transition-structure searches, before claiming support for every
-      exercise.
+- [x] Check the public Binder workflow for unsubstituted azobenzene: structure
+      generation, minimum optimization, UV/Vis calculation, export data,
+      cancellation of a running calculation and browser-session isolation.
+- [ ] Check complete transition-structure searches and substituted molecules
+      on Binder, recording memory use and runtimes. Verify file downloads and
+      image exports through the browser before claiming every exercise works.
 - [x] Update `binder/README.md` for the build cleanup, fixed teaching reference
       and German launch display. Keep live validation distinguished from local
       Docker and browser checks.
@@ -78,9 +81,33 @@ separate browser sessions. The three calculations took approximately 3, 9 and
 The launch display passed six lifecycle tests and browser checks at desktop and
 phone widths, including explicit retry and the no-JavaScript native link. The
 combined Binder, deployment, teaching-material and website checks passed (22 tests).
-The build fix is committed as `41b5346`; publication and public launch measurements
-are pending SSH authentication. The public API's `launching` stage combines image
-pull and server startup, so it cannot isolate those two timings on its own.
+The build fix is published as `41b5346`. The public API's `launching` stage combines
+image pull and server startup, so it cannot isolate those two timings on its own.
+
+### Public Binder checks, 2026-10-15
+
+The supplied build log for `41b5346` shows `postBuild` completing in 40.2 s,
+including temporary-cache cleanup, and image export completing in 59.4 s. The
+log ends during registry upload, so it does not establish total build or upload
+time. The fixed version subsequently became available in Binder's registry.
+
+Two sequential launches through the public API on the same Binder deployment
+found the cached image in 1.0 s and 0.9 s. Their Jupyter servers became ready
+after 53.1 s and 8.8 s, respectively; PhotoSwitchLab's first health request then
+took another 1.0 s and 0.8 s. These are two observations, not guaranteed startup
+times. Neither request rebuilt the image.
+
+On the first test session, unsubstituted trans-azobenzene generation took 3.1 s,
+minimum optimization 11.5 s and UV/Vis calculation 6.2 s, including HTTP polling.
+The minimum converged. XYZ, SDF and spectrum SVG data were present; a second
+browser session could neither see nor delete the first session's structures.
+A running transition-structure search was successfully cancelled; it was not
+allowed to finish. Both test servers were shut down afterward. Memory use and
+complete transition-structure searches remain unmeasured.
+
+The published website serves the German launch display and the correct fixed
+reference. Sanitized timing and check results remain local under the ignored
+`results/binder-startup/public-live.json` path; no session tokens are recorded.
 
 ### References
 
