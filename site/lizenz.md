@@ -3,8 +3,7 @@
 Sie dürfen die Lehrmaterialien von PhotoSwitchLab kopieren, weitergeben und
 bearbeiten, auch für kommerzielle Zwecke. Die eigenen Lehrmaterialien stehen,
 soweit nicht anders angegeben, unter
-[Creative Commons Namensnennung – Weitergabe unter gleichen Bedingungen 4.0 International
-(CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.de).
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de).
 Der Programmcode steht unter der
 [MIT-Lizenz](https://github.com/mvondomaros-lab/photoswitchlab/blob/main/LICENSE).
 
