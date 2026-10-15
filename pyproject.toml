@@ -1,10 +1,21 @@
+[build-system]
+requires = ["setuptools>=77.0.3"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "photoswitchlab"
 version = "0.5.0"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
 description = "PhotoSwitchLab: a web-based computer experiment introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
-license = { file = "LICENSE-MIT" }
+license = "MIT AND CC-BY-SA-4.0"
+license-files = [
+    "LICENSE-MIT",
+    "LICENSE-CC-BY-SA-4.0",
+    "LICENSES.md",
+    "src/photoswitchlab/web/static/vendor/*-LICENSE",
+    "src/photoswitchlab/web/static/vendor/README.md",
+]
 
 [tool.setuptools.package-data]
 "photoswitchlab.web" = ["static/*", "static/vendor/*", "static/materials/*"]
