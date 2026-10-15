@@ -25,7 +25,7 @@ button, summary { cursor: pointer; }
 .sidebar a:hover { background: var(--tint); color: var(--text); }
 .sidebar a[aria-current] { color: var(--blue); background: var(--tint); box-shadow: inset 3px 0 var(--blue); font-weight: 650; }
 main { min-width: 0; padding: 2.7rem 0 2rem; }
-.site-footer { margin-top: 2rem; font-size: .8rem; }
+.site-footer { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; font-size: .8rem; }
 .site-footer a { color: var(--muted); }
 .page-title { border-bottom: 3px solid var(--blue); padding-bottom: 1.5rem; margin-bottom: 2rem; }
 h1, h2, h3 { font-weight: 650; letter-spacing: -.03em; line-height: 1.25; text-wrap: balance; }

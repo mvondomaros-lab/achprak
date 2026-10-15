@@ -770,7 +770,12 @@ footer {
 footer span {
   white-space: nowrap;
 }
-footer > a {
+footer .legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+footer .legal-links a {
   color: inherit;
   white-space: nowrap;
 }

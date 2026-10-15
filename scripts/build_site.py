@@ -39,7 +39,12 @@ PAGE_GROUPS = (
     ),
     ("Durchführung", ("kurse/marburg", "installation")),
 )
-PAGES = ("index", *(slug for _, slugs in PAGE_GROUPS for slug in slugs), "lizenz")
+PAGES = (
+    "index",
+    *(slug for _, slugs in PAGE_GROUPS for slug in slugs),
+    "lizenz",
+    "impressum",
+)
 PAGE_SCRIPTS = {
     "theory/structures": "structure-viewer.js",
     "installation": "binder-launch.js",
@@ -167,10 +172,12 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                     + "</ul></section>"
                 )
             pagination = []
-            # Course requirements are a separate entry point, not the next
-            # required step in the public learning sequence.
+            # Course requirements and legal information are separate entry points,
+            # outside the public learning sequence.
             public_pages = [
-                key for key in PAGES if not key.startswith("kurse/") and key != "lizenz"
+                key
+                for key in PAGES
+                if not key.startswith("kurse/") and key not in ("lizenz", "impressum")
             ]
             if slug in public_pages:
                 index = public_pages.index(slug)
@@ -191,6 +198,7 @@ def build(output: Path = OUTPUT, *, course: str = "public") -> None:
                 root=root,
                 slug=slug,
                 license_current=' aria-current="page"' if slug == "lizenz" else "",
+                imprint_current=' aria-current="page"' if slug == "impressum" else "",
                 content=content,
                 navigation=navigation,
                 pagination="".join(pagination),
