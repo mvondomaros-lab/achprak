@@ -51,8 +51,3 @@ kennzeichnen Sie berechnete Werte als Modellvorhersagen.
 
 Exportieren Sie Strukturen und Abbildungen während der Arbeit auf Ihren Rechner.
 Die Webapp speichert Ihre Ergebnisse nicht dauerhaft.
-
-## Teilnahme am Marburger Praktikum
-
-Für Studierende im Allgemeinen Chemiepraktikum der Universität Marburg gelten die
-[Hinweise zum Marburger Praktikum](kurse/marburg.md).
