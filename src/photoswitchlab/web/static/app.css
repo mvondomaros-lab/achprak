@@ -66,17 +66,18 @@ a {
 }
 .header-actions {
   flex: 0 1 auto;
-  width: calc(24rem + 16px);
+  width: max-content;
   max-width: 100%;
   margin-left: auto;
   min-width: 0;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   gap: 8px;
 }
 .header-actions .quiet {
-  flex: 0 0 8rem;
+  flex: 0 1 8rem;
+  width: 8rem;
   max-width: 100%;
   overflow-wrap: anywhere;
   display: flex;

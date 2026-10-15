@@ -1,6 +1,6 @@
 # Externe Studierende
 
-Wenn Sie außerhalb des Marburger Praktikums arbeiten, können Sie PhotoSwitchLab
+Wenn Sie an keinem lokalen Kurs teilnehmen, können Sie PhotoSwitchLab
 im Browser über Binder oder auf Ihrem eigenen Rechner ausführen.
 Die Aufgaben stehen in der Webapp.
 
