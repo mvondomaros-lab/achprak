@@ -4,7 +4,7 @@ version = "0.5.0"
 authors = [{ name = "Michael von Domaros", email = "mvondomaros@uni-marburg.de" }]
 description = "PhotoSwitchLab: a web-based computer experiment introducing theoretical chemistry to first-year chemistry students"
 readme = "README.md"
-license = { file = "LICENSE" }
+license = { file = "LICENSE-MIT" }
 
 [tool.setuptools.package-data]
 "photoswitchlab.web" = ["static/*", "static/vendor/*", "static/materials/*"]

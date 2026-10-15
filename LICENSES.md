@@ -6,7 +6,7 @@ for every file. Copyright for original project material: mvondomaros-lab.
 
 ## Software
 
-The [MIT license](LICENSE) applies to Python and JavaScript code, CSS, HTML
+The [MIT license](LICENSE-MIT) applies to Python and JavaScript code, CSS, HTML
 templates and markup, build and figure-generation scripts, configuration, and
 tests. It also applies to developer documentation about installation, deployment,
 repository maintenance, and testing.

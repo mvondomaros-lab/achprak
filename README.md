@@ -61,7 +61,7 @@ Technische Dokumentation ist auf Englisch:
 
 ## Lizenz und Quellen
 
-Der Programmcode steht unter der [MIT-Lizenz](LICENSE), die eigenen Lehrmaterialien
+Der Programmcode steht unter der [MIT-Lizenz](LICENSE-MIT), die eigenen Lehrmaterialien
 unter [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de).
 Materialien Dritter behalten ihre jeweiligen Lizenzen. Die
 [Lizenzübersicht](LICENSES.md) beschreibt die Zuordnung und Quellen.

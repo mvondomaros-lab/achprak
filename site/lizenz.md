@@ -5,7 +5,7 @@ bearbeiten, auch für kommerzielle Zwecke. Die eigenen Lehrmaterialien stehen,
 soweit nicht anders angegeben, unter
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de).
 Der Programmcode steht unter der
-[MIT-Lizenz](https://github.com/mvondomaros-lab/photoswitchlab/blob/main/LICENSE).
+[MIT-Lizenz](https://github.com/mvondomaros-lab/photoswitchlab/blob/main/LICENSE-MIT).
 
 ## Lehrmaterialien weiterverwenden
 
