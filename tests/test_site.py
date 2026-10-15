@@ -266,7 +266,8 @@ class SiteBuildTests(unittest.TestCase):
         article = re.search(r"<article>(.*?)</article>", access, re.S)[1]
         self.assertNotIn("lserver.chemie.uni-marburg.de", article)
         self.assertNotIn("ilias.uni-marburg.de", article)
-        self.assertIn("kurse/marburg/", article)
+        self.assertNotIn("Marburg", article)
+        self.assertNotIn("kurse/marburg/", article)
         for local_term in ("Protokoll", "Abgabe", "Pflichtaufgaben"):
             self.assertNotIn(local_term, article)
         self.assertIn("urlpath=photoswitchlab%2F", access)
