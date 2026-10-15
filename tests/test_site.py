@@ -262,25 +262,19 @@ class SiteBuildTests(unittest.TestCase):
         )
 
     def test_marburg_requirements_are_separate_from_public_guidance(self):
-        for slug in ("installation", "tasks"):
-            text = (self.output / slug / "index.html").read_text()
-            article = re.search(r"<article>(.*?)</article>", text, re.S)[1]
-            self.assertNotIn("lserver.chemie.uni-marburg.de", article)
-            self.assertNotIn("ilias.uni-marburg.de", article)
-            if slug == "installation":
-                self.assertIn("kurse/marburg/", article)
-            for local_term in ("Protokoll", "Abgabe", "Pflichtaufgaben"):
-                self.assertNotIn(local_term, article)
         access = (self.output / "installation/index.html").read_text()
+        article = re.search(r"<article>(.*?)</article>", access, re.S)[1]
+        self.assertNotIn("lserver.chemie.uni-marburg.de", article)
+        self.assertNotIn("ilias.uni-marburg.de", article)
+        self.assertIn("kurse/marburg/", article)
+        for local_term in ("Protokoll", "Abgabe", "Pflichtaufgaben"):
+            self.assertNotIn(local_term, article)
         self.assertIn("urlpath=photoswitchlab%2F", access)
         launch = json.loads((ROOT / "binder/launch.json").read_text())
         self.assertRegex(launch["ref"], r"^[0-9a-f]{40}$")
         self.assertIn(f"/v2/gh/{launch['repository']}/{launch['ref']}?", access)
         self.assertIn("assets/binder-launch.js", access)
         self.assertNotIn("binder:photoswitchlab", access)
-        tasks = (self.output / "tasks/index.html").read_text()
-        pagination = re.search(r'<nav class="page-navigation".*?</nav>', tasks, re.S)[0]
-        self.assertNotIn("kurse/marburg/", pagination)
         course = (self.output / "kurse/marburg/index.html").read_text()
         for requirement in (
             "Universitätsnetz",

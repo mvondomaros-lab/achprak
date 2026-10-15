@@ -2,7 +2,7 @@
 
 Wenn Sie außerhalb des Marburger Praktikums arbeiten, können Sie PhotoSwitchLab
 im Browser über Binder oder auf Ihrem eigenen Rechner ausführen.
-Die [Aufgaben](tasks.md) stehen in der Webapp.
+Die Aufgaben stehen in der Webapp.
 
 ## Über Binder starten
 
@@ -35,6 +35,22 @@ Die
 [Installationsanleitung](https://github.com/mvondomaros-lab/photoswitchlab#auf-dem-eigenen-rechner-starten)
 führt Sie durch Einrichtung und Start. Unterstützt werden Macs mit Apple Silicon
 und Linux-Computer mit x86-64-Prozessor.
+
+## Aufgaben bearbeiten
+
+Lesen Sie vor der Bearbeitung die [theoretischen Grundlagen](theory.md).
+Die Aufgaben in der Webapp führen Sie durch drei Schritte:
+
+- Molekülstrukturen erzeugen und vergleichen.
+- Minimumstrukturen optimieren und einen Reaktionspfad über eine Übergangsstruktur untersuchen.
+- Spektren berechnen und den Einfluss von Substituenten vergleichen.
+
+Sie können die Aufgaben in Ihrem eigenen Tempo bearbeiten und die Vertiefungen
+nach Interesse auswählen. Halten Sie Ihre Ergebnisse und Begründungen fest und
+kennzeichnen Sie berechnete Werte als Modellvorhersagen.
+
+Exportieren Sie Strukturen und Abbildungen während der Arbeit auf Ihren Rechner.
+Die Webapp speichert Ihre Ergebnisse nicht dauerhaft.
 
 ## Teilnahme am Marburger Praktikum
 

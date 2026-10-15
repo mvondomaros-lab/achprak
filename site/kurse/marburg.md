@@ -20,6 +20,13 @@ pixi run --locked -e web web --course marburg
 
 ## Aufgaben bearbeiten
 
+Lesen Sie vor der Bearbeitung die [theoretischen Grundlagen](../theory.md).
+Die Aufgaben in der Webapp führen Sie durch drei Schritte:
+
+- Molekülstrukturen erzeugen und vergleichen.
+- Minimumstrukturen optimieren und einen Reaktionspfad über eine Übergangsstruktur untersuchen.
+- Spektren berechnen und den Einfluss von Substituenten vergleichen.
+
 Bearbeiten Sie die Pflichtaufgaben in allen drei Versuchsschritten der Webapp.
 Im Aufgabenbereich steht für jeden Schritt, was Sie untersuchen und welche
 Ergebnisse Sie im Protokoll festhalten sollen. Freiwillige Vertiefungen gehören

@@ -37,7 +37,7 @@ PAGE_GROUPS = (
             "theory/photoswitches",
         ),
     ),
-    ("Durchführung", ("kurse/marburg", "installation", "tasks")),
+    ("Durchführung", ("kurse/marburg", "installation")),
 )
 PAGES = ("index", *(slug for _, slugs in PAGE_GROUPS for slug in slugs))
 PAGE_SCRIPTS = {
