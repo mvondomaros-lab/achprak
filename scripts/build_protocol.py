@@ -60,6 +60,14 @@ def build():
     for run in footer.runs:
         run.font.size = Pt(9)
         run.font.color.rgb = RGBColor.from_string("586B80")
+    notice = sec.footer.add_paragraph(
+        "Vorlage: PhotoSwitchLab · mvondomaros-lab · CC BY-SA 4.0\n"
+        "https://mvondomaros-lab.github.io/photoswitchlab/lizenz/"
+    )
+    notice.paragraph_format.space_after = Pt(0)
+    for run in notice.runs:
+        run.font.size = Pt(8)
+        run.font.color.rgb = RGBColor.from_string("586B80")
 
     def p(text):
         para = doc.add_paragraph()

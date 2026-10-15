@@ -1,5 +1,8 @@
 # Teaching figures
 
+Original teaching illustrations use CC BY-SA 4.0; generation scripts use MIT.
+External illustrations retain their own terms. See the [licensing policy](../LICENSES.md).
+
 Regenerate one figure or the complete set from the repository root:
 
 ```sh

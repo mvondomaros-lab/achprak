@@ -770,6 +770,10 @@ footer {
 footer span {
   white-space: nowrap;
 }
+footer > a {
+  color: inherit;
+  white-space: nowrap;
+}
 dialog {
   border: 1px solid var(--line);
   border-radius: 14px;

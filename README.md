@@ -58,3 +58,10 @@ Technische Dokumentation ist auf Englisch:
 - [Binder-Konfiguration](binder/README.md)
 - [Entwicklung und Tests](docs/development.md)
 - [Rechenmethoden und Auswertungen](docs/README.md)
+
+## Lizenz und Quellen
+
+Der Programmcode steht unter der [MIT-Lizenz](LICENSE), die eigenen Lehrmaterialien
+unter [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.de).
+Materialien Dritter behalten ihre jeweiligen Lizenzen. Die
+[Lizenzübersicht](LICENSES.md) beschreibt die Zuordnung und Quellen.
