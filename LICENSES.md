@@ -42,17 +42,11 @@ for those versions. This policy does not revoke them.
 
 ## Third-party material
 
-Third-party material retains its own terms and attribution; it is excluded from
-the project's general license grants. In particular:
+Third-party material retains its own terms and attribution and is excluded from
+the project's general license grants. The maintained records are:
 
-- The electromagnetic spectrum illustration is CC BY-SA 3.0, not CC BY-SA 4.0;
-  the atmospheric transmission illustration is public domain. See
-  [the image credits](figures/commons/ATTRIBUTION.md).
-- The bundled CIE data is CC BY-SA 4.0. Its sources and wavelength restriction
-  are recorded in [the vendor guide](src/photoswitchlab/web/static/vendor/README.md)
-  and [data provenance](docs/solution-color.md#data-provenance).
-- NGL and Chart.js retain their bundled MIT notices; other dependencies retain
-  their upstream licenses.
+- [Image credits](figures/commons/ATTRIBUTION.md).
+- [Bundled browser libraries and data](src/photoswitchlab/web/static/vendor/README.md).
 
-Keep these notices when redistributing the relevant material. Merely collecting
-independent works together does not make every work an adaptation of the others.
+Other dependencies retain their upstream licenses. Keep the relevant notices
+when redistributing third-party material.
