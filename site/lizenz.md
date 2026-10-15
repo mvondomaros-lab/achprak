@@ -18,8 +18,7 @@ gleicher oder kompatibler Lizenz beachten.
 
 Als Quellenangabe können Sie verwenden:
 
-> PhotoSwitchLab, Michael von Domaros,
-> [Projekt und bearbeitbare Quellen](https://github.com/mvondomaros-lab/photoswitchlab),
+> [PhotoSwitchLab](https://github.com/mvondomaros-lab/photoswitchlab) von Michael von Domaros,
 > [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).
 
 Ergänzen Sie bei Bearbeitungen einen Hinweis auf Ihre Änderungen. Die Lizenz der
