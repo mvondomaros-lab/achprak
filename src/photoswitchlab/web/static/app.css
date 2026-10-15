@@ -66,6 +66,8 @@ a {
 }
 .header-actions {
   flex: 0 1 auto;
+  width: calc(24rem + 16px);
+  max-width: 100%;
   margin-left: auto;
   min-width: 0;
   display: flex;
@@ -74,7 +76,7 @@ a {
   gap: 8px;
 }
 .header-actions .quiet {
-  flex: 0 0 auto;
+  flex: 0 0 8rem;
   max-width: 100%;
   overflow-wrap: anywhere;
   display: flex;
